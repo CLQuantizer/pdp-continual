@@ -111,3 +111,17 @@ condition on how much *recent evidence backs FF's answer for this input*, not on
    seasons of 1 digit (returns ≈ 5% of arrivals). Prediction: store/age-gate wins lifetime there.
 4. **Neuron.** Apical context = store's retrieved label only on gate-fired inputs (hyp 4 at 15:00,
    now scoped): FF learns from its own disagreements with memory. Blocked behind 1.
+
+## 2026-10-30 17:27 UTC+8 — CLS complementary routing (hypothesis 1) tested
+
+**Read:** `results/cls_route/VERDICT.md` (also `docs/cls_route.md`). Code: `cls_route.py`, `cls_life.py`.
+
+- Targets: life ≥94.1, Split final ≥91.6, swap ≥85. **No router passes all three.**
+  Best (gate0.02): life 94.21 ✓ (+0.18 over FF), Split 91.5 ✗ (−0.1), swap 88.0 ✓. Margin router
+  m0.1: Split 92.6 ✓ but life 89.5 ✗, swap 66.3 ✗. Kill criterion (≥0.5 over the better route) met
+  only by margin routing on Split. **Hypothesis 1 as stated: killed.**
+- Falsified path: per-class stream reliability is biased in class-IL (answers naming absent classes are
+  always wrong), and the awake prototype probe is contaminated by replay (FF fits exactly the replayed
+  prototypes). Oracle headroom 3–4 points: the arbiter, not the routes, is the bottleneck.
+- Side finding: FF's swap adaptation decays under clock sleep (95.9 @500 → 81.7 @8000) because sleep
+  replays stale store labels. Promote hypothesis 5 (store change detector) to next.
