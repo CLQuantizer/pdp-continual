@@ -613,3 +613,44 @@ pass for a context.
    still gains, presence lag is not the mechanism.
 4. **Architecture: router sees remap events** (from 02:35, unchanged).
 5. **Training: SWIL** (needs FF re-runs).
+
+## 2026-10-31 05:30 UTC+8
+
+### Experiments
+1. **s100 fresh-seed confirmation** (`onset_s678.py`, results/onset_s678, FF logs results/gate_probe_s678): bg 0.02
+   seeds 6-8, mq30_s2 swap 71.8 (s0) vs 71.9 (s100), returns 71.1 vs 71.4, latency 59 vs 49. Not confirmed (gain < 1).
+   Onset presence closed.
+2. **Seed 6 breaks the default store.** a25w250h2k2 makes 34 pre-swap remaps on seed 6 (0 on 7 and 8). Diagnosis
+   (store replay, seed 6): all ping-pong between co-present confusable classes, 4->9 14, 9->4 12, 7->9 4, 9->7 4, in
+   seasons 3-5 where 4, 8, 9 are all in season (~1000 arrivals each). a25 only blocks remaps of absent classes.
+3. **Rival-aware evidence** (`rival_remap.py`, results/rival_remap): c1.5 kills false remaps (0 everywhere) but swap
+   68.6 vs 72.0 (killed); rad keeps 10 on seed 6 (prediction <= 5 failed, killed).
+4. **Directional unlock** (`rival_unlock.py`, results/rival_unlock): c1.5_u has 0 pre-swap remaps on all 15 runs,
+   swap within 0.3 of base in both worlds, returns equal, latency unchanged. rad_u does not help (seed 6 at 40).
+   Lead, post hoc on seed 6: needs fresh seeds 9-11 (gate_probe FF logs first).
+
+### Literature insight
+Yassa & Stark 2011 (Trends Neurosci 34:515, "Pattern separation in the hippocampus"): the dentate gyrus/CA3 decides
+whether an input is a *new* event or a degraded copy of a stored one by its distance to all stored neighbours, not
+to one. Our remap rule asked only "is this inside s's prototype?", so a borderline 9 was read as "the 4 memory now
+means 9". The mnemonic-discrimination question is "is there already a 9 memory nearly as close?"; if yes the input
+is a lure for an existing memory, not evidence of a rule change. The cost appears when the separation test also
+blocks a real change after its first step, which matches Leutgeb et al. 2005 (Science 309:619): once a remapping
+starts, CA3 commits to the new map rather than re-testing each cell, i.e. the directional unlock.
+
+### Paths closed
+- Onset-aware presence (s100): not confirmed on fresh seeds.
+- Rival test without unlock (c1.5) and radius rival test (rad, rad_u).
+
+### Hypotheses, ranked
+1. **Architecture/store (test next): confirm c1.5_u on fresh seeds 9-11** (launch gate_probe FF logs for bg 0.02
+   seeds 9-11 first). Prediction: pre-swap remaps <= 1 per run, swap within 0.5 of base. Kill: any run > 5 or swap
+   loss > 1.
+2. **Data: confusable co-presence world.** Force 4/9 and 3/5/8 into the same season in every seed. Prediction: base
+   a25w250h2k2 gives > 10 false remaps per run, c1.5_u <= 1. This turns seed 6 from luck into a stress test.
+3. **Neuron: soft radius for conflict evidence** (from 04:40; 42% of post-swap evidence lands at 1.0-1.3 r). Now
+   testable safely because the rival test filters borderline lures: count 1.0-1.25 r conflicts as half hits only
+   when no rival. Prediction: latency -15 ticks, swap +1, false remaps stay 0.
+4. **Training: does the unlock window U matter?** U in {500, 2000, inf}. Prediction: flat above 500 (one remap
+   burst is ~2 events), so U is not a tuned knob.
+5. Router sees remap events; SWIL (unchanged).

@@ -377,3 +377,17 @@ star and makes "is sleep organically useful?" a measurable question.
 - Onset-aware presence (`onset_presence.py`, a25 on W = 250 OR on the last S ticks): S = 50 killed (8.5 false remaps
   at bg 0.2); S = 100 lead (held-out bg 0.02 swap 74.0 vs 72.2, latency -20 ticks, bg 0.2 +0.3 with 2.7 false
   remaps). Default stays a25w250h2k2 until s100 is confirmed on fresh seeds 6-8.
+
+## Update 2026-10-31 05:30 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Onset presence s100 not confirmed on fresh seeds 6-8 (`onset_s678.py`): swap +0.1, latency -10 ticks. Closed; the
+  04:40 gain was seed noise.
+- The default store a25w250h2k2 is not safe on fresh seed 6: 34 pre-swap false remaps (seeds 0-5 had <= 4). All are
+  ping-pong between co-present confusable classes (4<->9, 7<->9) in a season holding both, which the a25 presence
+  guard cannot see because both classes are present.
+- Rival-aware evidence (`rival_remap.py`): a conflict labelled y counts only if no y prototype is a close rival
+  (squared distance <= 1.5 x that to the s prototype). Removes every false remap but costs 3.4 swap points, because
+  the first true remap plants a y rival among the s prototypes. Radius-based rival test (rad) fails (seed 6 still 10).
+- Rival test with directional unlock (`rival_unlock.py`, c1.5_u): after a remap s->y the pair (s, y) skips the rival
+  test for 2000 ticks; (y, s) stays checked. 0 pre-swap remaps on all 15 runs (base 42 total), swap 71.7 vs 72.0
+  (bg 0.02 seeds 3-8) and 71.5 vs 71.6 (bg 0.2), returns and lifetime equal. Lead for the new default; C and U were
+  set after seeing seed 6, so confirm on fresh seeds 9-11 before adopting.
