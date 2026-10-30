@@ -282,3 +282,16 @@ star and makes "is sleep organically useful?" a measurable question.
 6. README.md is about 1600 lines of chronological sections. This audit plus
    the goal.md scoreboard are now the quickest way in. A short "current
    best setup" block at the top of the README would help.
+
+## Update 2026-10-30 15:10 UTC+8 (hourly loop; detail in `docs/loop.md`)
+
+- **Store-alone baseline:** nearest-prototype readout of the same store, no network, scores
+  91.6 (9/class) / 94.2 (40/class) on Split-MNIST and 77.0 / 80.1 on Fashion, with no
+  between-sleep forgetting. FF + sleep (89.3 / 91.0; Fashion 78.48) is at or below it. Every
+  continual result must now beat store-alone at equal memory (`results/hippo_route`).
+- **Life (bg 0.2):** never sleeping wins (94.1); sleep's maximum possible gain is ≈2.5 points
+  because off-season inputs are 13% and already 81.6% right. Pressure triggers never fire.
+  Trigger tuning on this world is closed until the world rewards memory (returns score).
+- **Slow waking costs in a life** (−1.0 lifetime, novel −13, swap −24 in the first 300):
+  hold off on making ×0.3 the default.
+- Next: dual-route answering (store answers when confident, FF otherwise).
