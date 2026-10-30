@@ -310,3 +310,11 @@ star and makes "is sleep organically useful?" a measurable question.
 - New best answering route for the life world (`gate_probe.py`, held-out seeds): margin gate without age,
   lifetime 96.1 vs FF 96.0, returns 65.1 vs 53.6, with no sleep. Costs 8 points on the swap.
 - Next: gain-prioritised night replay (replay the store near low-margin disagreements).
+
+## Update 2026-10-30 19:40 UTC+8 (hourly loop; detail in `docs/loop.md`)
+
+- Closed: gain-prioritised night replay (`gain_replay.py`, 18:00 hyp 1 killed). Spending half or all of each
+  night batch on store slots near low-margin disagreements gives returns 63.7 (unlabelled) / 62.2 (label-verified)
+  / 58.2 (all-gain) vs uniform night 64.5, at the same 95.0 lifetime. The more replay is focused, the worse returns get.
+- Reading: in this world the binding term of Mattar & Daw's gain × need is *need* (coverage of absent classes), not gain.
+- Next: need-prioritised night replay (replay classes in proportion to time away), then the change-detector veto for the swap.

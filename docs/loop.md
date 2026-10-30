@@ -183,3 +183,47 @@ a third of what the store knows (64.5 vs 83).
 4. **Neuron: margin as a dendritic plateau signal.** Use FF's low-margin events (not the label) to
    switch a unit's apical compartment to the store's retrieved label for that one update. Prediction:
    FF's own returns rise ≥ 5 with no change to answering. Blocked behind 1.
+## 2026-10-30 19:40 UTC+8
+
+**Read first:** `results/gain_replay/RESULTS.md` (box run, seeds 0–2, bg 0.02, 16 days). Code: `gain_replay.py`
+(subclasses `life.Machine`; logs mq10_s2-style events by day, mixes their nearest store slots into night replay).
+Control is the existing `night` row in `results/dual_life_bg002/RESULTS.md` (same seeds, same code path).
+
+### Findings
+1. **Hyp 1 (gain-prioritised night replay) killed.** Pre-registered kill was returns < 66 for every variant.
+   | Night replay | Lifetime | Returns | Off season | Frozen final | Swap first 300 |
+   |---|---|---|---|---|---|
+   | uniform (control) | 95.0 | 64.5 | 52.1 | 89.1 | 76.4 |
+   | 50% gain, unlabelled events | 95.0 | 63.7 ± 3.2 | 52.0 | 86.2 | 78.1 |
+   | 50% gain, label-verified | 95.0 | 62.2 ± 0.3 | 50.7 | 87.5 | 78.6 |
+   | 100% gain, label-verified | 94.9 | 58.2 ± 0.1 | 47.3 | 83.1 | 77.8 |
+2. **Monotone in focus.** More replay on the gain set means worse returns, off-season and frozen accuracy; the
+   swap moves up ~2 points but within noise. Gain events cluster on a few slots of recently confused classes,
+   and replaying them displaces coverage of the classes that are away, which are the ones a return tests.
+3. Lifetime is flat (95.0) under every replay mix: night replay cannot move lifetime in this world, only the
+   ~1% of arrivals that are returns/off-season. The answering route (margin gate, 18:00) remains the better lever.
+
+### Literature insight
+Hasselmo 2006 (Curr Opin Neurobiol 16:710, "The role of acetylcholine in learning and memory"): high
+acetylcholine during novelty/mismatch suppresses recurrent *retrieval* in hippocampus and cortex and boosts
+*encoding*; low ACh (quiet waking, slow-wave sleep) lets retrieval and consolidation run. Our margin gate fails
+the swap for exactly the reason this predicts: after a rule change the store keeps retrieving confidently while
+labels contradict it. The ACh-style fix is a mismatch signal that turns *off* store answering for a class and
+turns *up* store plasticity for its slots (fast overwrite), which is 18:00 hyp 2 with a concrete mechanism.
+Paired with finding 2, Mattar & Daw's need term predicts that night replay should weight classes by time away.
+
+### Paths closed / demoted
+- Gain-prioritised night replay (any mix ≥ 50%): closed.
+- Night-replay composition as a lifetime lever in the bg 0.02 world: demoted (lifetime flat across all mixes).
+
+### Hypotheses, ranked
+1. **Training algorithm, test next: need-prioritised night replay.** Sample replay classes with probability
+   ∝ ticks since last seen (floor at 1 day), uniform within class. Prediction: returns ≥ 68 and off-season ≥ 56
+   at lifetime ≥ 94.9. Kill: returns < 65.5.
+2. **Neuron/architecture: ACh-style mismatch veto.** Count, per store class, label arrivals where the store's
+   confident claim (rel. margin ≥ 0.2) is wrong; after 3 in the last 50, veto the margin gate for that class and
+   set that class's prototype lr to 0.5 until 20 consecutive agreements. Prediction: swap first 300 ≥ 76 with
+   returns ≥ 64 and lifetime ≥ 96.0 (offline on `gate_probe` logs plus a store re-run). Kill: swap < 74.
+3. **Data: short seasons** (season 1500, bg 0.02): unchanged from 18:00; return share should rise ≥ 3%.
+   Prediction: mq10_s2 beats FF on lifetime by ≥ 0.5. Kill: < 0.2.
+4. **Architecture: margin gate + need replay together.** Only if 1 passes: predicted returns ≥ 70 at lifetime ≥ 96.
