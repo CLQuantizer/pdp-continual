@@ -438,3 +438,45 @@ ratio to the dominant cause did not. Prediction from the theory: a25 should also
    rate (a dendrite-local version of a25). Prediction: recovers the ~2 swap points a25 loses vs r3 while keeping
    false remaps <= 10. Kill: swap does not rise above a25's 72.6 at bg 0.02.
 4. **Training algorithm: SWIL** (unchanged, needs FF re-runs; box in background).
+
+## 2026-10-31 01:05-01:30 HKT (UTC+8) loop
+
+### Experiments (offline store replays joined with gate_probe FF logs; ~2 min total on the box)
+1. **a25 store + loosened gate in both worlds (`a25_gate.py`, results/a25_gate): half passes, not killed.**
+   Held-out bg 0.02 (seeds 3-5): a25 + mq30_s2 lifetime 96.1, returns 68.4, swap 69.3; mq50_s2 96.0 / 68.8 / 68.4
+   (prediction >= 68 at >= 96.0: pass). bg 0.2 (seeds 0-5, never used for selection): lifetime 94.4 / 94.3, the same
+   as mq10_s2 (94.4) and above FF (94.1), so the kill does not trigger, but the >= 94.5 half of the prediction fails:
+   loosening is free at bg 0.2, not a gain (there are no long absences to cover).
+   Window: a25w250 keeps pre-swap remaps 0 (bg 0.02 held out) / 1 (bg 0.2) and *raises* swap by 1-2 points
+   (mq30_s2: 71.2 vs 69.3 at bg 0.02, 70.2 vs 69.3 at bg 0.2) at equal returns. Rate theory's window-invariance
+   prediction holds. **Decision: default = a25w250 + mq30_s2.**
+2. **Change-point veto (`cp_veto.py`, results/cp_veto): killed.** Per store class, veto when the last-10 confident
+   error rate is >= 0.5 and >= 4x its long-run EMA. Held-out bg 0.02 mq30_s2: swap 71.2 -> 76.2 (pass) but returns
+   68.3 -> 60.5 (kill < 67); the old absolute veto gives 78.2 / 57.4. Pre-swap vetoed answers: 3.6% at bg 0.02 vs
+   0.9% at bg 0.2. The extra false vetoes in the world with long absences say the trigger is the class *returning*.
+
+### Literature insight
+Yu & Dayan 2005 (Neuron 46:681, "Uncertainty, neuromodulation, and attention"): ACh reports expected uncertainty,
+NE reports unexpected uncertainty, i.e. a change of context the current model did not predict. The cp veto was the
+NE half (the 21:10 veto was the ACh half). It failed for a reason the theory names: "unexpected" is relative to a
+model, and the store has no model of its own absence. A class coming back after days produces the same error burst
+as a relabelling, so a scalar surprise signal cannot tell "the world changed" from "I have been away". Whatever
+detects the swap must use *what* the conflicting labels are (a consistent new label for a familiar input, which
+the remap rule already uses) rather than *how often* the store is wrong. So the swap cost should be attacked
+through remap speed, not answer vetoes.
+
+### Paths closed / demoted
+- All store-error-rate vetoes (absolute 21:10, change-point 01:05): closed.
+- a25 at W = 500: superseded by W = 250.
+
+### Hypotheses, ranked
+1. **Training algorithm (cheap, offline, test next): faster remap under the a25 guard.** The swap cost is remap
+   latency (2 in-radius conflicting hits per prototype, >= 3 hot prototypes). With a25 blocking absent-cause
+   remaps, lower to 1 hit and K = 2. Prediction: held-out bg 0.02 swap >= 74 under mq30_s2 with returns >= 67.5 and
+   pre-swap remaps <= 5 in both worlds. Kill: pre-swap remaps > 10 in either world or returns < 67.
+2. **Data (diagnostic, cheap): returns vs swap signature.** Prediction: >= 70% of pre-swap cp-vetoed answers at bg
+   0.02 fall within 300 ticks of the vetoed class's season start. Confirms the mechanism behind today's kill.
+3. **Neuron: per-prototype presence** (from 00:10, unchanged): recover swap by gating each hot prototype on its own
+   agreeing-hit rate. Kill: swap not above a25w250's 71.2.
+4. **Data: short seasons (1500, bg 0.02)** as a stress test for a25w250; needs new FF logs (box, background).
+5. **Training algorithm: SWIL** (unchanged; needs FF re-runs).

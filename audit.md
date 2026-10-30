@@ -340,3 +340,15 @@ star and makes "is sleep organically useful?" a measurable question.
   last 500 ticks, r3) gives 0 false pre-swap remaps on held-out seeds 3-5, swap 76.1, returns 65.8, lifetime 96.2
   under the margin gate, and lifts the store alone to 91.6 lifetime / 82.0 returns / 60.2 swap (plain store 85.0 /
   80.1 / 2.8). Caveat: 5-in-500 assumes bg 0.02; robustness at bg 0.2 is the next test.
+
+## Update 2026-10-31 01:30 UTC+8 (hourly loops 00:10 and 01:05; detail in `docs/loop.md`)
+- 00:10: fixed-count presence (r3) fails at bg 0.2 (32 false pre-swap remaps); the scale-free a25 rule (count >= 25%
+  of the top label's count in the window) gives 0 / 1 and replaces it. Loosening the margin gate to mq30_s2 /
+  mq50_s2 is affordable once the store remaps (+3 returns, ~-4 swap).
+- 01:05: **current default = a25 store with W = 250 + mq30_s2.** Held-out bg 0.02: lifetime 96.1, returns 68.3,
+  swap 71.2 (FF 96.0 / 53.6 / 78.4); bg 0.2 (all held out): lifetime 94.4 vs FF 94.1, swap 70.2 vs 74.2. W = 250
+  keeps 0 / 1 pre-swap remaps in both worlds and gains 1-2 swap points over W = 500. Remaining cost: swap.
+- 01:05: **error-driven store vetoes closed as a family.** The change-point veto (NE-style, Yu & Dayan 2005) fails
+  like the absolute veto did: returns 68.3 -> 60.5 (absolute 57.4) for swap 71.2 -> 76.2. At bg 0.02 a class's
+  return after a long absence produces the same burst of confident store errors as the swap, so any veto keyed on
+  store error rate removes the answers that make returns good.
