@@ -109,7 +109,7 @@ def main():
     ap.add_argument("--worlds", nargs="+", default=["bg002", "ctx2bg0"])
     ap.add_argument("--out", default="results/gate_probe")
     a = ap.parse_args()
-    W = dict(bg002=dict(bg=0.02), ctx2bg0=dict(bg=0.0, ctx=2), bg02=dict(bg=0.2))
+    W = dict(bg002=dict(bg=0.02), ctx2bg0=dict(bg=0.0, ctx=2), bg02=dict(bg=0.2), bg002s49=dict(bg=0.02, swap=(4, 9)))
     os.makedirs(a.out, exist_ok=True)
     load_mnist("mnist")
     jobs = [(s, a.days, W[k]) for k in a.worlds for s in a.seeds]

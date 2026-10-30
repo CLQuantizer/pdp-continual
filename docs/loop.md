@@ -735,3 +735,7 @@ their evidence is normalised), not from softening each hit.
    them in the next sleep with priority (Mattar & Daw need term) so the FF cortex flips sooner. Prediction: FF swap
    accuracy in the second 300 ticks after swap +5. Kill: < +2.
 4. Confusable co-presence world; soft radius; router sees remap events; SWIL (unchanged).
+- 07:13 UTC+8: FF logs for the confusable-swap world (gate_probe world bg002s49 = bg 0.02, swap (4, 9)) launched on
+  the box for seeds 0-5 -> results/gate_probe_s49 (~50 min). Note for the replay: rival_remap.run builds the world as
+  dict(LF.WORLD, bg=bg), so it must also pass swap=(4, 9) for these logs, or the assert on labels fails. Since 9 is
+  also the novel digit (appears at 30%), read "novel first 300" with care in that world.
