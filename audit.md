@@ -360,3 +360,11 @@ star and makes "is sleep organically useful?" a measurable question.
   land at the basin rim like ordinary borderline digits (`close_remap.py`; c = 0.7 is a lead at swap 73.9, unconfirmed).
 - Default store is now a25w250h2k2 (+1.0 swap at bg 0.02, +1.4 at bg 0.2, equal returns, <= 1 false remap).
 - Next: one-shot remap only when the FF cortex confirms the new label (Lisman & Grace 2005 input-side mismatch).
+
+## Update 2026-10-31 03:30 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: one-shot store remap gated by the FF cortex, both ways (`ff_remap.py`). Counting a conflict as full evidence
+  when the cortex already agrees with the new label (f50k2) gives held-out swap 72.2 (= h2k2) with more false remaps;
+  the cortex still says the old label right after the swap, so confirmation comes too late. Counting it when the
+  cortex confidently predicts the old label (associative mismatch, Kumaran & Maguire 2007) gives 72.4. First remap
+  latency (~50-75 ticks) is unchanged in every variant: the bottleneck is downstream of evidence (presence guard or
+  K-vote), which is the next diagnostic.

@@ -526,3 +526,44 @@ measures. That is the next test.
 4. **Architecture: let the router see remap events.** For 300 ticks after a class's prototypes remap, route that
    class to the store regardless of margin. Prediction: swap +2 over h2k2 at no returns cost; kill if lifetime < 96.0.
 5. **Training: SWIL** (unchanged; needs FF re-runs).
+
+## 2026-10-31 03:10-03:30 UTC+8 loop
+
+### Experiments (offline store replays joined per arrival with gate_probe FF rows; ~5 min each on the box, VPS idle)
+1. **FF-confirmed one-shot remap (`ff_remap.py`, results/ff_remap): test f50k2 killed (swap < 73).** A conflict
+   counts as full evidence when the FF cortex already says the *new* label (argmax == y, margin >= rolling q50).
+   Held-out bg 0.02 mq30_s2: f50k2 96.1 / 68.6 / swap 72.2 with 5 pre-swap remaps (baseline h2k2 identical swap
+   72.2 with 1); bg 0.2 swap 71.2 with 6. Without the margin condition (f0k2) false remaps jump to 21-28 per run.
+   First post-swap remap latency is unchanged (59/73/52 ticks vs 64/73/52): right after the swap the cortex still
+   says the old label, so the confirmation never arrives when it is needed. The pre-registered caveat came true:
+   the store has to lead the cortex on a swap, it cannot wait for it.
+2. **Associative-mismatch one-shot remap (follow-up, results/ff_remap_v): v50k2 killed.** Opposite signal: a conflict
+   counts double when the cortex confidently predicts the store's *old* class (familiar item, new pairing; Kumaran &
+   Maguire 2007). Held-out swap 72.4 (v70k2 72.3) with 4-5 pre-swap remaps; bg 0.2 71.7 with 2. Same latency.
+   Neither cortex-side signal moves the first post-swap remap, so the remap latency floor (~50-75 ticks) is not set
+   by per-prototype evidence alone.
+
+### Literature insight
+Kumaran & Maguire 2007 (J Neurosci 27:8517, "Match-mismatch processes underlie human hippocampal responses to
+associative novelty") and Lisman & Grace 2005: the hippocampal novelty signal fires for familiar items in a new
+configuration *only when a prediction was made and violated*. Both versions of that signal are available here (FF
+agrees with the new label; FF confidently predicts the old one) and neither changes when the first remap happens.
+That points the latency at the gating that sits *after* evidence: the a25 presence check on the old class and the
+K-of-n hot-prototype vote, which in the brain would be the slower neuromodulatory permission (VTA/NE) rather than
+the fast CA1 comparison.
+
+### Paths closed
+- One-shot remap keyed on cortex confirmation of the new label (f*), or on violated confident cortex prediction (v*):
+  closed. Default store stays a25w250h2k2.
+
+### Hypotheses, ranked
+1. **Architecture / diagnostic (cheap, test next): where the ~60-tick remap latency goes.** Log, per post-swap
+   conflict, whether it was in-radius, whether it made a prototype hot, and whether a25 blocked the remap.
+   Prediction: >= 50% of the post-swap latency is spent with >= K hot prototypes blocked by a25 (old class's ratio
+   drops as its label stops arriving). Kill: a25 blocks 0 post-swap remaps, which would put the floor on in-radius
+   hits (swapped digits outside the old radius) instead.
+2. **Architecture: let the router see remap events** (from 02:35, unchanged). 300 ticks of store routing for a class
+   after its prototypes remap. Prediction: swap +2 over h2k2, lifetime >= 96.0.
+3. **Neuron: e70k2 on fresh seeds 6-8** (needs new FF logs; box background run).
+4. **Data: returns-vs-swap signature diagnostic** (from 01:05).
+5. **Training: SWIL** (needs FF re-runs).
