@@ -20,6 +20,13 @@ Follow-up 2 (22:15, pre-registered before running): pM = coordinated class-level
 Gershman, Blei & Niv 2010): a prototype is "hot" toward y when >= 2 of its last 10 hits are in-radius conflicts
 labelled y; when >= M prototypes of class s are hot toward the same y, all of them move to y at once. M = 3 is
 the test. Prediction: pre-swap remaps <= 10 and held-out mq10_s2 swap >= 76 with returns >= 64. Kill as above.
+Follow-up 3 (23:00, pre-registered): gM = pM plus a presence gate (Gershman et al. 2017: only modify memories whose
+latent cause is active): class s's prototypes may move only if label s arrived within the last W = 200 ticks.
+g3 is the test. Prediction on held-out seeds: pre-swap remaps <= 10, swap >= 76, returns >= 64, lifetime >= 96.0.
+Kill: pre-swap remaps > 20 or returns < 63.
+Follow-up 4 (23:00, pre-registered after g3 failed and a diagnostic showed 90 of 108 held-out pre-swap p3 remaps
+move an out-of-season class s): rM = pM with a rate-based presence gate, s may move only if label s arrived
+>= 5 times in the last 500 ticks (in season ~150, background only ~1). r3 is the test; same prediction and kill.
 """
 import argparse, json, os, time
 from collections import deque
@@ -35,9 +42,13 @@ class RemapStore(SL.ProtoStore):
     def __init__(self, *a, K=None, **kw):
         super().__init__(*a, **kw)
         self.flip = isinstance(K, str) and K.startswith("f")
-        self.pair = isinstance(K, str) and K.startswith("p")
+        self.gate = isinstance(K, str) and K[0] in "gr"
+        self.rate = isinstance(K, str) and K.startswith("r")
+        self.recent = {}
+        self.pair = isinstance(K, str) and K[0] in "pgr"
         self.K = int(K[1:]) if (self.flip or self.pair) else K
         self.hist, self.rad, self.remaps, self.log = {}, {}, 0, []
+        self.seen, self.W, self.blocked = {}, getattr(RemapStore, "W_default", 200), 0
 
     def add(self, x, y, surprise=False):
         before = len(self.mu.get(y, []))
@@ -59,6 +70,8 @@ class RemapStore(SL.ProtoStore):
         if self.K is None or not self.mu:
             return
         s, j, d = self.nearest(x)
+        self.seen[y] = self.t
+        self.recent.setdefault(y, deque()).append(self.t)
         r = self.rad[s][j]
         if s == y:
             self.rad[s][j] = d if r is None else r + 0.1 * (d - r)
@@ -71,6 +84,13 @@ class RemapStore(SL.ProtoStore):
                 return
             hot = [i for i, h in enumerate(self.hist[s]) if sum(e == (1, y) for e in h) >= 2]
             if len(hot) >= self.K and len(self.mu[s]) > len(hot):
+                q = self.recent.get(s, deque())
+                while q and q[0] < self.t - 500:
+                    q.popleft()
+                absent = len(q) < 5 if self.rate else self.t - self.seen.get(s, -10**9) > self.W
+                if self.gate and absent:
+                    self.blocked += 1
+                    return
                 for i in sorted(hot, reverse=True):
                     self.log.append((self.t, s, y)); self.move(s, i, y)
             return
@@ -144,8 +164,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--Ks", nargs="+", default=["none", "3", "f3", "p2", "p3", "p4"])
     ap.add_argument("--out", default="results/remap_probe")
+    ap.add_argument("--W", type=int, default=200)
     a = ap.parse_args()
-    Ks = [None if k == "none" else (k if k[0] in "fp" else int(k)) for k in a.Ks]
+    Ks = [None if k == "none" else (k if k[0] in "fpgr" else int(k)) for k in a.Ks]
+    os.makedirs(a.out, exist_ok=True); RemapStore.W_default = a.W
     w = dict(LF.WORLD, bg=0.02)
     logs = {}
     for path in ("results/gate_probe", "results/gate_probe_s345"):

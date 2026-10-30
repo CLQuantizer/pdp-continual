@@ -333,3 +333,10 @@ star and makes "is sleep organically useful?" a measurable question.
   of all remaps happen before the swap and are false. A coordinated class-level rule misses its prediction.
   Remapping does lift the store alone from 85 to about 92 lifetime. Next: only remap prototypes whose class is
   currently present (latent-cause view, Gershman et al. 2017), then SWIL.
+
+## Update 2026-10-30 23:05 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- 23:05: first remap rule to pass its pre-registered prediction. A recency presence gate (label seen in the last
+  200 ticks, g3) is killed (27 false pre-swap remaps), but a *rate* presence gate (>= 5 arrivals of the class in the
+  last 500 ticks, r3) gives 0 false pre-swap remaps on held-out seeds 3-5, swap 76.1, returns 65.8, lifetime 96.2
+  under the margin gate, and lifts the store alone to 91.6 lifetime / 82.0 returns / 60.2 swap (plain store 85.0 /
+  80.1 / 2.8). Caveat: 5-in-500 assumes bg 0.02; robustness at bg 0.2 is the next test.

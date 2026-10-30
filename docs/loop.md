@@ -353,3 +353,49 @@ protected from modification. Our remap rules modify memories of absent causes, w
    (about 10 min per seed), so run it on the box in the background next hour.
 3. **Data: short seasons** (season 1500, bg 0.02): unchanged.
 4. **Neuron: margin as a dendritic plateau signal:** unchanged.
+
+## 2026-10-30 23:05 UTC+8
+
+**Read first:** `results/presence_remap/RESULTS.md`. Code: `remap_probe.py` (new rules `gM`, `rM`), run with
+`python3 remap_probe.py --Ks none p3 g3 r2 r3 r4 --out results/presence_remap` (about 1 min on the box).
+
+### Findings
+1. **Hyp 1 as written (presence = label s seen in the last 200 ticks, g3) killed:** held-out pre-swap remaps 27
+   (kill > 20), returns 63.0, swap 76.6. The gate only delays remaps: hot prototypes stay hot and fire the moment a
+   single background arrival of s shows up (bg 0.02 gives each class about one arrival per 500 ticks).
+2. **Diagnostic confirms the 22:15 mechanism:** for p3 on held-out seeds, 90 of 108 pre-swap remaps move a class
+   that is *out of season* toward an in-season label (pairs 4/9, 7/9, 3/8, 5/8, 2/3). The away class's border
+   memories are being stolen; the mechanism was right, the presence test was wrong.
+3. **Rate presence works (pre-registered after finding 2, before running):** r3 = p3 plus "label s arrived >= 5 times
+   in the last 500 ticks". Held-out seeds 3-5 under mq10_s2: pre-swap remaps 0, swap 76.1, returns 65.8, lifetime
+   96.2. Prediction (pre-swap <= 10, swap >= 76, returns >= 64, lifetime >= 96.0) **passes**. Seen seeds 0-2: 3 false
+   remaps, swap 73.2 vs 67.0 plain, returns 68.9 vs 68.5. r2 and r4 are within noise of r3 (not a knife edge in M).
+4. **The store alone is now a much better memory:** held-out lifetime 91.6 (plain 85.0), returns 82.0 (80.1),
+   swap 60.2 (2.8). Under the margin gate the store answers only 0.7% of arrivals, so routing gains are small;
+   the bigger payoff is that the store can now be trusted more often (hyp 1 below).
+5. Caveat: the 5-in-500 threshold uses knowledge of the bg 0.02 world (background gives ~1 per class per 500
+   ticks). It must be made adaptive or shown robust at bg 0.2 before it counts as a mechanism.
+
+### Literature insight
+Anderson & Schooler 1991 (Psychological Science 2:396, "Reflections of the environment in memory"): the odds that
+a memory is needed track how *often* it was encountered in a recent window, not just how recently it was last
+seen. Our g3 vs r3 contrast is exactly that distinction: a single recent sighting is a poor estimate that a latent
+cause is active, a recent *rate* is a good one. Combined with Gershman et al. 2017 (modify only memories whose
+cause is active), the store's remap rule is now "rewrite a memory only when its cause is frequent now and
+disagrees", which is the first remap rule to pass.
+
+### Paths closed / demoted
+- Recency presence gate (gM, W = 200): closed.
+- Coordinated remap without presence (pM): superseded by rM.
+
+### Hypotheses, ranked
+1. **Architecture, test next (cheap, offline): loosen the margin gate with the r3 store.** With stale labels fixed
+   the store may be trusted more: sweep the FF-margin quantile 10/20/30 and store-margin 0.1/0.2 with r3.
+   Prediction: some setting reaches returns >= 68 at lifetime >= 96.0 on held-out seeds. Kill: no setting beats
+   mq10_s2+r3 returns by >= 2 at lifetime >= 96.0.
+2. **Data/neuron: robustness of rate presence at bg 0.2.** Background then gives about 10 arrivals per class per
+   500 ticks, so a fixed 5-in-500 gate should fail. Adaptive version: presence = recent count >= 3x the class's
+   long-run background rate (EMA). Prediction: adaptive rule keeps pre-swap remaps <= 10 at both bg 0.02 and 0.2;
+   fixed r3 exceeds 20 at bg 0.2. Needs gate_probe logs for the bg 0.2 world (check `raw[3:]`).
+3. **Training algorithm: SWIL** (unchanged, needs FF re-runs, run on the box in background).
+4. **Data: short seasons** (season 1500, bg 0.02): unchanged; now also a stress test for rate presence.
