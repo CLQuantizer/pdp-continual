@@ -635,8 +635,9 @@ whether an input is a *new* event or a degraded copy of a stored one by its dist
 to one. Our remap rule asked only "is this inside s's prototype?", so a borderline 9 was read as "the 4 memory now
 means 9". The mnemonic-discrimination question is "is there already a 9 memory nearly as close?"; if yes the input
 is a lure for an existing memory, not evidence of a rule change. The cost appears when the separation test also
-blocks a real change after its first step, which matches Leutgeb et al. 2005 (Science 309:619): once a remapping
-starts, CA3 commits to the new map rather than re-testing each cell, i.e. the directional unlock.
+blocks a real change after its first step. Leutgeb et al. 2005 (Science 309:619) found CA3 remapping is coherent
+across the population (global remapping) rather than decided cell by cell; the directional unlock is a crude version:
+once part of the s->y remap has fired, the rest of it is not re-tested against the rival it just created.
 
 ### Paths closed
 - Onset-aware presence (s100): not confirmed on fresh seeds.
