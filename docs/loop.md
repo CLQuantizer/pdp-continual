@@ -274,3 +274,38 @@ the *current input*, which neither gain (confusion events) nor need (time away) 
    beating the uniform 1-sample control by ≥ 2 on returns. Kill: < 1 point over the uniform control.
 3. **Data: short seasons** (season 1500, bg 0.02): unchanged. Prediction: mq10_s2 beats FF on lifetime by ≥ 0.5.
 4. **Neuron: margin as a dendritic plateau signal:** unchanged, behind 1.
+
+## 2026-10-30 21:10 UTC+8
+
+**Read first:** `results/veto_probe/RESULTS.md` (offline on the logged arrivals of `results/gate_probe` seeds 0-2
+and `results/gate_probe_s345` held-out seeds 3-5, bg 0.02). Code: `veto_probe.py`, `veto_sweep.py`.
+
+### Findings
+1. **Hyp 1 (ACh-style mismatch veto on the margin gate) fails as pre-registered.** Not killed on swap (swap
+   recovers to FF level, 76.8 / 78.4), but returns drop from 65.1 to 56.1 on held-out seeds, below the 64 floor.
+   Lifetime 96.2, i.e. the veto mostly returns the machine to plain FF.
+2. Sweep of the trigger count (3 to 20 wrong of 50 confident claims) is a monotone trade-off; no setting passes
+   both swap ≥ 76 and returns ≥ 64 on held-out seeds. The store's base confident-claim error is 1.3-1.4%, so
+   this is not base-rate noise: the confident errors that trip the veto co-occur with the claims that win returns.
+3. Design lesson: vetoing *answers* by claimed class throws away the store's value; the swap failure is a stale
+   *label* on specific prototypes, which is a store-update problem, not a routing problem.
+
+### Literature insight
+Hasselmo 2006 (Curr Opin Neurobiol 16:710, "The role of acetylcholine in learning and memory"): high ACh does two
+things at once, it suppresses recurrent recall (the half we tested, and it costs returns) and it boosts
+afferent-driven encoding so the new association overwrites. The second half is what the swap needs, and it is
+local to the mismatching memory rather than class-wide. Kumaran, Hassabis & McClelland 2016 (TiCS 20:512) make the
+same point for CLS: the hippocampus should rapidly encode prediction-error-laden episodes, not stop being consulted.
+
+### Paths closed / demoted
+- Answer veto keyed on the store's claimed class (any trigger count 3-20 of 50): closed.
+
+### Hypotheses, ranked
+1. **Neuron/architecture, test next: label-conflict remap of store prototypes.** When a labelled arrival's
+   nearest prototype has a different label and is within that prototype's typical radius, count a conflict on that
+   prototype; after 3 conflicts in its last 10 hits, relabel it to the majority recent label (or reset it to the
+   new input). Margin gate unchanged, no veto. Needs a store re-run (gate_probe with remap). Prediction: swap first
+   300 ≥ 76 with returns ≥ 64 and lifetime ≥ 96.0 on held-out seeds 3-5. Kill: returns < 62 or swap < 74.
+2. **Training algorithm: similarity-weighted awake interleaving (SWIL)** (20:25 hyp 2, unchanged).
+3. **Data: short seasons** (season 1500, bg 0.02): unchanged.
+4. **Neuron: margin as a dendritic plateau signal:** unchanged.
