@@ -326,3 +326,10 @@ star and makes "is sleep organically useful?" a measurable question.
   night-replay composition as a lever in the bg 0.02 world.
 - Reading: McClelland, McNaughton & Lampinen 2020 put protection at wake time, weighted by similarity to the new
   input; that is the next replay test (awake, similarity-weighted), after the mismatch veto for the swap.
+
+## Update 2026-10-30 22:15 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- 21:10: an answer veto keyed on the store's claimed class fixes the swap but costs returns (65.1 to 56.1); closed.
+- 22:15: rewriting stale store labels (per-prototype conflict remap, flip rule) is killed on returns; about half
+  of all remaps happen before the swap and are false. A coordinated class-level rule misses its prediction.
+  Remapping does lift the store alone from 85 to about 92 lifetime. Next: only remap prototypes whose class is
+  currently present (latent-cause view, Gershman et al. 2017), then SWIL.

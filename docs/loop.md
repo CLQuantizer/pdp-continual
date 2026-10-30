@@ -309,3 +309,47 @@ same point for CLS: the hippocampus should rapidly encode prediction-error-laden
 2. **Training algorithm: similarity-weighted awake interleaving (SWIL)** (20:25 hyp 2, unchanged).
 3. **Data: short seasons** (season 1500, bg 0.02): unchanged.
 4. **Neuron: margin as a dendritic plateau signal:** unchanged.
+
+## 2026-10-30 22:15 UTC+8
+
+**Read first:** `results/remap_probe/RESULTS.md`. Code: `remap_probe.py`. Method: with no sleep and no mix the store
+never touches FF learning, so the world stream is replayed through the store alone (about 30 s per seed instead of
+10 min) and joined with the FF answers logged by `gate_probe.py`. Sanity check passes: the plain store reproduces
+the logged store answers exactly on all six seeds.
+
+### Findings
+1. **Hyp 1 (per-prototype label-conflict remap, K = 3 of last 10) killed by its own rule** on held-out seeds 3-5:
+   mq10_s2 returns 61.9 (kill < 62), swap 76.1, lifetime 96.2. K = 2 gets swap 78.7 but returns 60.3; K = 5 gets
+   returns 63.8 but swap 73.4. Same monotone trade-off the answer veto showed at 21:10.
+2. **Where it goes wrong:** about half of all remaps happen *before* the swap (70 of 152 at K = 3), so they are all
+   false, while the swap pair itself needs only about 17. A "flip" rule (conflicts and at most 1 agreement in the
+   last 10) still makes 41 false pre-swap remaps; a coordinated class-level rule (M = 3 prototypes of one class hot
+   toward the same label, pre-registered as p3) still makes 36 and lands at swap 75.7, returns 62.8: it misses the
+   prediction (pre-swap remaps <= 10, swap >= 76, returns >= 64) without hitting the kill. Demoted.
+3. **Side finding worth keeping:** any remap lifts the store *alone* from 85.0 to about 92 lifetime, so the stale
+   swap labels were about 7 points of the store's lifetime deficit. Under the margin gate this barely matters
+   (store answers 0.8% of arrivals), which is why routing metrics hardly move.
+4. Probable mechanism for the false remaps (not yet tested): while a class is away, its border prototypes are hit
+   only by the present classes' labels and look exactly like stale labels; remapping them steals the away class's
+   memory, which is precisely what returns measure.
+
+### Literature insight
+Gershman, Monfils, Norman & Niv 2017 (eLife 6:e23763, "The computational nature of memory modification") and
+Gershman, Blei & Niv 2010 (Psych Rev 117:197): whether an old memory is *modified* or a *new* memory is formed
+depends on inferring whether the same latent cause is still active. Under that view a prototype should only be
+rewritten when its own cause is evidently present and now disagrees, and an *absent* cause's memory must be
+protected from modification. Our remap rules modify memories of absent causes, which is the failure in finding 4.
+
+### Paths closed / demoted
+- Per-prototype label-conflict remap (K = 2, 3, 5) and the flip variant: closed.
+- Coordinated class-level remap (p2-p4): demoted, not killed.
+
+### Hypotheses, ranked
+1. **Architecture/neuron, test next: presence-gated remap.** Same p3 rule, but a prototype of class s may only be
+   remapped when class s itself had a correctly-labelled arrival within the last 200 ticks (its cause is active).
+   Prediction on held-out seeds: pre-swap remaps <= 10, swap >= 76, returns >= 64, lifetime >= 96.0.
+   Kill: pre-swap remaps > 20 or returns < 63. Cheap (store-only replay, about 1 min).
+2. **Training algorithm: SWIL** (similarity-weighted awake interleaving), unchanged from 20:25; needs FF re-runs
+   (about 10 min per seed), so run it on the box in the background next hour.
+3. **Data: short seasons** (season 1500, bg 0.02): unchanged.
+4. **Neuron: margin as a dendritic plateau signal:** unchanged.
