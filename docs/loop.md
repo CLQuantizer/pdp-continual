@@ -655,3 +655,46 @@ once part of the s->y remap has fired, the rest of it is not re-tested against t
 4. **Training: does the unlock window U matter?** U in {500, 2000, inf}. Prediction: flat above 500 (one remap
    burst is ~2 events), so U is not a tuned knob.
 5. Router sees remap events; SWIL (unchanged).
+
+## 2026-10-31 06:10 UTC+8
+
+### Experiments
+1. **Robustness of c1.5_u** (`rival_robust.py`, results/rival_robust; ~4 min on the box, same 15 runs). Pre-registered:
+   robust if every neighbour keeps pre-swap remaps <= 1 per run (seed 6 <= 5) and held-out bg 0.02 swap within 1.0
+   of base (72.0); fragile if two or more neighbours break.
+   - **U is not a knob (05:30 hyp 4 confirmed).** U = 500, 2000, 8000 and inf give identical swap (71.7 / 70.6 /
+     71.5 in the three blocks) and 0 pre-swap remaps everywhere. Use permanent unlock: once s->y has remapped, the
+     pair is never rival-tested again. One knob fewer.
+   - **C is a narrow window (fragile, killed as pre-registered).** C = 1.2 leaks (seed 4: 4 and seed 6: 4 pre-swap
+     remaps; swap 72.1); C = 2.0 vetoes the first true remap (held-out swap 62.8, -9.2, first-remap latency 67 -> 129
+     ticks); C = 3.0 never remaps (swap 54.3, store-alone swap 2.7). Only 1.5 passes both lines. The separating margin
+     between a confusable co-present lure and a relabelled digit is a factor of ~1.2-2 in squared distance to the
+     nearest prototype of the new label.
+   - Consequence: c1.5_u stays the lead, but a fixed ratio threshold is not a rule we can trust across datasets.
+     The fresh-seed confirmation (seeds 9-11) now tests c1.5_uinf; FF logs launched on the box at 06:11 UTC+8
+     (results/gate_probe_s91011, ~40 min).
+
+### Literature insight
+Lacy, Yassa, Stark, Muftuler & Stark 2011 (Learn Mem 18:15, "Distinct pattern separation related transfer functions
+in human CA3/dentate and CA1 revealed using high-resolution fMRI and variable mnemonic similarity"): as lure
+similarity is varied in steps, CA3/DG responds with a steep, nonlinear transfer (a small input change flips it to
+"new"), while CA1 responds graded and roughly linearly. Our rival test is a pure CA3/DG step at one ratio C, and the
+sweep shows exactly the cost of a step placed in a narrow gap: 1.2 leaks lures, 2.0 blocks real change. The CA1-like
+alternative is to weight each conflict by how unambiguous it is (a graded function of the rival ratio) and let the
+H-hit accumulator integrate, so no single threshold has to sit in the gap.
+
+### Paths closed
+- Unlock window U as a parameter (any U >= 500 is identical; use permanent pair unlock).
+- Rival ratio C as a robust setting: only C = 1.5 passes; C = 1.2, 2.0, 3.0 each fail a pre-registered line.
+
+### Hypotheses, ranked
+1. **Store (running): c1.5_uinf on fresh seeds 9-11.** Prediction: pre-swap remaps <= 1 per run, swap within 0.5 of
+   base. Kill: any run > 5 or swap loss > 1. Script: rival_robust-style replay joined with results/gate_probe_s91011.
+2. **Data (most decisive next): confusable swap pair.** All swaps so far relabel pairs whose real prototypes are far
+   apart. Swap a confusable pair (4<->9). Prediction if the rival idea is wrong: c1.5_u vetoes the true swap (swap
+   loss > 3 vs base) because the new label's real prototypes are close rivals by construction. Needs new FF logs.
+3. **Neuron: graded rival evidence (CA1-like).** A conflict counts w = clip((ratio - 1.2) / 0.8, 0, 1) of a hit
+   instead of 0/1. Prediction: 0 pre-swap remaps and swap within 0.5 of base for ramp ends 1.0-1.4 / 1.8-2.4, i.e.
+   a flat plateau where the step had a cliff. Kill: no ramp beats the step on both lines. ~4 min, test next hour.
+4. **Data: confusable co-presence world** (from 05:30 hyp 2): force 4/9 and 3/5/8 into one season every seed.
+5. Soft radius for conflict evidence; router sees remap events; SWIL (unchanged).

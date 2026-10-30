@@ -391,3 +391,12 @@ star and makes "is sleep organically useful?" a measurable question.
   test for 2000 ticks; (y, s) stays checked. 0 pre-swap remaps on all 15 runs (base 42 total), swap 71.7 vs 72.0
   (bg 0.02 seeds 3-8) and 71.5 vs 71.6 (bg 0.2), returns and lifetime equal. Lead for the new default; C and U were
   set after seeing seed 6, so confirm on fresh seeds 9-11 before adopting.
+
+## Update 2026-10-31 06:10 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- The unlock window of the rival test is not a parameter (`rival_robust.py`): U = 500, 2000, 8000 and permanent give
+  identical results, so a pair that has remapped once is simply never rival-tested again (c1.5_uinf).
+- The rival ratio C is fragile: only 1.5 passes. C = 1.2 lets 4 false remaps through on seeds 4 and 6; C = 2.0 vetoes
+  the first true remap (held-out swap -9.2); C = 3.0 never remaps. The margin between a confusable lure and a
+  relabelled digit is narrow (~1.2-2x squared distance), so a fixed step threshold is unlikely to transfer. Next:
+  graded (CA1-like) rival weighting, and a confusable swap pair (4<->9) as the decisive test. Fresh-seed (9-11) FF logs
+  are running on the box.
