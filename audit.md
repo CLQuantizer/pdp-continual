@@ -368,3 +368,12 @@ star and makes "is sleep organically useful?" a measurable question.
   cortex confidently predicts the old label (associative mismatch, Kumaran & Maguire 2007) gives 72.4. First remap
   latency (~50-75 ticks) is unchanged in every variant: the bottleneck is downstream of evidence (presence guard or
   K-vote), which is the next diagnostic.
+
+## Update 2026-10-31 04:40 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Where the post-swap remap latency goes (`lat_diag.py`): 42-44% of swapped-digit arrivals land just outside the old
+  prototype's radius (no evidence), 24-26% are in-radius but below K, 15-19% are vetoed by a25. The a25 vetoes come
+  from a world property: the swap always opens the pair's season, so the 250-tick presence window still shows the
+  previous season.
+- Onset-aware presence (`onset_presence.py`, a25 on W = 250 OR on the last S ticks): S = 50 killed (8.5 false remaps
+  at bg 0.2); S = 100 lead (held-out bg 0.02 swap 74.0 vs 72.2, latency -20 ticks, bg 0.2 +0.3 with 2.7 false
+  remaps). Default stays a25w250h2k2 until s100 is confirmed on fresh seeds 6-8.

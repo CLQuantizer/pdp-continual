@@ -567,3 +567,49 @@ the fast CA1 comparison.
 3. **Neuron: e70k2 on fresh seeds 6-8** (needs new FF logs; box background run).
 4. **Data: returns-vs-swap signature diagnostic** (from 01:05).
 5. **Training: SWIL** (needs FF re-runs).
+
+## 2026-10-31 04:10-04:40 UTC+8 loop
+
+### Experiments (box; VPS idle)
+1. **Latency diagnostic (`lat_diag.py`, results/lat_diag; store only, 20 s).** For every swapped-digit arrival between
+   the swap and its old class's first remap (default a25w250h2k2, seeds 0-5, both worlds), what the store did:
+   out-of-radius (nearest prototype is the old class, item just outside its radius, median d/r 1.16) **42-44%**;
+   in-radius but fewer than K = 2 prototypes hot **24-26%**; hot enough but **vetoed by a25 15-19%**; third-class
+   basin 8-10%; already in a new-label basin 1-2%. Prediction (>= 50% of latency spent a25-blocked) **killed**; the
+   kill condition for a25 (0 blocks) also fails, so a25 is a real but minority cost. Mechanism of the blocks: the
+   world always opens the swapped pair's season at the swap, so at the swap the 250-tick window still holds the
+   previous season (label s count 0-4 vs top label ~90) and a25 calls the old class absent for its first ~50 ticks.
+2. **Onset-aware presence (`onset_presence.py`, results/onset_presence; ~1 min).** Present if a25 passes on W = 250
+   OR on the last S ticks. Test setting s50: held-out bg 0.02 swap **74.0** (s0 72.2), returns 68.4, latency 75 -> 55
+   ticks, but bg 0.2 pre-swap remaps **8.5 > 5: killed** as pre-registered. Sweep member s100: held-out bg 0.02 swap
+   74.0 / returns 68.5 / lifetime 96.1, latency -20 ticks; seeds 0-2 swap 71.3 (+0.3); bg 0.2 swap 71.9 (+0.3) with
+   2.7 pre-swap remaps (s0 0.3). Passes every kill line but was chosen after seeing s50, so it is a lead, not a
+   default: confirm on fresh seeds 6-8 (gate_probe FF logs for bg 0.02 seeds 6-8 launched on the box, ~10 min,
+   results/gate_probe_s678).
+
+### Literature insight
+Jezek, Henriksen, Treves, Moser & Moser 2011 (Nature 478:246, "Theta-paced flickering between place-cell maps in the
+hippocampus"): after an instant switch of the light cues ("teleportation"), CA3 flips to the other map within one
+theta cycle, flickering between maps for a few seconds before settling. Context membership is read on the fastest
+timescale available and only *stabilised* by slower integration. Our a25 guard is a context-membership test, and
+reading it only on a 250-tick window makes it lag a context switch by exactly the latency we were chasing. The
+dual-window rule is the flicker version: a fast window may declare presence, the slow one keeps it. The bg 0.2 false
+remaps at S = 50 are the cost of flicker without settling: a short window lets a burst of background arrivals
+pass for a context.
+
+### Paths closed
+- a25 as the main source of remap latency: closed (15-19% of the window). The bulk is evidence that never counts:
+  swapped digits landing just outside the old prototype's radius.
+- Onset presence with S = 50: closed (false remaps at bg 0.2). S = 100 is a lead.
+
+### Hypotheses, ranked
+1. **Training/store (test next, needs results/gate_probe_s678): confirm s100 on fresh seeds 6-8.** Prediction: swap
+   >= +1 over s0 under mq30_s2, returns within 0.5, pre-swap remaps <= 3. Kill: gain < 0.5 on seeds 6-8.
+2. **Neuron: soft radius for conflict evidence.** 42-44% of post-swap evidence is lost just outside the radius (median
+   d/r 1.16). Count conflicts out to 1.25 r as half a hit (H stays 2). Prediction: latency -15 ticks, swap +1;
+   kill: pre-swap remaps > 5 in either world (borderline digits also sit at 1.0-1.3 r, cf. close_remap).
+3. **Data: is the a25 lag a world artefact?** Swaps always open the pair's season. Variant world with the swap
+   mid-season (pair already in context for >= 500 ticks). Prediction: s0 and s100 within 0.5 swap there; if s100
+   still gains, presence lag is not the mechanism.
+4. **Architecture: router sees remap events** (from 02:35, unchanged).
+5. **Training: SWIL** (needs FF re-runs).
