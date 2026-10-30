@@ -318,3 +318,11 @@ star and makes "is sleep organically useful?" a measurable question.
   / 58.2 (all-gain) vs uniform night 64.5, at the same 95.0 lifetime. The more replay is focused, the worse returns get.
 - Reading: in this world the binding term of Mattar & Daw's gain × need is *need* (coverage of absent classes), not gain.
 - Next: need-prioritised night replay (replay classes in proportion to time away), then the change-detector veto for the swap.
+
+## Update 2026-10-30 20:25 UTC+8 (hourly loop; detail in `docs/loop.md`)
+
+- Closed: need-prioritised night replay (`need_replay.py`, 19:40 hyp 1 killed). Weighting classes by time away
+  (up to ~11:1) gives returns 64.2 vs uniform 64.5 at the same 95.0 lifetime. With gain replay (19:40) this closes
+  night-replay composition as a lever in the bg 0.02 world.
+- Reading: McClelland, McNaughton & Lampinen 2020 put protection at wake time, weighted by similarity to the new
+  input; that is the next replay test (awake, similarity-weighted), after the mismatch veto for the swap.

@@ -227,3 +227,50 @@ Paired with finding 2, Mattar & Daw's need term predicts that night replay shoul
 3. **Data: short seasons** (season 1500, bg 0.02): unchanged from 18:00; return share should rise ≥ 3%.
    Prediction: mq10_s2 beats FF on lifetime by ≥ 0.5. Kill: < 0.2.
 4. **Architecture: margin gate + need replay together.** Only if 1 passes: predicted returns ≥ 70 at lifetime ≥ 96.
+
+## 2026-10-30 20:25 UTC+8
+
+**Read first:** `results/need_replay/RESULTS.md` (box run, seeds 0–2, bg 0.02, 16 days). Code: `need_replay.py`
+(subclasses `life.Machine`; night replay draws classes ∝ max(ticks since last seen, floor)^p). Control is the
+`night` row in `results/dual_life_bg002/RESULTS.md`. The first run (`results/need_replay_floor4000/`) used the
+pre-registered 1-day floor and is degenerate: at bg 0.02 every digit is revisited by background arrivals about
+every 500 ticks, so no class is ever 4000 ticks away at night and the weights were all equal. Rerun with floor 100.
+
+### Findings
+1. **Hyp 1 (need-prioritised night replay) killed.** Kill was returns < 65.5.
+   | Night replay | Weight ratio max/min (median night) | Lifetime | Returns | Off season | Frozen final | Swap first 300 |
+   |---|---|---|---|---|---|---|
+   | uniform (control) | 1 | 95.0 | 64.5 | 52.1 | 89.1 | 76.4 |
+   | need, p=1, floor 100 | ~11 | 95.0 | 64.2 ± 1.7 | 52.4 | 87.1 | 77.4 |
+   | need, p=0.5, floor 100 | ~3 | 95.0 | 64.2 ± 2.4 | 52.1 | 89.8 | 77.1 |
+2. Together with 19:40: focusing night replay on *gain* hurts returns, focusing it on *need* does nothing, and
+   lifetime is 95.0 under all five mixes. **Night-replay composition is closed as a lever in this world.** What
+   decides a return is what happens between the night and the return (wake updates on in-season digits), and
+   the answering route, not which prototypes were rehearsed.
+3. Design note: "time away" is a weak signal whenever background arrivals exist; returns (≥ 2000 ticks away) are
+   ~1% of arrivals and come mostly from gaps between background visits, not from seasons.
+
+### Literature insight
+McClelland, McNaughton & Lampinen 2020 (Phil Trans R Soc B 375:20190637, "Integration of new information in
+memory: new insights from a complementary learning systems perspective"): full interleaving is not needed to
+avoid interference; interleaving *only old items similar to the new one, during the learning of the new one*
+(similarity-weighted interleaved learning) gets nearly all of the protection at a fraction of the replay. Two
+consequences for pdp: (a) protection belongs at wake time, when the interfering update happens, which is consistent
+with finding 2 (offline composition cannot undo the day's interference); (b) the right weight is similarity to
+the *current input*, which neither gain (confusion events) nor need (time away) measures.
+
+### Paths closed / demoted
+- Need-prioritised night replay (p = 0.5, 1): closed.
+- Night-replay composition (uniform / gain / need) as a lever for returns or lifetime at bg 0.02: closed.
+
+### Hypotheses, ranked
+1. **Neuron/architecture, test next: ACh-style mismatch veto** (19:40 hyp 2, unchanged). Per store class, count
+   arrivals where the store's confident claim (rel. margin ≥ 0.2) is wrong; after 3 in the last 50, veto the
+   margin gate for that class and set its prototype lr to 0.5 until 20 consecutive agreements. Prediction: swap
+   first 300 ≥ 76 with returns ≥ 64 and lifetime ≥ 96.0. Kill: swap < 74.
+2. **Training algorithm: similarity-weighted awake interleaving (SWIL).** At each wake update, add one store
+   sample drawn from the nearest-prototype class ≠ y (by distance to the input), versus a control of one uniform
+   store sample; night sleep unchanged. Prediction: FF returns ≥ 68 and off season ≥ 56 at lifetime ≥ 95.0, and
+   beating the uniform 1-sample control by ≥ 2 on returns. Kill: < 1 point over the uniform control.
+3. **Data: short seasons** (season 1500, bg 0.02): unchanged. Prediction: mq10_s2 beats FF on lifetime by ≥ 0.5.
+4. **Neuron: margin as a dendritic plateau signal:** unchanged, behind 1.
