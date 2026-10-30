@@ -302,3 +302,11 @@ star and makes "is sleep organically useful?" a measurable question.
 - Closed: per-class reliability arbitration (no lifetime gain, worse returns).
 - Age gate (store answers stale classes) gives returns 67.5 with no sleep but costs 2.8 lifetime;
   next is an uncertainty-gated version (loop 17:00 hyp 1).
+
+## Update 2026-10-30 18:50 UTC+8 (hourly loop; detail in `docs/loop.md`)
+
+- Closed: age-gated store answering, including the uncertainty-gated variant (hyp 1 killed on two seed sets).
+  Class age is anti-informative among FF/store disagreements (AUC 0.34–0.40); FF goodness margin is the signal (0.80–0.88).
+- New best answering route for the life world (`gate_probe.py`, held-out seeds): margin gate without age,
+  lifetime 96.1 vs FF 96.0, returns 65.1 vs 53.6, with no sleep. Costs 8 points on the swap.
+- Next: gain-prioritised night replay (replay the store near low-margin disagreements).
