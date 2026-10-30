@@ -1,0 +1,19 @@
+# secrets
+id_ed25519
+dubai.conf
+.env
+.env.*
+*.pem
+*.key
+# bulk data / outputs
+data/
+results/
+*.log
+# big binaries
+docs/papers/*.pdf
+# env / caches / mac junk
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+._*
