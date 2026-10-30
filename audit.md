@@ -352,3 +352,11 @@ star and makes "is sleep organically useful?" a measurable question.
   like the absolute veto did: returns 68.3 -> 60.5 (absolute 57.4) for swap 71.2 -> 76.2. At bg 0.02 a class's
   return after a long absence produces the same burst of confident store errors as the swap, so any veto keyed on
   store error rate removes the answers that make returns good.
+
+## Update 2026-10-31 02:35 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Remap latency is set by the evidence each prototype needs (H conflicting hits), not by how many prototypes must
+  agree (K). Single-hit remap (H = 1) buys ~4 swap points but writes 16-67 false memories per run before the swap:
+  killed. Weighting a conflict by its depth in the prototype's basin does not rescue it, because relabelled digits
+  land at the basin rim like ordinary borderline digits (`close_remap.py`; c = 0.7 is a lead at swap 73.9, unconfirmed).
+- Default store is now a25w250h2k2 (+1.0 swap at bg 0.02, +1.4 at bg 0.2, equal returns, <= 1 false remap).
+- Next: one-shot remap only when the FF cortex confirms the new label (Lisman & Grace 2005 input-side mismatch).

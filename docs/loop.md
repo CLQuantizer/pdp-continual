@@ -480,3 +480,49 @@ through remap speed, not answer vetoes.
    agreeing-hit rate. Kill: swap not above a25w250's 71.2.
 4. **Data: short seasons (1500, bg 0.02)** as a stress test for a25w250; needs new FF logs (box, background).
 5. **Training algorithm: SWIL** (unchanged; needs FF re-runs).
+
+## 2026-10-31 02:10-02:35 HKT (UTC+8) loop
+
+### Experiments (offline store replays joined with gate_probe FF logs; ~3.5 min on the box, VPS idle)
+1. **Faster remap under the a25 guard (`fast_remap.py`, results/fast_remap): test h1k2 killed on false remaps.**
+   hHkK = a prototype is hot after H in-radius conflicts toward y (of its last 10 hits), remap when >= K are hot.
+   Held-out bg 0.02, mq30_s2: h2k3 (default) 96.1 / 68.3 / swap 71.2, 0 pre-swap remaps; **h1k2 96.0 / 68.0 / 75.8
+   but 61 pre-swap remaps (bg 0.2: 67)**; h1k3 96.0 / 68.4 / 74.7 with 16 (bg 0.2: 7); h2k2 96.1 / 68.6 / 72.2 with
+   1 (bg 0.2: 0, swap 71.6 vs 70.2). Swap latency is set by H (evidence per prototype), not K (prototypes needed).
+   The false remaps under H = 1 cost almost nothing on lifetime/returns at this horizon (the FF route covers), but
+   they are wrong memories, so the pre-registered kill stands. **Default moves to h2k2** (+1.0 / +1.4 swap, equal
+   returns, 1 / 0 false remaps): small but free.
+2. **Distance-weighted evidence (`close_remap.py`, results/close_remap): test e50k2 killed.** A conflict deep in a
+   prototype's radius (d <= c r) counts double. c = 0.5 is *identical* to h2k2 (deep conflicts never occur: swapped
+   inputs sit near the radius edge, they are border cases of the old prototype, not its centre). c = 0.7: held-out
+   bg 0.02 swap 73.9 (just under the 74 bar), returns 68.5, 1 pre-swap remap; seeds 0-2 72.0 with 2; bg 0.2 71.9.
+   e70k2 is a lead, not a result: it was read on the held-out seeds, so it needs fresh seeds (6-8) before adoption.
+
+### Literature insight
+Lisman & Grace 2005 (Neuron 46:703, "The hippocampal-VTA loop"): CA1 compares what CA3 recalls with what the
+cortex delivers; a mismatch (novelty) signal drives dopamine release that gates LTP, so one strong mismatch can
+write a memory in one shot. Our store tested exactly that: a single conflict suffices when it is "strong", with
+strength = depth inside the prototype's basin. The test says depth is the wrong strength axis here: relabelled
+digits land at the rim of the old prototype's basin, the same place confusable borderline digits land, so one
+rim conflict is ambiguous no matter how it is weighted. In the Lisman-Grace loop the mismatch is between recall
+and *input*; ours compares recall with the *label*. A one-shot signal needs an input-side mismatch too (the input
+is familiar to the cortex, i.e. high FF goodness/margin, yet the label disagrees), which the FF margin already
+measures. That is the next test.
+
+### Paths closed / demoted
+- Single-hit remap (H = 1), with or without distance weighting at c <= 0.5: closed (false remaps).
+- Default store: a25w250h2k2 (was h2k3).
+
+### Hypotheses, ranked
+1. **Training algorithm (cheap, offline, test next): FF-confirmed one-shot remap.** Count a single conflict as
+   full evidence (H = 1) only when the FF cortex is confident in the *new* label on that input (FF margin >= its
+   rolling q50 and FF argmax == y); else need H = 2. Needs the FF row joined per tick (already in gate_probe logs).
+   Prediction: held-out bg 0.02 swap >= 74, pre-swap remaps <= 5 in both worlds. Kill: > 10 false remaps or swap < 73.
+   Caveat: right after the swap the FF cortex still says the old label, so this may never fire; that would kill it
+   cleanly and say the swap needs the store to lead the cortex.
+2. **Neuron: e70k2 on fresh seeds.** Needs FF logs for bg 0.02 seeds 6-8 (gate_probe, ~box background). Prediction:
+   swap >= 73 with <= 3 false remaps. Kill: swap gain over h2k2 < 1.
+3. **Data: returns-vs-swap signature diagnostic** (from 01:05, unchanged).
+4. **Architecture: let the router see remap events.** For 300 ticks after a class's prototypes remap, route that
+   class to the store regardless of margin. Prediction: swap +2 over h2k2 at no returns cost; kill if lifetime < 96.0.
+5. **Training: SWIL** (unchanged; needs FF re-runs).
