@@ -83,7 +83,7 @@ def main():
     Ks = globals().get("KS_OVERRIDE", ["a25w250h2k2_base", "a25w250h2k2_rad", "a25w250h2k2_c1.5"])
     out_dir = globals().get("OUT_OVERRIDE", "results/rival_remap"); os.makedirs(out_dir, exist_ok=True)
     logs = {}
-    for path, bg, n in (("results/gate_probe", 0.02, 3), ("results/gate_probe_s345", 0.02, 3), ("results/gate_probe_s678", 0.02, 3), ("results/gate_probe_bg02", 0.2, 6)):
+    for path, bg, n in globals().get("LOGS", (("results/gate_probe", 0.02, 3), ("results/gate_probe_s345", 0.02, 3), ("results/gate_probe_s678", 0.02, 3), ("results/gate_probe_bg02", 0.2, 6))):
         for r in json.load(open(os.path.join(path, "results.json")))["raw"][:n]:
             logs[(bg, r["seed"])] = r
     load_mnist("mnist")
@@ -98,7 +98,7 @@ def main():
     md += ["\n## Pre-swap false remaps per run\n", "| Run | " + " | ".join(Ks) + " |", "|---" * (len(Ks) + 1) + "|"]
     for k in sorted(allres):
         md.append(f"| {k} | " + " | ".join(f"{allres[k][K]['pre_swap']}" for K in Ks) + " |")
-    for bg, seeds, name in ((0.02, [3, 4, 5, 6, 7, 8], "held-out seeds 3-8"), (0.02, [0, 1, 2], "seeds 0-2"), (0.2, range(6), "seeds 0-5 (all held out)")):
+    for bg, seeds, name in globals().get("GROUPS", ((0.02, [3, 4, 5, 6, 7, 8], "held-out seeds 3-8"), (0.02, [0, 1, 2], "seeds 0-2"), (0.2, range(6), "seeds 0-5 (all held out)"))):
         keys = [f"{bg}_{s}" for s in seeds]
         md += [f"\n## bg {bg}, {name}, mean ± std %\n", "| Store | Route | Lifetime | Returns | Swap first 300 | Store answers | Remaps (pre-swap) | Rival vetoes | First post-swap remap, mean ticks |", "|---|---|---|---|---|---|---|---|---|"]
         for K in Ks:

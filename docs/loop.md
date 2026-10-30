@@ -698,3 +698,40 @@ H-hit accumulator integrate, so no single threshold has to sit in the gap.
    a flat plateau where the step had a cliff. Kill: no ramp beats the step on both lines. ~4 min, test next hour.
 4. **Data: confusable co-presence world** (from 05:30 hyp 2): force 4/9 and 3/5/8 into one season every seed.
 5. Soft radius for conflict evidence; router sees remap events; SWIL (unchanged).
+
+## Loop 2026-10-31 07:05 UTC+8
+
+### Experiment (`rival_fresh.py`, results/rival_fresh; pre-registered in the docstring)
+- **Part A, fresh seeds 9-11 (FF logs made after C was chosen): c1.5_uinf confirmed.** Pre-swap false remaps 0 on
+  all three seeds (base: 4, 20, 0; seed 10 is a second ping-pong seed). Swap (mq30_s2) 70.2 vs 71.1 (-0.9, inside
+  the 1.0 kill line, outside the 0.5 hope); lifetime 96.0 vs 95.9, returns 67.7 = 67.7. Across all 18 runs
+  c1.5_uinf has 0 pre-swap remaps (base 66). **New default store: a25w250h2k2_c1.5_uinf.**
+- **Part B, graded (CA1-like) rival weight: killed.** w = clip((q - a)/(b - a), 0, 1) per conflict, remap at summed
+  weight >= 2. g1-2 keeps 0 false remaps but loses swap 2.8 (fresh) / 3.2 (seeds 3-8) / 2.2 (bg 0.2), first remap
+  +15 ticks; g1.2-3 loses 11-16 swap points. Grading does not widen the safe band; it dilutes the true swap evidence,
+  because many relabelled digits sit at ratio 1.5-2 where the step counts them fully. Closed.
+
+### Literature insight
+Wills, Lever, Cacucci, Burgess & O'Keefe 2005 (Science 308:873, "Attractor dynamics in the hippocampal
+representation of the local environment"): as a box is morphed step by step between square and circle, place cells
+do not drift gradually; the whole ensemble switches abruptly and coherently between the two maps (cf. Leutgeb et al.
+2005, Neuron 48:345, where a different protocol gives graded change). The lesson for pdp: the remap is an identity
+decision, and the hippocampus makes identity decisions all-or-none and collectively. Our result agrees: a per-hit
+step beats a per-hit ramp. Robustness should then come from the collective part (how many prototypes, and how
+their evidence is normalised), not from softening each hit.
+
+### Paths closed
+- Graded per-hit rival weighting (both scales fail the swap line).
+
+### Hypotheses, ranked
+1. **Data (decisive, next): confusable swap pair 4<->9.** Every swap so far relabels far-apart classes. With 4<->9 the
+   new label's real prototypes are close rivals by construction. Prediction if the rival rule is wrong: c1.5_uinf
+   vetoes the true swap (swap loss > 3 vs base). Needs new FF logs with WORLD swap=(4, 9) (~40 min on the box).
+2. **Neuron/architecture: self-normalised rival threshold.** Replace fixed C by the pair's own statistics: a conflict
+   labelled y on an s prototype counts only if its ratio q exceeds the 90th percentile of q over recent correctly
+   labelled s arrivals (how close y normally gets to real s). Prediction: 0 pre-swap remaps and swap within 0.5 of
+   c1.5_uinf, and no free constant to tune per dataset. Kill: worse than c1.5_uinf on either line.
+3. **Training algorithm: sleep consolidates remaps.** Remapped prototypes are new memories in the store only; replay
+   them in the next sleep with priority (Mattar & Daw need term) so the FF cortex flips sooner. Prediction: FF swap
+   accuracy in the second 300 ticks after swap +5. Kill: < +2.
+4. Confusable co-presence world; soft radius; router sees remap events; SWIL (unchanged).

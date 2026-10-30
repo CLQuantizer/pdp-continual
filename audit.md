@@ -400,3 +400,11 @@ star and makes "is sleep organically useful?" a measurable question.
   relabelled digit is narrow (~1.2-2x squared distance), so a fixed step threshold is unlikely to transfer. Next:
   graded (CA1-like) rival weighting, and a confusable swap pair (4<->9) as the decisive test. Fresh-seed (9-11) FF logs
   are running on the box.
+
+## Update 2026-10-31 07:05 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- **New default store: a25w250h2k2_c1.5_uinf** (rival test at C = 1.5 with permanent directional pair unlock).
+  Confirmed on fresh seeds 9-11 whose FF logs were made after C was chosen: 0 pre-swap false remaps (base 24, seed 10
+  alone 20), swap 70.2 vs 71.1, returns and lifetime equal. Over all 18 runs: 0 false remaps vs 66 for the old default.
+- Closed: graded (CA1-like) rival weighting (`rival_fresh.py`). It keeps 0 false remaps but delays the first true
+  remap and loses 2-3 swap points (g1-2) or 11-16 (g1.2-3). The remap is an identity decision; a step per hit is
+  better than a ramp. Next decisive test: swap a confusable pair (4<->9).
