@@ -399,3 +399,42 @@ disagrees", which is the first remap rule to pass.
    fixed r3 exceeds 20 at bg 0.2. Needs gate_probe logs for the bg 0.2 world (check `raw[3:]`).
 3. **Training algorithm: SWIL** (unchanged, needs FF re-runs, run on the box in background).
 4. **Data: short seasons** (season 1500, bg 0.02): unchanged; now also a stress test for rate presence.
+
+## 2026-10-31 00:10-00:35 HKT (UTC+8) loop
+
+### Experiments (both offline store replays joined with gate_probe FF logs)
+1. **Loosened margin gate with the r3 store (`loose_gate.py`, results/loose_gate): prediction passes, modestly.**
+   Selected on seeds 0-2 (best returns at lifetime >= 96.0: mq50_s2), tested on held-out 3-5: lifetime 96.1,
+   returns 68.7 vs 65.8 for mq10_s2+r3 (+2.9, kill threshold was +2), swap 71.9 vs 76.1 (-4.2). mq30_s2 is the
+   gentler point (returns 68.3, swap 73.2). The r3 store is what makes loosening affordable: with the plain store,
+   mq50_s2 costs lifetime (95.1); with r3 it holds 96.1. The store-margin threshold s carries the lifetime; the FF
+   quantile mainly trades returns for swap. s1 settings all break lifetime 96.0.
+2. **Adaptive presence (`presence_bg.py`, results/presence_bg, new FF logs results/gate_probe_bg02 for bg 0.2,
+   seeds 0-5): prediction passes.** Fixed r3 fails at bg 0.2 as predicted: 32 pre-swap remaps (bg 0.02: 2).
+   Scale-free a25 (s present iff its count in the last 500 ticks >= 25% of the most frequent label's count)
+   gives 0 / 1 pre-swap remaps at bg 0.02 / 0.2, returns 67.5 vs r3 67.4 at bg 0.02, and mq10_s2 swap 72.6 / 71.8
+   vs plain store 68.7 / 66.2. a10 is too loose at bg 0.2 (17 false), a40 slightly over-blocks swap. Cost: a25 swap
+   is ~2 below r3 at bg 0.02 (72.6 vs 74.7). Note bg 0.2 has no "returns" (every digit recurs within 2000 ticks),
+   and the store adds only 0.1-0.3 lifetime there under mq10_s2.
+   **Decision: a25 replaces r3 as the default remap gate** (no knowledge of the background rate).
+
+### Literature insight
+Gallistel & Gibbon 2000 (Psychological Review 107:289, "Time, rate, and conditioning"): conditioning tracks the
+*ratio* of the cue's event rate to the background rate, which makes acquisition invariant to time scale. a25 is the
+same move for latent-cause presence: the fixed count r3 broke as soon as the background rate changed tenfold, the
+ratio to the dominant cause did not. Prediction from the theory: a25 should also survive changes in arrival rate
+(night_rate, day length) and window length, which a fixed count would not.
+
+### Paths closed / demoted
+- Fixed-count rate presence (r3) as a mechanism: demoted (fails at bg 0.2); kept as the bg 0.02 reference.
+
+### Hypotheses, ranked
+1. **Architecture (cheap, offline): a25 store + loosened gate (mq30_s2, mq50_s2) in both worlds.** Prediction:
+   held-out bg 0.02 returns >= 68 at lifetime >= 96.0 and bg 0.2 lifetime >= 94.5 (mq10_s2 is 94.4). Kill: bg 0.2
+   lifetime falls below FF (94.1) at any setting that gains >= 2 returns at bg 0.02.
+2. **Data: short seasons (season 1500, bg 0.02) and a halved window (250).** Stress test for a25's
+   ratio rule; prediction from rate theory: pre-swap remaps stay <= 10 with W=250 as well as 500.
+3. **Neuron: per-prototype presence.** Gate each hot prototype by its own recent agreeing-hit rate vs its class's
+   rate (a dendrite-local version of a25). Prediction: recovers the ~2 swap points a25 loses vs r3 while keeping
+   false remaps <= 10. Kill: swap does not rise above a25's 72.6 at bg 0.02.
+4. **Training algorithm: SWIL** (unchanged, needs FF re-runs; box in background).
