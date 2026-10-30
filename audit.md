@@ -295,3 +295,10 @@ star and makes "is sleep organically useful?" a measurable question.
 - **Slow waking costs in a life** (−1.0 lifetime, novel −13, swap −24 in the first 300):
   hold off on making ×0.3 the default.
 - Next: dual-route answering (store answers when confident, FF otherwise).
+
+## Update 2026-10-30 17:30 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- bg 0.02 life: night sleep lifts returns 53.5 → 64.5, but the store alone answers returns at 83.1.
+  Answering from memory beats consolidating it for returning digits.
+- Closed: per-class reliability arbitration (no lifetime gain, worse returns).
+- Age gate (store answers stale classes) gives returns 67.5 with no sleep but costs 2.8 lifetime;
+  next is an uncertainty-gated version (loop 17:00 hyp 1).

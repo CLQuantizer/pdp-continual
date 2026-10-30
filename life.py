@@ -162,6 +162,40 @@ class Machine:
     def act(self, x):
         return int(self.m.scores(x).argmax(1)[0])
 
+    # --- dual route (CLS: the store also answers). Learning is unchanged; we only score extra answerers.
+    def store_act(self, x):
+        if not self.store.mu:
+            return -1
+        mu, ys = self._protos()
+        return int(ys[((mu - x) ** 2).sum(1).argmin()])
+
+    def routes(self, x, y, t=0):
+        """(ff, store, dual) predictions, then update the arbiter with the label. Arbiter: a running
+        reliability per route per *predicted* class (EMA of being right when that route said c); on
+        disagreement the route whose claim is more reliable answers."""
+        if not hasattr(self, "rel"):
+            self.rel = np.full((2, 10), 0.5)
+        f, s = self.act(x), self.store_act(x)
+        if s < 0 or f == s:
+            d = f
+        else:
+            d = f if self.rel[0, f] >= self.rel[1, s] else s
+        # age arbiter: FF errs off season by naming a recent class; on disagreement, trust the store when the
+        # class it names has been away longer than the class FF names (and away >= age_gate ticks)
+        if not hasattr(self, "seen_t"):
+            self.seen_t = np.full(10, -10 ** 9)
+        if s < 0 or f == s:
+            g = f
+        else:
+            g = s if (t - self.seen_t[s] > t - self.seen_t[f] and t - self.seen_t[s] >= self.cfg.get("age_gate", 500)) else f
+        self.seen_t[y] = t
+        self.last_age = g
+        a = self.cfg.get("rel_rate", 0.05)
+        self.rel[0, f] += a * ((f == y) - self.rel[0, f])
+        if s >= 0:
+            self.rel[1, s] += a * ((s == y) - self.rel[1, s])
+        return f, s, d
+
     def learn(self, x, y):
         cfg = self.cfg
         self.m.opt.lr = self.lr * cfg["wake_lr"]
@@ -269,9 +303,10 @@ def live(cond, seed, days, w=WORLD, data=None):
         returning[c] = returning.get(c, 0) - 1
         last_seen[c] = t
         if asleep:
-            log.append((t, c, 0, 0, age, ins, ret))
+            log.append((t, c, 0, 0, age, ins, ret, 0, 0, 0, 0))
             return
-        log.append((t, c, 1, int(mach.act(x) == y), age, ins, ret))
+        f, s_, d = mach.routes(x, y, t)
+        log.append((t, c, 1, int(f == y), age, ins, ret, int(s_ == y), int(d == y), int(f == y or s_ == y), int(mach.last_age == y)))
         mach.learn(x, y)
 
     while t < ticks:
@@ -295,7 +330,7 @@ def live(cond, seed, days, w=WORLD, data=None):
         t += 1
 
     L = np.array(log)
-    T, C, ANS, OK, AGE, INS, RET = L.T
+    T, C, ANS, OK, AGE, INS, RET, OKS, OKD, OKO, OKA = L.T
     nightly = np.array([world.night(s) for s, _, _ in sleeps]) if sleeps else np.zeros(0)
     slept = sum(d for _, d, _ in sleeps)
     night_ticks = sum(sum(world.night(s + k) for k in range(d)) for s, d, _ in sleeps)
@@ -304,13 +339,22 @@ def live(cond, seed, days, w=WORLD, data=None):
         j = np.flatnonzero(np.isin(C, digits) & (T >= after))[:n]
         return float(OK[j].mean()) if len(j) else None
 
+    def firstk(ok, digits, after, n):
+        j = np.flatnonzero(np.isin(C, digits) & (T >= after))[:n]
+        return float(ok[j].mean()) if len(j) else None
+
+    route = {}
+    for name, ok in (("ff", OK), ("store", OKS), ("dual", OKD), ("dual_age", OKA), ("oracle", OKO)):
+        route[name] = dict(lifetime=float(ok.mean()), returns=float(ok[RET == 1].mean()) if (RET == 1).any() else None,
+                           off_season=float(ok[(ANS == 1) & (INS == 0)].mean()),
+                           adapt=firstk(ok, list(w["swap"]), world.swap_at, 300), novel=firstk(ok, list(w["novel"]), world.novel_at, 300))
     days_acc = [float(OK[(T >= d * w["day"]) & (T < (d + 1) * w["day"])].mean()) for d in range(days)]
     age = []
     for lo, hi in zip(AGE_BINS[:-1], AGE_BINS[1:]):
         j = (AGE >= lo) & (AGE < hi) & (ANS == 1)
         age.append((float(OK[j].mean()) if j.any() else None, int(j.sum())))
     return dict(
-        condition=cond, seed=seed, days=days,
+        condition=cond, seed=seed, days=days, route=route,
         arrivals=len(L), lifetime=float(OK.mean()), answered=float(OK[ANS == 1].mean()),
         # answered accuracy on the season's digits vs the rest (retention of what is out of season)
         in_season=float(OK[(ANS == 1) & (INS == 1)].mean()), off_season=float(OK[(ANS == 1) & (INS == 0)].mean()),
@@ -340,7 +384,8 @@ def job(args):
     r = live(cond, seed, days, w)
     print(f"{cond:18s} seed={seed} lifetime={r['lifetime']:.4f} answered={r['answered']:.4f} "
           f"missed={r['missed']:.3f} frozen={r['frozen']:.4f} sleeps={r['sleeps']} night={r['sleep_night_share']} "
-          f"replay/wake={r['replay_per_wake']:.2f} returns={r['returns']} S={r['pressure_mean']} ({r['seconds']:.0f}s)", flush=True)
+          f"replay/wake={r['replay_per_wake']:.2f} returns={r['returns']} S={r['pressure_mean']} ({r['seconds']:.0f}s) "
+          + " ".join(f"{k}={v['lifetime']:.4f}" for k, v in r["route"].items()), flush=True)
     return r
 
 

@@ -62,3 +62,52 @@ side, the reverse of the textbook assignment.
 5. **Store adaptation.** Swap shows the store's 1/n rate freezes it. Let the cortex's confident
    disagreement (FF right, store wrong, repeatedly for a class) reset that slot's count. Ties to
    the open "change detector" direction.
+
+## 2026-10-30 17:00 UTC+8
+
+**Read first:** `results/dual_age_bg002/RESULTS.md` (box run, this hour), `results/dual_life_bg002`,
+`results/dual_life`, `results/dual_age` (16:00 run, logged here for the first time). Split-MNIST
+routing (`cls_route.py`) and `cls_life.py` (bg 0.2) were committed at 17:03 and are running separately
+in `/workspace/pdp-run` on the box; not duplicated here.
+
+### Findings
+1. **Returns: the store answering beats sleep consolidating.** bg 0.02, first 20 arrivals of a digit
+   back after ≥ 2000 ticks: FF never-sleep 53.5, FF night sleep 64.5 (+11, meets loop-15:00 hyp 2's
+   ≥ 10 bar), **store alone 83.1**, oracle 88.0. Sleep recovers about a third of what the store
+   already knows. Night sleep still loses lifetime (95.0 vs 95.9): returns are ~1% of arrivals.
+2. **Reliability arbiter (per predicted class) is dead for returns.** Lifetime +0.0–0.2 at bg 0.2 and
+   0.02, returns 51.6 (< FF 53.5). FF's off-season errors name *in-season* classes, where FF's
+   running reliability is high, so the arbiter sides with the wrong route exactly when it matters.
+3. **Age gate is the right signal, wrong gate.** Store answers on disagreement if its class has been
+   away longer (≥ 500 ticks): returns 53.5 → 67.5 and off-season 42.8 → 60.8 with **no sleep at all**
+   (beats night sleep on returns), but lifetime −2.8 (93.1) and novel first-300 74 → 64. The gate
+   fires when FF names a just-arrived novel/current class and the store names a stale neighbour.
+   At bg 0.2 it never fires (dual_age = FF), since every class recurs within 500 ticks.
+4. Hyp 1 kill rule (router ≥ better route + 0.5 lifetime) not met by either arbiter. Oracle headroom
+   is 1.9 lifetime points, 34.5 on returns.
+
+### Literature insight
+Daw, Niv & Dayan 2005 (Nat Neurosci 8:1704) arbitrate between two controllers by each one's
+*current uncertainty*, not its past hit rate; Lengyel & Dayan 2007 (NIPS, "Hippocampal contributions
+to control: the third way") show episodic (store-like) control wins when experience in a region is
+sparse. Finding 2 is the failure Daw et al. predict for a hit-rate arbiter; finding 3 is Lengyel &
+Dayan's regime (sparse recent experience = long absence). Their recipe implies the gate should
+condition on how much *recent evidence backs FF's answer for this input*, not on class age alone.
+
+### Paths closed / demoted
+- Per-class reliability arbitration between FF and store: closed (two worlds, no gain, hurts returns).
+- "Night sleep is how this system remembers returning digits": demoted. Answering from the store
+  gets 83 where consolidation gets 64.5.
+
+### Hypotheses, ranked
+1. **Architecture, test next: uncertainty-gated store.** Age gate AND (FF goodness margin < its
+   median on recent arrivals OR store relative margin ≥ 0.2), and never override FF on a class seen
+   < 1000 labelled times (protects novel/swap). Prediction: returns ≥ 75, lifetime ≥ 95.9. Kill: lifetime
+   < 95.5 at returns ≥ 70.
+2. **Training algorithm: replay what the store gets right and FF gets wrong.** Use age-gate
+   disagreements logged during the day as the night's replay set (not uniform prototypes).
+   Prediction: night-sleep returns ≥ 70 (vs 64.5) at the same 80 batches. Kill: < 66.
+3. **Data.** Returns are ~1% of arrivals, so lifetime can't reward memory. Add a world with bg 0 and
+   seasons of 1 digit (returns ≈ 5% of arrivals). Prediction: store/age-gate wins lifetime there.
+4. **Neuron.** Apical context = store's retrieved label only on gate-fired inputs (hyp 4 at 15:00,
+   now scoped): FF learns from its own disagreements with memory. Blocked behind 1.
