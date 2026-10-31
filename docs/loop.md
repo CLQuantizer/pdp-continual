@@ -1450,3 +1450,40 @@ not as a veto beside it.
    "store wrong on class c" with hazard 1/ (median gap between swaps); a soft version of the veto that discounts
    errors in bins where the store is usually right. Kill: returns loss > 0.5 or swap gain < 0.5 held-out.
 4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.
+
+## Loop 2026-11-01 01:00 UTC+8
+
+### Experiment: soft surprise in the arbiter (`soft_arbiter.py`, results/soft_arbiter)
+- Tests 00:00's hypothesis 3 in its cheapest form. Each store-predicted class keeps its own disagreement counts
+  (store right, FF right), shrunk toward the j+0.0b joint-bin posterior with prior strength K in 2-20: the class
+  evidence moves the bin's prediction in proportion to how surprising it is, instead of a hard veto. Variants: whole
+  life (h), reset when the class returns (he), half-life 500 ticks (hd). Pre-registered bars as for the vetoes.
+- **Killed.** Selected h2b fails every bar (held-out s49 3-5 95.84 / 74.4 / swap +2.4; bg002 6-8 95.56 / 74.3 / -0.3;
+  bg 0.2 lifetime -0.8). The best on returns, hd20b, gives s49 96.36 / 76.5 / +1.4 and bg002 96.07 / 75.6 / +1.1:
+  about 1 return per swap point, a slightly better slope than the vetoes but the same line.
+- Side result: the short half-life class counts (hd) give the highest lifetimes yet (s49 3-5 96.42, bg002 96.07,
+  bg 0.2 95.12 vs j+0.0b 96.18 / 95.90 / 94.99). Lifetime is now dominated by stable-period disagreements, which is
+  why returns, not lifetime, must stay the gate for router changes.
+
+### Literature insight
+Courville, Daw & Touretzky 2006 (Bayesian theories of conditioning in a changing world, TICS 10:294): change is
+inferred from outcomes that are surprising under the current model, and a learner can only infer it from evidence
+that differs between "the world changed" and "I was wrong". At the arbiter a swap and a return produce the same
+evidence: the two systems disagree on a class and the system that was right before is now wrong. Soft or hard,
+class-local reliability cannot tell them apart in the first ~75 ticks, so every variant slides on one line. What
+does differ is inside the store: on a swap the label contradicts a confident, old prototype; on a return the store's
+prototype is confirmed while the FF's is stale. That signal lives in the store's remap, not in the router.
+
+### Paths closed
+- Class-local reliability in the arbiter, hard or soft (vetoes 23:00-00:00, partial pooling now). Swap speed has to
+  come from the store's remap; the router should stay j+0.0b.
+
+### Hypotheses, ranked
+1. **Architecture: arbiter in-loop (carried, top).** life.py with j+0.0b answering; prediction: lifetime and returns
+   within 0.1 / 0.5 of post-hoc. Kill: in-loop returns > 1 below post-hoc.
+2. **Neuron/gating: confidence-weighted remap.** The store remaps a prototype after k contradicting labels; weight
+   each contradiction by the prototype's own margin on that item (a confident prototype contradicted is strong swap
+   evidence, a marginal one is not). Prediction: s49 first-remap latency < 60 ticks (now ~75) with zero false remaps
+   on bg 0.2. Kill: latency drop < 10 ticks or any false remap.
+3. **Data: label-noise world (carried).** 10% of 4s permanently labelled 9; j+0.0b should keep lifetime >= c3.
+4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.

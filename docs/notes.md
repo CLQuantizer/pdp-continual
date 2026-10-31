@@ -688,3 +688,7 @@ generator, not every raw image), and its size and sleep cost are reported.
   label pair, does not fix it: all variants trade about 1.5 returns per swap point. The streaks on returns are fresh,
   not stale; the veto fails because it ignores how rarely the store is wrong there. Error evidence must be weighed
   against the arbiter's own predictive probability (Adams & MacKay 2007), not used as a hard switch. Veto family closed.
+- 2026-11-01 01:00 UTC+8: softening the veto does not help. Shrinking class-local error counts toward the arbiter's
+  own bin prediction (partial pooling, any strength, with or without reset or decay) stays on the same trade line,
+  about 1 return lost per swap point gained. At the router a swap and a return look identical: one system was right
+  and now is wrong. Class-local reliability in the arbiter is closed; swap speed must come from the store's remap.

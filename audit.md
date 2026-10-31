@@ -540,3 +540,10 @@ star and makes "is sleep organically useful?" a measurable question.
   swap +2.2; bg002 6-8 96.04 / 75.3, +1.0) and p2b (96.31 / 75.7, +1.8; 96.02 / 75.2, +0.7) still lose 2-3 returns
   vs j+0.0b. Even after the reset, 84-96% of return-period blocks are store-right: the veto, not staleness, is wrong.
 - The whole hard-veto family is closed. j+0.0b stays the router candidate; next is running it in-loop.
+
+## Update 2026-11-01 01:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: soft class-local evidence in the arbiter (`soft_arbiter.py`). Class counts shrunk toward the joint-bin
+  posterior (K 2-20; whole life, return reset, or 500-tick half-life) all trade about 1 return per swap point; best
+  on returns hd20b held-out s49 96.36 / 76.5 / swap +1.4, bg002 96.07 / 75.6 / +1.1 vs j+0.0b 96.18 / 77.8, 95.90 / 78.2.
+- Class-local reliability (hard or soft) is closed as a route to swap speed. j+0.0b stays the router candidate.
+  Next: arbiter in-loop, then confidence-weighted store remap.
