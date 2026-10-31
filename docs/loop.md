@@ -1291,3 +1291,43 @@ already shows it.
    the risk is the store voicing noise labels. Kill: lifetime below mq30_s2 on that world.
 4. **Training: return-triggered replay** (carried from 19:00): targeted sleep on a class's store prototypes at return
    onset. Prediction: FF error in the first 100 ticks after a return <= 30% (from 45.8%) at lifetime >= 95.9.
+
+## Loop 2026-10-31 21:00 UTC+8
+
+### State
+20:00 closed recency gating and made c3 (store answers when it disagrees with relative margin >= 0.3, or on
+mq30_s2) the router candidate. Its hypothesis 2 (calibrated store margin) is offline-testable on the cached runs, so it
+ran first. VPS idle; run on the box (~9 s, cached store/FF logs).
+
+### Result (`arbiter.py`, results/arbiter)
+- Pre-registered: an online Beta-count table of P(store right) and P(FF right) on disagreements, binned by FF margin x
+  store margin (quintile edges from s49 0-2); store answers when p_store > p_ff + d. Variant and d chosen on s49 0-2;
+  must beat the c{s} frontier (s 0.10-0.80 step 0.05) by >= +0.5 returns at matched firing with lifetime >= c3 - 0.02.
+- Selected j+0.0b. Held-out s49 3-5: 96.18 / 77.8 vs c3 96.12 / 74.8, +1.5 above frontier. bg002 6-8: 95.90 / 78.2
+  vs 95.86 / 75.2, +1.9. bg 0.2 lifetime 94.99 vs 94.70. **Passes.**
+- Without the mq30_s2 base the arbiter gives the highest lifetime seen in every world (96.27 / 96.04 / 95.04), more
+  than any c{s}. Store-margin-only calibration (s+0.0b) moves returns but not lifetime: the FF margin is useful as
+  context for when to trust the store, not as a gate.
+- Cost: swap first 300 about 1 point below c3; store answers 2.7% vs 1.5%.
+
+### Literature insight
+Daw, Niv & Dayan 2005 (Nat Neurosci 8:1704): two controllers (model-based prefrontal, habitual striatal) are
+arbitrated by each one's running estimate of its own uncertainty, which depends on where in the task you are. Our
+version is the same move with two memories: the store and cortex each have a reliability that depends on the joint
+state (how sure the cortex is, how sure the store is), and the arbiter learns that table from the labels that arrive
+anyway. Fixed thresholds on either margin (12:05-20:00) were each a slice of this table. CLS says the systems are
+complementary; Daw et al. say how to choose between complementary systems moment by moment.
+
+### Paths closed
+- Fixed-threshold store-margin routing (c{s}) as the best router: dominated offline by the calibrated arbiter.
+
+### Hypotheses, ranked
+1. **Data: label-noise world (kill test for the arbiter).** 10% of 4s permanently labelled 9. A per-bin counter could
+   learn to trust the store where it memorised noise. Prediction: j+0.0b lifetime >= c3 on that world. Kill: below
+   mq30_s2.
+2. **Architecture: arbiter in-loop** (replaces 20:00's c3 in-loop test). life.py with j+0.0b routing, s49 and bg002,
+   seeds 0-8. Prediction: lifetime >= +0.15 and returns >= +5 over mq30_s2, swap first 300 within 1.5. Kill: lifetime
+   gain < 0.05.
+3. **Neuron/gating: forgetting counters.** Beta counts with exponential decay (half-life 2000 ticks) so reliability
+   tracks swaps. Prediction: recovers the 1-point swap-first-300 cost at equal lifetime. Kill: swap gain < 0.5.
+4. **Training: return-triggered replay** (carried): targeted sleep on a class's store prototypes at return onset.

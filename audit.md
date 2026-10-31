@@ -515,3 +515,10 @@ star and makes "is sleep organically useful?" a measurable question.
   (s49 96.12 / 74.8, bg002 95.86 / 75.2, bg 0.2 lifetime 94.70 vs 94.38). Decaying and hyperbolic recency traces
   trade about 0.1 lifetime for 1.1-1.4 returns against c3 at matched firing: a slide, not an outward move.
 - New default router candidate: c3. Swap first 300 is about 1 point lower than mq30_s2.
+
+## Update 2026-10-31 21:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Lead: calibrated arbitration (`arbiter.py`, offline exact join). Store answers on a disagreement when its running
+  P(right) in a joint FF-margin x store-margin bin beats the FF's (Beta counts from arriving labels). Held-out
+  j+0.0b: s49 3-5 96.18 / 77.8 vs c3 96.12 / 74.8 (+1.5 above the c frontier at matched firing), bg002 6-8
+  95.90 / 78.2 vs 95.86 / 75.2 (+1.9), bg 0.2 lifetime 94.99 vs 94.70. Swap first 300 about 1 point lower.
+- Router candidate moves from c3 to j+0.0b, pending a label-noise world and an in-loop run.

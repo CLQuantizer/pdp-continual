@@ -674,3 +674,7 @@ generator, not every raw image), and its size and sleep cost are reported.
   margin >= 0.3" route beats every FF-margin and recency gate tried since 18:00 on both lifetime and returns; the
   recency gate only looked like an outward move because the baseline frontier left this route out. Always include
   the simplest store-only route in a frontier.
+- 2026-10-31 21:00 UTC+8: arbitrate, don't threshold. An online table of how often the store vs the cortex is right
+  on disagreements, binned by both systems' margins (Daw, Niv & Dayan 2005), beats every fixed store-margin route on
+  held-out worlds: +1.5 to +1.9 returns at matched firing with higher lifetime, and the highest lifetime seen yet
+  without the old FF-margin route. Next: label-noise kill test, then in-loop.
