@@ -1487,3 +1487,51 @@ prototype is confirmed while the FF's is stale. That signal lives in the store's
    on bg 0.2. Kill: latency drop < 10 ticks or any false remap.
 3. **Data: label-noise world (carried).** 10% of 4s permanently labelled 9; j+0.0b should keep lifetime >= c3.
 4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.
+
+## Loop 2026-11-01 02:00 UTC+8
+
+### Experiment: confidence-weighted store remap (`conf_remap.py`, `conf_remap_confirm.py`; results/conf_remap, results/conf_remap_sweep, results/conf_remap_confirm)
+- Tests 01:00's hypothesis 2 (swap speed must come from the store's remap, not the router). In the default store
+  (a25w250h2k2_c1.5_uinf_z5) a contradiction that passes the radius and rival tests counts twice toward the H=2 hot
+  threshold when it is confident: 'm{q}' store relative margin on the item >= q, 'r{p}' distance <= p * radius.
+  Every store is routed by j+0.0b (same bin edges) OR mq30_s2 on the cached FF logs; the z5 control reproduces the
+  confirm_recency store answers exactly. Pre-registered bars vs z5: latency <= -10 ticks, swap first 300 >= +0.5,
+  returns >= -0.5, lifetime >= -0.02, pre-swap false remaps <= +0.2 per run.
+- **Killed as pre-registered, but a lead.** Selected m0.3 (s49 0-2: latency 61 vs 74, swap 71.0 vs 66.6, returns
+  76.8 vs 76.8). Held-out s49 3-5: 96.18 / 77.7 / swap 68.8 vs 96.18 / 77.8 / 66.0, latency 63 vs 79; bg002 6-8:
+  95.90 / 78.1 / 72.6 vs 95.90 / 78.2 / 70.1, latency 40 vs 59; bg 0.2: lifetime 95.06 vs 94.99, swap 73.7 vs 69.4.
+  It fails only the false-remap bar: s49 seed 4 has one transient pair (5->8 at t 33550, 8->5 293 ticks later; 4
+  remap events = 1.33 per run in the group). Radius-weighted (r) and m0.5 variants barely fire.
+- Post-hoc neighbour sweep (not a test): m0.35 meets every H7 bar on the original groups (s49 3-5 +2.3 swap, -0.3
+  returns, latency 63 vs 79; bg002 6-8 +1.7 / -0.1 / 48 vs 59; 0 false remaps). Fresh-seed confirmation, bg 0.02
+  seeds 3-5 and 9-11 (FF logs never used to choose q), pre-registered: m0.35 96.28 / 74.3 / swap 71.9 vs z5
+  96.26 / 74.4 / 69.4, latency 65 vs 75; m0.3 96.29 / 74.4 / 73.1, latency 66. Both fail only the false-remap bar
+  again (seed 10: 4 events for both; m0.3 also seed 4).
+- What this establishes: the first change since 18:00 that moves swap first 300 (+2.4 to +4.3 points across 4 groups,
+  21 runs) with no return cost and no lifetime cost. Router-side changes all paid ~1-1.5 returns per swap point;
+  this pays ~0. The remaining problem is a rare transient false remap (2 of 21 runs), which costs nothing measurable
+  here but would be a real error in a label-noise world.
+
+### Literature insight
+Kumaran & Maguire 2006 (An unexpected sequence of events: mismatch detection in the human hippocampus, PLoS Biol
+4:e424): hippocampal activity peaks not for novelty per se but when a prediction retrieved from past experience is
+violated by the input, i.e. the mismatch signal is gated by the strength of the retrieved expectation (entorhinal
+cortex, by contrast, responds to novelty generally). The store's remap counted every in-radius contradiction alike;
+weighting a contradiction by how confidently the store predicted the old label is the comparator they describe, and
+it is what bought swap speed here without touching returns.
+
+### Paths closed
+- Radius-depth weighting of contradictions (r0.5, r0.7): too rare or inconsistent to change latency; margin, not
+  depth within one prototype's radius, is the informative quantity.
+
+### Hypotheses, ranked
+1. **Neuron/gating: mismatch credit needs an expectation AND no alternative.** Give the double credit only when the
+   store's margin >= 0.3 and the contradicting label's nearest prototype is far (d_y > 2 d, stricter than the c1.5
+   rival test). Prediction: keeps >= 80% of m0.3's swap gain on all 5 groups with 0 false remaps on 21 runs. Kill:
+   any false remap or swap gain < +1.5 on two groups.
+2. **Data: label-noise world (now urgent).** 10% of 4s permanently labelled 9. Confident contradictions are exactly
+   what label noise produces on a well-learned class, so m0.3 should be the store most likely to remap wrongly.
+   Prediction: m0.3 remaps on noise in <= 1 run of 6; kill: > 1 run or lifetime < z5 - 0.1.
+3. **Architecture: arbiter in-loop (carried).** life.py with j+0.0b answering and the winner of 1 as the store;
+   lifetime / returns within 0.1 / 0.5 of post-hoc. Kill: in-loop returns > 1 below post-hoc.
+4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.

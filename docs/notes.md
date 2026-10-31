@@ -692,3 +692,8 @@ generator, not every raw image), and its size and sleep cost are reported.
   own bin prediction (partial pooling, any strength, with or without reset or decay) stays on the same trade line,
   about 1 return lost per swap point gained. At the router a swap and a return look identical: one system was right
   and now is wrong. Class-local reliability in the arbiter is closed; swap speed must come from the store's remap.
+- 2026-11-01 02:00 UTC+8: swap speed was in the store after all. Counting a contradiction twice when the store was
+  confident about the old label (margin >= 0.3) cuts first-remap latency by 10-19 ticks and adds 2.4-4.3 points of
+  swap first 300 in every world, with returns and lifetime unchanged, the first swap gain since 18:00 that costs no
+  returns. It fails its pre-registered bar only on rare transient false remaps (2 of 21 runs). A mismatch counts in
+  proportion to the expectation it violates (Kumaran & Maguire 2006). Next: a guard against false remaps, then label noise.

@@ -547,3 +547,13 @@ star and makes "is sleep organically useful?" a measurable question.
   on returns hd20b held-out s49 96.36 / 76.5 / swap +1.4, bg002 96.07 / 75.6 / +1.1 vs j+0.0b 96.18 / 77.8, 95.90 / 78.2.
 - Class-local reliability (hard or soft) is closed as a route to swap speed. j+0.0b stays the router candidate.
   Next: arbiter in-loop, then confidence-weighted store remap.
+
+## Update 2026-11-01 02:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Lead (killed as pre-registered on false remaps only): confidence-weighted store remap (`conf_remap.py`). A
+  contradiction counts twice toward remap when the store's margin on the item is >= 0.3 (m0.3). Routed by j+0.0b:
+  held-out s49 3-5 96.18 / 77.7 / swap 68.8 vs 96.18 / 77.8 / 66.0, first remap 63 vs 79 ticks; bg002 6-8
+  95.90 / 78.1 / 72.6 vs 95.90 / 78.2 / 70.1 (40 vs 59 ticks); bg 0.2 lifetime 95.06 vs 94.99. Fresh seeds bg 0.02
+  3-5, 9-11: m0.35 swap 71.9 vs 69.4, returns 74.3 vs 74.4. Fails only because 2 of 21 runs show a transient false
+  remap pair (1.33 per run in those groups).
+- First swap gain with no return cost. Router stays j+0.0b; the store candidate is m0.3/m0.35 pending a false-remap
+  guard and the label-noise world.
