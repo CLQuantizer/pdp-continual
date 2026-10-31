@@ -430,3 +430,13 @@ star and makes "is sleep organically useful?" a measurable question.
   68.1) only by switching the rival test off, and false remaps return (seed 6: 20, seed 10: up to 28). The store
   radius is the mean confirmation distance, so median confirmation d/r is about 0.96 and fewer than 1% are in the core.
   Default stays a25w250h2k2_c1.5_uinf_z5. Next: confirmation weighted by relative similarity to the nearest rival.
+
+## Update 2026-10-31 11:05 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: posterior-weighted (REMERGE-style) confirmation inside z5 (`post_conf.py`, p1.0 and p1.5). s49 swap 68.6 and
+  68.5 vs z5 68.1, under the +0.8 line; false remaps stay <= 2 per run on all 24 runs.
+- The 09:05 mechanism is now confirmed with origin tracking: after the swap, about half (54%) of the hits on
+  not-yet-remapped 4/9 prototypes are impostor confirmations. But their relative-similarity weight (0.579) equals that
+  of real members (0.589): in raw pixel space a member is only ~1.4x closer to its own prototype than to a rival, so no
+  geometric confirmation rule can separate them. Closes all store-geometry confirmation rules.
+- Default stays a25w250h2k2_c1.5_uinf_z5. Next: cortex-vetted confirmation (a same-label hit confirms only if the FF
+  cortex also predicts that label), then a pattern-separated store space.

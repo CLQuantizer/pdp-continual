@@ -871,3 +871,41 @@ the mean radius.
 4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap; FF s49 swap +5,
    kill < +2).
 5. Per-prototype expected-conflict baseline (Yu & Dayan); sleep consolidates remaps; SWIL.
+
+## Loop 2026-10-31 11:05 UTC+8
+
+### Experiment (pre-registered in the docstring; results/post_conf_s49, results/post_conf)
+- **post_conf.py z5_pP (posterior-weighted confirmation).** Each same-label hit carries w = d_r / (d_s + d_r), d_r the
+  squared distance to the nearest prototype of another label; z5 lifts the rival veto when the last 5 weights sum
+  below P. On s49 swap (mq30_s2): p1.0 68.6, p1.5 68.5, z5 68.1, base 69.7. Rival vetoes fall from 269 to 155/113.
+  Pre-swap false remaps <= 2 per run on all 24 runs; old runs within 0.2 of z5. **Killed (gain < +0.8).**
+- **Origin tracking settles the 09:05 mechanism.** Each prototype carries the label it was created with. After the
+  swap, on 4/9 prototypes still carrying their original label, base logs 740 impostor confirmations against 626
+  in-radius conflicts (54%, per seed 12-71%): the stale cause really is being "confirmed" by partner digits.
+- **But geometry cannot see impostors.** Their mean w is 0.579, real pre-swap confirmations 0.589. A real member is
+  only about 1.4x closer (squared) to its own prototype than to the nearest rival, so relative similarity in pixel space
+  carries almost no label information on a confusable border.
+- **Decision: z5 stays the default.** Store-geometry confirmation rules (absolute 10:05, relative 11:05) are closed.
+
+### Literature insight
+O'Reilly & McClelland 1994 (Hippocampus 4:661) and McClelland, McNaughton & O'Reilly 1995: the hippocampus can store
+overlapping episodes without interference only because the dentate gyrus re-codes them sparsely (pattern separation)
+before CA3 stores them; the neocortex keeps the overlapping, similarity-based code. The pdp store keeps prototypes in
+raw pixel space, the neocortical-style code, so it inherits the cortex's confusions (w 0.59 for real members) instead
+of separating them. CLS also says which system already knows a 9 is a 9 right after the swap: the slow cortex. So the
+discriminating signal for an impostor confirmation is cortical disagreement, not store geometry.
+
+### Paths closed
+- Any confirmation rule built only on store distances (absolute or relative) in pixel space.
+
+### Hypotheses, ranked
+1. **Architecture: cortex-vetted confirmation.** A same-label hit on prototype s counts as a confirmation for z5 only
+   if the FF cortex's prediction for that arrival is s (taken from the gate_probe FF logs). Right after a 4<->9 swap
+   the cortex still calls a true 9 a 9, so impostors stop confirming the 4 prototype. Prediction: s49 swap >= z5 + 0.8
+   and <= 1 false remap per run on all 24. Kill: either line broken.
+2. **Neuron: pattern-separated store space.** Keep prototypes in a fixed sparse random expansion (k-WTA, ~2000 units,
+   5% active, a dentate-like code). Prediction: real-member w rises from 0.59 to >= 0.7 and the impostor-vs-member w gap
+   to >= 0.05. Kill: w gap < 0.03.
+3. **Data: label-noise world** (10% of 4s permanently labelled 9, no swap): z5 and hyp 1 must not remap. Kill: > 1 per run.
+4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap; FF s49 swap +5,
+   kill < +2).
