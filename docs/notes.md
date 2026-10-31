@@ -670,3 +670,7 @@ generator, not every raw image), and its size and sleep cost are reported.
 - 2026-10-31 19:00 UTC+8: after a return the cortex is wrong far more often (46% vs 3%), but the store is not more
   reliable; a gate that keys on how recently a label came back moves the lifetime/returns frontier outward for the
   first time (+1.6 returns at matched firing). Expected uncertainty (Yu & Dayan 2005) belongs in the router.
+- 2026-10-31 20:00 UTC+8: the store's own relative margin is the router's signal. A plain "store disagrees with
+  margin >= 0.3" route beats every FF-margin and recency gate tried since 18:00 on both lifetime and returns; the
+  recency gate only looked like an outward move because the baseline frontier left this route out. Always include
+  the simplest store-only route in a frontier.

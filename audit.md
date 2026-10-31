@@ -507,3 +507,11 @@ star and makes "is sleep organically useful?" a measurable question.
 - Lead: a causal recency gate (store also answers when it disagrees and its label or the FF label returned < 2000
   ticks ago, margin >= 0.2) gives held-out returns 73.8 vs 71.5 at 95.96 vs 95.97 lifetime, +1.6 returns above the
   mq frontier at matched firing. Not the default until confirmed on bg002 seeds 6-8 and bg 0.2.
+
+## Update 2026-10-31 20:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: recency as a frontier move (`confirm_recency.py`, s49 3-5, bg002 6-8, bg 0.2 0-5). The 19:00 lead held
+  against the FF-margin (mq) frontier, but a recency-free control, c3 (store answers when it disagrees with relative
+  margin >= 0.3, or on mq30_s2), beats mq30_s2 and rt2000_s2 on both lifetime and returns in every held-out group
+  (s49 96.12 / 74.8, bg002 95.86 / 75.2, bg 0.2 lifetime 94.70 vs 94.38). Decaying and hyperbolic recency traces
+  trade about 0.1 lifetime for 1.1-1.4 returns against c3 at matched firing: a slide, not an outward move.
+- New default router candidate: c3. Swap first 300 is about 1 point lower than mq30_s2.

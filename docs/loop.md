@@ -1239,3 +1239,55 @@ already in notes: recency of a return is a cheap, causal proxy for the ACh level
 4. **Training: return-triggered replay.** Since FF error is concentrated right after a return, a short targeted
    sleep (replay of that class's store prototypes) at return onset should cut the 45.8% FF error. Prediction: FF error
    in the first 100 ticks <= 30% at lifetime >= 95.9. Kill: >= 40%.
+
+## Loop 2026-10-31 20:00 UTC+8
+
+### State
+19:00 commit 677f97d on GitHub, VPS and site. Box idle, VPS idle. Pre-registered 19:00 hypotheses 1 and 2 in
+`confirm_recency.py` (`results/confirm_recency`, ~5 min on the box, store answers cached as Z_*.npy, not in git):
+rerun the default pixel z5 store on s49 seeds 0-5, bg002 seeds 6-8 and bg 0.2 seeds 0-5, join to the logged FF answers
+(`results/gate_probe_s49`, `_s678`, `_bg02`), evaluate rt2000_s2 frozen and a decaying-trace threshold selected on s49
+0-2. After the first pass the selected trace also raised lifetime on bg 0.2, where nothing ever returns, so a
+recency-free control c{s} (mq30_s2 or store disagrees with margin >= s) and p{s} (store margin alone) were added and
+put into the frontier before reading the rerun.
+
+### Result
+| Held-out group | mq30_s2 | rt2000_s2 | c3 (control) | dk3000_1_4 |
+|---|---|---|---|---|
+| s49 3-5, lifetime / returns / fired | 95.97 / 71.5 / 1.09 | 95.96 / 73.8 / 1.16 | 96.12 / 74.8 / 1.48 | 96.01 / 76.2 / 1.43 |
+| bg002 6-8 | 95.69 / 71.4 / 1.16 | 95.68 / 73.5 / 1.25 | 95.86 / 75.2 / 1.50 | 95.74 / 76.3 / 1.52 |
+| bg 0.2 0-5 (no returns) | 94.38 / - / 1.09 | 94.38 / - / 1.09 | 94.70 / - / 1.56 | 94.58 / - / 1.32 |
+
+- H1 passes as literally stated (+1.5 over the mq frontier on bg002) but the mq frontier was incomplete. c3 dominates
+  mq30_s2 and rt2000_s2 on lifetime and returns everywhere; swap first 300 costs about 1 point.
+- H2 killed: recency traces (exponential or hyperbolic) give +1.1-1.4 returns over c3 for -0.11 lifetime at matched
+  firing. Recency is a knob along the frontier, not past it.
+- c2 = p2 exactly: mq30_s2 is a strict subset of "store disagrees with margin >= 0.2". The FF-margin quantile gate
+  (12:05-19:00 default) mainly discarded good store answers.
+
+### Literature insight
+Nassar, Wilson, Heasly & Gold 2010 (J Neurosci 30:12366, approximately Bayesian delta rule): in a change-point world
+the weight on new evidence is set by run length since the last change, roughly 1/(run length + 1), plus change-point
+probability computed from the size of the surprise. Their model has two terms and our test separated them: the
+surprise term (here the store's margin when it disagrees with the cortex) carried the gain, while the run-length term
+(recency of a return) did nothing that a stricter surprise threshold could not. Read with Yu & Dayan 2005 from 19:00:
+expected uncertainty matters only when it is not already visible in the evidence; in this stream the store's margin
+already shows it.
+
+### Paths closed
+- Recency gating of the store route (hard window, exponential and hyperbolic traces). 19:00's outward-move claim
+  withdrawn.
+- FF-margin quantile as a necessary part of the router.
+
+### Hypotheses, ranked
+1. **Architecture/routing: c3 as the in-loop default.** Run life.py (or the swap/remap harness) with c3 replacing
+   mq30_s2 on s49 and bg002, seeds 0-8. Prediction: lifetime +0.1 or more and returns +3 or more over mq30_s2, swap
+   first 300 within 1.5. Kill: lifetime gain < 0.05 or swap loss > 2.
+2. **Neuron/gating: calibrated store margin.** Replace the fixed relative-margin threshold with a running estimate of
+   P(store right | disagree, margin bin) learned from the delayed label (a per-bin counter, purely local). Prediction:
+   beats the best c{s} by >= +0.5 returns at matched lifetime, because the threshold tracks store drift after swaps.
+   Kill: within 0.3 of the best c{s}.
+3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9. c3 lets the store answer more often, so
+   the risk is the store voicing noise labels. Kill: lifetime below mq30_s2 on that world.
+4. **Training: return-triggered replay** (carried from 19:00): targeted sleep on a class's store prototypes at return
+   onset. Prediction: FF error in the first 100 ticks after a return <= 30% (from 45.8%) at lifetime >= 95.9.
