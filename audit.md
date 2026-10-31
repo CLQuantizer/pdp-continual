@@ -467,3 +467,10 @@ star and makes "is sleep organically useful?" a measurable question.
   68.1 (bar +0.8), first post-swap remap 73-77 vs base 59; retro credit brings false remaps back on seed 1. Read with
   Lorden 1971: the ~18-tick latency is the cost of 0 false remaps for any detector on the same per-hit evidence. z5
   stays the default; next lever is per-hit evidence (pattern-separated store code).
+
+## Update 2026-10-31 15:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: random-expansion pattern separation of the store (`kwta_store.py A`, 2000 units, k-WTA 5% and 2%). On s49
+  first post-swap remap 139 / 1059 ticks vs z5 77, swap 67.2 vs 68.1, store-only lifetime -5 to -6, returns -14 in
+  mq30_s2. A random projection without k-WTA is neutral (72 ticks, swap 67.8). Per Babadi & Sompolinsky 2014, random
+  sparse expansion amplifies within-class spread as much as between-class distance. Default stays
+  a25w250h2k2_c1.5_uinf_z5; next store-code test must use a learned (cortex) code.

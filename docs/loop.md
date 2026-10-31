@@ -1021,3 +1021,48 @@ prototypes), not at the confirmation or veto rule.
 3. **Data: label-noise world** (10% of 4s permanently labelled 9, no swap): z5 must not remap. Kill: > 1 per run.
 4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap; FF s49 swap +5,
    kill < +2).
+
+## Loop 2026-10-31 15:00 UTC+8
+
+### Experiment (pre-registered in its docstring; s49 = confusable 4<->9 swap, seeds 0-5; mq30_s2 route)
+- `kwta_store.py A` (14:00 hypothesis 1): store prototypes, radii, rival test and answers moved into a fixed random
+  expansion of the pixels (N = 2000, h = W(x - xbar)), k-WTA binary at k = 100 (5%) or k = 40 (2%); control `lin` =
+  same projection without k-WTA. All inside z5.
+  | Store | Swap (mq30_s2) | Lifetime (mq30_s2) | Returns (mq30_s2) | Store-only lifetime | First post-swap remap |
+  |---|---|---|---|---|---|
+  | base | 69.7 | 96.0 | 71.8 | 91.4 | 59 |
+  | z5 | 68.1 | 96.0 | 72.0 | 91.4 | 77 |
+  | z5 x2000 k100 | 67.2 | 95.8 | 58.4 | 86.5 | 139 |
+  | z5 x2000 k40 | 67.2 | 95.8 | 57.3 | 85.1 | 1059 |
+  | z5 x2000 lin | 67.8 | 95.9 | 72.0 | 91.1 | 72 |
+  0 pre-swap false remaps for every z5 variant. **Killed hard** (latency > 70, swap below z5, store lifetime -5 to -6,
+  returns -14). The linear control is within noise of pixels, so the damage is the sparsification itself. The mq30
+  route also stops using the store (store answers 1.1% -> 0.1%): binary codes compress the relative-margin scale the
+  gate thresholds were set on.
+  Note: run with OMP_NUM_THREADS=1; with default BLAS threads 6 workers oversubscribed 8 cores (load ~49) and stalled.
+
+### Literature insight
+Babadi & Sompolinsky 2014 (Neuron 83:1213, "Sparseness and expansion in sensory representations") show that a
+random expansion with sparse thresholding decorrelates inputs but also amplifies small input differences: within-class
+variability grows with the between-class separation, so a fixed random code does not raise the signal-to-noise of a
+discrimination; only learned (Hebbian-tuned) expansion weights do. That is what this hour measured: true 4s scatter as
+much as impostor 9s, the EMA radius widens to follow, and per-hit evidence I falls (latency 77 -> 139). In CLS terms
+the hippocampus does not separate raw input; it indexes cortical representations (Teyler & DiScenna 1986 index theory;
+McClelland, McNaughton & O'Reilly 1995 put the hippocampal input after neocortical processing). The selective
+separation pdp needs should come from the cortex code that already discriminates 4 from 9, not from a random layer.
+
+### Paths closed
+- Random-expansion pattern separation of the store code (k-WTA at 5% and 2% of 2000 units). Random projection without
+  sparsification is neutral. Any further store-geometry work must use a learned code.
+
+### Hypotheses, ranked
+1. **Architecture: store indexes the cortex code.** Keep prototypes on the FF network's top hidden layer (as the
+   hippocampal index of cortical features) instead of pixels. Needs a gate_probe rerun that logs per-arrival hidden
+   codes (s49, seeds 0-5, ~45-60 min on the box, OMP_NUM_THREADS=1). Prediction: z5 first post-swap remap <= 65 and
+   swap >= z5 + 0.8, 0 false remaps. Kill: latency > 70 or store-only lifetime < pixel store - 1.0. Risk: the code
+   drifts as the cortex learns, so prototypes go stale (would need re-encoding during sleep).
+2. **Neuron: Hebbian-tuned expansion** (Babadi & Sompolinsky's remedy): expansion weights updated by a competitive
+   Hebbian rule on the stream, then k-WTA. Prediction: within-class spread / between-class (4 vs 9) distance ratio
+   below pixels by >= 10%; kill if not, before any life run.
+3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9, no swap; z5 must not remap. Kill: > 1/run.
+4. **Training: sleep in life.py with a slow cortex** (carried): lifetime >= 96.0 and returns >= 75; kill < 95.5.
