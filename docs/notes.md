@@ -660,3 +660,7 @@ generator, not every raw image), and its size and sleep cost are reported.
   leave s49 first remap at 73-77 ticks. Treat the remap as a change detector: Lorden's CUSUM bound says delay scales
   with log(false-alarm interval) over per-hit information, so the remaining swap gap is the price of zero false remaps
   unless the store code makes each hit more informative (pattern separation).
+- 2026-10-31 16:00 UTC+8: the FF cortex's hidden code separates 4 from 9 about 3x better than pixels, but it is not a
+  stable index: FF trains with the label in the input, so after a 4<->9 swap its top layer moves 9 images to where 4s
+  were (stale-prototype impostor rate 0.62). The store should keep pixels and measure similarity through the current
+  layer-1 code at query time (0.045 vs pixels 0.077), not store codes. Random and Hebbian expansions are both closed.

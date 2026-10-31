@@ -474,3 +474,11 @@ star and makes "is sleep organically useful?" a measurable question.
   mq30_s2. A random projection without k-WTA is neutral (72 ticks, swap 67.8). Per Babadi & Sompolinsky 2014, random
   sparse expansion amplifies within-class spread as much as between-class distance. Default stays
   a25w250h2k2_c1.5_uinf_z5; next store-code test must use a learned (cortex) code.
+
+## Update 2026-10-31 16:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed offline (`code_probe.py`, no life run spent): competitive-Hebbian expansion as store code (impostor rate on
+  4/9 0.349 vs pixels 0.077) and prototypes stored in FF hidden-code space. FF layer codes separate 4 from 9 about 3x
+  better than pixels (0.027-0.028), but frozen code prototypes go stale within 2000 swapped arrivals (layer 1 0.119,
+  layer 2 0.619): FF learns the label inside its hidden code, so a store holding codes inherits the swap.
+- Live: re-read index. Re-encoding stored images through the current cortex keeps separation (layer 1 0.045, 0.58x
+  pixels). Next: in-loop life run with pixel prototypes and layer-1 distances; default stays a25w250h2k2_c1.5_uinf_z5.

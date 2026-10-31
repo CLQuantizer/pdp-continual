@@ -1066,3 +1066,39 @@ separation pdp needs should come from the cortex code that already discriminates
    below pixels by >= 10%; kill if not, before any life run.
 3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9, no swap; z5 must not remap. Kill: > 1/run.
 4. **Training: sleep in life.py with a slow cortex** (carried): lifetime >= 96.0 and returns >= 75; kill < 95.5.
+
+## Loop 2026-10-31 16:00 UTC+8
+
+### Experiment (`code_probe.py`, results/code_probe)
+Offline fork-decider before any life rerun: store-like geometry (9 k-means prototypes per class) in six code spaces,
+scored on test 4s and 9s, MNIST, online FF cortex at life.py settings, 20k normal arrivals then 2000 with 4<->9 swapped,
+seeds 0-2. Impostor rate (share of 4s/9s nearest to a rival prototype): pixels 0.077, random k-WTA 0.077 (ratio worse,
+0.943 vs 0.860, matching the 15:00 kill), competitive-Hebbian k-WTA 0.349 (killed, H2), FF layer 1 0.028, layer 2 0.027.
+After the swap, code-space prototypes frozen at 20k go stale: layer 1 0.119, layer 2 0.619 (the top layer has moved 9
+images to where 4 images were). H1 as pre-registered (stale impostor <= 0.75x pixels) is killed. Re-encoding the same
+stored images through the post-swap cortex restores separation: layer 1 0.045 (0.58x pixels), layer 2 0.060.
+
+### Literature insight
+Rule, O'Leary & Harvey 2019 (Curr Opin Neurobiol 58:141, "Causes and consequences of representational drift"): when
+a population code drifts, any downstream readout fixed to old activity patterns degrades unless it is continually
+re-aligned; stable behaviour lives in a readout that tracks the drift, not in frozen patterns. In pdp the drift is
+not slow noise but the cortex learning the swap itself: FF trains its hidden layers with the label in the input, so
+even a label-neutral read of the top layer encodes the mapping. Teyler & DiScenna's index stores pointers to cortical
+activity, and re-instatement runs through the current cortex. The pdp translation: the store keeps raw exemplars (the
+pointer) and computes similarity through the current layer-1 code at query time, never storing the code.
+
+### Paths closed
+- Competitive-Hebbian expansion as store code (crude rule; ratio 0.951, impostor 0.349).
+- Store prototypes kept in FF hidden-code space (stale after the swap; top layer worst).
+
+### Hypotheses, ranked
+1. **Architecture: re-read index.** Store keeps pixel prototypes and observations as now, but distances, radii and
+   the rival test are computed on ff1(x) and ff1(proto) under the current cortex at each arrival (90 extra layer-1
+   forwards per tick). Needs an in-loop life run (offline store replay on logs lacks the cortex). Prediction: s49 z5
+   first post-swap remap <= 65 ticks and swap >= z5 + 0.8, 0 false remaps. Kill: latency > 70 or store-only lifetime
+   < pixel store - 1.0. Risk: the EMA radius is in pixel units and must be re-set in code units.
+2. **Neuron: layer 1 versus top layer as the index.** Layer 1 drifts less on a swap (stale 0.119 vs 0.619) because
+   its input is the image, while the label weight is a small part of its fan-in. Prediction: with a fresh read, the
+   ff1 index gives a lower remap latency than ff12 on s49. Kill if ff12 is better by > 5 ticks.
+3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9; z5 must not remap. Kill: > 1 per run.
+4. **Training: sleep in life.py with a slow cortex** (carried): lifetime >= 96.0 and returns >= 75; kill < 95.5.
