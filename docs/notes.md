@@ -681,3 +681,6 @@ generator, not every raw image), and its size and sleep cost are reported.
 - 2026-10-31 22:00 UTC+8: don't forget on a clock. Decaying the arbiter's counts buys back swap only by throwing
   away the stable-period evidence that makes the store trustworthy at a return (about -2 returns for +1 swap).
   Volatility should set the forgetting rate (Behrens et al. 2007): forget when the change detector fires.
+- 2026-10-31 23:00 UTC+8: forgetting on the store's remap is too late (the store is wrong for ~75 ticks before it
+  remaps), and an error-streak veto gives the highest lifetime yet but loses ~3.5 returns because streaks go stale
+  while a class is away. Surprise belongs to the current episode of a class; a return should clear it.

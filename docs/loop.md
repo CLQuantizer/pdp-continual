@@ -1370,3 +1370,43 @@ z5 extinction override that remaps store slots on a swap); reliability should fo
 3. **Architecture: arbiter in-loop (carried).** life.py with j+0.0b routing, s49 and bg002, seeds 0-8. Prediction:
    lifetime >= +0.15 and returns >= +5 over mq30_s2, swap first 300 within 1.5. Kill: lifetime gain < 0.05.
 4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.
+
+## Loop 2026-10-31 23:00 UTC+8: change-gated forgetting for the arbiter (`change_arbiter.py`)
+
+### Experiment (falsification)
+- Pre-registered two causal change signals, neither changing what store or cortex learns. H4a: reset ('rG') or halve
+  ('rH') the arbiter's joint Beta table whenever the z5 store remaps a slot (remap ticks recovered by a store-only
+  replay that asserts every answer equals the cached Z; 15-70 remaps per s49 run, 0 before the swap). H4b: a
+  class-local surprise veto; per store-predicted class, a streak of disagreements where the store was wrong and the FF
+  right; at streak >= m (2, 3, 5) the arbiter may not hand that class to the store until the store is right on a
+  disagreement ('v') or the class is remapped ('w'); 'B' variants also silence mq30_s2. Same bars as 22:00.
+- No variant passed the selection bars on s49 0-2. **Both killed.** Remap-triggered reset does nothing (held-out s49
+  swap -0.6, bg002 +0.2, returns within 0.8): the remap comes after the ~75 ticks in which the store is wrong, as the
+  mechanism prior said.
+- The surprise veto is the most interesting failure so far: v2b gives the highest lifetime yet (s49 3-5 96.33 vs
+  96.18, bg002 96.04 vs 95.90, bg 0.2 equal) and +2.3 / +1.0 swap first 300, but costs 3.4-4.0 returns (74.4 vs 77.8,
+  74.2 vs 78.2). The 'B' variants push swap to +3 to +5 but returns fall to ~64.
+- Diagnostic (not a test, s49 0-5, v2): the veto blocks ~2700-3250 disagreements per run, ~55% of them before the
+  swap, so it is mostly detecting stable classes the store gets wrong, not change. On returns 74-84% of blocked
+  disagreements are ones the store had right: the streak went stale while the class was away.
+
+### Literature insight
+Behrens et al. 2007 set the learning rate from volatility; Gershman, Blei & Niv 2010 add that the cue for a new latent
+cause is a context break, not error alone. Our veto counts errors but never notices that a class's absence and
+return is itself a context break, so evidence collected before the class left is applied after it returns, which is
+exactly where the store's old knowledge is right and the cortex's is not. Surprise should be scoped to the current
+episode of a class, ended by its departure.
+
+### Paths closed
+- Store-remap-triggered reset or halving of arbiter counts (acts after the error window).
+- Error-streak veto with release only on store-right disagreement or remap, as a returns-neutral swap fix.
+
+### Hypotheses, ranked
+1. **Neuron/gating: episode-scoped surprise veto.** As v2b, but a class's streak is cleared when its label returns
+   after RET_GAP (and optionally when the store is right on any arrival of that class, agreements included).
+   Prediction (select m on s49 0-2): held-out returns within 0.5 of j+0.0b, swap >= +0.5, lifetime >= j+0.0b. Kill:
+   returns loss > 0.5 or swap < +0.5 on either held-out swap world.
+2. **Data: label-noise world (carried).** 10% of 4s permanently labelled 9; the veto and arbiter both see persistent
+   store errors there, which is where a stable-error veto should help and a change detector should not fire.
+3. **Architecture: arbiter in-loop (carried).** life.py with j+0.0b (or the winner of 1), s49 and bg002, seeds 0-8.
+4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.

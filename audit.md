@@ -527,3 +527,10 @@ star and makes "is sleep organically useful?" a measurable question.
 - Closed: clock-decayed arbiter counts (`arbiter_decay.py`). Half-life 2000 recovers about 1 point of swap first 300
   (s49 3-5 67.3 vs 66.0, bg002 6-8 71.0 vs 70.1) but costs about 2 returns (75.8 vs 77.8, 76.3 vs 78.2); every
   half-life 500-8000 lies on that trade. Class-keyed tables lower lifetime everywhere. j+0.0b stays the candidate.
+
+## Update 2026-10-31 23:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: change-gated forgetting of arbiter counts (`change_arbiter.py`). Reset or halving on store remaps does
+  nothing (held-out swap -0.6 / +0.2). A class-local error-streak veto (v2b) gives the highest lifetime so far
+  (s49 3-5 96.33 vs 96.18, bg002 6-8 96.04 vs 95.90) and +2.3 / +1.0 swap first 300, but -3.4 / -4.0 returns, so it
+  fails the pre-registered bar. Stale streaks block the store on returns where it is right (74-84% of blocks).
+- j+0.0b stays the router candidate. Next: episode-scoped veto (clear a class's streak when it returns).
