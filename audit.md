@@ -565,3 +565,12 @@ star and makes "is sleep organically useful?" a measurable question.
   Unguarded m0.3 has 3.33 false remaps per run on seeds 12-17: the 02:00 lead is withdrawn as a default candidate.
 - z5 stays the default store (0 false remaps on 57 runs). Next: remap hysteresis (no double credit and H+1 for a
   recently moved prototype), then the label-noise world.
+
+## Update 2026-11-01 04:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Passed as pre-registered, non-discriminating: remap hysteresis (`hyst_remap.py`). Selected m0.3n4hinf (n4 floor +
+  a moved prototype gets no double credit and needs H+1). Held-out fresh seeds 30-47: 0 false remaps, first remap
+  65.7 vs z5 78.6 ticks; plain m0.3n4 is identical there. Dev seed 26: ping-pong 68 -> 22 events, settles by
+  t 22862 instead of running to the swap.
+- Same-seed s49f/bg002f runs share the pre-swap stream: false-remap counts are per stream (18 per 36 runs).
+- Store candidate m0.3n4hinf; z5 stays default. Next: copy-then-prune remap, label-noise world, routed scoring.
+

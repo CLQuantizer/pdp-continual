@@ -701,3 +701,9 @@ generator, not every raw image), and its size and sleep cost are reported.
   one fresh stream in 12 ping-pongs 4<->9 for 19000 ticks (68 remap events), and requiring 3 or 4 contradictions
   first only delays the first flip. The default store had no false remaps on 57 runs. The store needs hysteresis
   (Wills et al. 2005): moving a prototype back must cost more than moving it in the first place. z5 stays default.
+- 2026-11-01 04:00 UTC+8: hysteresis on the confident remap (a recently moved prototype gets no double credit and
+  needs one more contradiction) passes its held-out bar with the n4 floor (0 false remaps on 18 fresh streams,
+  latency -13 ticks) but only because plain n4 also passes there. On the bad stream it ends the 4<->9 ping-pong
+  after 22 events instead of 68 but cannot stop the first false move. Same-seed s49f/bg002f runs share their
+  pre-swap stream, so count streams, not runs. Flicker belongs in retrieval, not storage (Jezek et al. 2011).
+

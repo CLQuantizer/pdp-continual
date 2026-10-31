@@ -1582,3 +1582,51 @@ more just makes the flips faster.
    gain. Kill: runaway on any of 36 fresh seeds.
 3. **Data: label-noise world.** 10% of 4s permanently labelled 9: the case that hysteresis must survive. Run after 1.
 4. **Training: arbiter in-loop (carried).** Blocked on choosing the store; keep z5 as the in-loop store until 1 passes.
+
+## Loop 2026-11-01 04:00 UTC+8
+
+### Experiment: remap hysteresis (`hyst_remap.py`; results/hyst_remap)
+- Tests 03:00's hypothesis 1. H9 'h{T}': a prototype moved within the last T ticks (2000 or inf) gets no doubled
+  credit and needs H+1=3 contradictions to become hot; 'b' applies this only to a move back to its old label.
+  Variants m0.3h2000, m0.3hinf, m0.3binf, m0.3n4hinf; controls z5, m0.3, m0.3n4. Selection on dev fresh seeds 12-29
+  (incl. seed 26), test on held-out fresh seeds 30-47, store-only, both s49f (4<->9) and bg002f (2<->3).
+- **Passed as pre-registered, but the test did not discriminate.** Selected m0.3n4hinf. Held-out 30-47: 0 false
+  remaps on 36 runs, first remap 65.7 vs z5 78.6 ticks (-12.9). But plain m0.3n4 does exactly the same on held-out
+  (0 false remaps, 65.7), so hysteresis contributed nothing there; the held-out set simply has no seed-26-like stream.
+- Caveat found while reading the logs: s49f and bg002f with the same seed share the whole pre-swap stream (identical
+  pre-swap remap events), so "36 runs" is 18 independent pre-swap streams. Earlier "57 runs" counts for z5 overstate
+  independence in the same way. Future false-remap bars should count streams, not runs.
+- What hysteresis does on dev seed 26 (s49f, no mislabels of 4/9 in the window): m0.3n4 ping-pongs 34x 4->9 and
+  34x 9->4 from t 19361 until the swap at 38400; m0.3n4hinf flips 12/10 times and settles by t 22862. Hysteresis
+  damps and terminates the oscillation (3.5k vs 19k ticks) but does not prevent it: the first move is the error.
+  On other dev streams hysteresis cuts m0.3's events (seed 14: 12 -> 4, seed 33: 14 -> 4) but never the first pair.
+- Status: m0.3n4hinf is the store candidate (latency -13 to -16 ticks, 0 false remaps on 18 held-out streams), but
+  not the default: one dev stream in 18 still has 22 false remap events. z5 stays default.
+
+### Literature insight
+Jezek, Henriksen, Treves, Moser & Moser 2011 (Theta-paced flickering between place-cell maps in the hippocampus,
+Nature 478:246-249): after an instant switch of the light cues between two familiar rooms, CA3 does not jump
+cleanly to the new map; for a while it flickers between the two maps on single theta cycles (~125 ms), then
+settles. The flicker is in retrieval, not in the stored maps: neither map is rewritten by a flicker. Our store
+conflates the two. Every remap is a structural rewrite of a prototype's label, so a retrieval-level ambiguity
+between confusable 4s and 9s becomes storage-level ping-pong. Hysteresis bounds how long the rewriting goes on;
+Jezek et al. suggest the fix sits earlier: let the answer flicker (both labels live), and rewrite storage only
+once one label wins consistently.
+
+### Paths closed
+- Hysteresis as a cure for false remaps (any T, forward or back-only): it terminates runaway oscillation (68 -> 22
+  events on seed 26, 73 -> 18 for unfloored m0.3) but cannot stop the first false move, and without the n4 floor
+  m0.3 + hysteresis still false-remaps on 8 of 18 streams.
+
+### Hypotheses, ranked
+1. **Architecture: copy, then prune (flicker in retrieval, not storage).** When a remap would fire, add a copy of
+   the hot prototypes under the new label and keep the originals; delete whichever copy goes 300 ticks without
+   winning a nearest-prototype match labelled with its class. Prediction on seed-26 stream plus held-out streams
+   48-65: false remap events (originals deleted before the swap) <= 4 total, latency to first correct new-label
+   answer <= m0.3n4hinf. Kill: any runaway or latency worse than z5 - 8.
+2. **Neuron: one-sided confidence (carried).** Double credit only if the contradicting label's own nearest prototype
+   is far (d_y > 2d). Prediction: seed 26 clean while keeping >= 60% of m0.3's latency gain. Kill: runaway anywhere.
+3. **Data: label-noise world.** 10% of 4s permanently labelled 9; m0.3n4hinf must stay at <= 1 false remap event
+   per stream. This is what makes the candidate safe or not; run before promoting it.
+4. **Training: routed scoring of m0.3n4hinf on the cached FF logs** (lifetime, returns, swap first 300 via j+0.0b)
+   before it goes in-loop. Cheap; do with 3.
