@@ -424,3 +424,9 @@ star and makes "is sleep organically useful?" a measurable question.
 - Closed: deferred confirmation gate at N >= 5 (`conf_defer.py`). d3 matches base on the 18 old runs but loses 2.8 on
   the confusable swap 4<->9 (z5 loses 1.6). Default store stays a25w250h2k2_c1.5_uinf_z5. Likely cause: swapped 9s
   labelled 4 land inside 4 prototypes and count as confirmations. Next: core-only confirmation, label-noise world.
+
+## Update 2026-10-31 10:05 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: core-only confirmation inside z5 (`core_conf.py`, q0.5 and q0.25). It closes the s49 swap gap (69.6 vs z5
+  68.1) only by switching the rival test off, and false remaps return (seed 6: 20, seed 10: up to 28). The store
+  radius is the mean confirmation distance, so median confirmation d/r is about 0.96 and fewer than 1% are in the core.
+  Default stays a25w250h2k2_c1.5_uinf_z5. Next: confirmation weighted by relative similarity to the nearest rival.

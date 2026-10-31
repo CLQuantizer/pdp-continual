@@ -827,3 +827,47 @@ confirmation evidence should be read against that prototype's own baseline, not 
 4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap s->y; FF s49
    swap +5 or kill < +2).
 5. Sleep consolidates remaps; SWIL.
+
+## Loop 2026-10-31 10:05 UTC+8
+
+### Experiment (pre-registered in the docstring; results/core_conf_s49, results/core_conf)
+- **core_conf.py z5_qQ (core-only confirmation inside z5).** A same-label hit still updates the radius but counts as a
+  confirmation only if d <= Q x r (squared distances); rim hits are logged as neutral. Q = 0.5 and 0.25.
+  On s49 swap (mq30_s2) is 69.6 for both vs z5 68.1 and base 69.7, so the swap gap closes. But false remaps come back:
+  pre-swap remaps per run on seed 6 are 20/20 (z5 0, base 34), seed 10 4/28 (z5 0, base 20), and seeds 1, 4, 9 match
+  base. Rival vetoes fall from 269-555 to 20-32. **Killed by its pre-registered line (any run > 5 false remaps).**
+- **Why: the radius is a mean, not a bound.** The radius is an EMA of confirmation distances, so the typical
+  confirmation sits at the rim by construction: post-swap same-label hits on 4/9 prototypes have median d/r 0.95-0.96
+  on all 6 s49 seeds, and only 0.2-0.6% fall at d <= 0.5r. A core-only rule therefore deletes almost every
+  confirmation, z5 lifts the rival veto almost always, and the store degrades to base. The +1.5 on s49 is just the
+  rival test being switched off.
+- **Mechanism check was confounded.** The impostor count (true class differs from the prototype's label) cannot
+  separate swapped 9s confirming 4 prototypes from correct hits on already remapped prototypes, because remaps
+  happen within about 60 ticks and flip the prototype's label. The suspected mechanism of 09:05 stays untested; it
+  needs per-prototype origin tracking.
+- **Decision: z5 stays the default.** Any confirmation rule must be scaled to the prototype's own distance
+  distribution (a quantile or a variance), never a fraction of the mean radius.
+
+### Literature insight
+Kumaran & McClelland 2012 (Psychological Review 119:573, REMERGE): in a hippocampal store, how strongly a probe
+supports an item is set by its similarity relative to every other stored item, through recurrent competition, not by
+its absolute distance to that item. For pdp this says a confirmation of a 4 prototype by an arrival that sits almost
+as close to a 9 prototype should count as roughly half a confirmation. The current store counts confirmations by
+absolute distance, and core_conf shows absolute distance cannot tell a lure from a real member, because both sit at
+the mean radius.
+
+### Paths closed
+- Core-only confirmation by a fraction of the mean radius (q0.5, q0.25), in any rule that uses the radius as a scale.
+
+### Hypotheses, ranked
+1. **Neuron: posterior-weighted confirmation (REMERGE).** Each same-label hit adds w = d_y / (d_s + d_y) (squared
+   distances to the s prototype and the nearest rival prototype of any other label) to a leaky confirmation trace;
+   z5 lifts the veto when the trace over the last 5 entries is below 1.5. Prediction: s49 swap >= z5 + 0.8 and
+   0 runs > 5 false remaps on all 24. Kill: either line broken.
+2. **Data: label-noise world.** Permanently relabel 10% of 4s as 9 (no swap). z5 must not remap a 4 prototype. Kill:
+   > 1 remap per run. Still needed before any confirmation rule is trusted.
+3. **Diagnostic: per-prototype origin tracking.** Tag each prototype with the class it was created from, and recount
+   post-swap confirmations of not-yet-remapped 4 prototypes by true 9s. Decides whether the 09:05 mechanism is real.
+4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap; FF s49 swap +5,
+   kill < +2).
+5. Per-prototype expected-conflict baseline (Yu & Dayan); sleep consolidates remaps; SWIL.
