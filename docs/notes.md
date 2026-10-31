@@ -667,3 +667,6 @@ generator, not every raw image), and its size and sleep cost are reported.
 - 2026-10-31 18:00 UTC+8: a store read through the cortex is a better classifier but not a better complement:
   at the same gate firing rate it gives exactly the pixel store's lifetime and returns. What a store adds is its
   accuracy where the cortex is wrong, so that is the number to optimise next, not store-only accuracy.
+- 2026-10-31 19:00 UTC+8: after a return the cortex is wrong far more often (46% vs 3%), but the store is not more
+  reliable; a gate that keys on how recently a label came back moves the lifetime/returns frontier outward for the
+  first time (+1.6 returns at matched firing). Expected uncertainty (Yu & Dayan 2005) belongs in the router.

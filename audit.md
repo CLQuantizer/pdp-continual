@@ -499,3 +499,11 @@ star and makes "is sleep organically useful?" a measurable question.
   gate firing twice as often. Reading the store through the cortex is closed for remapping and answering.
 - Default unchanged: a25w250h2k2_c1.5_uinf_z5, pixel store, mq30_s2. Next: measure complement accuracy (store right
   when FF is wrong) by time since return, and gate on that.
+
+## Update 2026-10-31 19:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: complement accuracy as what varies after a return (`complement_probe.py`, s49 seeds 0-5): the store is
+  right on FF errors 46-75% of the time in every bin and disagrees with a correct FF at a flat 6-10%; ratio 1.48 vs
+  kill bar 1.5. What changes is the FF error rate (45.8% in the first 100 ticks after a return vs 3.4% after 3000).
+- Lead: a causal recency gate (store also answers when it disagrees and its label or the FF label returned < 2000
+  ticks ago, margin >= 0.2) gives held-out returns 73.8 vs 71.5 at 95.96 vs 95.97 lifetime, +1.6 returns above the
+  mq frontier at matched firing. Not the default until confirmed on bg002 seeds 6-8 and bg 0.2.

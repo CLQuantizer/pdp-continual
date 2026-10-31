@@ -1195,3 +1195,47 @@ classifier. Metric to watch from now on: accuracy of store answers on FF-wrong i
 3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9; z5 must not remap. Kill: > 1 per run.
 4. **Architecture/training: sleep with a slow cortex in life.py** (carried): lifetime >= 96.0 and returns >= 75;
    kill < 95.5.
+
+## Loop 2026-10-31 19:00 UTC+8
+
+### State
+18:00 commit fa8997a on GitHub, VPS and site. Pre-registered and ran 18:00 hypothesis 1 (`complement_probe.py`,
+`results/complement_probe`, ~4 min on the box): rerun the s49 world with the default pixel z5 store (the store does not
+depend on the cortex, so no FF is needed) and join its answers to the logged FF answers from `results/gate_probe_s49`,
+seeds 0-5. Measure complement accuracy (store right when FF is wrong) by ticks since the true class's return start,
+and try a causal recency gate: also let the store answer when it disagrees and its label s, or the FF label f, came
+back from >= 2000 ticks away less than T ticks ago (T and margin s chosen on seeds 0-2, confirmed on 3-5).
+
+### Result
+- Diagnostic killed as stated (ratio 1.48, bar 1.5): complement accuracy 70.5% in the first 300 ticks after a return
+  vs 47.8% later. The store's harm (disagreeing with a correct FF) is flat at 6-10% in every bin. What moves is the
+  FF error rate: 45.8% in the first 100 ticks after a return, 18.6% at 100-300, 3.4% after 3000.
+- Gate is a lead: selected rt2000_s2 gives held-out 95.96 / 73.8 vs mq30_s2 95.97 / 71.5 (+2.3 returns). Against the
+  mq frontier at matched firing (1.17%) it is +1.6 returns; rt2000_s1 matches mq30_s1 returns at 0.76% less firing and
+  +0.20 lifetime. This is the first change since 11:05 that moves the lifetime/returns frontier outward instead of
+  sliding along it. Not the default yet: the literal bar was lifetime >= 96.0, missed by 0.04 with the baseline at 95.97.
+
+### Literature insight
+Yu & Dayan 2005 (Neuron 46:681, "Uncertainty, neuromodulation, and attention"): expected uncertainty, a known
+unreliability of the current model in a known context, should down-weight top-down predictions in favour of other
+evidence, and ACh is their proposed signal for it. A class coming back after a long absence is exactly that known
+context: the cortex has drifted on it (FF wrong 46% of the time) while the store has not. The gate should take this
+prior from the stream, not infer it from FF margin alone. Ties to Hasselmo 2006 (ACh sets encoding vs retrieval),
+already in notes: recency of a return is a cheap, causal proxy for the ACh level.
+
+### Paths closed
+- Complement accuracy as the thing that varies with time since return. The store's reliability is flat; only the
+  cortex's prior error changes. Gate designs should model P(FF wrong), not P(store right).
+
+### Hypotheses, ranked
+1. **Architecture/routing: confirm the recency gate off its selection world.** Rerun `complement_probe.py` on
+   bg002 seeds 6-8 (logs in `results/gate_probe_s678`) and on the bg 0.2 world with rt2000_s2 frozen. Prediction:
+   >= +1.0 returns above the mq frontier at matched firing, lifetime within 0.05 of mq30_s2. Kill: < +0.5.
+2. **Neuron/gating: a decaying recency trace instead of a hard window.** Margin threshold s(t) = s_lo + (s_hi - s_lo)
+   (1 - exp(-age/tau)), age since the label's return. Prediction: beats rt2000_s2 by >= +0.5 returns at equal
+   lifetime. Kill: no gain at any tau in (300, 1000, 3000).
+3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9; z5 must not remap, and the recency gate
+   must not fire on noise. Kill: > 1 false remap per run.
+4. **Training: return-triggered replay.** Since FF error is concentrated right after a return, a short targeted
+   sleep (replay of that class's store prototypes) at return onset should cut the 45.8% FF error. Prediction: FF error
+   in the first 100 ticks <= 30% at lifetime >= 95.9. Kill: >= 40%.
