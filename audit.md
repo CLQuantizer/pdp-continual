@@ -417,3 +417,10 @@ star and makes "is sleep organically useful?" a measurable question.
   entries hold no same-label confirmation (extinction / latent-cause idea, Gershman, Blei & Niv 2010). 0 pre-swap
   false remaps on all 24 runs; swap equal to base on the 18 old runs and -1.6 on the confusable swap (c1.5_uinf
   -3.4). Next: replace the rival test by a confirmation trace alone, and a label-noise world as its kill test.
+
+## Update 2026-10-31 09:05 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: confirmation-only remap veto (`conf_trace.py`, n3/n5/n8). 0 false remaps on all 24 runs, but swap falls 4-16
+  points, monotone in the window, because vetoed evidence is discarded.
+- Closed: deferred confirmation gate at N >= 5 (`conf_defer.py`). d3 matches base on the 18 old runs but loses 2.8 on
+  the confusable swap 4<->9 (z5 loses 1.6). Default store stays a25w250h2k2_c1.5_uinf_z5. Likely cause: swapped 9s
+  labelled 4 land inside 4 prototypes and count as confirmations. Next: core-only confirmation, label-noise world.

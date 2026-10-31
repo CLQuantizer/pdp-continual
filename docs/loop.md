@@ -779,3 +779,51 @@ beats the geometric rival test everywhere.
    y near s for 300 ticks. Prediction: FF swap first 300 +5 on s49 (FF 67.2). Kill: < +2.
 5. Self-normalised rival threshold (demoted: the confirmation idea makes the ratio unnecessary); sleep consolidates
    remaps; SWIL.
+
+## Loop 2026-10-31 09:05 UTC+8
+
+### Experiments (pre-registered in each docstring; results/conf_trace*, results/conf_defer*)
+- **conf_trace.py nN (confirmation-only veto, no distance ratio).** An in-radius conflicting hit counts only if the
+  prototype's last N history entries hold no same-label confirmation. Safety is perfect (0 pre-swap false remaps on
+  all 24 runs for n3/n5/n8), but swap (mq30_s2) collapses, monotone in N: held-out bg 0.02 seeds 3-11 67.3/64.7/61.0
+  vs base 71.7; bg 0.2 63.7/59.4/55.1 vs 71.6; s49 64.7/60.2/57.2 vs 69.7. First post-swap remap 88-539 ticks vs 59-68.
+  **Killed (hypothesis 1 of 08:05, and z-window sensitivity: both n3 and n8 break the line).** Mechanism: a vetoed hit
+  is logged as out-of-radius, so evidence seen while pre-swap confirmations are still in the window is thrown away.
+- **conf_defer.py dN (defer, don't discard).** Every in-radius conflict is logged as evidence as in base; a prototype
+  may only be remapped once its last N entries hold no confirmation. d5 killed by its pre-registered line (swap -2.7
+  held-out, -4.8 bg 0.2, -4.9 s49). d3: 0 false remaps on all 24 runs, swap within 0.8 of base on the 18 old runs
+  (70.9/71.1/71.4 vs 71.7/71.0/71.6), but s49 66.9 vs 69.7 (-2.8), worse than z5 (68.1). Deferring recovers the
+  non-confusable worlds but not the confusable one.
+- **Decision: z5 stays the default.** A confirmation gate on its own costs swap in every world; as a lifter on top of
+  the rival test (z5) it only acts where the rival test fired.
+
+### Why s49 resists confirmation rules (untested mechanism, hypothesis 1 below)
+After a 4<->9 swap, real 9s now arrive labelled 4. Because 4 and 9 are confusable, some of them land inside 4
+prototypes and count as same-label confirmations. So the old cause keeps being "confirmed" by the swapped partner and
+any staleness rule waits. In non-confusable swaps (2<->3) the partner lands far from the s prototypes.
+
+### Literature insight
+Yu & Dayan 2005 (Neuron 46:681, "Uncertainty, neuromodulation, and attention"): expected uncertainty (known
+unreliability inside a context, signalled by ACh) and unexpected uncertainty (evidence that the context itself
+changed, signalled by NE) must be tracked separately, and a context switch should be inferred only when surprise
+exceeds what the known unreliability predicts. For pdp, a prototype at the 4/9 border has a high expected
+conflict rate (lures) and its rim confirmations are themselves unreliable. Both the remap evidence and the
+confirmation evidence should be read against that prototype's own baseline, not counted as equal-weight hits.
+
+### Paths closed
+- Confirmation-only veto (nN) for any N; deferred confirmation gate at N >= 5; window-free confirmation rules as a
+  replacement for z5.
+
+### Hypotheses, ranked
+1. **Neuron: core-only confirmation.** Count a same-label hit as confirmation only if d <= 0.5 x radius (rim hits
+   by a confusable partner don't confirm). Use it inside z5 (z5c). Prediction: s49 swap within 1.0 of base, 0 false
+   remaps on all 24 runs. Kill: s49 gain < +0.8 over z5, or any run > 5 false remaps. First check the mechanism:
+   count post-swap 9-labelled-4 confirmations of 4 prototypes and their d/r.
+2. **Data: label-noise world.** Permanently relabel 10% of 4s as 9 (no swap). z5 must never remap a 4 prototype
+   there. Kill: > 1 remap per run.
+3. **Neuron: per-prototype expected-conflict baseline (Yu & Dayan).** Remap only when the conflict rate in the last
+   W entries exceeds the prototype's long-run conflict rate by a margin. Prediction: replaces both rival test and z5
+   with one rule; must pass the label-noise world.
+4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap s->y; FF s49
+   swap +5 or kill < +2).
+5. Sleep consolidates remaps; SWIL.
