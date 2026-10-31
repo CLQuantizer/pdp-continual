@@ -88,10 +88,10 @@ def main():
             logs[(bg, r["seed"])] = r
     load_mnist("mnist")
     with Pool(min(8, os.cpu_count())) as p:
-        res = p.map(run, [(s, 16, dict(bg=bg), Ks) for bg, s in sorted(logs)], chunksize=1)
+        res = p.map(run, [(s, 16, dict(bg=bg, **globals().get("WEXTRA", {})), Ks) for bg, s in sorted(logs)], chunksize=1)
     allres = {}
     for bg, seed, out, rm in res:
-        r = logs[(bg, seed)]; R = np.array(r["rows"]); w = dict(LF.WORLD, bg=bg)
+        r = logs[(bg, seed)]; R = np.array(r["rows"]); w = dict(LF.WORLD, bg=bg, **globals().get("WEXTRA", {}))
         assert np.array_equal(out[Ks[0]][:, 1], R[:, 2])
         allres[f"{bg}_{seed}"] = {K: dict(routes=score(R, v[:, 2], v[:, 3], w, r["swap_at"], r["novel_at"]), **rm[K]) for K, v in out.items()}
     md = [globals().get("TITLE", "# Rival-aware remap evidence (`rival_remap.py`)\n"), globals().get("DOC", __doc__)]

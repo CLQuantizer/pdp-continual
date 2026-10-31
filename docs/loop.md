@@ -739,3 +739,43 @@ their evidence is normalised), not from softening each hit.
   the box for seeds 0-5 -> results/gate_probe_s49 (~50 min). Note for the replay: rival_remap.run builds the world as
   dict(LF.WORLD, bg=bg), so it must also pass swap=(4, 9) for these logs, or the assert on labels fails. Since 9 is
   also the novel digit (appears at 30%), read "novel first 300" with care in that world.
+
+## Loop 2026-10-31 08:05 UTC+8
+
+### Experiment (`rival_s49.py`, pre-registered in its docstring; results/rival_s49, results/rival_z5)
+- **A. Confusable swap 4<->9 (bg002s49, seeds 0-5, FF logs made after the default was chosen).** The fixed-ratio
+  rival test fails exactly where predicted: c1.5_uinf swap (mq30_s2) 66.3 vs base 69.7 (-3.4, kill line 2.0), first
+  post-swap remap 227 ticks vs 59, 528 rival vetoes per run. A 4 relabelled 9 sits close to the real 9 prototypes, so
+  the rival test reads the true swap as a lure. **Killed as a general rule.** (Base makes only 1.0 pre-swap false
+  remap per run in this world.)
+- **B. Extinction override z5** (rival veto lifted when the s prototype's last 5 history entries contain no
+  same-label confirmation). Safety: 0 pre-swap false remaps on all 24 runs (18 old + 6 s49; base 66 + 6). Swap:
+  held-out bg 0.02 seeds 3-11 71.6 vs base 71.7 (c1.5_uinf 71.2); bg 0.2 71.4 vs 71.6; s49 68.1 vs 69.7 (-1.6,
+  latency 77 vs 59). It misses its pre-registered s49 line (loss <= 1.0), so "z5 fully fixes confusable swaps" is
+  killed, but z5 dominates c1.5_uinf on every line. **New default store: a25w250h2k2_c1.5_uinf_z5.**
+
+### Literature insight
+Gershman, Blei & Niv 2010 (Psychological Review 117:197, "Context, learning, and extinction"): an animal infers a
+new latent cause not because one observation is surprising, but because the old cause's predictions stop being
+confirmed; scattered surprises inside a stream that still confirms the old cause are absorbed by it. For pdp, a lure
+(a borderline 9 in a 4 prototype) arrives while the 4 prototype keeps getting real 4s; a true relabelling stops every
+confirmation. So the remap test should ask "has this prototype stopped being confirmed?", which needs no distance
+ratio between classes and does not care whether the pair is confusable. z5 is the crudest form of this; it already
+beats the geometric rival test everywhere.
+
+### Paths closed
+- Fixed-ratio rival test as a stand-alone rule (fails the confusable swap).
+
+### Hypotheses, ranked
+1. **Neuron: confirmation trace replaces the rival test.** Drop the distance ratio entirely: count a conflict hit
+   only when the prototype's leaky confirmation trace (tau ~ 5 entries) is below a threshold. Prediction: 0 pre-swap
+   remaps on all 24 runs and s49 swap within 1.0 of base (z5 is -1.6 because the rival test still vetoes the first
+   hits). Kill: any run > 5 pre-swap remaps.
+2. **Data: label-noise world.** Permanently relabel 10% of 4s as 9 (no swap). A confirmation rule must never remap a
+   4 prototype there, since real 4s keep confirming it. Kill for z-style rules: > 1 remap per run.
+3. **Neuron: z sensitivity (z3, z8).** If z3 closes the s49 gap without false remaps, the window is a free choice;
+   if z3 leaks, the rule is a tuned point. Kill: z3 and z8 both break a line.
+4. **Training: store remap tells the cortex.** After a store remap s->y, raise the FF wake LR for arrivals labelled
+   y near s for 300 ticks. Prediction: FF swap first 300 +5 on s49 (FF 67.2). Kill: < +2.
+5. Self-normalised rival threshold (demoted: the confirmation idea makes the ratio unnecessary); sleep consolidates
+   remaps; SWIL.

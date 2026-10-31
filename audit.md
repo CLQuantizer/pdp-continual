@@ -408,3 +408,12 @@ star and makes "is sleep organically useful?" a measurable question.
 - Closed: graded (CA1-like) rival weighting (`rival_fresh.py`). It keeps 0 false remaps but delays the first true
   remap and loses 2-3 swap points (g1-2) or 11-16 (g1.2-3). The remap is an identity decision; a step per hit is
   better than a ramp. Next decisive test: swap a confusable pair (4<->9).
+
+## Update 2026-10-31 08:05 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Confusable swap 4<->9 (`rival_s49.py A`, FF logs bg002s49 seeds 0-5): the fixed-ratio rival test (c1.5_uinf) loses
+  3.4 swap points vs base (66.3 vs 69.7) and remaps 4x later, because a relabelled 4 sits next to the real 9
+  prototypes. Closed as a general rule.
+- **New default store: a25w250h2k2_c1.5_uinf_z5.** The rival veto is lifted when the prototype's last 5 history
+  entries hold no same-label confirmation (extinction / latent-cause idea, Gershman, Blei & Niv 2010). 0 pre-swap
+  false remaps on all 24 runs; swap equal to base on the 18 old runs and -1.6 on the confusable swap (c1.5_uinf
+  -3.4). Next: replace the rival test by a confirmation trace alone, and a label-noise world as its kill test.
