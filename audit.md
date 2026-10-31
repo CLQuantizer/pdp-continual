@@ -582,3 +582,14 @@ star and makes "is sleep organically useful?" a measurable question.
 - Cause: copies win ~90% of twin hits after a swap, originals 10-16%, and each original win flips the answer back.
   Next: majority-of-recent-hits twin retrieval, then copy seeded from the contradicting items, then label noise.
 - z5 stays default; m0.3n4hinf stays the move-store candidate.
+
+
+## Update 2026-11-01 06:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Killed as pre-registered: majority-vote twin retrieval (`majority_twin.py`). Selected m0.3n4c600v10; held-out
+  fresh seeds 66-83: 0 committed false remaps (pass) but ans_lat +15.2 vs z5 (bar -8) and swap first 300 -12.2 vs
+  m0.3n4 (bar -2). Voting moves swap300 by about +1 point only.
+- The 05:00 cause is withdrawn: original wins flipping the answer back are not what makes the copy store slow.
+  Diagnostic `copy_cap_diag.py`: the per-class cap is not it either (no-cap variant identical). Copies are made as
+  early as moves (57.6 vs 56.4 ticks) yet answers trail by ~30 ticks.
+- Next: error attribution on post-swap mistakes (which prototype answered: unpaired original, masked twin, copy),
+  then content-seeded copies (pattern separation), then label noise.

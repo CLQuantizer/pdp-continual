@@ -1672,3 +1672,44 @@ latest theta cycle.
    (flicker as a standing border code) with <= 1 committed remap per stream; a move store should ping-pong.
 4. **Training: routed scoring** of the winning copy store on the cached FF logs via the j+0.0b arbiter
    (lifetime, returns, swap first 300) before it goes in-loop.
+
+## Loop 2026-11-01 06:00 UTC+8
+
+### Experiment: majority-vote twin retrieval (`majority_twin.py`, `results/majority_twin/`)
+- Pre-registered H11 (doc string): copy-then-prune storage unchanged; answer with the twin holding the majority of
+  the last K labelled twin hits (tie: original). Variants m0.3n4c600v10, m0.3n4c600v5, m0.3n4c300v10; selected
+  m0.3n4c600v10 on dev seeds 12-29. Held-out fresh seeds 66-83 (never used).
+- **Killed.** Committed false remaps 0 on held-out (pass), dev seed 26 1 (pass), pre_acc unchanged, but ans_lat
+  +15.2 ticks vs z5 (bar -8) and swap first 300 -12.2 vs m0.3n4 (bar -2): held-out s49f/bg002f swap300 45.6/47.5
+  vs last-win 44.2/47.1, m0.3n4 58.5/59.1, z5 51.6/51.8. K=5 and K=10 are indistinguishable.
+- Diagnostic `copy_cap_diag.py` (dev only): lifting the 2k class cap during copies changes nothing (identical
+  numbers). First copy after the swap 57.6 ticks vs m0.3n4 first move 56.4 and z5 70.3. Copies are on time; the
+  ~30-tick answer deficit arises after the copy.
+- The 05:00 explanation (original wins flip the last-win answer back) is withdrawn as the main cause; it is worth
+  at most ~1 point.
+
+### Literature insight
+Yassa & Stark 2011 (Pattern separation in the hippocampus, Trends Neurosci 34:515-525): DG/CA3 give a new
+experience that overlaps an old one a decorrelated code; overlap that is kept gets completed to the old memory.
+Our copy sits at exactly the original's coordinates, so the twins are separated by label only and every border
+item is resolved by pair bookkeeping (masking, credit rules) instead of by content. A move store has no such
+contest. Prediction: the deficit comes from items that hit a pair whose arriving label is neither twin's, or from
+unpaired originals near the copies; a copy displaced toward the contradicting items should answer like a move.
+
+### Paths closed
+- Twin retrieval rules (last-win, majority of 5 or 10): neither fixes the copy store's latency.
+- Class-cap eviction on copy: not involved.
+
+### Hypotheses, ranked
+1. **Diagnostic first (decides the fork): error attribution.** For swapped-class arrivals in the first 300 ticks,
+   log which prototype answered when the copy store is wrong and the move store right: (a) unpaired original,
+   (b) a twin pair whose copy is masked, (c) the copy itself. Kill "pairing bookkeeping" if (a) dominates (>60%).
+2. **Neuron/architecture: content-seeded copy (pattern separation).** Place the copy at the mean of the
+   contradicting items that made the prototype hot. Prediction on fresh held-out seeds 84-101: committed false
+   remaps <= 4, ans_lat <= z5 - 8, swap300 >= m0.3n4 - 2. Kill: any bar missed.
+3. **Algorithm: evidence carries across pairs.** Contradictions that hit a paired prototype currently add nothing
+   to the (s, y) evidence counter, so a second hot prototype needs fresh evidence; count them. Prediction: more
+   copies in the first 300 ticks and swap300 within 2 of m0.3n4.
+4. **Data: label-noise world** (10% of 4s permanently labelled 9): a copy store should hold both twins with
+   <= 1 committed remap per stream; a move store ping-pongs.
+5. **Training: routed scoring** of any copy store that passes, via the j+0.0b arbiter on cached FF logs.

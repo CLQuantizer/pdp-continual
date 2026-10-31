@@ -712,3 +712,10 @@ generator, not every raw image), and its size and sleep cost are reported.
   leaves 0 on 18 held-out streams. But answering with whichever twin won last makes the new label slower than the
   plain store, because the old twin still wins 10-16% of hits after a swap. Retrieval must integrate evidence
   (Gold & Shadlen 2007), not follow the last sample.
+
+- 2026-11-01 06:00 UTC+8: the copy store's slowness is not in the retrieval rule. Answering by a majority of the
+  last ten twin hits instead of the last one changes almost nothing (swap first 300 up about a point, new-label
+  latency still 15 ticks worse than the plain store). Lifting the class cap changes nothing at all. Copies are made
+  as early as moves, so the delay sits after the copy. A copy at exactly the original's location is pattern
+  completion, not separation (Yassa & Stark 2011): the twins differ only by label, so every border item is decided
+  by bookkeeping rather than content. Next: find which prototype answers wrong after a swap.
