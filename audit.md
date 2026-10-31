@@ -522,3 +522,8 @@ star and makes "is sleep organically useful?" a measurable question.
   j+0.0b: s49 3-5 96.18 / 77.8 vs c3 96.12 / 74.8 (+1.5 above the c frontier at matched firing), bg002 6-8
   95.90 / 78.2 vs 95.86 / 75.2 (+1.9), bg 0.2 lifetime 94.99 vs 94.70. Swap first 300 about 1 point lower.
 - Router candidate moves from c3 to j+0.0b, pending a label-noise world and an in-loop run.
+
+## Update 2026-10-31 22:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: clock-decayed arbiter counts (`arbiter_decay.py`). Half-life 2000 recovers about 1 point of swap first 300
+  (s49 3-5 67.3 vs 66.0, bg002 6-8 71.0 vs 70.1) but costs about 2 returns (75.8 vs 77.8, 76.3 vs 78.2); every
+  half-life 500-8000 lies on that trade. Class-keyed tables lower lifetime everywhere. j+0.0b stays the candidate.

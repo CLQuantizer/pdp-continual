@@ -678,3 +678,6 @@ generator, not every raw image), and its size and sleep cost are reported.
   on disagreements, binned by both systems' margins (Daw, Niv & Dayan 2005), beats every fixed store-margin route on
   held-out worlds: +1.5 to +1.9 returns at matched firing with higher lifetime, and the highest lifetime seen yet
   without the old FF-margin route. Next: label-noise kill test, then in-loop.
+- 2026-10-31 22:00 UTC+8: don't forget on a clock. Decaying the arbiter's counts buys back swap only by throwing
+  away the stable-period evidence that makes the store trustworthy at a return (about -2 returns for +1 swap).
+  Volatility should set the forgetting rate (Behrens et al. 2007): forget when the change detector fires.

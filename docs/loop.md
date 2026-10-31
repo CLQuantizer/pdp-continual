@@ -1331,3 +1331,42 @@ complementary; Daw et al. say how to choose between complementary systems moment
 3. **Neuron/gating: forgetting counters.** Beta counts with exponential decay (half-life 2000 ticks) so reliability
    tracks swaps. Prediction: recovers the 1-point swap-first-300 cost at equal lifetime. Kill: swap gain < 0.5.
 4. **Training: return-triggered replay** (carried): targeted sleep on a class's store prototypes at return onset.
+
+## Loop 2026-10-31 22:00 UTC+8
+
+### State
+21:00 made the calibrated arbiter j+0.0b the router candidate; its cost was about 1 point of swap first 300. Its
+hypothesis 3 (forgetting counters) is offline-testable on the cached runs, so it ran first. VPS idle; run on the box
+(~10 s, cached store/FF logs).
+
+### Result (`arbiter_decay.py`, results/arbiter_decay)
+- Pre-registered: Beta counts decay with half-life HL (500-8000 ticks), and a class-keyed variant (table also keyed by
+  the store's predicted class). Selected on s49 0-2 for best swap first 300 with lifetime >= j+0.0b - 0.02 and returns
+  >= j+0.0b - 0.5. Prediction on held-out: swap >= +0.5 under the same bars.
+- Selected d2000b. Held-out swap +1.3 (s49 3-5) and +0.9 (bg002 6-8) at equal lifetime, but returns -2.0 and -1.9
+  (75.8 vs 77.8, 76.3 vs 78.2), consistent across seeds. **Fails.** Every half-life is on the same trade.
+- Class-keyed table: lower lifetime everywhere (s49 96.11 vs 96.18, bg 0.2 94.84 vs 94.99), no swap gain. **Killed.**
+- Side note: d2000b dominates c3 on lifetime, returns and swap in both held-out swap worlds, so it is a valid point
+  if swap is weighted over returns. j+0.0b stays the candidate.
+
+### Literature insight
+Behrens, Woolrich, Walton & Rushworth 2007 (Nat Neurosci 10:1214): people set their learning rate from an estimate
+of the environment's volatility, high when contingencies change and low when they hold. A fixed half-life is the
+volatility-blind version, and our numbers show its cost precisely: the evidence that makes the store trustworthy at a
+return is old evidence from a stable stretch, and a clock forgets it. The project already has a change detector (the
+z5 extinction override that remaps store slots on a swap); reliability should forget when it fires, and only then.
+
+### Paths closed
+- Clock-decayed arbiter counts (any half-life 500-8000) as an outward move: a slide along returns vs swap.
+- Class-keyed arbiter table: dilutes evidence, lowers lifetime.
+
+### Hypotheses, ranked
+1. **Neuron/gating: change-gated forgetting.** Reset (or decay by 0.5) the arbiter counts only when z5 remaps a store
+   slot, and only in rows touched by that class's disagreements. Prediction: keeps j+0.0b returns (within 0.5) and
+   gains >= +0.5 swap first 300 on both held-out swap worlds. Kill: either bar missed. Needs remap events from the
+   cached runs (check whether Z logs carry remap ticks; else re-run gate_probe with logging).
+2. **Data: label-noise world (kill test for the arbiter, carried).** 10% of 4s permanently labelled 9. Prediction:
+   j+0.0b lifetime >= c3. Kill: below mq30_s2.
+3. **Architecture: arbiter in-loop (carried).** life.py with j+0.0b routing, s49 and bg002, seeds 0-8. Prediction:
+   lifetime >= +0.15 and returns >= +5 over mq30_s2, swap first 300 within 1.5. Kill: lifetime gain < 0.05.
+4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.
