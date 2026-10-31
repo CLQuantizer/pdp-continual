@@ -1630,3 +1630,45 @@ once one label wins consistently.
    per stream. This is what makes the candidate safe or not; run before promoting it.
 4. **Training: routed scoring of m0.3n4hinf on the cached FF logs** (lifetime, returns, swap first 300 via j+0.0b)
    before it goes in-loop. Cheap; do with 3.
+
+## Loop 2026-11-01 05:00 UTC+8
+
+### Experiment: copy, then prune (`copy_prune.py`, `results/copy_prune/`)
+- Pre-registered H10 (doc string): when a remap would fire, copy the hot prototypes under the new label and keep
+  the originals as twins; a hit on a twin credits the twin whose label arrived; retrieval answers with the twin
+  that won most recently; a twin with no win for P ticks is deleted. Selected m0.3n4c600 on dev seeds 12-29.
+- **Killed on latency, but it solves false remaps.** Committed false remaps: dev seed 26 68 (m0.3n4) / 22
+  (m0.3n4hinf) -> 1; held-out fresh seeds 48-65: 0 on 18 streams; pre-swap store accuracy unchanged (91.90).
+  But the store answers the new label later than even z5: held-out ans_lat (3 correct new-label answers in a row)
+  103.8/113.7 vs z5 92.3/100.4 (s49f/bg002f, +12.4 mean, bar was -8), swap first 300 45.1/46.7 vs z5 52.0/51.5 and
+  m0.3n4 57.1/58.8.
+- New metric note: on held-out, m0.3n4's store-only answer latency gain over z5 is 9-24 ticks (ans_lat), close to
+  its first-remap gain; first-remap latency is a fair proxy for moves, not for copies.
+- Diagnostic (seeds 48, 50, s49f): copies are made on time (t+61 to t+110, like moves) and win 88-90% of twin hits
+  in the first 300 ticks, but the originals keep winning 10-16% (9-images now labelled 4 landing on old 4
+  prototypes near the border), so they are never pruned and the last-win answer flips back to the old label after
+  each of those hits. The loss is in the retrieval rule, not the storage rule.
+
+### Literature insight
+Gold & Shadlen 2007 (The neural basis of decision making, Annu Rev Neurosci 30:535-574): perceptual choices
+integrate noisy evidence to a bound; a choice that follows only the last sample is the worst-case integrator.
+Our twin retrieval is exactly that: with 90/10 support for the copy after a swap, answering by the most recent win
+gives the old label on every query that follows an original win, while a majority over the last ~10 twin hits
+would almost never err. Jezek et al.'s flicker settles toward the better supported map, it does not follow the
+latest theta cycle.
+
+### Paths closed
+- Last-win twin retrieval (any P): safe (0 committed false remaps on held-out) but slower than z5 on the new label.
+- Storage-level fixes for false remaps (floors, hysteresis) are superseded: deferring the rewrite removes them.
+
+### Hypotheses, ranked
+1. **Neuron/retrieval: evidence-integrated twin answer.** Answer with the twin holding the majority of the last 10
+   twin hits (tie: original), pruning unchanged. Prediction on fresh held-out seeds 66-83 (dev 12-29 for P):
+   committed false remaps <= 4 total, ans_lat <= z5 - 8, swap first 300 >= m0.3n4 - 2. Kill: any bar missed.
+2. **Architecture: seed the copy from the evidence.** Place the copy at the mean of the contradicting items that
+   made the prototype hot, not at the original's location, so twins separate by content as well as label.
+   Prediction: fewer original wins after a swap (< 5%) and swap first 300 >= m0.3n4.
+3. **Data: label-noise world.** 10% of 4s permanently labelled 9: a copy store should keep both twins alive
+   (flicker as a standing border code) with <= 1 committed remap per stream; a move store should ping-pong.
+4. **Training: routed scoring** of the winning copy store on the cached FF logs via the j+0.0b arbiter
+   (lifetime, returns, swap first 300) before it goes in-loop.

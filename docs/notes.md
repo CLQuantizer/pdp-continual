@@ -707,3 +707,8 @@ generator, not every raw image), and its size and sleep cost are reported.
   after 22 events instead of 68 but cannot stop the first false move. Same-seed s49f/bg002f runs share their
   pre-swap stream, so count streams, not runs. Flicker belongs in retrieval, not storage (Jezek et al. 2011).
 
+- 2026-11-01 05:00 UTC+8: copy, then prune works as storage and fails as retrieval. Keeping the old prototype and
+  adding a relabelled copy, deleting whichever stops winning, takes seed 26 from 68 false remap events to 1 and
+  leaves 0 on 18 held-out streams. But answering with whichever twin won last makes the new label slower than the
+  plain store, because the old twin still wins 10-16% of hits after a swap. Retrieval must integrate evidence
+  (Gold & Shadlen 2007), not follow the last sample.

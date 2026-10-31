@@ -574,3 +574,11 @@ star and makes "is sleep organically useful?" a measurable question.
 - Same-seed s49f/bg002f runs share the pre-swap stream: false-remap counts are per stream (18 per 36 runs).
 - Store candidate m0.3n4hinf; z5 stays default. Next: copy-then-prune remap, label-noise world, routed scoring.
 
+
+## Update 2026-11-01 05:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Killed on its latency bar, but solves false remaps: copy-then-prune remap (`copy_prune.py`). Committed false
+  remaps 68 -> 1 on dev seed 26 and 0 on 18 held-out streams, pre-swap accuracy unchanged; but answering by the
+  twin's most recent win makes the new label slower than z5 (ans_lat +12 ticks, swap first 300 -6 points).
+- Cause: copies win ~90% of twin hits after a swap, originals 10-16%, and each original win flips the answer back.
+  Next: majority-of-recent-hits twin retrieval, then copy seeded from the contradicting items, then label noise.
+- z5 stays default; m0.3n4hinf stays the move-store candidate.
