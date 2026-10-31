@@ -647,3 +647,7 @@ generator, not every raw image), and its size and sleep cost are reported.
      varied replay to remove awake replay's bias; slow waking + probe trigger.
 7. ~~**Adaptation test.**~~ done (`swap.py`): stores turn over by counts, conflict wrecks retention between sleeps. Swap two digits' labels mid-stream and measure
    how fast each method drops the old rule.
+
+- 2026-10-31 12:05 UTC+8: the never-sleeping FF cortex at wake LR x1 is not a slow learner on a label swap (new label
+  49-69% within 300 ticks, ~85% by 1500), so cortex-vetted store confirmation is useless at that rate. A CLS-style
+  check needs the learning-rate gap; testing wake LR x0.1 (results/gate_probe_s49wl1).

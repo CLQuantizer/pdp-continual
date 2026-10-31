@@ -909,3 +909,43 @@ discriminating signal for an impostor confirmation is cortical disagreement, not
 3. **Data: label-noise world** (10% of 4s permanently labelled 9, no swap): z5 and hyp 1 must not remap. Kill: > 1 per run.
 4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap; FF s49 swap +5,
    kill < +2).
+
+## Loop 2026-10-31 12:05 UTC+8
+
+### Experiment (pre-registered in the docstring; results/cortex_conf_s49, results/cortex_conf)
+- **cortex_conf.py cv (cortex-vetted confirmation).** A same-label hit on prototype s confirms (history 0) only if
+  the FF cortex's logged prediction for that arrival is s; otherwise it is a neutral entry. s49 swap (mq30_s2): cv
+  68.2, z5 68.1, base 69.7. 0 pre-swap false remaps on all 24 runs; old-run swap identical to z5. **Killed (gain
+  < +0.8).**
+- **Diagnostic: the cortex is not slow.** On true 4s and 9s after the swap, FF says the new label 49-69% of the time in
+  ticks 0-300, 82-90% in 300-1500, 93-94% after. It vetoes 2.5% of pre-swap confirmations and only 3.5% of post-swap
+  confirmations on 4/9 prototypes: it agrees with the impostors, so it cannot reject them.
+- **Decision: z5 stays the default.** The store's swap edge lives only in the first ~300 ticks, where the cortex is a
+  coin flip and the store remaps after ~60-77 ticks.
+
+### Literature insight
+Lisman & Grace 2005 (Neuron 46:703) put a comparator in CA1: it matches CA3's recalled prediction against the direct
+entorhinal (cortical) input and signals novelty when they disagree, which gates new encoding. That comparator only
+works if the two inputs carry different time constants: CA3 recall reflects the stored past, the entorhinal input the
+present. McClelland, McNaughton & O'Reilly 1995 make the same point at system level: complementarity needs a
+learning-rate gap. In pdp the FF cortex at wake LR x1 relabels a swapped digit within a few hundred ticks, as fast
+as the store remaps, so there is no "old" signal for a comparator to use. The earlier finding that slow waking (wake
+LR x0.3 to x0.1) is free or nearly free on anytime accuracy is therefore also an architectural choice: it is what
+makes the cortex a usable reference for the store.
+
+### Paths closed
+- Cortex-vetted confirmation with the current fast (wake LR x1) never-sleeping cortex.
+
+### Hypotheses, ranked
+1. **Training: slow cortex makes vetting work.** With wake LR x0.1 the FF should still call a swapped digit by its
+   old name for >= 1000 ticks. Prediction (on gate_probe_s49wl1 logs): FF old-name share in ticks 0-300 >= 80%, and cv
+   gives s49 swap >= z5 + 0.8 with <= 1 false remap per run. Kill: old-name share < 60% or cv gain < +0.8.
+   Logs launched 12:14 UTC+8 on the box (~45-60 min); next loop runs `cortex_conf.py A` against them (point LOGS
+   at results/gate_probe_s49wl1, out results/cortex_conf_s49wl1).
+2. **Neuron: pattern-separated store space** (fixed sparse k-WTA expansion, ~2000 units, 5% active, dentate-like).
+   Prediction: real-member relative weight rises from 0.59 to >= 0.7 and the impostor-vs-member gap to >= 0.05.
+   Kill: gap < 0.03.
+3. **Architecture: comparator remap.** Count an in-radius conflict as strong evidence (bypass the rival veto) only
+   when the store's prototype label and the slow cortex agree with each other but disagree with the given label (the
+   CA1 mismatch). Needs hyp 1's slow cortex. Prediction: s49 swap >= base, 0 false remaps. Kill: > 1 per run.
+4. **Data: label-noise world** (10% of 4s permanently labelled 9, no swap): z5 must not remap. Kill: > 1 per run.

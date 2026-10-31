@@ -23,9 +23,12 @@ from data import load_mnist
 
 def run(args):
     seed, days, w = args
+    w = dict(w); wl = w.pop("_wl", None)
     w = dict(LF.WORLD, **w)
     xtr, ytr, _, _ = load_mnist("mnist")
     cfg = dict(LF.DEFAULTS, **LF.POLICIES["none"])
+    if wl is not None:
+        cfg["wake_lr"] = wl  # slow cortex (loop 12:05 UTC+8 31 Oct)
     ticks = days * w["day"]
     world, mach = LF.World(xtr, ytr, ticks, seed, w), LF.Machine(cfg, seed)
     seen_t = np.full(10, -10 ** 9)
@@ -109,7 +112,8 @@ def main():
     ap.add_argument("--worlds", nargs="+", default=["bg002", "ctx2bg0"])
     ap.add_argument("--out", default="results/gate_probe")
     a = ap.parse_args()
-    W = dict(bg002=dict(bg=0.02), ctx2bg0=dict(bg=0.0, ctx=2), bg02=dict(bg=0.2), bg002s49=dict(bg=0.02, swap=(4, 9)))
+    W = dict(bg002=dict(bg=0.02), ctx2bg0=dict(bg=0.0, ctx=2), bg02=dict(bg=0.2), bg002s49=dict(bg=0.02, swap=(4, 9)),
+         bg002s49wl1=dict(bg=0.02, swap=(4, 9), _wl=0.1))
     os.makedirs(a.out, exist_ok=True)
     load_mnist("mnist")
     jobs = [(s, a.days, W[k]) for k in a.worlds for s in a.seeds]

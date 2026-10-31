@@ -440,3 +440,14 @@ star and makes "is sleep organically useful?" a measurable question.
   geometric confirmation rule can separate them. Closes all store-geometry confirmation rules.
 - Default stays a25w250h2k2_c1.5_uinf_z5. Next: cortex-vetted confirmation (a same-label hit confirms only if the FF
   cortex also predicts that label), then a pattern-separated store space.
+
+## Update 2026-10-31 12:05 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: cortex-vetted confirmation inside z5 (`cortex_conf.py`, rule cv). s49 swap 68.2 vs z5 68.1 (need +0.8);
+  0 pre-swap false remaps on all 24 runs, old runs unchanged. Safe but useless.
+- Why: the CLS premise "the slow cortex still knows a 9 is a 9" is false for the current never-sleeping FF at wake LR
+  x1. On true 4s and 9s after the swap, FF already gives the new label 49-69% of the time in the first 300 ticks and
+  82-90% in ticks 300-1500, so it agrees with the impostor and vetoes only 3.5% of post-swap confirmations.
+  In this world the cortex is as fast as the store; pdp has no slow learner at the swap.
+- Default stays a25w250h2k2_c1.5_uinf_z5. Running: FF logs with wake LR x0.1 on s49 seeds 0-5
+  (`gate_probe.py --worlds bg002s49wl1`, results/gate_probe_s49wl1, launched 12:14 UTC+8 on the box) to retest cv
+  with a genuinely slow cortex.
