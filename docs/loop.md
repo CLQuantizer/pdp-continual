@@ -1535,3 +1535,50 @@ it is what bought swap speed here without touching returns.
 3. **Architecture: arbiter in-loop (carried).** life.py with j+0.0b answering and the winner of 1 as the store;
    lifetime / returns within 0.1 / 0.5 of post-hoc. Kill: in-loop returns > 1 below post-hoc.
 4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.
+
+## Loop 2026-11-01 03:00 UTC+8
+
+### Experiment: a count floor on confidence-weighted remap (`guard_remap.py`, `guard_remap_confirm.py`; results/guard_remap, results/guard_remap_confirm)
+- Tests 02:00's open problem: m0.3 (a contradiction counts twice toward remap when the store's relative margin >= 0.3)
+  gave +2.4 to +4.3 swap first 300 with returns flat, but showed transient false remaps in 3 of 21 cached runs.
+  With H=2, K=2 a doubled contradiction makes a prototype hot by itself, so a remap can rest on 2 arrivals.
+  H8 guard 'n{N}': a remap s->y is allowed only if >= N distinct in-radius, rival-passing contradictions s->y
+  arrived in the last 250 ticks. Selection on the 21 cached runs (zero false remaps, lowest latency); test on fresh
+  store-only seeds 12-17 in s49 (4<->9) and bg002 (2<->3) plus routed bars on the cached runs.
+- **Killed.** Selected m0.3n3 (cached: 0 false remaps, latency 60 vs 73; swap +2.3 / +2.4 / +3.7 / +3.6 on s49 3-5,
+  bg002 6-8, bg002a, bg002b, returns -0.3 to +0.2). Fresh seeds 12-17: 0.50 false remaps per run (seed 13, both
+  worlds). Unguarded m0.3 had 3.33 per run there (seed 14: 12 events), so false remaps are far commoner than the
+  21 cached runs suggested.
+- Post-hoc m0.3n4 met every H8 bar on seeds 12-17 (0 false remaps, latency 60 vs 72). Confirmation on 24 more fresh
+  seeds (18-29, both worlds), pre-registered: **killed**. Latency 52.5 vs 71.4 (-19), and 22 of 24 runs are clean,
+  but seed 26 (the same pre-swap stream in both worlds) has 68 pre-swap remap events: 34 4->9 and 34 9->4 from
+  t 19361 until the swap at 38400. m0.35n4 shows the same runaway (32 events).
+- What this establishes: the failure is not too few observations but no hysteresis. Once a confident 4/9 prototype
+  is moved, the moved prototype is itself confidently matched by the other class's items, its contradictions are
+  doubled, and the pair ping-pongs indefinitely. A count floor only delays the first flip. The default z5 store has 0
+  false remaps on all 57 runs (21 cached + 36 fresh).
+
+### Literature insight
+Wills, Lever, Cacucci, Burgess & O'Keefe 2005 (Attractor dynamics in the hippocampal representation of the local
+environment, Science 308:873-876): as a box is morphed step by step between a square and a circle, CA1 place cells
+switch between the two maps abruptly and coherently, and which map an intermediate shape gets depends on the path
+taken (the representation shows hysteresis, as expected of attractor states). Our store's remap is a switch with
+no hysteresis: the evidence needed to move a prototype back is the same as the evidence that moved it. Seed 26's
+4<->9 ping-pong is what a hysteresis-free switch does on confusable classes, and making each contradiction count
+more just makes the flips faster.
+
+### Paths closed
+- Count floors on weighted remap (n3, n4, any q in 0.3-0.35): they delay but cannot stop runaway oscillation.
+- FF-agreement gating of the doubled credit (m0.3f, exploratory): 0 false remaps on cached runs but keeps only about
+  a third of the swap gain (+0.3 to +1.8), because the cortex has not learned the new label in the first ~60 ticks.
+
+### Hypotheses, ranked
+1. **Architecture/gating: remap hysteresis.** A prototype moved within the last T ticks (T in 2000, 8000) gets no
+   double credit and needs H+1 contradictions to move again, so a reverse remap costs more than the forward one.
+   Prediction on fresh seeds 30-41 (both worlds) plus seed 26: m0.3 with hysteresis has <= z5 + 0.2 false remaps per
+   run, no run with > 4 events, and latency <= z5 - 8. Kill: any runaway (> 4 events) or latency gain < 8.
+2. **Neuron: credit only for one-sided confidence.** Double only if the contradicting label's own prototypes are far
+   (d_y > 2 d), so 4/9 border items never get double credit. Prediction: seed 26 clean, keeps >= 60% of m0.3's swap
+   gain. Kill: runaway on any of 36 fresh seeds.
+3. **Data: label-noise world.** 10% of 4s permanently labelled 9: the case that hysteresis must survive. Run after 1.
+4. **Training: arbiter in-loop (carried).** Blocked on choosing the store; keep z5 as the in-loop store until 1 passes.

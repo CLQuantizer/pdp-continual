@@ -697,3 +697,7 @@ generator, not every raw image), and its size and sleep cost are reported.
   swap first 300 in every world, with returns and lifetime unchanged, the first swap gain since 18:00 that costs no
   returns. It fails its pre-registered bar only on rare transient false remaps (2 of 21 runs). A mismatch counts in
   proportion to the expectation it violates (Kumaran & Maguire 2006). Next: a guard against false remaps, then label noise.
+- 2026-11-01 03:00 UTC+8: the confident-remap gain is real (latency -19 ticks on 24 fresh seeds) but unsafe:
+  one fresh stream in 12 ping-pongs 4<->9 for 19000 ticks (68 remap events), and requiring 3 or 4 contradictions
+  first only delays the first flip. The default store had no false remaps on 57 runs. The store needs hysteresis
+  (Wills et al. 2005): moving a prototype back must cost more than moving it in the first place. z5 stays default.

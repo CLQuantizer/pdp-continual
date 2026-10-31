@@ -557,3 +557,11 @@ star and makes "is sleep organically useful?" a measurable question.
   remap pair (1.33 per run in those groups).
 - First swap gain with no return cost. Router stays j+0.0b; the store candidate is m0.3/m0.35 pending a false-remap
   guard and the label-noise world.
+
+## Update 2026-11-01 03:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: count floors on confidence-weighted remap (`guard_remap.py`, `guard_remap_confirm.py`). m0.3n3 (selected)
+  had 0.50 false remaps per run on fresh seeds 12-17; post-hoc m0.3n4 was clean there but on 24 more fresh seeds
+  one stream (seed 26) ping-pongs 4<->9 for the whole pre-swap period (68 events), though latency is 52.5 vs 71.4.
+  Unguarded m0.3 has 3.33 false remaps per run on seeds 12-17: the 02:00 lead is withdrawn as a default candidate.
+- z5 stays the default store (0 false remaps on 57 runs). Next: remap hysteresis (no double credit and H+1 for a
+  recently moved prototype), then the label-noise world.
