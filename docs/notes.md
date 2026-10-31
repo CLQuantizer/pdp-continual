@@ -719,3 +719,11 @@ generator, not every raw image), and its size and sleep cost are reported.
   as early as moves, so the delay sits after the copy. A copy at exactly the original's location is pattern
   completion, not separation (Yassa & Stark 2011): the twins differ only by label, so every border item is decided
   by bookkeeping rather than content. Next: find which prototype answers wrong after a swap.
+
+- 2026-11-01 07:00 UTC+8: a new memory should be on the moment it forms. The copy store was slow because a fresh
+  copy started tied with its original and ties went to the original, so the old label kept answering until the copy
+  was confirmed again. Letting the copy win at birth gives move-store latency (17 ticks faster than the plain store)
+  with no false remaps on 18 held-out streams, but swap accuracy in the first 300 ticks is still 6 points behind the
+  move store, spread over unmoved prototypes, originals winning back and copies answering wrong. In CA1 a single
+  plateau both creates and places a new field (Bittner et al. 2017); next, place the copy where its evidence is.
+

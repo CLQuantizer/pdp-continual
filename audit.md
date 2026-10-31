@@ -593,3 +593,14 @@ star and makes "is sleep organically useful?" a measurable question.
   early as moves (57.6 vs 56.4 ticks) yet answers trail by ~30 ticks.
 - Next: error attribution on post-swap mistakes (which prototype answered: unpaired original, masked twin, copy),
   then content-seeded copies (pattern separation), then label noise.
+
+
+## Update 2026-11-01 07:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Killed on swap300 only, latency fixed: copy-first twin retrieval (`seed_copy.py`). A new pair now starts with the
+  copy winning. Selected m0.3c600s; held-out fresh seeds 84-101: 0 committed false remaps, ans_lat -16.7 vs z5
+  (move-store speed), pre_acc unchanged, but swap first 300 -6.4 vs m0.3n4 (bar -2).
+- Error attribution: masked-at-birth originals were 13.5 of 110 wrong answers/run and are gone; the remaining gap
+  to the move store (~14/run) is +4.7 unpaired old-label prototypes, +3.6 originals winning back, +4.9 copies.
+- Any copy store keeps copy-first. Candidates: m0.3c600s (copy store), m0.3n4hinf (move store); z5 stays default.
+  Next: content-seeded copy placement, then evidence across pairs, label noise, routed scoring.
+

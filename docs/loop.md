@@ -1713,3 +1713,47 @@ unpaired originals near the copies; a copy displaced toward the contradicting it
 4. **Data: label-noise world** (10% of 4s permanently labelled 9): a copy store should hold both twins with
    <= 1 committed remap per stream; a move store ping-pongs.
 5. **Training: routed scoring** of any copy store that passes, via the j+0.0b arbiter on cached FF logs.
+
+## Loop 2026-11-01 07:00 UTC+8
+
+### Experiment: copy-first twin retrieval + error attribution (`seed_copy.py`, `results/seed_copy/`)
+- Code reading found the latency cause before the run: a new pair starts tied (w_o = w_c = t) and ties go to the
+  original, so every fresh copy is masked at birth and the original keeps answering the old label until the copy
+  earns its own labelled hit. Pre-registered H12: start each pair with the copy winning (w_o = t-1); storage,
+  pruning and last-win retrieval unchanged. Variants m0.3n4c600s, m0.3n4c300s, m0.3c600s; selected m0.3c600s on
+  dev seeds 12-29. Held-out fresh seeds 84-101 (never used).
+- **Killed on one bar, latency cause confirmed.** Held-out: committed false remaps 0 (pass), dev seed 26 1 (pass),
+  pre_acc -0.01 (pass), ans_lat -16.7 vs z5 (pass; s49f/bg002f 90.4/84.8 vs m0.3n4 90.8/79.4, last-win copy
+  112.9/114.4), but swap first 300 -6.4 vs m0.3n4 (bar -2): 49.5/53.3 vs 57.0/58.5.
+- Error attribution (wrong answers on swapped-class arrivals, first 300 ticks, per run, held-out): m0.3n4 84.3,
+  all from unmoved old-label prototypes. Last-win copy store 110.3 = 89.0 unpaired + 13.5 masked-at-birth originals
+  + 3.6 originals that won back + 4.2 copies. Copy-first removes the masked-at-birth errors (13.5 -> 0.6) and
+  nothing else: 98.0 = 89.0 unpaired + 3.6 originals won back + 4.9 copies. Residual gap to the move store
+  ~13.7 errors/run: +4.7 unpaired old-label prototypes, +3.6 flicker of originals, +4.9 copies answering wrong.
+- The 06:00 claim "the deficit sits after the copy" is now split: the first-answer delay was the masked-at-birth
+  rule (fixed); the swap-300 deficit is spread over three sources, none above 5 errors/run.
+
+### Literature insight
+Bittner, Milstein, Grienberger, Romani & Magee 2017 (Behavioral time scale synaptic plasticity underlies CA1 place
+fields, Science 357:1033-1036): a single dendritic plateau potential creates a new CA1 place field that is
+expressed on the very next traversal, with no further evidence needed. Formation is the decision; expression does
+not wait for confirmation. Our copy store had the opposite rule (a formed copy stayed silent until re-confirmed),
+which cost ~20 ticks of latency. The H confirming contradictions that make a prototype hot are our plateau; once
+they fire, the copy should be "on". What BTSP also does that our copy does not: the new field is placed where the
+plateau happened (the items that drove it), not on top of the old field.
+
+### Paths closed
+- Masked-at-birth copies (tie to original): closed as a design error; any copy store keeps copy-first.
+
+### Hypotheses, ranked
+1. **Neuron/architecture: content-seeded copy (BTSP placement / pattern separation).** On copy-first m0.3c600s,
+   place the copy at the mean of the in-radius contradicting items that made the prototype hot, not at the
+   original's coordinates. Targets the +3.6 flicker and +4.9 copy errors. Prediction on fresh held-out seeds
+   102-119: committed false remaps <= 4, ans_lat <= z5 - 8, swap300 >= m0.3n4 - 2. Kill: any bar missed.
+2. **Algorithm: evidence carries across pairs** (contradictions hitting a paired prototype count toward the (s, y)
+   counter). Targets the +4.7 unpaired errors: predicts more copies in the first 300 ticks (m0.3c600s 14.2 vs
+   m0.3n4 15.7).
+3. **Data: label-noise world** (10% of 4s permanently labelled 9) on m0.3c600s vs m0.3n4: copy store <= 1 committed
+   remap per stream, move store ping-pongs. This is where a copy store should earn its keep even at -6 swap300.
+4. **Training: routed scoring** of m0.3c600s via the j+0.0b arbiter on cached FF logs; the arbiter may absorb a
+   6-point store-only swap deficit if lifetime and returns hold.
