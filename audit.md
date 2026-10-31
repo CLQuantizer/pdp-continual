@@ -460,3 +460,10 @@ star and makes "is sleep organically useful?" a measurable question.
   Window explains ~2 of the 18 extra ticks vs base; the rival test on the first conflicts explains the rest.
 - Finding: in the never-sleeping life world, wake LR x0.1 costs the combined system 2.5 lifetime (93.5 vs 96.0) and
   19 swap points. Slow waking helped earlier only with sleep. Default stays a25w250h2k2_c1.5_uinf_z5, wake LR x1.
+
+## Update 2026-10-31 14:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: lifting the c1.5 rival veto by evidence accumulation inside z5: streak (`run_lift.py` r2/r3/r5), CUSUM
+  (`cusum_lift.py`), and CUSUM with retroactive credit for vetoed conflicts (`retro_lift.py`). s49 swap 68.1-68.6 vs z5
+  68.1 (bar +0.8), first post-swap remap 73-77 vs base 59; retro credit brings false remaps back on seed 1. Read with
+  Lorden 1971: the ~18-tick latency is the cost of 0 false remaps for any detector on the same per-hit evidence. z5
+  stays the default; next lever is per-hit evidence (pattern-separated store code).

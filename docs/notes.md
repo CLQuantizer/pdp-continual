@@ -656,3 +656,7 @@ generator, not every raw image), and its size and sleep cost are reported.
   costs the never-sleeping system 2.5 lifetime and 19 swap points. Impostor confirmations are closed as the cause of
   remap delay; z-window length explains ~2 ticks (z2/z3 under the +0.8 bar). The remaining ~16-tick delay is the
   c1.5 rival test on the first conflicts. A learning-rate gap only pays with consolidation (sleep), as CLS says.
+- 2026-10-31 14:00 UTC+8: three ways to lift the rival veto sooner (streak, CUSUM, CUSUM with retroactive credit) all
+  leave s49 first remap at 73-77 ticks. Treat the remap as a change detector: Lorden's CUSUM bound says delay scales
+  with log(false-alarm interval) over per-hit information, so the remaining swap gap is the price of zero false remaps
+  unless the store code makes each hit more informative (pattern separation).

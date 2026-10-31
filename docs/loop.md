@@ -982,3 +982,42 @@ which is exactly where the store should answer and the cortex should be taught o
 3. **Neuron: pattern-separated store space** (sparse k-WTA expansion, ~2000 units, 5% active). Prediction: real-member
    vs impostor weight gap >= 0.05. Kill: < 0.03. Lower priority now that impostors are not the latency cause.
 4. **Data: label-noise world** (10% of 4s permanently labelled 9): z5 must not remap. Kill: > 1 false remap per run.
+
+## Loop 2026-10-31 14:00 UTC+8
+
+### Experiments (each pre-registered in its docstring; s49 = confusable 4<->9 swap, seeds 0-5; mq30_s2 route)
+- `run_lift.py` (lift the c1.5 rival veto after a streak of L same-label in-radius conflicts on one prototype):
+  s49 swap r2 68.5, r3 68.2, r5 68.1 vs z5 68.1 (base 69.7); first post-swap remap 73/77/77 ticks (base 59).
+  0 false remaps on all 24 runs. **Killed (gain < +0.8).** Streaks are rare because a 4 prototype's post-swap hits
+  interleave true 4s now labelled 9 with impostor 9s now labelled 4.
+- `cusum_lift.py` (Page CUSUM per prototype: +1 per conflict, -P per confirmation, lift at H): cu0.5_h3 68.5,
+  cu0.5_h5 68.6, cu0.25_h3 68.5; latency 76. 0 false remaps on s49. **Killed.**
+- `retro_lift.py` (CUSUM lift plus retroactive credit: vetoed conflicts kept as latent evidence and counted once the
+  lift fires): 68.4/68.6, latency 75-76, and false remaps return on seed 1 (2). **Killed.**
+- Decision: z5 stays the default. The rival-veto timing/accounting family is closed for the s49 latency gap: no rule
+  that reuses the same per-hit evidence moved first remap below 73 ticks.
+
+### Literature insight
+Lorden 1971 (Ann. Math. Stat. 42:1897) proves Page's CUSUM is minimax-optimal for detecting a change, with detection
+delay about log(gamma)/I, where gamma is the mean time between false alarms and I is the KL divergence per
+observation between the post- and pre-change distributions. The store's remap is a change detector. Base (no rival
+test) has ~7 false remaps per run on seeds 3-11 and remaps after 59 ticks; z5 has 0 and remaps after 77. Under
+Lorden's bound that ~18-tick gap is the price of pushing gamma from ~2000 ticks to beyond a 16-day life, and no
+counting rule on the same hits can remove it; this hour's three kills are what the bound predicts. Only raising I,
+making each hit more diagnostic of "this prototype now means y", can cut latency at a fixed false-alarm rate. In pdp
+that points at pattern separation of the store code (a 4 and a 9 that look alike in pixels should land in different
+prototypes), not at the confirmation or veto rule.
+
+### Paths closed
+- Rival-veto lifting by streak, CUSUM, or retroactive credit (all under +0.8 on s49; retro credit leaks false remaps).
+
+### Hypotheses, ranked
+1. **Neuron: pattern-separated store space raises per-hit evidence.** Keep prototypes in a fixed sparse random
+   expansion (k-WTA, ~2000 units, 5% active, dentate-like). Lorden-based prediction: with the same z5 rule, s49 first
+   post-swap remap <= 65 ticks and swap >= z5 + 0.8 with 0 false remaps on 24 runs; diagnostic: real-member vs
+   impostor relative weight gap >= 0.05. Kill: latency > 70 or gap < 0.03.
+2. **Architecture/training: sleep in life.py with a slow cortex** (carried from 13:00). Prediction: wake LR x0.1 +
+   sleep lifetime >= 96.0 and returns >= 75. Kill: lifetime < 95.5 or x0.1 + sleep <= x1 + sleep.
+3. **Data: label-noise world** (10% of 4s permanently labelled 9, no swap): z5 must not remap. Kill: > 1 per run.
+4. **Training: store remap tells the cortex** (raise FF wake LR near s for 300 ticks after a remap; FF s49 swap +5,
+   kill < +2).
