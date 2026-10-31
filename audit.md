@@ -534,3 +534,9 @@ star and makes "is sleep organically useful?" a measurable question.
   (s49 3-5 96.33 vs 96.18, bg002 6-8 96.04 vs 95.90) and +2.3 / +1.0 swap first 300, but -3.4 / -4.0 returns, so it
   fails the pre-registered bar. Stale streaks block the store on returns where it is right (74-84% of blocks).
 - j+0.0b stays the router candidate. Next: episode-scoped veto (clear a class's streak when it returns).
+
+## Update 2026-11-01 00:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: episode-scoped and pair-keyed error-streak vetoes (`episode_veto.py`). Best picks e2b (s49 3-5 96.33 / 75.3,
+  swap +2.2; bg002 6-8 96.04 / 75.3, +1.0) and p2b (96.31 / 75.7, +1.8; 96.02 / 75.2, +0.7) still lose 2-3 returns
+  vs j+0.0b. Even after the reset, 84-96% of return-period blocks are store-right: the veto, not staleness, is wrong.
+- The whole hard-veto family is closed. j+0.0b stays the router candidate; next is running it in-loop.

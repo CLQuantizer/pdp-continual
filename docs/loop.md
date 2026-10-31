@@ -1410,3 +1410,43 @@ episode of a class, ended by its departure.
    store errors there, which is where a stable-error veto should help and a change detector should not fire.
 3. **Architecture: arbiter in-loop (carried).** life.py with j+0.0b (or the winner of 1), s49 and bg002, seeds 0-8.
 4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.
+
+## Loop 2026-11-01 00:00 UTC+8: episode-scoped and pair-keyed surprise vetoes (`episode_veto.py`)
+
+### Experiment (falsification)
+- Pre-registered H5 (23:00 hypothesis 1): the v{m}b error-streak veto plus an episode reset. 'e' clears class c's
+  streak before answering when label c has not been seen for >= RET_GAP ticks (causal); 'a' also releases on a
+  store-right agreement; 'ea' both; m in 2, 3, 5. Then H5b, pre-registered after H5 failed: streaks keyed by the
+  (store answer, FF answer) pair, so only a run where the FF keeps naming the same rival label vetoes ('p', 'pe').
+  Same bars as 23:00 (held-out returns within 0.5 of j+0.0b, swap first 300 >= +0.5, lifetime >= -0.02).
+  Pure re-scoring of the cached confirm_recency logs, about 12 s on the box.
+- **Both killed.** Selected e2b: held-out s49 3-5 96.33 / 75.3 / swap +2.2, bg002 6-8 96.04 / 75.3 / +1.0, so the
+  episode reset buys back only about 1 of the 3.4-4.0 lost returns. Selected p2b: 96.31 / 75.7 / +1.8 and
+  96.02 / 75.2 / +0.7. Pair keys plus reset at m = 5 (pe5b) reach returns -0.4 on s49 but the swap gain falls to
+  +1.0 / +0.0. Every variant (v, e, a, ea, p, pe, all m) sits on one trade line of roughly 1.5 returns per swap point.
+- Diagnostic: even with the reset, 84-96% of disagreements blocked during returns are ones the store had right. The
+  streaks are not stale; they are rebuilt inside the return episode by the few cases where the FF is right. A hard
+  "m strikes" switch fires on those because it ignores how rarely the store is wrong at a return.
+
+### Literature insight
+Adams & MacKay 2007 (Bayesian online changepoint detection, arXiv:0710.3742): a change detector should carry a
+run-length posterior whose update weighs each surprise against the predictive probability under the current regime
+and a hazard rate. A streak counter is that posterior with the predictive term thrown away: two store errors count the
+same whether the store is usually right 95% of the time on that bin (a return) or 50% (a fresh swap). The arbiter's
+joint table already holds that predictive probability, so the error evidence should enter it as a likelihood ratio,
+not as a veto beside it.
+
+### Paths closed
+- Hard error-streak vetoes on the store, in every form tried: per class, per (store, FF) pair, with episode reset on
+  return, with release on agreement. They trade about 1.5 returns per swap point and never pass.
+
+### Hypotheses, ranked
+1. **Architecture: arbiter in-loop (promoted).** life.py with j+0.0b as the answering route, s49 and bg002, seeds
+   0-8; prediction: lifetime and returns within 0.1 / 0.5 of the post-hoc scores (the route does not change what
+   either system learns, so any gap means the replay assumption is wrong). Kill: in-loop returns > 1 below post-hoc.
+2. **Data: label-noise world (carried).** 10% of 4s permanently labelled 9. Prediction: j+0.0b keeps lifetime
+   >= c3; a store that remaps on noise should lose. This is where the router could fail for a reason we have not seen.
+3. **Neuron/gating: likelihood-ratio arbiter.** Multiply the joint-bin odds by the BOCPD run-length posterior for
+   "store wrong on class c" with hazard 1/ (median gap between swaps); a soft version of the veto that discounts
+   errors in bins where the store is usually right. Kill: returns loss > 0.5 or swap gain < 0.5 held-out.
+4. **Training: return-triggered replay (carried).** Targeted sleep on a class's store prototypes at return onset.

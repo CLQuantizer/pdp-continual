@@ -684,3 +684,7 @@ generator, not every raw image), and its size and sleep cost are reported.
 - 2026-10-31 23:00 UTC+8: forgetting on the store's remap is too late (the store is wrong for ~75 ticks before it
   remaps), and an error-streak veto gives the highest lifetime yet but loses ~3.5 returns because streaks go stale
   while a class is away. Surprise belongs to the current episode of a class; a return should clear it.
+- 2026-11-01 00:00 UTC+8: scoping the error-streak veto to a class's current episode, or to a consistent (store, FF)
+  label pair, does not fix it: all variants trade about 1.5 returns per swap point. The streaks on returns are fresh,
+  not stale; the veto fails because it ignores how rarely the store is wrong there. Error evidence must be weighed
+  against the arbiter's own predictive probability (Adams & MacKay 2007), not used as a hard switch. Veto family closed.
