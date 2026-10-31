@@ -949,3 +949,36 @@ makes the cortex a usable reference for the store.
    when the store's prototype label and the slow cortex agree with each other but disagree with the given label (the
    CA1 mismatch). Needs hyp 1's slow cortex. Prediction: s49 swap >= base, 0 false remaps. Kill: > 1 per run.
 4. **Data: label-noise world** (10% of 4s permanently labelled 9, no swap): z5 must not remap. Kill: > 1 per run.
+
+## Loop 2026-10-31 13:00 UTC+8
+
+### Experiments
+- `cortex_conf.py C` (slow-cortex logs results/gate_probe_s49wl1): **killed**. The x0.1 cortex is genuinely slow (old
+  name 63% in ticks 0-300, 59% in 300-1500; x1 was 39% / 12%), vetoes 13.5% of post-swap confirmations, yet cv = z5
+  (49.0 vs 49.3) and first post-swap remap 76 vs 77 ticks. Combined lifetime 93.5 vs 96.0 with the fast cortex.
+- `z_window.py A/B`: z2/z3 vs z5. **z3 killed** (+0.4), z2 +0.7 (under +0.8). 0 false remaps on all 24 runs. Latency
+  75/76/77 vs base 59: the window is ~2 ticks of the 18-tick cost; the c1.5 rival test is the rest.
+
+### Literature insight
+McClelland, McNaughton & O'Reilly 1995 do not claim a slow cortex is good on its own: slow interleaved learning works
+because the hippocampus reinstates recent memories offline, so the cortex eventually gets the new information without
+overwriting the old. Kumaran, Hassabis & McClelland 2016 (Trends Cogn Sci 20:512) add that cortex can learn fast when
+new data fit existing structure, and the hippocampus carries what doesn't fit. pdp now shows both halves: with sleep,
+wake LR x0.3 was +7 anytime for free; in the never-sleeping life world the same slowing just loses 2.5 lifetime points,
+because nothing ever reinstates the store's knowledge into the cortex. A label swap is the schema-inconsistent case,
+which is exactly where the store should answer and the cortex should be taught offline, not consulted online.
+
+### Paths closed
+- Cortex-vetted store confirmation at any wake LR (x1 and x0.1).
+- Extinction-window length as the source of the z5 swap cost.
+
+### Hypotheses, ranked
+1. **Architecture/training: sleep in life.py with a slow cortex.** Add periodic sleep (store replay into FF, as in
+   the proto9 runs) to the life world with wake LR x0.1 vs x1. Prediction: x0.1 + sleep combined lifetime >= 96.0 and
+   returns >= 75 (above the fast never-sleeping 72). Kill: lifetime < 95.5 or x0.1 + sleep <= x1 + sleep.
+2. **Training: run-length rival lift.** Lift the c1.5 rival veto when the same prototype gets >= 3 consecutive
+   in-radius conflicts with one consistent new label. Prediction: s49 first remap <= 65 ticks, swap >= 69.3, <= 1 false
+   remap per run on 24 runs. Kill: false remaps return on any run.
+3. **Neuron: pattern-separated store space** (sparse k-WTA expansion, ~2000 units, 5% active). Prediction: real-member
+   vs impostor weight gap >= 0.05. Kill: < 0.03. Lower priority now that impostors are not the latency cause.
+4. **Data: label-noise world** (10% of 4s permanently labelled 9): z5 must not remap. Kill: > 1 false remap per run.

@@ -22,8 +22,10 @@ import rival_robust as RB
 class ZStore(RB.RStore):
     def __init__(self, *a, K=None, **kw):
         self.z = None
-        if K.endswith("_z5"):
-            self.z = 5; K = K[:-3]
+        import re
+        m = re.search(r"_z(\d+)$", K)
+        if m:
+            self.z = int(m.group(1)); K = K[:m.start()]
         super().__init__(*a, K=K, **kw)
 
     def nearest(self, x):

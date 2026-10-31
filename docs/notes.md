@@ -651,3 +651,8 @@ generator, not every raw image), and its size and sleep cost are reported.
 - 2026-10-31 12:05 UTC+8: the never-sleeping FF cortex at wake LR x1 is not a slow learner on a label swap (new label
   49-69% within 300 ticks, ~85% by 1500), so cortex-vetted store confirmation is useless at that rate. A CLS-style
   check needs the learning-rate gap; testing wake LR x0.1 (results/gate_probe_s49wl1).
+- 2026-10-31 13:00 UTC+8: with a genuinely slow cortex (wake LR x0.1, old name kept ~60% for 1500 ticks)
+  cortex-vetted confirmation still does nothing (s49 swap 49.0 vs 49.3, remap latency 76 vs 77), and the slow cortex
+  costs the never-sleeping system 2.5 lifetime and 19 swap points. Impostor confirmations are closed as the cause of
+  remap delay; z-window length explains ~2 ticks (z2/z3 under the +0.8 bar). The remaining ~16-tick delay is the
+  c1.5 rival test on the first conflicts. A learning-rate gap only pays with consolidation (sleep), as CLS says.

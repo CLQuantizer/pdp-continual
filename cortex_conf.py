@@ -8,7 +8,7 @@ made before learning on it) is s; otherwise it is logged as a neutral non-confir
   H1 Prediction: cv gives s49 swap (mq30_s2) >= z5 + 0.8 and <= 1 pre-swap false remap per run on all 24 runs, and
   swap within 1.0 of z5 on the 18 old runs. Kill: either of the first two lines broken.
 Diagnostic: vetoed confirmations pre-swap (cortex errors on real members) vs post-swap on 4/9 prototypes.
-Usage: python3 cortex_conf.py A|B
+Usage: python3 cortex_conf.py A|B|C
 """
 import sys, json, os
 import numpy as np
@@ -78,6 +78,14 @@ if __name__ == "__main__":
         RR.GROUPS = ((0.02, range(6), "CONFUSABLE swap 4<->9 (bg002s49), seeds 0-5"),)
         RR.OUT_OVERRIDE = "results/cortex_conf_s49"
         RR.TITLE = "# Cortex-vetted confirmation, confusable swap (`cortex_conf.py A`)\n"
+    elif part == "C":
+        # loop 13:00 UTC+8: same rule, slow cortex (wake LR x0.1) logs. Pre-registered: cv >= z5 + 0.8 on s49 swap
+        # (mq30_s2) with <= 1 pre-swap false remap per run; also compare against the fast-cortex z5 (68.1 swap, 96.0 life).
+        RR.WEXTRA = dict(swap=(4, 9))
+        RR.LOGS = (("results/gate_probe_s49wl1", 0.02, 6),)
+        RR.GROUPS = ((0.02, range(6), "CONFUSABLE swap 4<->9, SLOW cortex wake LR x0.1 (bg002s49wl1), seeds 0-5"),)
+        RR.OUT_OVERRIDE = "results/cortex_conf_s49wl1"
+        RR.TITLE = "# Cortex-vetted confirmation, slow cortex (`cortex_conf.py C`)\n"
     else:
         RR.LOGS = (("results/gate_probe", 0.02, 3), ("results/gate_probe_s345", 0.02, 3), ("results/gate_probe_s678", 0.02, 3),
                    ("results/gate_probe_s91011", 0.02, 3), ("results/gate_probe_bg02", 0.2, 6))

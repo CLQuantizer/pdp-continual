@@ -451,3 +451,12 @@ star and makes "is sleep organically useful?" a measurable question.
 - Default stays a25w250h2k2_c1.5_uinf_z5. Running: FF logs with wake LR x0.1 on s49 seeds 0-5
   (`gate_probe.py --worlds bg002s49wl1`, results/gate_probe_s49wl1, launched 12:14 UTC+8 on the box) to retest cv
   with a genuinely slow cortex.
+
+## Update 2026-10-31 13:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: cortex-vetted confirmation with a slow cortex (`cortex_conf.py C`, wake LR x0.1 logs). The cortex keeps the
+  old name ~63% in ticks 0-300 and vetoes 13.5% of post-swap 4/9 confirmations, but s49 swap 49.0 vs z5 49.3 and first
+  remap 76 vs 77 ticks. Impostor confirmations are not what delays remapping. The whole cortex-vetting line is closed.
+- Closed: shorter extinction window (`z_window.py`). z3 +0.4, z2 +0.7 on s49 (bar +0.8), 0 false remaps on all 24 runs.
+  Window explains ~2 of the 18 extra ticks vs base; the rival test on the first conflicts explains the rest.
+- Finding: in the never-sleeping life world, wake LR x0.1 costs the combined system 2.5 lifetime (93.5 vs 96.0) and
+  19 swap points. Slow waking helped earlier only with sleep. Default stays a25w250h2k2_c1.5_uinf_z5, wake LR x1.
