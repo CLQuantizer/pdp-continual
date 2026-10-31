@@ -664,3 +664,6 @@ generator, not every raw image), and its size and sleep cost are reported.
   stable index: FF trains with the label in the input, so after a 4<->9 swap its top layer moves 9 images to where 4s
   were (stale-prototype impostor rate 0.62). The store should keep pixels and measure similarity through the current
   layer-1 code at query time (0.045 vs pixels 0.077), not store codes. Random and Hebbian expansions are both closed.
+- 2026-10-31 18:00 UTC+8: a store read through the cortex is a better classifier but not a better complement:
+  at the same gate firing rate it gives exactly the pixel store's lifetime and returns. What a store adds is its
+  accuracy where the cortex is wrong, so that is the number to optimise next, not store-only accuracy.

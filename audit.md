@@ -491,3 +491,11 @@ star and makes "is sleep organically useful?" a measurable question.
 - Live: the cortex-read store is a better answerer (store-only lifetime 93.1-93.5 vs 91.4; mq30 returns 76.9 vs 72.0),
   but the route gate threshold must be re-set in code units (it fires 2.1% vs 1.1%, lifetime 95.5). Next: split store,
   remap in pixels, answer in code.
+
+## Update 2026-10-31 18:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: cortex-read store as the answering route (`split_store.py`, pixel z5 remaps, answers read through FF layer 1
+  or 1+2, gate threshold swept in code units). Held-out best 95.99 lifetime / 67.1 returns vs bar 96.0 / 74. At a
+  matched firing rate code and pixel readers lie on the same lifetime/returns curve; the 17:00 +4.9 returns was the
+  gate firing twice as often. Reading the store through the cortex is closed for remapping and answering.
+- Default unchanged: a25w250h2k2_c1.5_uinf_z5, pixel store, mq30_s2. Next: measure complement accuracy (store right
+  when FF is wrong) by time since return, and gate on that.

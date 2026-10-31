@@ -1153,3 +1153,45 @@ accuracy +2) but not change detection. Remap latency is set by the radius rule, 
    with <= 1 false remap per run. Kill: false remaps > 1 per run.
 3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9; z5 must not remap. Kill: > 1 per run.
 4. **Training: sleep in life.py with a slow cortex** (carried): lifetime >= 96.0 and returns >= 75; kill < 95.5.
+
+## Loop 2026-10-31 18:00 UTC+8
+
+### State
+17:00 commit 867524c had not reached GitHub (run ended before push); pushed, tar-synced to the VPS and published this
+hour. Pre-registered and ran 17:00 hypothesis 1 (`split_store.py`, `results/split_store`, s49 seeds 0-5, ~15 min on
+the box): one pixel z5 store remaps as before and answers three ways off the same prototypes (pixel, current FF
+layer-1 code, layers 1+2), with the gate's store-margin threshold swept in code units (q 0.2/0.3 x s 0.1-0.8),
+selected on seeds 0-2 and confirmed on 3-5.
+
+### Result
+- Killed. Held-out best code-read routes: sp1 mq20_s5 95.99 lifetime / 67.1 returns, sp12 mq20_s6 95.96 / 65.1 (bar
+  96.0 and >= 74). Pixel mq20_s2 96.01 / 71.0.
+- At matched firing rate the two readers lie on the same frontier (~1% fired: 96.0/72.0 pixel vs 95.9/71.9 code;
+  ~2% fired: 95.7/75.8 vs 95.6/75.8). The 17:00 "+4.9 returns" was the gate firing 2.1% instead of 1.1%.
+- The lifetime/returns trade is a single curve in fire rate for every store tried: returns buy lifetime one-for-one
+  through extra store answers on FF-correct items. Remapping unchanged (0 false remaps, 77 ticks).
+
+### Literature insight
+Krogh & Vedelsby 1995 (NIPS 7, ensemble ambiguity decomposition): a combined predictor gains over its members only
+through their disagreement, weighted by who is right when they disagree. Reading the store through the cortex raised
+the store's own accuracy by making it agree with the cortex, which shrinks exactly the disagreement the gate lives on.
+This is the CLS 1995 argument in ensemble terms: the hippocampal route is useful because its representation is
+separate from the cortex's, so a store indexed by cortical similarity is a worse complement even when it is a better
+classifier. Metric to watch from now on: accuracy of store answers on FF-wrong items, not store-only lifetime.
+
+### Paths closed
+- Cortex-read store as the answering route (sp1, sp12), at any gate threshold. With the 17:00 result, reading the
+  store through the cortex is closed for both remapping and answering. Default stays a25w250h2k2_c1.5_uinf_z5 with
+  pixel mq30_s2.
+
+### Hypotheses, ranked
+1. **Training/data: the frontier is set by FF errors the store can fix.** Log, per route, store accuracy on FF-wrong
+   arrivals (complement accuracy) and FF-wrong rate by tick since return. Prediction: on s49 the pixel store fixes
+   >= 40% of FF errors in the first 300 ticks after a return and < 15% elsewhere, so a gate that keys on
+   time-since-return (not margin) beats mq30_s2 by >= +2 returns at lifetime >= 96.0. Kill: complement accuracy flat
+   in time since return (ratio < 1.5). Cheap: offline on gate_probe_s49 rows plus split_store answers (save S per tick).
+2. **Neuron: radius as a quantile** (carried, pixel units now): a per-prototype 90th-percentile confirmation radius
+   admits swapped 4s as in-radius conflicts. Prediction: latency <= 65 with <= 1 false remap per run. Kill: > 1.
+3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9; z5 must not remap. Kill: > 1 per run.
+4. **Architecture/training: sleep with a slow cortex in life.py** (carried): lifetime >= 96.0 and returns >= 75;
+   kill < 95.5.
