@@ -1102,3 +1102,54 @@ pointer) and computes similarity through the current layer-1 code at query time,
    ff1 index gives a lower remap latency than ff12 on s49. Kill if ff12 is better by > 5 ticks.
 3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9; z5 must not remap. Kill: > 1 per run.
 4. **Training: sleep in life.py with a slow cortex** (carried): lifetime >= 96.0 and returns >= 75; kill < 95.5.
+
+## Loop 2026-10-31 17:00 UTC+8
+
+### Experiment (`reread_store.py`, results/reread_store; diagnostic `reread_diag.py`, results/reread_store/DIAG.md)
+16:00 hypothesis 1, in-loop life run (s49, seeds 0-5, never-sleeping life.py cortex, FF answers asserted equal to the
+gate_probe_s49 logs, 0 mismatches). Store keeps pixel prototypes; answers, nearest-prototype, radii and the c1.5 rival
+test are computed on L2-normalised FF layer-1 codes (rr1) or layers 1+2 (rr12) of the CURRENT cortex at each arrival,
+before the cortex learns it. Pixel controls reproduce rival_s49 exactly (z5 swap 68.1, latency 77).
+| Store | Store-only lifetime | Store-only returns | Swap (mq30_s2) | Lifetime (mq30_s2) | Returns (mq30_s2) | Store answers (mq30_s2) | Pre-swap false remaps / run | First post-swap remap |
+|---|---|---|---|---|---|---|---|---|
+| base | 91.4 | 84.6 | 69.7 | 96.0 | 71.8 | 1.1 | 1.0 | 59 |
+| z5 | 91.4 | 84.9 | 68.1 | 96.0 | 72.0 | 1.1 | 0.0 | 77 |
+| z5 rr1 | 93.1 | 86.3 | 67.7 | 95.5 | 76.9 | 2.1 | 2.7 | 71 |
+| z5 rr12 | 93.5 | 83.6 | 68.3 | 95.4 | 75.7 | 2.1 | 2.3 | 65 |
+- H1 killed: rr1 latency 71 (> 70), swap -0.4, and false remaps return (4 per run on 4 of 6 seeds). rr12 meets the
+  latency bar (65) but swap is only +0.2 (need +0.8) with 2.3 false remaps per run.
+- H2 killed: rr12 beats rr1 by 6 ticks (bar 5). Layer 1 is not the better index.
+- Side finding worth keeping: the store as a classifier is better through the cortex (+1.7 to +2.1 store-only
+  lifetime) and mq30_s2 returns rise +4.9, but the route gate, whose relative-margin threshold (0.2) was set in pixel
+  units, now fires twice as often (2.1% vs 1.1%) and costs 0.5 lifetime.
+- Diagnostic (seeds 0-1, first 300 ticks after the swap): in-radius conflicts 0.23 / 0.18 (rr1) vs 0.16 / 0.17 (pixels);
+  per-hit evidence rises only slightly, so remap latency barely moves. The code separates *test* 4s from 9s
+  (code_probe), but the post-swap stream's 4s labelled 9 still mostly fall outside the prototype's EMA radius.
+- Process note: the first run had a bug (a global prototype-id column grew to ~4.5M, adding a time-growing offset to
+  every observe() distance, so every conflict fell out of radius and no remap ever fired). Kept as
+  results/reread_store_buggy_idoffset, not evidence. Answers were unaffected.
+
+### Literature insight
+Norman & O'Reilly 2003 (Psych Rev 110:611, CLS model of recognition memory): the hippocampus discriminates a lure from
+a studied item only to the degree its input (the cortical code) keeps them apart, and its recall signal is all-or-none
+on a threshold, so better input codes help recognition only where items sit near that threshold. The store's remap is
+the same kind of thresholded recall (radius test, then count), and the cortex code moves 4s and 9s apart on average
+without moving the swapped 4s inside the 4 prototypes' radius. Better input geometry bought recognition (store-only
+accuracy +2) but not change detection. Remap latency is set by the radius rule, not by the code.
+
+### Paths closed
+- Re-read index as a remap accelerator (rr1, rr12). Store-code geometry is now closed for the s49 latency gap after
+  four tries (core, posterior weight, random k-WTA, cortex code); z5 stays default.
+- Layer 1 as the preferred index (H2).
+
+### Hypotheses, ranked
+1. **Architecture/routing: re-read store as the answering route only.** Keep pixel z5 for remapping (0 false remaps),
+   but answer from the cortex-read store, with the mq30 relative-margin threshold re-set in code units so store
+   answers return to about 1.1% (choose s on seeds 0-2, confirm on 3-5). Prediction: mq30 lifetime >= 96.0 and returns
+   >= 75 on s49 and on bg002 seeds 3-8. Kill: lifetime < 96.0 or returns < 74. Cheap: reuse reread_store with a split
+   store (remap in pixels, read in code).
+2. **Neuron: radius in code units should be a quantile, not an EMA mean.** A per-prototype 90th-percentile radius of
+   confirmation distance (in code space) admits the swapped 4s as in-radius conflicts. Prediction: rr12 latency <= 60
+   with <= 1 false remap per run. Kill: false remaps > 1 per run.
+3. **Data: label-noise world** (carried): 10% of 4s permanently labelled 9; z5 must not remap. Kill: > 1 per run.
+4. **Training: sleep in life.py with a slow cortex** (carried): lifetime >= 96.0 and returns >= 75; kill < 95.5.

@@ -482,3 +482,12 @@ star and makes "is sleep organically useful?" a measurable question.
   layer 2 0.619): FF learns the label inside its hidden code, so a store holding codes inherits the swap.
 - Live: re-read index. Re-encoding stored images through the current cortex keeps separation (layer 1 0.045, 0.58x
   pixels). Next: in-loop life run with pixel prototypes and layer-1 distances; default stays a25w250h2k2_c1.5_uinf_z5.
+
+## Update 2026-10-31 17:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Closed: re-read index as a remap accelerator (`reread_store.py`, in-loop life run, s49 seeds 0-5). Pixel prototypes
+  compared through the current FF layer 1 (rr1) or layers 1+2 (rr12): latency 71 / 65 vs z5 77, swap 67.7 / 68.3 vs
+  68.1, and false remaps come back (2.7 / 2.3 per run vs 0). Layer 1 is not the better index. Default stays
+  a25w250h2k2_c1.5_uinf_z5.
+- Live: the cortex-read store is a better answerer (store-only lifetime 93.1-93.5 vs 91.4; mq30 returns 76.9 vs 72.0),
+  but the route gate threshold must be re-set in code units (it fires 2.1% vs 1.1%, lifetime 95.5). Next: split store,
+  remap in pixels, answer in code.
