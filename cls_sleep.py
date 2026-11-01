@@ -30,6 +30,32 @@ Follow-up H2, pre-registered 10:25 UTC+8 1 Nov before running ("temporary hippoc
   PASS if swr2_f2k or uni8_f2k has combined returns >= none_f2k + 3.0 AND lifetime >= none_f2k - 0.10.
   KILL otherwise (sleep does not even rescue a forgetful hippocampus -> the FF cortex can't consolidate usefully).
   Reported, not a gate: gap of the best sleep_f2k to `none` (permanent store, never sleeps).
+Result H2: KILL (results/cls_sleep/RESULTS.md).
+H3 night answering, pre-registered 10:48 UTC+8 1 Nov before running (s49 seeds 3-5 AND bg002 seeds 6-8):
+  The whole lifetime cost of sleep was downtime. `*_na`: through each night the store answers alone (FF inference
+  only scored as its own route), nothing learns from night arrivals; the cortex learns only from replay as before.
+  PASS if uni8_na or swr8_na, in BOTH worlds, has combined lifetime >= none - 0.10 AND (returns >= none + 1.0 OR
+  swap300 >= none + 2.0 with returns >= none - 0.5). swr2_na reported with the same bars. KILL otherwise.
+  `none` rows reused from the 09:40 runs (never-sleeping code path unchanged, deterministic per seed).
+Result H3 (11:37 UTC+8): PASS in both worlds for swr8_na (s49 -0.04 / +2.3 returns; bg002 -0.09 / +4.5) and swr2_na
+  (s49 -0.01 / +1.3; bg002 +0.01 / +1.5); uni8_na passes s49, fails bg002 lifetime (-0.12).
+H3c held-out confirmation, pre-registered 11:38 UTC+8 1 Nov before running: fresh seeds s49 140-142 and bg002 143-145,
+  conditions none, swr2_na, swr8_na, same bar as H3 against same-seed `none`. Confirmed if swr2_na or swr8_na passes in
+  BOTH worlds; then it becomes the default core (never-sleeping z5 -> z5 + store-answered nights + replay). Else H3 was noise.
+H4 awake interleaved remote replay, pre-registered 11:22 UTC+8 1 Nov before running (s49 seeds 3-5):
+  No nights. The forgetful store (f2k) is the case where the cortex has a job (returns 74.8 -> 58.0). H2 showed night replay
+  is overwritten by full-rate day learning; CLS's own prescription is interleaving. Every 38th wake arrival, one batch of
+  store prototypes from classes unseen >= 300 ticks (awr_f2k) or any class (awu_f2k, control) goes into the cortex.
+  PASS if awr_f2k returns >= none_f2k + 3.0 AND lifetime >= none_f2k - 0.10. 'remote' selection counts only if awr_f2k
+  beats awu_f2k on returns by >= 1.5. Regression check on the permanent store: awr lifetime >= none - 0.10.
+  KILL otherwise. none_f2k / none reused from the 10:25 / 09:40 runs.
+Result H4 (11:39 UTC+8): PASS. awr_f2k +0.15 lifetime / +11.8 returns vs none_f2k; awu_f2k +0.15 / +9.3 (remote beats
+  uniform by 2.4 >= 1.5); permanent store awr +0.10 lifetime / +6.1 returns / +1.6 swap vs none (all 3 seeds up on returns),
+  better than every night condition. No sleep needed.
+H4c held-out confirmation, pre-registered 11:40 UTC+8 1 Nov before running: awr on the H3c fresh seeds (s49 140-142,
+  bg002 143-145) against same-seed `none` from H3c. Confirmed if, in BOTH worlds, lifetime >= none - 0.10 and returns >=
+  none + 1.0 (same bar as H3). Head-to-head reported: awr vs swr2_na / swr8_na. If both awr and a *_na confirm, the
+  default becomes the one with higher mean returns at lifetime within 0.05; combining them is the next test, not a default.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -58,6 +84,17 @@ CONDS = {
     "none_f2k": dict(sleep=None, wl=1.0, forget=2000),
     "swr2_f2k": dict(sleep="swr", chunks=2, wl=1.0, forget=2000),
     "uni8_f2k": dict(sleep="uni", chunks=8, wl=1.0, forget=2000),
+    # 10:48 loop: night answering. During night chunks the store keeps answering (store-only, no learning from the
+    # night arrivals: no FF fit, no store observe/add); the cortex still learns only from replay.
+    "uni8_na": dict(sleep="uni", chunks=8, wl=1.0, night_answer=True),
+    "swr8_na": dict(sleep="swr", chunks=8, wl=1.0, night_answer=True),
+    "swr2_na": dict(sleep="swr", chunks=2, wl=1.0, night_answer=True),
+    # 11:22 loop: awake interleaved replay (Karlsson & Frank 2009; McClelland et al. 1995). No nights. Every 38th waking
+    # arrival the cortex fits one batch (BS=32) of store prototypes: 'remote' = only classes unseen for >= 300 ticks,
+    # 'uni' = any class. 32/38 = 0.84 replayed items per wake arrival, matched to uni8 (0.83).
+    "awr_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="remote", every=38, gap=300),
+    "awu_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300),
+    "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
 }
 CAP, CHUNK_TICKS = 128, 40
 
@@ -85,6 +122,8 @@ def live(args):
     n_sleep = replayed = tagged_replayed = 0
     t0, t = time.time(), 0
     forgot = 0
+    night_answered = 0
+    n_wake = 0
 
     def forget():
         nonlocal forgot
@@ -131,7 +170,12 @@ def live(args):
                         if c in last_seen and age >= LF.RET_GAP:
                             returning[c] = LF.RET_N
                         ret = int(returning.get(c, 0) > 0); returning[c] = returning.get(c, 0) - 1; last_seen[c] = t
-                        rows.append((t, c, y, ret, 0, -1, -1, -1))
+                        if cfg.get("night_answer"):
+                            s_, _ = RP.answer(st, x); f_ = int(ff.scores(x)[0].argmax())
+                            rows.append((t, c, y, ret, 1, f_, s_, s_ if s_ >= 0 else f_))
+                            night_answered += 1
+                        else:
+                            rows.append((t, c, y, ret, 0, -1, -1, -1))
                     t += 1
             tags.clear()
             forget()
@@ -159,6 +203,15 @@ def live(args):
             ff.fit_batch(x, np.array([y]))
             ff.opt.lr = lr
             st.t = t; st.observe(x, y); st.add(x, y)
+            n_wake += 1
+            if cfg.get("awake") and n_wake % cfg["every"] == 0 and st.mu:
+                pool = [k for k in st.mu if cfg["awake"] == "uni" or t - last_seen.get(k, -10 ** 9) >= cfg["gap"]]
+                if pool:
+                    mu = np.concatenate([st.mu[k] for k in pool])
+                    ys = np.concatenate([np.full(len(st.mu[k]), k) for k in pool])
+                    u = rng.choice(len(mu), LF.BS)
+                    ff.fit_batch(mu[u].astype(np.float32), ys[u].astype(int))
+                    replayed += LF.BS
         t += 1
 
     R = np.array(rows)
@@ -168,7 +221,7 @@ def live(args):
     nidx = np.flatnonzero(np.isin(C, list(w["novel"])) & (T >= world.novel_at))[:300]
     out = dict(condition=cond, world=wk, seed=seed, days=days, arrivals=len(R), missed=float(1 - ANS.mean()), sleeps=n_sleep,
                replay_per_wake=replayed / max(ANS.sum(), 1), tagged_share=tagged_replayed / max(replayed, 1),
-               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, seconds=time.time() - t0, route={})
+               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, seconds=time.time() - t0, route={})
     for name, P in (("combined", D), ("ff", F), ("store", S)):
         ok = (P == Y) & (ANS == 1)
         out["route"][name] = dict(lifetime=float(ok.mean()), returns=float(ok[RET == 1].mean()),

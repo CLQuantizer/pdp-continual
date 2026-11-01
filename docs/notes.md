@@ -757,3 +757,19 @@ generator, not every raw image), and its size and sleep cost are reported.
   Replay does teach the cortex returning digits (4 to 10 points better alone), but the store already answers them,
   so the system gains only 1 to 3. Making the store forget absent digits, as the hippocampus is supposed to, hurts
   returns by 17 points and sleep wins back only 2. Next: keep the store answering while the cortex sleeps.
+
+- 2026-11-01 11:40 UTC+8: the store-and-cortex pair finally pays, and it does not need to sleep. Letting the store
+  keep answering at night removes the whole cost of sleep, and replay then lifts returning-digit accuracy by 1 to 5
+  points with no lifetime loss in both worlds. Better still is replay with no night at all: every 38th arrival the
+  cortex rehearses a batch of store memories of digits it has not seen lately, the way rats replay a distant maze
+  during brief pauses (Karlsson & Frank 2009). That gains 6 points on returns, 1.6 on the swap and a little lifetime,
+  and when the store is made forgetful it recovers 12 of the 17 points the forgetting cost, where night replay
+  recovered 2. This is McClelland's interleaving argument showing up directly. Fresh-seed confirmation is running
+  before anything becomes the default.
+
+- 2026-11-01 11:45 UTC+8: once the store keeps answering while the cortex sleeps, sleep pays. Nothing learns from
+  what arrives at night; the cortex only replays the store's memories. Against a machine that never sleeps, lifetime
+  accuracy is flat (within 0.1) and returning digits are 1.3 to 4.5 points better in both test worlds, which was
+  the bar set before the run. The earlier loss really was just the time spent offline. Not the default yet: three
+  runs per world and one margin of 0.01; fresh-seed confirmation is running, alongside a version with no nights at
+  all that slips short replays into the waking day.

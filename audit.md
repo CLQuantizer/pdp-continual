@@ -647,3 +647,31 @@ star and makes "is sleep organically useful?" a measurable question.
 - H2 temporary hippocampus (store forgets classes unseen 2000 ticks): KILLED. Returns 74.8 -> 58.0; sleep wins back
   at most +2.1 (bar +3).
 - Default unchanged. Next: let the store keep answering through the night (no learning from arrivals).
+
+
+## Update 2026-11-01 11:40 UTC+8 (first working wake/replay dual; detail in `results/cls_sleep/RESULTS.md`)
+- H3 night answering PASSES the pre-registered bar in both worlds: the store keeps answering through the night,
+  nothing learns from night arrivals, the cortex learns only from replay. swr8_na s49 -0.04 lifetime / +2.3 returns,
+  bg002 -0.09 / +4.5; swr2_na -0.01 / +1.3 and +0.01 / +1.5. Sleep's whole cost was downtime, as read at 10:45.
+- H4 awake interleaved remote replay PASSES (s49 seeds 3-5): no nights; every 38th waking arrival the cortex fits one
+  batch of store prototypes from classes unseen >= 300 ticks. Forgetful store: returns 58.0 -> 69.8 (+11.8, night
+  replay managed +2.1), lifetime +0.15; remote beats uniform by 2.4. Permanent store `awr`: +0.10 lifetime, +6.1
+  returns, +1.6 swap300 vs never-sleeping, better than every night condition.
+- Not yet default: held-out confirmations H3c/H4c (s49 140-142, bg002 143-145, same-seed `none`) running on the box.
+  If awr confirms, the default becomes z5 + awake remote replay (no nights); the night path is kept only if it adds
+  on top. Open cost: novel first-300 drops 1.8 (awr) to 6.6 (uni8_na, bg002) points.
+
+
+## Update 2026-11-01 11:45 UTC+8 (H3 night answering; detail in `results/cls_sleep/RESULTS.md`)
+- Pre-registered 10:48 UTC+8 (docstring of `cls_sleep.py`): `*_na` keeps the store answering alone through each night;
+  nothing learns from night arrivals; the cortex still learns only from replay. Bar unchanged from 10:45.
+- PASSED as pre-registered in both worlds (combined lifetime / returns vs never-sleeping `none`, same seeds):
+  s49 seeds 3-5: none 96.12/74.8; swr8_na 96.07/77.1 (-0.04 / +2.3); uni8_na 96.11/78.2 (-0.01 / +3.4);
+  swr2_na 96.10/76.1 (-0.01 / +1.3).
+  bg002 seeds 6-8: none 95.86/75.2; swr8_na 95.77/79.7 (-0.09 / +4.5); uni8_na 95.74/79.4 (-0.12, fails lifetime);
+  swr2_na 95.87/76.6 (+0.01 / +1.5).
+- Confirms the 10:45 diagnosis: the whole cost of sleep was downtime. Costs to watch with 8 chunks of replay: novel
+  first-300 -2 to -7, swap300 about -1. 0 pre-swap remaps everywhere.
+- Not adopted yet: 3 seeds per world and the bg002 swr8_na lifetime margin is 0.01. Held-out confirmation H3c
+  (fresh seeds s49 140-142 / bg002 143-145) and H4c (awake interleaved remote replay `awr`, which passed H4 on s49
+  3-5 at 96.22/80.9) are pre-registered and running on box CPU. Default stays z5 + `c3`, never sleeping.

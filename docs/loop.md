@@ -1891,3 +1891,57 @@ responses during rest. Separating "cortex learns from replay" from "machine stop
 
 ### Next
 Night answering by store only (no learning from arrivals), uni8/swr8, same bars, s49 3-5 + bg002 6-8.
+
+## Loop 2026-11-01 11:00 UTC+8
+
+### Housekeeping
+- Found a duplicate run of the already-scored H2 (`results/cls_forget`, launched 10:54, orphaned): killed to free CPU.
+
+### Findings
+1. **H3 night answering: PASS (both worlds).** swr8_na -0.04/+2.3 (s49), -0.09/+4.5 (bg002); swr2_na -0.01/+1.3,
+   +0.01/+1.5, swap flat; uni8_na fails bg002 lifetime (-0.12). FF-only returns +5 to +11 now reach the answer.
+2. **H4 awake interleaved remote replay: PASS (s49 3-5).** awr_f2k 96.21/69.8 vs none_f2k 96.06/58.0; awu_f2k
+   96.21/67.4 (remote > uniform by 2.4); awr on the permanent store 96.22/80.9/68.8 vs none 96.12/74.8/67.2.
+   Cost: novel first-300 -1.8 (awr). 15 min per run vs 37 for night runs.
+
+### Literature insight
+Karlsson & Frank 2009 (Nat Neurosci 12:913-918): during brief waking pauses, 44% of SWR candidate events replay a
+*remote* environment, as often as the local one, and more than during long quiescence (36%). Design consequence:
+consolidation does not require going offline, and the content should be what is *absent* now. Tested directly as
+H4; the remote-over-uniform margin (+2.4 returns) and the night-vs-awake gap (+2.1 vs +11.8 under forgetting)
+both support it. Under CLS 1995, the night version fails because full-rate day learning overwrites between nights;
+interleaving removes the gap.
+
+### Running at commit time
+- H3c / H4c held-out confirmation: `results/cls_na_conf_{s49,bg002}` (none, swr2_na, swr8_na) and
+  `results/cls_aw_conf_{s49,bg002}` (awr), seeds s49 140-142 / bg002 143-145. Score with `CS.summarise` against the
+  same-seed `none` rows in `cls_na_conf_*`; bars in the `cls_sleep.py` docstring.
+
+### Hypotheses, ranked
+1. **Confirm awr (H4c).** If it holds, adopt z5 + awake remote replay as the default core and retire nights.
+2. **Training: replay rate.** every=38 was matched to uni8, not tuned. Prediction: returns gain saturates by every=19
+   and novel first-300 cost grows with rate; kill rates that lose > 1.0 novel. Pre-register every in {19, 76}.
+3. **Architecture: who answers returns.** With awake replay the FF-only returns (74.0) approach store-only (~86).
+   Hypothesis: once FF-only returns >= store-only on a class, the store's prototypes for it can be pruned without
+   loss (systems consolidation proper, Kumaran 2016). Test: awr_f2k with F lowered to 1000; PASS if returns stay
+   >= none (permanent store) - 1.0. That would make the store a temporary buffer, as CLS assumes.
+4. **Data: novel cost.** Remote replay pulls FF toward old classes when a novel class arrives. Exclude classes
+   younger than 300 ticks? They already are by the gap rule; check whether the cost is from replay crowding instead.
+
+## 2026-11-01 11:45 UTC+8 (H3 checkpoint)
+
+### Findings
+1. **H3 night answering passes (pre-registered 10:48).** Store answers alone at night, no learning from night
+   arrivals, cortex learns only from replay. s49 3-5: swr8_na 96.07/77.1, uni8_na 96.11/78.2, swr2_na 96.10/76.1 vs
+   none 96.12/74.8. bg002 6-8: swr8_na 95.77/79.7, uni8_na 95.74/79.4 (lifetime -0.12, fails), swr2_na 95.87/76.6
+   vs none 95.86/75.2. swr8_na and swr2_na pass in both worlds.
+2. Per seed, returns are up on 17 of 18 (condition, seed) pairs; lifetime deltas -0.22 to +0.24.
+3. Costs: novel first-300 -1.4 to -6.6 with 8 chunks; swap300 about -1.
+
+### Literature insight
+Wilson & McNaughton 1994 / Diekelmann & Born 2010: offline consolidation runs while the animal still responds to
+salient input during quiet rest; separating "cortex learns only from replay" from "machine stops answering" removes
+the entire cost. Karlsson & Frank 2009 (awake remote replay) motivates H4.
+
+### Next
+H3c / H4c held-out confirmation (running). If both confirm, default = higher returns at lifetime within 0.05.
