@@ -131,6 +131,18 @@ H11 gain-gated awake replay, pre-registered 17:25 UTC+8 1 Nov before running (s4
   lifetime >= awr - 0.05 at <= half awr's replay per wake. It counts as a selective bus (group constraint) only if, in
   BOTH worlds, also ff_bits.all <= awu - 0.02. H11b (Gall, awu reference run alongside on s49 6-8): awu (uniform clock,
   no selector at all) replaces awr if, in BOTH worlds, returns >= awr - 0.5 AND lifetime >= awr - 0.05 AND swap300 >= awr - 1.0.
+Result H11 (18:20 UTC+8): KILLED on bg002 (bar needs BOTH worlds; s49 awr 6-8 still finishing on Dubai, reported only).
+  awg 95.89/81.8/69.4 vs awr 95.86/81.8/69.7 (returns +0.05 < +1.0, same replay 0.83 vs 0.82 per wake); ff_bits.all
+  awg 0.4624 vs awu 0.4566 (worse, bar <= awu - 0.02): the gain gate is not a selective bus. H11b: awu fails bg002 on
+  swap300 67.8 vs awr 69.7 (-1.9 < -1.0); returns 81.9 / lifetime 95.92 pass. Need-only, gain-only and uniform selection
+  sit within 0.006 bits of each other at a matched budget: with a permanent store, that replay happens matters, not what.
+H13 selection under a forgetful store, pre-registered 18:20 UTC+8 1 Nov before running (s49 seeds 6-8 AND bg002 seeds 6-8:
+  none_f2k, awr_f2k, awu_f2k; all scored awake-only with ff_bits). H4 found absence beats uniform by +2.5 returns when the
+  store forgets (the cortex must own returns); H10/H11 found no selector compresses better with a permanent store.
+  KEEP the absence selector (as the default whenever the store can forget) only if, in BOTH worlds, awr_f2k
+  ff_bits.all <= awu_f2k - 0.02 AND returns >= awu_f2k + 1.5 AND lifetime >= awu_f2k - 0.05. Sanity: awu_f2k
+  ff_bits.all <= none_f2k - 0.02. KILL otherwise: absence is demoted in both regimes (kept only as a swap300 note) and
+  the default awake replay is the uniform clock; H12 (gain x need) is then parked, since neither factor compresses alone.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -342,7 +354,7 @@ def live(args):
                     j = j[rng.choice(len(j), LF.BS)]
                     ff.fit_batch(mu[j].astype(np.float32), ys[j].astype(int))
                     replayed += LF.BS
-            fire = n_wake % cfg["every"] == 0
+            fire = bool(cfg.get("every")) and n_wake % cfg["every"] == 0  # 18:20 fix: no-awake conds (none*) crashed after H11
             if cfg.get("gate"):
                 b38.append(ffbits[-1][0]); rm = sum(b38) / len(b38)
                 tok = min(tok + 1.0 / cfg["every"], cfg["cap"])

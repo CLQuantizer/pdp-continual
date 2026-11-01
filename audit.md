@@ -783,3 +783,24 @@ star and makes "is sleep organically useful?" a measurable question.
   as the real test bed for selectivity: rerun awr_f2k / awu_f2k / awg_f2k with ff_bits, since the selector only paid
   when the store forgets (CLS: the hippocampus is temporary, Kumaran, Hassabis & McClelland 2016). (4) H9 store
   confidence vs second-nearest prototype for the 6-7 point store-only vs combined returns gap.
+
+## Update 2026-11-01 18:20 UTC+8 (H11 gain gate; detail in `results/cls_h11/RESULTS.md`)
+- H11 KILLED on bg002 (bar needs both worlds). awg 95.89 / 81.8 / 69.4 vs awr 95.86 / 81.8 / 69.7 at the same replay
+  (0.83 vs 0.82 per wake arrival): returns +0.05 (bar +1.0). ff_bits.all awg 0.4624 vs awu 0.4566 vs awr 0.4603:
+  not a selective bus either. H11b (awu replaces awr) fails bg002 swap300 by -1.9 (bar -1.0); returns/lifetime pass.
+- Need-only, gain-only and uniform selection are within 0.006 bits and 0.1 returns points of each other with a
+  permanent store. Selection is a no-op in that regime; awr stays nominally on swap300 alone. The group rule says
+  that is not enough to keep a selector, so H13 decides it in the only regime where selection can matter.
+- Bug fixed: the H11 edit made every no-awake condition (none, none_f2k, swr*) crash on `cfg["every"]`; `fire` now
+  requires `every`. Runs with awake replay are unchanged (deterministic).
+- Literature: Aljundi et al. 2019, "Online Continual Learning with Maximally Interfered Retrieval" (NeurIPS 2019).
+  The replay items worth retrieving are the ones whose loss would rise most under the update the learner is about
+  to make: a per-memory, look-ahead interference score, not a global "am I surprised" clock. awg used the second kind
+  and gained nothing; this is the concrete form of Mattar & Daw's gain term for a classifier cortex.
+- Running on the box: H13 (none_f2k / awr_f2k / awu_f2k, s49 AND bg002 seeds 6-8, results/cls_h13_*), bar in
+  cls_sleep.py: absence stays as the default whenever the store can forget only if awr_f2k ff_bits.all <= awu_f2k - 0.02
+  AND returns >= awu_f2k + 1.5 AND lifetime >= awu_f2k - 0.05 in both worlds; otherwise absence is demoted everywhere.
+- Next, ranked: (1) score H13. (2) If H13 shows selection matters under forgetting: H14 MIR-style interference
+  selection (per prototype, bits after one virtual cortex step minus bits before; replay the top batch) on the f2k
+  store, bar ff_bits <= awr_f2k - 0.02. If H13 kills absence: park H12/H14 and make the uniform clock the core.
+  (3) H9 store confidence vs second-nearest prototype for the store-only vs combined returns gap.

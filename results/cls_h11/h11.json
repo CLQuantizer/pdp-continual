@@ -1,0 +1,101 @@
+{
+ "bg002": {
+  "none": {
+   "seeds": [
+    6,
+    7,
+    8
+   ],
+   "lifetime": 95.861,
+   "returns": 75.167,
+   "swap300": 70.5556,
+   "novel300": 74.2222,
+   "replay_per_wake": 0.0,
+   "ff_bits_all": 0.5145,
+   "ff_bits_returns": 1.9884,
+   "ff_bits_per_seed": [
+    0.5184,
+    0.5236,
+    0.5015
+   ]
+  },
+  "awr": {
+   "seeds": [
+    6,
+    7,
+    8
+   ],
+   "lifetime": 95.8589,
+   "returns": 81.7654,
+   "swap300": 69.6667,
+   "novel300": 73.4444,
+   "replay_per_wake": 0.8217,
+   "ff_bits_all": 0.4603,
+   "ff_bits_returns": 1.3023,
+   "ff_bits_per_seed": [
+    0.4465,
+    0.4837,
+    0.4508
+   ]
+  },
+  "awu": {
+   "seeds": [
+    6,
+    7,
+    8
+   ],
+   "lifetime": 95.9154,
+   "returns": 81.8816,
+   "swap300": 67.7778,
+   "novel300": 71.4444,
+   "replay_per_wake": 0.8419,
+   "ff_bits_all": 0.4566,
+   "ff_bits_returns": 1.3604,
+   "ff_bits_per_seed": [
+    0.4483,
+    0.473,
+    0.4484
+   ]
+  },
+  "awg": {
+   "seeds": [
+    6,
+    7,
+    8
+   ],
+   "lifetime": 95.8885,
+   "returns": 81.8196,
+   "swap300": 69.4444,
+   "novel300": 73.0,
+   "replay_per_wake": 0.8305,
+   "ff_bits_all": 0.4624,
+   "ff_bits_returns": 1.3586,
+   "ff_bits_per_seed": [
+    0.457,
+    0.4694,
+    0.4607
+   ]
+  }
+ },
+ "s49_partial": {
+  "awu": {
+   "seeds": [
+    6,
+    7,
+    8
+   ],
+   "lifetime": 95.865,
+   "returns": 82.4908,
+   "swap300": 61.8889,
+   "novel300": 71.4444,
+   "replay_per_wake": 0.8419,
+   "ff_bits_all": 0.4499,
+   "ff_bits_returns": 1.3072,
+   "ff_bits_per_seed": [
+    0.4498,
+    0.4654,
+    0.4345
+   ]
+  }
+ }
+}

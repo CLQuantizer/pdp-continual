@@ -2026,3 +2026,26 @@ need-only, and H10 shows need alone buys no compression. H11 tests gain alone as
    ff_bits within 0.02 of awu.
 3. **H13 forgetful store** with ff_bits: awr_f2k / awu_f2k / awg_f2k, the regime where selection decides what survives.
 4. **H9 store confidence** vs second-nearest prototype for the store-only vs combined returns gap.
+
+## 2026-11-01 18:20 UTC+8 (H11 gain gate killed; H13 selection under forgetting)
+
+**Read first:** `results/cls_h11/RESULTS.md`, audit.md 18:20. Code: `cls_sleep.py` H11 result + H13 pre-registration,
+and a fix for no-awake conditions crashing after the H11 edit.
+
+### Findings
+1. awg (gain-gated uniform replay) = awr on bg002: returns 81.8 vs 81.8, same replay budget. KILLED.
+2. Code length: awg 0.4624, awr 0.4603, awu 0.4566 bits per awake arrival. Selection of any kind is a no-op with a
+   permanent store; replay itself is not (none 0.5145).
+3. H11b: uniform replay misses awr's swap300 by 1.9 on bg002, so by the pre-registered bar awr stays, on swap alone.
+
+### Literature insight
+Aljundi et al. 2019 (MIR, NeurIPS): retrieve the memories whose loss the coming update would raise most. Gain has to be
+per memory and look-ahead; a global surprise clock (awg) only changes when replay happens, not what it protects.
+
+### Paths closed
+- Global error-gated timing of awake replay.
+
+### Hypotheses, ranked
+1. **H13** (running on the box): absence vs uniform under the forgetful store, with ff_bits, both worlds.
+2. **H14** MIR-style per-prototype interference selection on f2k, only if H13 shows selection matters.
+3. **H9** store confidence vs second-nearest prototype.
