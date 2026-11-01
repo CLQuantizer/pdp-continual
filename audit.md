@@ -728,3 +728,14 @@ star and makes "is sleep organically useful?" a measurable question.
   margin computed against the second-nearest *class* prototype at matched radius (Daw, Niv & Dayan 2005: the store's own
   posterior), only if (1)-(2) leave the 4-5 point store/combined gap.
 - 14:45 UTC+8: H7 awr_swr2_na launched on box (results/cls_h7_s49, results/cls_h7_bg002, ~20 min); score at next loop vs awr (cls_awake s49, cls_ra bg002).
+
+## Update 2026-11-01 15:10 UTC+8 (H7 nights on top of awake replay; detail in `results/cls_h7/RESULTS.md`)
+- Scoring now counts awake arrivals only (life.py, docs/goal.md); asleep arrivals are not evaluated, downtime reported apart.
+- H7 `awr_swr2_na` KILLED: s49 96.18/80.3/66.9 vs awr 96.22/80.9/68.8; bg002 95.87/82.5/69.8 vs awr 95.86/81.8/69.7.
+  Returns -0.6 / +0.7 against a +1.0 bar. Nights alone give +1.2 / +1.5 returns over none; awr gives +6.1 / +6.6.
+  Nights are closed as a core component. Core unchanged: z5 + c3 + awr.
+- Literature: Gillespie et al. 2021 (Neuron): awake replay favours not-recently-visited experiences; matches the absence selector.
+- Next, ranked: (1) H8 awr rate sweep, every 19 / 76 (running: results/cls_h8_s49 on Dubai, results/cls_h8_bg002 on box;
+  bar in cls_sleep.py). (2) H9 input-specific store confidence (store margin vs second-nearest class prototype) to close the
+  store-only/combined returns gap of ~6-7 points. (3) Selective bus check for the group constraint: does awr lower the
+  cortex's prequential loss on the growing history (compression progress), not just returns.

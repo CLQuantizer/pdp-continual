@@ -102,6 +102,14 @@ H7 awr + swr2_na, pre-registered 14:45 UTC+8 1 Nov before running (s49 seeds 3-5
   Does night replay (store answers at night, cortex learns only from selective replay) add on top of awake remote replay?
   PASS if awr_swr2_na, in BOTH worlds, has returns >= awr + 1.0 AND lifetime >= awr - 0.05 AND novel300 >= awr - 1.0.
   KILL otherwise (nights stay out of the core).
+Result H7 (15:10 UTC+8): KILLED. awr_swr2_na s49 96.18/80.3/66.9 (novel 76.3) vs awr 96.22/80.9/68.8 (returns -0.6,
+  swap -1.9); bg002 95.87/82.5/69.8 vs awr 95.86/81.8/69.7 (returns +0.7 < +1.0). Awake scoring, awr reused from the
+  14:10 rerun (results/cls_wake_*, same seeds). Nights add nothing on top of awake remote replay; they stay out of the core.
+H8 awake replay rate, pre-registered 15:10 UTC+8 1 Nov before running (s49 seeds 3-5 AND bg002 seeds 6-8; awr reused):
+  awr19 (replay every 19th wake arrival, 2x the cost) and awr76 (every 76th, half the cost), otherwise identical to awr.
+  awr19 replaces awr only if, in BOTH worlds, returns >= awr + 1.0 AND lifetime >= awr - 0.05 AND novel300 >= awr - 1.0.
+  awr76 replaces awr (Gall: same result for half the replay) if, in BOTH worlds, returns >= awr - 1.0 AND
+  lifetime >= awr - 0.05 AND swap300 >= awr - 1.0. If both pass, awr76 wins. KILL otherwise: every=38 stays.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -159,6 +167,8 @@ CONDS = {
     # 14:15 loop H6c label-confirmed return window: once a class's *label* reappears after >= rw_gap ticks away, for its
     # next rw_n labelled arrivals the store answers any disagreement in which the store names that class.
     # 14:45 loop H7: awake remote replay plus two-chunk selective nights with night answering.
+    "awr19": dict(sleep=None, wl=1.0, awake="remote", every=19, gap=300),
+    "awr76": dict(sleep=None, wl=1.0, awake="remote", every=76, gap=300),
     "awr_swr2_na": dict(sleep="swr", chunks=2, wl=1.0, night_answer=True, awake="remote", every=38, gap=300),
     "awr_rw": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, rw_gap=300, rw_n=20),
 }

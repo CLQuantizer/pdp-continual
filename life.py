@@ -28,8 +28,10 @@ SLEEP      the machine stops answering. It replays its store in chunks of 10 bat
                        checked after each chunk, at least `min_chunks`), capped at
                        `max_day` / `max_night` chunks.
 
-SCORES     lifetime   prequential accuracy over every arrival (misses count as wrong): the north star
-           answered   prequential accuracy over the inputs it answered
+SCORES     lifetime   prequential accuracy over the arrivals that come while it is awake: the north star.
+                      Arrivals while asleep are not evaluated (rule from 1 Nov 2026 14:00 UTC+8; before that they
+                      counted as wrong). The old score is kept as `lifetime_all`; `missed` still reports the downtime.
+           answered   same as lifetime (kept for old readers)
            frozen     class-IL on a held-out test subset (digits that exist, current labels),
                       taken at noon and midnight of every day: the legacy train-then-test view
            age        prequential accuracy by ticks since that digit was last seen
@@ -335,32 +337,35 @@ def live(cond, seed, days, w=WORLD, data=None):
     slept = sum(d for _, d, _ in sleeps)
     night_ticks = sum(sum(world.night(s + k) for k in range(d)) for s, d, _ in sleeps)
 
-    def first(digits, after, n):
-        j = np.flatnonzero(np.isin(C, digits) & (T >= after))[:n]
-        return float(OK[j].mean()) if len(j) else None
+    W = ANS == 1      # evaluated arrivals: awake ones only (asleep arrivals are not scored)
 
-    def firstk(ok, digits, after, n):
-        j = np.flatnonzero(np.isin(C, digits) & (T >= after))[:n]
+    def firstk(ok, digits, after, n, awake=True):
+        j = np.flatnonzero(np.isin(C, digits) & (T >= after) & (W if awake else True))[:n]
         return float(ok[j].mean()) if len(j) else None
+
+    def first(digits, after, n, awake=True):
+        return firstk(OK, digits, after, n, awake)
 
     route = {}
     for name, ok in (("ff", OK), ("store", OKS), ("dual", OKD), ("dual_age", OKA), ("oracle", OKO)):
-        route[name] = dict(lifetime=float(ok.mean()), returns=float(ok[RET == 1].mean()) if (RET == 1).any() else None,
+        route[name] = dict(lifetime=float(ok[W].mean()), returns=float(ok[W & (RET == 1)].mean()) if (W & (RET == 1)).any() else None,
+                           lifetime_all=float(ok.mean()), returns_all=float(ok[RET == 1].mean()) if (RET == 1).any() else None,
                            off_season=float(ok[(ANS == 1) & (INS == 0)].mean()),
                            adapt=firstk(ok, list(w["swap"]), world.swap_at, 300), novel=firstk(ok, list(w["novel"]), world.novel_at, 300))
-    days_acc = [float(OK[(T >= d * w["day"]) & (T < (d + 1) * w["day"])].mean()) for d in range(days)]
+    days_acc = [float(OK[W & (T >= d * w["day"]) & (T < (d + 1) * w["day"])].mean()) for d in range(days)]
     age = []
     for lo, hi in zip(AGE_BINS[:-1], AGE_BINS[1:]):
         j = (AGE >= lo) & (AGE < hi) & (ANS == 1)
         age.append((float(OK[j].mean()) if j.any() else None, int(j.sum())))
     return dict(
         condition=cond, seed=seed, days=days, route=route,
-        arrivals=len(L), lifetime=float(OK.mean()), answered=float(OK[ANS == 1].mean()),
+        arrivals=len(L), lifetime=float(OK[W].mean()), answered=float(OK[W].mean()), lifetime_all=float(OK.mean()),
         # answered accuracy on the season's digits vs the rest (retention of what is out of season)
         in_season=float(OK[(ANS == 1) & (INS == 1)].mean()), off_season=float(OK[(ANS == 1) & (INS == 0)].mean()),
         off_share=float(1 - INS.mean()),
-        # a digit's first RET_N arrivals after >= RET_GAP ticks away (misses count): memory that has to last
-        returns=float(OK[RET == 1].mean()) if (RET == 1).any() else None, n_returns=int((RET == 1).sum()),
+        # a digit's first RET_N arrivals after >= RET_GAP ticks away, scored on the awake ones: memory that has to last
+        returns=float(OK[W & (RET == 1)].mean()) if (W & (RET == 1)).any() else None, n_returns=int((W & (RET == 1)).sum()),
+        returns_all=float(OK[RET == 1].mean()) if (RET == 1).any() else None,
         pressure_mean=float(np.mean(mach.trace)) if mach.trace else None,
         pressure_p90=float(np.percentile(mach.trace, 90)) if mach.trace else None,
         missed=float(1 - ANS.mean()),
@@ -371,9 +376,10 @@ def live(cond, seed, days, w=WORLD, data=None):
         probe_per_wake=mach.probe_items / max(mach.wake_updates, 1),
         frozen=float(np.mean([a for _, a in frozen])), frozen_final=frozen[-1][1], frozen_trace=frozen,
         days_acc=days_acc, age=age,
-        # the first 300 arrivals of 2/3 after the swap (incl. missed) and of 8/9 after they appear
+        # the first 300 awake arrivals of the swapped digits after the swap and of the novel digits after they appear
         adapt=first(list(w["swap"]), world.swap_at, 300), adapt_late=first(list(w["swap"]), world.swap_at + 3 * w["day"], 300),
         novel=first(list(w["novel"]), world.novel_at, 300),
+        adapt_all=first(list(w["swap"]), world.swap_at, 300, awake=False), novel_all=first(list(w["novel"]), world.novel_at, 300, awake=False),
         seasons=[(s, [int(c) for c in ctx]) for s, ctx in world.seasons],
         sleep_log=sleeps, seconds=time.time() - t0,
     )
@@ -413,7 +419,7 @@ def summarise(rows, conds, seeds, days, w=WORLD):
                    f"{np.mean(g('sleeps')):.0f} | {np.mean(g('mean_sleep_chunks')):.1f} | {np.mean(g('replay_per_wake')):.2f} |")
     bins = [f"{lo}–{hi}" if hi < 10 ** 9 else f"≥{lo}" for lo, hi in zip(AGE_BINS[:-1], AGE_BINS[1:])]
     out += ["\n### Answered accuracy by ticks since the digit was last seen\n",
-            "| Machine | " + " | ".join(bins) + " | Swap: first 300 of 2/3 (incl. missed) | 3 days later | Novel 8/9: first 300 |",
+            "| Machine | " + " | ".join(bins) + " | Swap: first 300 awake arrivals of 2/3 | 3 days later | Novel 8/9: first 300 |",
             "|---|" + "---|" * (len(bins) + 3)]
     for c in conds:
         rs = [r for r in rows if r["condition"] == c]

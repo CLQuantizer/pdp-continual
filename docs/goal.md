@@ -99,7 +99,7 @@ scored on hardware-neutral costs, counted in the simulation:
 
 | Metric | Measures |
 |---|---|
-| **Lifetime prequential accuracy** (predict each input before learning from it, over a long recurring, drifting stream; inputs that arrive while asleep score as unanswered) | the north star: how well it does while living (9) |
+| **Lifetime prequential accuracy** (predict each input before learning from it, over a long recurring, drifting stream; scored on the inputs that arrive while it is awake; since 2026-11-01 14:05 UTC+8 inputs that arrive while asleep are not evaluated, and the time spent asleep is reported separately as downtime) | the north star: how well it does while living (9) |
 | Forgetting curve: accuracy on a class vs time since it was last seen | forgetting by relevance, not interference (4) |
 | Anytime class-IL (held-out test every 700 wake examples) | retention between sleeps; interim stand-in for the above |
 | Accuracy (standard, online, Split-MNIST class-IL, after the last sleep) | legacy; a post-sleep best case, not the north star |
