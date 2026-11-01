@@ -804,3 +804,17 @@ star and makes "is sleep organically useful?" a measurable question.
   selection (per prototype, bits after one virtual cortex step minus bits before; replay the top batch) on the f2k
   store, bar ff_bits <= awr_f2k - 0.02. If H13 kills absence: park H12/H14 and make the uniform clock the core.
   (3) H9 store confidence vs second-nearest prototype for the store-only vs combined returns gap.
+
+## Update 2026-11-01 18:50 UTC+8 (H13 selection under a forgetful store; detail in `results/cls_h13/RESULTS.md`)
+- H13 KILLED by the pre-registered bar (compression term). ff_bits.all awr_f2k vs awu_f2k: 0.4554 vs 0.4530 (s49),
+  0.4581 vs 0.4594 (bg002); bar <= -0.02. Accuracy terms pass: returns 71.1 vs 68.6 and 69.5 vs 66.1, lifetime within
+  0.04. Return-arrival bits are ~0.11 lower under absence in all 6 seed pairs, so absence moves cortex capacity toward
+  absent digits without compressing the whole history.
+- Decision: absence is demoted from the default awake replay in both store regimes; core = z5 store + c3 router +
+  uniform awake replay every 38th wake arrival (awu). Absence is recorded as a returns/swap specialist, not a bus.
+- Open for the group: the compression bar used whole-history bits. If the criterion should instead be bits on what the
+  store cannot answer (returns after forgetting), absence passes. That is a new bar and must be written before any run.
+- Next, ranked: (1) H14 per-memory interference selection (MIR, Aljundi et al. 2019) on f2k: replay the prototypes
+  whose bits rise most after one virtual cortex step; bar ff_bits.all <= awu_f2k - 0.02 AND return bits <= awr_f2k.
+  (2) Split ff_bits into returns vs present-digit arrivals to confirm the reallocation reading (zero-cost rescoring
+  needs per-arrival bits saved; add to the runner). (3) H9 store confidence.

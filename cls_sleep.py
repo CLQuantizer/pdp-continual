@@ -143,6 +143,10 @@ H13 selection under a forgetful store, pre-registered 18:20 UTC+8 1 Nov before r
   ff_bits.all <= awu_f2k - 0.02 AND returns >= awu_f2k + 1.5 AND lifetime >= awu_f2k - 0.05. Sanity: awu_f2k
   ff_bits.all <= none_f2k - 0.02. KILL otherwise: absence is demoted in both regimes (kept only as a swap300 note) and
   the default awake replay is the uniform clock; H12 (gain x need) is then parked, since neither factor compresses alone.
+Result H13 (18:50 UTC+8): KILLED on compression only. awr_f2k - awu_f2k ff_bits.all +0.002 (s49) / -0.001 (bg002),
+  bar <= -0.02. Accuracy passes both worlds: returns 71.1 vs 68.6 (+2.5) and 69.5 vs 66.1 (+3.4), lifetime -0.02 / -0.04.
+  Return-arrival bits are lower under absence in 6/6 seed pairs (~ -0.11): a reallocation toward absent digits, not
+  better compression of the history. Absence is demoted in both regimes; the default awake replay is the uniform clock.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os

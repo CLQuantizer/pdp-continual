@@ -2049,3 +2049,10 @@ per memory and look-ahead; a global surprise clock (awg) only changes when repla
 1. **H13** (running on the box): absence vs uniform under the forgetful store, with ff_bits, both worlds.
 2. **H14** MIR-style per-prototype interference selection on f2k, only if H13 shows selection matters.
 3. **H9** store confidence vs second-nearest prototype.
+
+## 2026-11-01 18:50 UTC+8 (H13 scored: absence demoted)
+
+H13 KILLED on the compression term: under a forgetful store absence beats uniform replay by +2.5 / +3.4 returns and
+~0.11 return bits in 6/6 seed pairs, but whole-history code length is unchanged (+0.002 / -0.001 bits, bar -0.02).
+Core becomes z5 store + c3 router + uniform awake replay (awu, every 38th wake arrival). Next: H14 MIR-style per-memory
+interference selection on f2k, and a returns vs present-digit split of ff_bits.
