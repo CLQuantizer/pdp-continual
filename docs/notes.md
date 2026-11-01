@@ -727,3 +727,10 @@ generator, not every raw image), and its size and sleep cost are reported.
   move store, spread over unmoved prototypes, originals winning back and copies answering wrong. In CA1 a single
   plateau both creates and places a new field (Bittner et al. 2017); next, place the copy where its evidence is.
 
+
+- 2026-11-01 08:00 UTC+8: a new memory belongs where the read will look for it, not where its evidence sits.
+  Placing the copy at the mean of the items that contradicted the old label (or halfway there) makes swap accuracy
+  worse step by step (first 300 ticks: 46/52 at the original, 41/46 halfway, 32/29 at the evidence), because the
+  moved copy loses its region to neighbouring old-label prototypes. A new CA1 field is as broad as the window that
+  made it (Bittner et al. 2017), not a point. Copies stay at the original; the bulk of post-swap errors in every
+  store is prototypes that never change label, so next comes spreading a class's remap to its other prototypes.

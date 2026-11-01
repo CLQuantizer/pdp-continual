@@ -1757,3 +1757,44 @@ plateau happened (the items that drove it), not on top of the old field.
    remap per stream, move store ping-pongs. This is where a copy store should earn its keep even at -6 swap300.
 4. **Training: routed scoring** of m0.3c600s via the j+0.0b arbiter on cached FF logs; the arbiter may absorb a
    6-point store-only swap deficit if lifetime and returns hold.
+
+## Loop 2026-11-01 08:00 UTC+8
+
+### Experiment: content-placed copies (`place_copy.py`, `results/place_copy/`)
+- Pre-registered H13 (07:00 rank 1): each prototype keeps the inputs of its last 10 in-radius contradictions; a copy
+  under label y is placed at their mean ('p') or halfway between original and mean ('h'), else identical to
+  copy-first m0.3c600s. Selected m0.3c600sh on dev seeds 12-29 (highest swap300). Held-out fresh seeds 102-119.
+- **Killed on three bars, monotone in placement.** Held-out swap first 300 (s49f/bg002f): at the original
+  (m0.3c600s) 46.3/51.7, halfway 41.0/46.2, at the evidence mean 32.1/29.4; m0.3n4 54.2/57.5. ans_lat vs z5:
+  -5.6 for h (bar -8); p is slower than z5 (127/148 vs 105/103). Committed false remaps 5 (bar 4). pre_acc unchanged.
+- Error attribution shows where it goes: unpaired old-label prototypes answer 87.7 (s) -> 95.8 (h) -> 118.6 (p)
+  wrong per run; copy errors barely move (6.6 -> 7.1 -> 7.2). Moving the copy off its original's location does
+  not make it more accurate; it makes it lose the region it should have inherited to neighbouring old-label
+  prototypes. Likely cause (untested): a mean of <= 10 items is a sharp exemplar, farther in squared distance from
+  typical inputs than a long-run EMA prototype, so it wins fewer nearest-prototype contests.
+- Side finding: on seeds 102-119 the copy store's false-remap advantage shrinks: m0.3c600s commits 4 false remaps on
+  3 streams (seeds 102, 103 5->3, 110 7->2), the move store m0.3n4 2 on 1 stream (seed 102). The copy store still
+  ends seed 26's 68-event ping-pong, so it removes the worst case but not rare single false moves.
+
+### Literature insight
+Bittner et al. 2017 (Science 357:1033) again, read for the window: the plateau potentiates inputs active over a
+~4-second window around it, so a new CA1 field is broad, about as wide as existing fields, not a point at the
+triggering location. Our 'p' copy was the opposite, a 10-item mean. In Mamba terms (Gu & Dao 2023), a selective
+write B(x) only helps if the read C(x) addresses state in the same basis; writing a sharp exemplar into a store
+read by distance to long-run means puts the new memory where the read cannot find it. Placement must match the
+scale of the read, and at our scale the original's location is already the right address.
+
+### Paths closed
+- Content-placed copies (mean of contradicting items, or halfway): closed. Copies stay at the original.
+
+### Hypotheses, ranked
+1. **Architecture/algorithm: class contagion.** Unpaired old-label prototypes are the bulk of post-swap errors in
+   every store (move store 87/run). Once one prototype of class s commits or copies to y, require only H-1
+   contradictions (or K=1) for the rest of class s for 600 ticks. Prediction on fresh held-out seeds: swap300 +4
+   over m0.3n4 at <= m0.3n4's false remaps; kill if swap300 gain < 2 or false remaps double.
+2. **Data: label-noise world** (10% of 4s permanently labelled 9): now decisive, since the copy store's clean-world
+   false-remap edge is not robust (4 vs 2 on seeds 102-119). If the copy store does not beat the move store there,
+   close the copy family.
+3. **Neuron: placement at matched scale** (copy at the n-weighted blend of original and evidence mean, weight
+   n_contra/(n_orig + n_contra)): low priority; today's monotone trend predicts it lands at m0.3c600s.
+4. **Training: routed scoring** of m0.3c600s and m0.3n4 via the j+0.0b arbiter on cached FF logs.

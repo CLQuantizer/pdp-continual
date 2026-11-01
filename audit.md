@@ -604,3 +604,11 @@ star and makes "is sleep organically useful?" a measurable question.
 - Any copy store keeps copy-first. Candidates: m0.3c600s (copy store), m0.3n4hinf (move store); z5 stays default.
   Next: content-seeded copy placement, then evidence across pairs, label noise, routed scoring.
 
+
+## Update 2026-11-01 08:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Killed as pre-registered: content-placed copies (`place_copy.py`). Selected m0.3c600sh; held-out fresh seeds
+  102-119: swap first 300 -12.3 vs m0.3n4 (bar -2), -5.4 vs copy-at-original m0.3c600s; ans_lat -5.6 vs z5 (bar -8);
+  committed false remaps 5 (bar 4). Full placement at the evidence mean is worse still (swap300 ~31).
+- Cause: unpaired old-label errors rise 87.7 -> 95.8 -> 118.6/run as the copy moves off the original; copy errors flat.
+- Copy store m0.3c600s commits 4 false remaps on seeds 102-119 vs move store 2: its false-remap edge is not robust.
+  z5 stays default. Next: class contagion for unpaired prototypes, label-noise world to decide the copy family.
