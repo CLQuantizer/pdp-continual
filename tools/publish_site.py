@@ -22,6 +22,7 @@ DOCS = [  # (slug, source, title, blurb)
     ("audit", "audit.md", "Audit", "Claims checked against evidence; open items."),
     ("cls-route", "docs/cls_route.md", "CLS routing", "Answering with the hippocampal store."),
     ("readme", "README.md", "Full write-up", "The long README: methods, runs, numbers."),
+    ("how-it-works", "docs/how_it_works.md", "How it works", "One-glance figure of the dual: store, router, awake replay."),
 ]
 
 SCRUB = [
@@ -67,9 +68,11 @@ footer{border-top:1px solid var(--line);margin-top:48px;padding-top:14px}
 .latest{border:1px solid var(--line);border-radius:8px;padding:2px 18px 10px;margin:22px 0}
 .latest h2{border:0;padding-top:0}
 img{max-width:100%}
+iframe.fig{width:100%;height:640px;border:0;display:block;margin:0 auto;background:transparent}
+.feature{margin:22px 0 8px}
 """
 
-NAV = [("", "Home"), ("loop/", "Loop log"), ("results/", "Results"), ("goal/", "Goal"), ("notes/", "Notes"), ("audit/", "Audit")]
+NAV = [("", "Home"), ("how-it-works/", "How it works"), ("loop/", "Loop log"), ("results/", "Results"), ("goal/", "Goal"), ("notes/", "Notes"), ("audit/", "Audit")]
 
 def md(text):
     return markdown.markdown(text, extensions=["tables", "fenced_code", "sane_lists", "toc"],
@@ -103,6 +106,7 @@ def page(title, body, depth, on, stamp):
 <style>{CSS}</style></head><body><div class="wrap">
 <nav><a class="brand" href="{up or './'}">Learning <span style="font-weight:400;color:var(--mut)">by Ez</span></a>{nav}</nav>
 <main>{body}</main>
+<script>addEventListener("message",function(e){{var d=e.data;if(!d||d.type!=="cls-figure-height")return;document.querySelectorAll("iframe.fig").forEach(function(f){{if(f.contentWindow===e.source)f.style.height=(d.height+4)+"px"}})}})</script>
 <footer>By Ez · Built from <a href="{REPO_URL}">pdp-continual</a>{stamp} · Updated as the research runs.</footer>
 </div></body></html>"""
 
@@ -180,11 +184,18 @@ def build(out, commit):
             "cycles</b>: a network that answers and learns at once, keeps a hippocampus-like fast store, and sleeps "
             "when it needs to. An hourly loop runs experiments, pre-registers kill tests, and writes down what died. "
             f'This site republishes as the loop commits. Code: <a href="{REPO_URL}">pdp-continual</a>.</p>'
+            + ('<div class="feature"><iframe class="fig" src="figures/cls-bench.html" title="Fig 1: CLS dual bench, store, router, awake replay" loading="lazy"></iframe>'
+               '<p class=meta>Fig 1 · how the default core works at one glance · <a href="how-it-works/">read the figure</a> · '
+               '<a href="figures/cls-bench.html">open full size</a></p></div>' if os.path.exists(os.path.join(ROOT, "docs/figures/cls-bench.html")) else "")
             + (link_fix(md(north.group(0)), 0) if north else "")
             + f'<div class="latest"><p class=meta>Latest loop entry · <a href="loop/">full log ({len(entries)} entries)</a></p>{latest}</div>'
             + f"<h2>Read</h2><ul class=cards>{cards}</ul>")
     write(out, "index.html", page("Learning", home, 0, "", stamp))
     write(out, "robots.txt", "User-agent: *\nAllow: /\n")
+    fdir = os.path.join(ROOT, "docs", "figures")
+    for name in sorted(os.listdir(fdir)) if os.path.isdir(fdir) else []:
+        if name.endswith(".html"):
+            write(out, f"figures/{name}", read(f"docs/figures/{name}"))
     return len(entries), len(rows)
 
 def main():
