@@ -734,3 +734,10 @@ generator, not every raw image), and its size and sleep cost are reported.
   moved copy loses its region to neighbouring old-label prototypes. A new CA1 field is as broad as the window that
   made it (Bittner et al. 2017), not a point. Copies stay at the original; the bulk of post-swap errors in every
   store is prototypes that never change label, so next comes spreading a class's remap to its other prototypes.
+
+- 2026-11-01 09:00 UTC+8: once a class's label change is decided, spread it to the rest of the class. After one
+  committed remap, other prototypes of that class now move on a single contradiction for 600 ticks. On 18 unseen
+  streams swap accuracy in the first 300 ticks rises from 59/60 to 64/68 with no false remaps and answers 6 ticks
+  sooner. The catch: on the one stream where the plain store already flips back and forth before any swap, spreading
+  makes that 4 to 13 times worse. In complementary learning systems terms the fast store decided the fact and now
+  generalises it; next comes a sticky base so only a sound decision spreads.

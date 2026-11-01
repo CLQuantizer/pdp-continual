@@ -1798,3 +1798,47 @@ scale of the read, and at our scale the original's location is already the right
 3. **Neuron: placement at matched scale** (copy at the n-weighted blend of original and evidence mean, weight
    n_contra/(n_orig + n_contra)): low priority; today's monotone trend predicts it lands at m0.3c600s.
 4. **Training: routed scoring** of m0.3c600s and m0.3n4 via the j+0.0b arbiter on cached FF logs.
+
+## Loop 2026-11-01 09:00 UTC+8
+
+### Experiment: class contagion (`contagion.py`, `results/contagion/`)
+- Pre-registered H14 (08:00 rank 1): after any committed move s->y, for 600 ticks a further prototype of class s that
+  takes one in-radius, rival-passing contradiction labelled y moves at once ('x600'); 'x600a' drops the radius
+  requirement. Base m0.3n4. Selected m0.3n4x600a on dev seeds 12-29. Held-out fresh seeds 120-137.
+- **Passed every pre-registered bar.** Held-out swap first 300 (s49f/bg002f): x600a 63.8/67.9, x600 63.2/66.1, m0.3n4
+  58.9/59.7, z5 53.2/53.2, copy store m0.3c600s 50.9/53.6. Pooled +6.6 over m0.3n4 (bar +2). ans_lat 66.8/66.7 vs
+  m0.3n4 72.5/72.4 (-5.7). swap1000 75.3 vs 72.0. pre_acc 92.10 = z5. Committed false remaps 0 (m0.3n4 also 0).
+  First gain on swap300 over the move store since 02:00, and it comes without any return-side change in the store.
+- **Caveat, not covered by the bar:** contagion multiplies a false commit. On dev seed 26 (the one stream where m0.3n4
+  ping-pongs 4<->9 pre-swap, 68 events) x600 makes 242 events and x600a 866. Held-out seeds had no false commit in
+  the base, so they could not test this. Contagion is only as safe as the commit it spreads from.
+- Error attribution: unpaired old-label errors fall 81.3 -> 68.1/run (held-out). Two thirds of them remain: those
+  prototypes get no contradiction at all in the first 300 ticks, so no per-prototype rule reaches them (the null's
+  half that held). x600a makes ~205 contagion moves per run in 300 ticks (x600: ~43), i.e. heavy churn between the
+  two swapped classes; accuracy is still higher, but this is not a clean one-shot class relabel.
+
+### Literature insight
+McClelland, McNaughton & O'Reilly 1995 (Psych. Rev. 102:419) and Kumaran, Hassabis & McClelland 2016 (TICS 20:512):
+the fast system stores the episode and the slow system generalises across items that share structure; a new fact
+about a category should reach members that were not in the episode. Our store had the episode decision (a committed
+s->y) but applied it one prototype at a time. In Mamba terms (Gu & Dao 2023) the committed remap is a large step
+Delta on one channel: once the gate opens, the write should land on the whole channel, not on the single entry that
+triggered it. The 300-tick swap number moves exactly as much as this predicts for prototypes that are visited; it
+cannot move those that are not, which is what offline replay (sleep) is for in CLS.
+
+### Paths decided
+- Class contagion: kept as move-store candidate m0.3n4x600 (fewer churn moves than x600a, swap300 within 1.2). Not
+  default yet: needs a guard on the commit it spreads from (seed 26 x3.6 / x12.7 amplification).
+
+### Hypotheses, ranked
+1. **Architecture: contagion on a sticky base.** m0.3n4hinfx600 (hysteresis base cut seed 26 68 -> 22) and copy-store
+   contagion m0.3c600sx600 (copy store ends the ping-pong). Prediction: dev seed 26 <= 22 events and held-out
+   swap300 >= m0.3n4 + 4. Kill if seed 26 > 68 or swap300 gain < 2.
+2. **Training/sleep: contagion by replay.** At the next sleep after a committed s->y, relabel every class-s prototype
+   whose nearest y-labelled episode lies within its radius, reaching the prototypes no waking arrival touches (the
+   remaining ~68 unpaired errors/run). Predicts swap1000 gain larger than swap300 gain.
+3. **Data: label-noise world** (10% of 4s permanently labelled 9): contagion is the worst case here, since one noisy
+   commit spreads to the class. Prediction: x600 false relabels >= 3x m0.3n4. If confirmed, contagion must be gated
+   by evidence across prototypes (>= 2 distinct prototypes committed) before it spreads.
+4. **Neuron: contagion radius at matched scale** ('x600' in-radius vs 'a' any distance): a 1.5x radius variant should
+   keep most of x600a's swap300 with x600's churn.

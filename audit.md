@@ -612,3 +612,13 @@ star and makes "is sleep organically useful?" a measurable question.
 - Cause: unpaired old-label errors rise 87.7 -> 95.8 -> 118.6/run as the copy moves off the original; copy errors flat.
 - Copy store m0.3c600s commits 4 false remaps on seeds 102-119 vs move store 2: its false-remap edge is not robust.
   z5 stays default. Next: class contagion for unpaired prototypes, label-noise world to decide the copy family.
+
+
+## Update 2026-11-01 09:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Passed as pre-registered: class contagion (`contagion.py`). After a committed s->y, other class-s prototypes move on
+  one contradiction for 600 ticks. Selected m0.3n4x600a; held-out fresh seeds 120-137: swap first 300 +6.6 vs m0.3n4
+  (63.8/67.9 vs 58.9/59.7), ans_lat -5.7, swap1000 +3.3, pre_acc equal, 0 committed false remaps (base also 0).
+- Not adopted as default: on dev seed 26 contagion multiplies the base's pre-swap ping-pong (68 -> 242 in-radius,
+  866 any-distance). Candidate m0.3n4x600 (less churn). z5 stays default.
+- Unpaired old-label errors fall 81 -> 68/run; the rest are prototypes no arrival touches in 300 ticks.
+  Next: contagion on a sticky base (hysteresis / copy store), sleep-time contagion, label-noise world.
