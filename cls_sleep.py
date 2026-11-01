@@ -110,6 +110,15 @@ H8 awake replay rate, pre-registered 15:10 UTC+8 1 Nov before running (s49 seeds
   awr19 replaces awr only if, in BOTH worlds, returns >= awr + 1.0 AND lifetime >= awr - 0.05 AND novel300 >= awr - 1.0.
   awr76 replaces awr (Gall: same result for half the replay) if, in BOTH worlds, returns >= awr - 1.0 AND
   lifetime >= awr - 0.05 AND swap300 >= awr - 1.0. If both pass, awr76 wins. KILL otherwise: every=38 stays.
+Result H8 (16:20 UTC+8): KILLED, every=38 stays. s49 awr19 96.24/81.8/67.0 (returns +0.94 < +1.0), awr76 96.27/80.5/67.1
+  (swap -1.7 < -1.0); bg002 both pass (awr19 returns +1.5; awr76 95.85/81.8/69.3). 4x the budget moves returns ~1.4 points.
+H10 selective bus vs compression progress, pre-registered 16:10 UTC+8 1 Nov before scoring (bg002 seeds 6-8: none, awr, awu):
+  Group constraint: keep the absence selector only if it buys compression progress, not just return accuracy. Measure the
+  cortex's prequential code length on the growing history: bits = -log2 softmax(FF scores)[label], taken on every awake
+  arrival before the cortex fits it (ff_bits; lower = better). awu = uniform awake replay at the same rate (every 38th, any class).
+  KEEP selectivity if awr ff_bits.all <= awu - 0.02 AND awr ff_bits.all <= none. If awr's code length is not below awu's
+  while its returns are, the selector is buying return accuracy without compressing the history better: flag it to the group
+  and test a mixed selector next. awr staying ahead of none on ff_bits is the minimal sanity check of replay itself.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -170,6 +179,8 @@ CONDS = {
     "awr19": dict(sleep=None, wl=1.0, awake="remote", every=19, gap=300),
     "awr76": dict(sleep=None, wl=1.0, awake="remote", every=76, gap=300),
     "awr_swr2_na": dict(sleep="swr", chunks=2, wl=1.0, night_answer=True, awake="remote", every=38, gap=300),
+    # 16:00 loop H10 (selective bus vs compression progress): uniform awake replay at the awr rate, no forgetting.
+    "awu": dict(sleep=None, wl=1.0, awake="uni", every=38, gap=300),
     "awr_rw": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, rw_gap=300, rw_n=20),
 }
 CAP, CHUNK_TICKS = 128, 40
@@ -200,6 +211,7 @@ def live(args):
     forgot = 0
     night_answered = 0
     n_wake = 0
+    ffbits = []          # H10: cortex prequential code length, -log2 softmax(FF scores)[y] before fitting each awake arrival
     ra_used = ra_right = ra_ffright = 0
     rb_ev = deque()      # (tick, store class) for store-names-absent-class disagreements (awr_rb)
     rw_left = {}         # class -> labelled arrivals left in its return window (awr_rw)
@@ -270,6 +282,7 @@ def live(args):
                 returning[c] = LF.RET_N
             ret = int(returning.get(c, 0) > 0); returning[c] = returning.get(c, 0) - 1; last_seen[c] = t
             sc = ff.scores(x)[0]; o = np.sort(sc); f = int(sc.argmax()); ffm = float(o[-1] - o[-2])
+            z = sc - sc.max(); ffbits.append((float((np.log(np.exp(z).sum()) - z[y]) / np.log(2)), ret))
             s, sm = RP.answer(st, x)
             q30 = np.quantile(ffms, 0.3) if len(ffms) == 500 else -np.inf
             dis = s >= 0 and s != f
@@ -331,6 +344,10 @@ def live(args):
                replay_per_wake=replayed / max(ANS.sum(), 1), tagged_share=tagged_replayed / max(replayed, 1),
                pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, seconds=time.time() - t0)
     out.update(score(R, sw, world.novel_at, w))
+    if ffbits:
+        B = np.array(ffbits); h = len(B) // 2
+        out["ff_bits"] = dict(all=float(B[:, 0].mean()), returns=float(B[B[:, 1] == 1, 0].mean()) if (B[:, 1] == 1).any() else float("nan"),
+                              first_half=float(B[:h, 0].mean()), second_half=float(B[h:, 0].mean()))
     print(f"{wk} {cond:9s} seed={seed} " + " ".join(f"{k}={v['lifetime']*100:.2f}/{v['returns']*100:.1f}/{v['swap']*100:.1f}"
                                             for k, v in out["route"].items()) + f" missed={out['missed']*100:.2f} ({out['seconds']:.0f}s)", flush=True)
     return out

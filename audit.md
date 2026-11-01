@@ -739,3 +739,18 @@ star and makes "is sleep organically useful?" a measurable question.
   bar in cls_sleep.py). (2) H9 input-specific store confidence (store margin vs second-nearest class prototype) to close the
   store-only/combined returns gap of ~6-7 points. (3) Selective bus check for the group constraint: does awr lower the
   cortex's prequential loss on the growing history (compression progress), not just returns.
+
+## Update 2026-11-01 16:20 UTC+8 (H8 awake replay rate; detail in `results/cls_h8/RESULTS.md`)
+- H8 KILLED, every=38 stays. s49: awr19 returns +0.94 (bar +1.0), awr76 swap300 -1.7 (bar -1.0); bg002 both pass.
+  Replay budget x4 (0.41 to 1.64 per wake arrival) moves returns only ~1.4 points vs +6-7 for awr over none: the rate
+  curve is flat, the selector is what matters. Runs are deterministic (Dubai and box gave identical rows for the same seed).
+- Literature: Ambrose, Pfeiffer & Foster 2016 (Neuron 91:1124): awake reverse-replay rate rises when reward increases and
+  falls when it drops, while forward replay rate stays put. Replay rate tracks change, not a clock. pdp analogue: let the
+  cortex's own prediction error (code length) on recent arrivals set when to replay, not every 38th tick.
+- Running: H10 selective bus vs compression progress (box, results/cls_h10_bg002: none / awr / awu, seeds 6-8). New metric
+  ff_bits = cortex prequential code length (-log2 softmax FF scores at the label, before fitting each awake arrival).
+  Bar in cls_sleep.py: keep the absence selector only if awr ff_bits <= awu - 0.02 and <= none.
+- Next, ranked: (1) score H10. (2) H11 error-gated awake replay: fire one remote batch whenever the running mean of ff_bits
+  over the last 38 awake arrivals exceeds its 500-arrival median, budget matched to awr (0.82/wake); replaces awr only if
+  returns >= awr + 1.0 in both worlds with lifetime >= awr - 0.05 (or same returns at half the budget). (3) H9 store
+  confidence vs second-nearest class prototype, to close the 6-7 point store-only vs combined returns gap.
