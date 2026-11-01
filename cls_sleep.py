@@ -66,6 +66,8 @@ H5 similarity-weighted awake interleaving, pre-registered 12:15 UTC+8 1 Nov befo
   PASS (similarity is the better selector) if aws_f2k returns >= awr_f2k + 1.5 AND lifetime >= awr_f2k - 0.05, or
   swap first 300 >= awr_f2k + 2.0 with returns >= awr_f2k - 1.0. Permanent-store check: aws lifetime >= awr - 0.05.
   KILL otherwise: absence stays the selector. awr_f2k / awr reused from results/cls_awake (same seeds).
+Result H5 (12:44 UTC+8): KILLED. aws_f2k 96.15/65.4/66.6 vs awr_f2k 96.21/69.8/66.2 (returns -4.4, below uniform 67.4);
+  aws 96.22/80.1/67.0 vs awr 96.22/80.9/68.8. The cortex forgets what it is not shown; absence stays the selector.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os

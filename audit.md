@@ -690,3 +690,13 @@ star and makes "is sleep organically useful?" a measurable question.
   return points the store had right (next store/router question now that the dual works).
 - Running (pre-registered 12:15 in `cls_sleep.py`): H5 similarity-weighted awake interleaving `aws` / `aws_f2k`
   (McClelland, McNaughton & Lampinen 2020) vs `awr` on s49 seeds 3-5 -> `results/cls_aws`.
+
+
+## Update 2026-11-01 12:45 UTC+8 (H5 similarity-weighted awake replay; detail in `results/cls_aws/RESULTS.md`)
+- KILLED: replaying the store prototypes of other classes nearest the current arrival (SWIL, McClelland, McNaughton
+  & Lampinen 2020) at the awr rate gives forgetful-store returns 65.4 vs awr_f2k 69.8 and uniform 67.4; permanent
+  store ties lifetime (96.22) but -0.8 returns, -1.8 swap300. The FF cortex forgets by absence, not by overlap.
+  Absence-selected replay (`awr`) stays in the default core.
+- Next, ranked: (1) H6 return-aware arbiter: when the store's winning class has been absent >= 300 ticks, let the store
+  answer unless the cortex is confident (store-only returns 88-89 vs combined 84); pass needs combined returns +2 with
+  lifetime and swap300 within -0.1 / -1.0 of awr. (2) H7 awr + swr2_na combined. (3) awr rate sweep (every 19 / 76).

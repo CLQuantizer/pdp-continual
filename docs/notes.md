@@ -782,3 +782,10 @@ generator, not every raw image), and its size and sleep cost are reported.
   percent. What is left: the store alone answers returns at 88 to 89, so the part that decides who answers still
   gives away about 5 points. Next test, already running: replay the stored digits that look most like what is
   arriving now, rather than the ones that have been away (McClelland, McNaughton & Lampinen 2020).
+
+- 2026-11-01 12:45 UTC+8: replay what is missing, not what looks like the present. McClelland and colleagues showed
+  in 2020 that a network only needs to rehearse old items similar to a new one, because new learning mostly disturbs
+  similar knowledge. Here that loses: rehearsing the stored digits nearest each arrival recovers 4 points fewer
+  returning digits than rehearsing digits that have been away, and does worse even than picking at random. This
+  cortex does not mainly suffer overlap; it forgets whatever it has not been shown lately. Next: when a digit
+  returns, let the store, which still remembers it, answer more often.
