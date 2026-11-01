@@ -675,3 +675,18 @@ star and makes "is sleep organically useful?" a measurable question.
 - Not adopted yet: 3 seeds per world and the bg002 swr8_na lifetime margin is 0.01. Held-out confirmation H3c
   (fresh seeds s49 140-142 / bg002 143-145) and H4c (awake interleaved remote replay `awr`, which passed H4 on s49
   3-5 at 96.22/80.9) are pre-registered and running on box CPU. Default stays z5 + `c3`, never sleeping.
+
+
+## Update 2026-11-01 12:35 UTC+8 (H3c/H4c held-out confirmation; detail in `results/cls_conf/RESULTS.md`)
+- Fresh seeds s49 140-142 / bg002 143-145 against same-seed never-sleeping `none`; bar pre-registered 11:38 / 11:40.
+- H3c CONFIRMED: night answering passes in both worlds. swr2_na s49 +0.07 lifetime / +2.2 returns, bg002 -0.04 / +2.0;
+  swr8_na s49 -0.04 / +2.0, bg002 -0.01 / +3.0.
+- H4c CONFIRMED and wins the pre-registered tie-break: awake remote replay `awr` s49 95.74 / 84.1 (+0.05 / +4.4,
+  swap300 +1.7), bg002 96.29 / 84.0 (+0.15 / +5.4, swap300 +0.9); all six seeds up on returns (+3.8 to +7.4).
+  Cortex-only returns 58-63 -> 76-77.
+- **New default core: z5 store + c3 router + awake remote replay** (every 38th waking arrival, one batch of 32 store
+  prototypes from classes unseen >= 300 ticks; no nights). Nights dropped from the default; `*_na` kept as an option.
+- Open: novel first-300 -0.6 / -0.8 under awr. Store-only returns 88-89 vs combined 84: the arbiter gives away ~5
+  return points the store had right (next store/router question now that the dual works).
+- Running (pre-registered 12:15 in `cls_sleep.py`): H5 similarity-weighted awake interleaving `aws` / `aws_f2k`
+  (McClelland, McNaughton & Lampinen 2020) vs `awr` on s49 seeds 3-5 -> `results/cls_aws`.

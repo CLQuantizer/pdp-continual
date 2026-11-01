@@ -773,3 +773,12 @@ generator, not every raw image), and its size and sleep cost are reported.
   the bar set before the run. The earlier loss really was just the time spent offline. Not the default yet: three
   runs per world and one margin of 0.01; fresh-seed confirmation is running, alongside a version with no nights at
   all that slips short replays into the waking day.
+
+- 2026-11-01 12:35 UTC+8: the first working store-and-cortex pair is now the default, and it does not sleep. On six
+  streams never used for development, both versions held up: letting the store answer at night while the cortex
+  replays still gains 2 to 3 points on returning digits, and slipping a short replay of absent digits into the waking
+  day (every 38th arrival) gains 4 to 5, with every stream better and lifetime accuracy slightly up. By the rule set
+  before the run, the awake version wins. The cortex's own memory of returning digits rises from about 60 to 77
+  percent. What is left: the store alone answers returns at 88 to 89, so the part that decides who answers still
+  gives away about 5 points. Next test, already running: replay the stored digits that look most like what is
+  arriving now, rather than the ones that have been away (McClelland, McNaughton & Lampinen 2020).

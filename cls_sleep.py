@@ -56,6 +56,16 @@ H4c held-out confirmation, pre-registered 11:40 UTC+8 1 Nov before running: awr 
   bg002 143-145) against same-seed `none` from H3c. Confirmed if, in BOTH worlds, lifetime >= none - 0.10 and returns >=
   none + 1.0 (same bar as H3). Head-to-head reported: awr vs swr2_na / swr8_na. If both awr and a *_na confirm, the
   default becomes the one with higher mean returns at lifetime within 0.05; combining them is the next test, not a default.
+Result H3c/H4c (12:35 UTC+8): both CONFIRMED in both worlds. swr2_na +0.07/+2.2 (s49), -0.04/+2.0 (bg002); swr8_na
+  -0.04/+2.0, -0.01/+3.0; awr +0.05/+4.4, +0.15/+5.4 (all six seeds up). Tie-break -> awr is the default core.
+H5 similarity-weighted awake interleaving, pre-registered 12:15 UTC+8 1 Nov before running (s49 seeds 3-5):
+  McClelland, McNaughton & Lampinen 2020 (Phil Trans R Soc B 375:20190637) and Saxena et al. 2022 (PNAS): new learning
+  interferes mostly with *similar* old knowledge, so interleaving only old items similar to the new one protects as much as
+  full interleaving at a fraction of the cost. awr picks replay by absence (classes unseen >= 300 ticks). aws keeps the
+  same rate (every 38th arrival, one batch) but picks the store prototypes of other classes nearest the current arrival.
+  PASS (similarity is the better selector) if aws_f2k returns >= awr_f2k + 1.5 AND lifetime >= awr_f2k - 0.05, or
+  swap first 300 >= awr_f2k + 2.0 with returns >= awr_f2k - 1.0. Permanent-store check: aws lifetime >= awr - 0.05.
+  KILL otherwise: absence stays the selector. awr_f2k / awr reused from results/cls_awake (same seeds).
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -95,6 +105,10 @@ CONDS = {
     "awr_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="remote", every=38, gap=300),
     "awu_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300),
     "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
+    # 12:10 loop: similarity-weighted interleaving (McClelland, McNaughton & Lampinen 2020; Saxena et al. 2022). Same rate;
+    # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.
+    "aws_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="sim", every=38, gap=300),
+    "aws": dict(sleep=None, wl=1.0, awake="sim", every=38, gap=300),
 }
 CAP, CHUNK_TICKS = 128, 40
 
@@ -204,7 +218,16 @@ def live(args):
             ff.opt.lr = lr
             st.t = t; st.observe(x, y); st.add(x, y)
             n_wake += 1
-            if cfg.get("awake") and n_wake % cfg["every"] == 0 and st.mu:
+            if cfg.get("awake") == "sim" and n_wake % cfg["every"] == 0 and st.mu:
+                mu, ys = protos(st)
+                keep = ys != y
+                if keep.sum() >= 1:
+                    mu, ys = mu[keep], ys[keep]
+                    j = np.argsort(((mu - x.reshape(1, -1)) ** 2).sum(1))[:LF.BS]
+                    j = j[rng.choice(len(j), LF.BS)]
+                    ff.fit_batch(mu[j].astype(np.float32), ys[j].astype(int))
+                    replayed += LF.BS
+            elif cfg.get("awake") and n_wake % cfg["every"] == 0 and st.mu:
                 pool = [k for k in st.mu if cfg["awake"] == "uni" or t - last_seen.get(k, -10 ** 9) >= cfg["gap"]]
                 if pool:
                     mu = np.concatenate([st.mu[k] for k in pool])
