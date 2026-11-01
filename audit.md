@@ -818,3 +818,18 @@ star and makes "is sleep organically useful?" a measurable question.
   whose bits rise most after one virtual cortex step; bar ff_bits.all <= awu_f2k - 0.02 AND return bits <= awr_f2k.
   (2) Split ff_bits into returns vs present-digit arrivals to confirm the reallocation reading (zero-cost rescoring
   needs per-arrival bits saved; add to the runner). (3) H9 store confidence.
+
+## Update 2026-11-01 19:45 UTC+8 (H14 per-memory interference; detail in `results/cls_h14/RESULTS.md`)
+- H14 MIR (Aljundi et al. 2019, look-back form) KILLED. ff_bits.all mir_f2k vs awu_f2k: 0.4548 vs 0.4530 (s49), 0.4584 vs
+  0.4594 (bg002); bar <= -0.02. The selector worked as a selector (chosen batch rose 0.14-0.15 bits since sampling vs ~0.00
+  for all candidates) and still bought no compression. Return bits sit between uniform and absence (reallocation again).
+- Selection is closed on the whole-history compression axis: absence, gain gate and interference all tie uniform within
+  0.003 bits in both store regimes. Core unchanged: z5 store + c3 router + uniform awake replay every 38th wake arrival.
+- Literature: Isele & Cosgun 2018 ("Selective Experience Replay for Lifelong Learning", AAAI) found distribution-matching
+  and coverage selection beat surprise-based selection for long-run retention. Here uniform sampling of the store is
+  already distribution matching over what the store holds, which is why every surprise-shaped selector ties it.
+- Next, ranked: (1) H15 bits vs replay budget on awu_f2k (every 19 / 38 / 76): if whole-history bits move >= 0.02 per
+  doubling, compression is budget-limited and the rate is the lever; if not, the cortex's capacity or learning rule is.
+  H8 swept rate on accuracy only, never on bits. (2) H16 interleave the arriving item into the replay batch (one batch of
+  current + 31 store items instead of a batch-of-one fit plus a separate replay batch; McClelland, McNaughton & Lampinen
+  2020 interleaving) at equal gradient steps. (3) H9 store confidence for the router gap.

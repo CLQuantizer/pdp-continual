@@ -147,6 +147,12 @@ Result H13 (18:50 UTC+8): KILLED on compression only. awr_f2k - awu_f2k ff_bits.
   bar <= -0.02. Accuracy passes both worlds: returns 71.1 vs 68.6 (+2.5) and 69.5 vs 66.1 (+3.4), lifetime -0.02 / -0.04.
   Return-arrival bits are lower under absence in 6/6 seed pairs (~ -0.11): a reallocation toward absent digits, not
   better compression of the history. Absence is demoted in both regimes; the default awake replay is the uniform clock.
+H14 per-memory interference (MIR, Aljundi et al. 2019, look-back form), pre-registered 19:10 UTC+8 1 Nov before running
+  (s49 AND bg002 seeds 6-8, forgetful store f2k; awu_f2k / awr_f2k reused from H13, deterministic). mir_f2k replays, at the
+  same slots as awu (every 38th wake arrival), the 32 of 128 previously sampled store prototypes whose cortex bits rose most
+  since they were sampled. KEEP as selective bus only if, in BOTH worlds, ff_bits.all <= awu_f2k - 0.02 AND lifetime >=
+  awu_f2k - 0.05. Diagnostic only (cannot rescue a kill): ff_bits.returns vs awr_f2k (protector vs reallocation). KILL
+  otherwise: core stays z5 + c3 + awu and per-memory selection is closed for the permanent and f2k stores.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -215,6 +221,11 @@ CONDS = {
     # ff_bits over the last 38 awake arrivals exceeds the median of that running mean over the last 500 arrivals
     # (before 500 arrivals: spend whenever a token is there). Budget <= awr's 0.82-0.84 per wake arrival.
     "awg": dict(sleep=None, wl=1.0, awake="uni", every=38, gap=300, gate=38, cap=8),
+    # 19:00 loop H14 MIR (Aljundi et al. 2019, look-back form): at each awake replay slot, re-score the 128 store
+    # prototypes sampled at the previous slot; replay the 32 whose cortex bits rose most over the 38 wake updates since
+    # (actual interference, not a virtual step). Then sample 128 fresh candidates and record their bits. Same rate as awu.
+    "mir_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="mir", every=38, gap=300, ncand=128),
+    "mir": dict(sleep=None, wl=1.0, awake="mir", every=38, gap=300, ncand=128),
 }
 CAP, CHUNK_TICKS = 128, 40
 
@@ -250,6 +261,12 @@ def live(args):
     rw_left = {}         # class -> labelled arrivals left in its return window (awr_rw)
     tok, fired = 0.0, 0  # H11 awg: replay tokens and batches fired
     b38 = deque(maxlen=cfg.get("gate") or 1); rmh = deque(maxlen=500)
+    mir_c = None         # H14: (x, y, bits) of the candidates sampled at the previous replay slot
+    mir_inc = []         # H14: mean bit rise of the chosen batch vs all candidates, per slot
+
+    def bits(xs, ys_):
+        sc_ = ff.scores(xs.astype(np.float32)); z_ = sc_ - sc_.max(1, keepdims=True)
+        return (np.log(np.exp(z_).sum(1)) - z_[np.arange(len(ys_)), ys_]) / np.log(2)
 
     def forget():
         nonlocal forgot
@@ -368,6 +385,25 @@ def live(args):
                     tok -= 1.0; fired += 1
             if cfg.get("awake") == "sim":
                 pass
+            elif cfg.get("awake") == "mir" and fire and st.mu:
+                mu, ys = protos(st)
+                if mir_c is not None:
+                    cx, cy, cb = mir_c
+                    alive = np.isin(cy, list(st.mu))   # never replay what the store has already dropped
+                    if alive.sum() >= 1:
+                        cx, cy, cb = cx[alive], cy[alive], cb[alive]
+                        inc = bits(cx, cy) - cb
+                        j = np.argsort(-inc)[:LF.BS]
+                        j = j[rng.choice(len(j), LF.BS)]
+                        mir_inc.append((float(inc[np.argsort(-inc)[:LF.BS]].mean()), float(inc.mean())))
+                        ff.fit_batch(cx[j].astype(np.float32), cy[j].astype(int))
+                        replayed += LF.BS
+                else:
+                    u = rng.choice(len(mu), LF.BS)
+                    ff.fit_batch(mu[u].astype(np.float32), ys[u].astype(int))
+                    replayed += LF.BS
+                u = rng.choice(len(mu), cfg["ncand"])
+                mir_c = (mu[u].copy(), ys[u].astype(int), bits(mu[u], ys[u].astype(int)))
             elif cfg.get("awake") and fire and st.mu:
                 pool = [k for k in st.mu if cfg["awake"] == "uni" or t - last_seen.get(k, -10 ** 9) >= cfg["gap"]]
                 if pool:
@@ -387,7 +423,8 @@ def live(args):
                             swap_at=sw, novel_at=world.novel_at)
     out = dict(condition=cond, world=wk, seed=seed, days=days, arrivals=len(R), missed=float(1 - ANS.mean()), sleeps=n_sleep,
                replay_per_wake=replayed / max(ANS.sum(), 1), tagged_share=tagged_replayed / max(replayed, 1),
-               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, gate_fired=fired, seconds=time.time() - t0)
+               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, gate_fired=fired,
+               mir_rise=[float(np.mean([a for a, _ in mir_inc])), float(np.mean([b for _, b in mir_inc]))] if mir_inc else None, seconds=time.time() - t0)
     out.update(score(R, sw, world.novel_at, w))
     if ffbits:
         B = np.array(ffbits); h = len(B) // 2

@@ -815,3 +815,11 @@ generator, not every raw image), and its size and sleep cost are reported.
   that a memory is worth replaying in proportion to how often it will be needed times how much replaying it would change
   things. Absence only estimates the first. Next: replay when the cortex is most surprised, then pick the stored memories
   the cortex gets most wrong.
+
+- 2026-11-01 19:45 UTC+8: which memories get rehearsed does not matter for compression; that rehearsal happens does.
+  This hour the cortex rehearsed the stored digits it had been forgetting fastest, the ones its own recent learning had
+  damaged most (Aljundi and colleagues, 2019). It found them: those memories had become 0.14 bits more surprising, while
+  a random sample had not moved. Rehearsing them still left the cortex compressing its whole history exactly as well as
+  rehearsing at random, as did picking by absence and picking by surprise in earlier hours. Isele and Cosgun (2018) saw
+  the same in reinforcement learning: a replay buffer that simply matches the past beats one chosen by surprise. The
+  choice of memory only moves effort toward returning digits. Next: does doubling the amount of rehearsal compress more?
