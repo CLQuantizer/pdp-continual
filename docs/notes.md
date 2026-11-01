@@ -789,3 +789,11 @@ generator, not every raw image), and its size and sleep cost are reported.
   returning digits than rehearsing digits that have been away, and does worse even than picking at random. This
   cortex does not mainly suffer overlap; it forgets whatever it has not been shown lately. Next: when a digit
   returns, let the store, which still remembers it, answer more often.
+
+- 2026-11-01 13:30 UTC+8: the store cannot just take over when a digit comes back. The rule tried: whenever the store
+  and the cortex disagree and the store's answer is a digit the system has not seen for a while, trust the store, since
+  the cortex has had no recent practice on it (the logic of Daw, Niv and Dayan's 2005 arbitration between brain
+  systems). Returning digits do improve by 3 points, but lifetime accuracy falls 2 to 3 points and new digits fall
+  14. The rule fires about 1,500 times a run and the store is right only 3% of the time: a stale answer from the store
+  is usually a mistake, not a return. Next: trust it only when it names the same absent digit twice in quick
+  succession, because real returns come in runs.

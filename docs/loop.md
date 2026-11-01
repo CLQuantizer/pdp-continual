@@ -1945,3 +1945,24 @@ the entire cost. Karlsson & Frank 2009 (awake remote replay) motivates H4.
 
 ### Next
 H3c / H4c held-out confirmation (running). If both confirm, default = higher returns at lifetime within 0.05.
+
+## 2026-11-01 13:10 UTC+8 (H6 return-aware arbiter)
+
+### Findings
+1. **H6 KILLED (pre-registered 13:15, both worlds).** awr_ra s49 93.81/83.8/67.1/61.6 vs awr 96.22/80.9/68.8/76.2;
+   bg002 93.06/84.9/68.3/59.9 vs 95.86/81.8/69.7/73.4 (lifetime/returns/swap300/novel300). awr_raq (FF-confidence
+   escape at q70) only trims the loss (lifetime -2.1 / -2.4). Overrides ~1,300-1,700 per run; store right 3%, FF 84%.
+2. The store's winner is an absent class mostly when the input is background or novel and lands near an old prototype.
+   c3's relative-margin rule was already rejecting exactly these.
+
+### Literature insight
+Daw, Niv & Dayan 2005 (Nat Neurosci 8:1704-1711): arbitration by each controller's *posterior uncertainty about the
+current choice*, not by a global staleness flag. The test here used staleness of a class label as a proxy and failed
+because it is a property of the store's answer, not of the cortex's belief about this input. A faithful version needs
+an input-specific uncertainty for the cortex, or input-specific evidence for the store (H6b uses temporal evidence).
+
+### Hypotheses, ranked
+1. **H6b burst-confirmed return gate.** Override only when the store named the same absent class on another arrival in
+   the last 20 ticks. Prediction: overrides drop >10x, store-right share > 50%, returns +2 kept. Bar as H6.
+2. **H7 awr + swr2_na.** Does night replay add on top of awake replay? PASS if returns >= awr + 1.0 at lifetime within 0.05.
+3. **awr rate sweep** every 19 / 76.

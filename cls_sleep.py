@@ -68,6 +68,16 @@ H5 similarity-weighted awake interleaving, pre-registered 12:15 UTC+8 1 Nov befo
   KILL otherwise: absence stays the selector. awr_f2k / awr reused from results/cls_awake (same seeds).
 Result H5 (12:44 UTC+8): KILLED. aws_f2k 96.15/65.4/66.6 vs awr_f2k 96.21/69.8/66.2 (returns -4.4, below uniform 67.4);
   aws 96.22/80.1/67.0 vs awr 96.22/80.9/68.8. The cortex forgets what it is not shown; absence stays the selector.
+H6 return-aware arbiter, pre-registered 13:15 UTC+8 1 Nov before running (s49 seeds 3-5 AND bg002 seeds 6-8):
+  Store-only returns 88-89 vs combined 84 under awr: c3 gives away store-right returns. Daw, Niv & Dayan 2005: control
+  goes to the system whose estimate is less uncertain; the cortex's estimate of a class it has not been trained on for a
+  while is stale. awr_ra: when store and FF disagree and the store's class was last seen >= 300 ticks ago, the store
+  answers. awr_raq: same unless FF's margin is in the top 30% of the last 500 arrivals.
+  PASS if awr_ra or awr_raq, in BOTH worlds, has combined returns >= awr + 2.0 AND lifetime >= awr - 0.10 AND swap300
+  >= awr - 1.0 AND novel300 >= awr - 1.0. KILL otherwise (c3 stays). awr s49 3-5 reused from results/cls_awake;
+  awr bg002 6-8 run alongside. Reported: ra_used per run and the share of overrides where store / FF was right.
+Result H6 (13:30 UTC+8): KILLED. Returns +2.9 (s49) / +3.1 (bg002) but lifetime -2.4 / -2.8 and novel300 -14.6 / -13.4.
+  ~1,500 overrides per run, store right on 3%, FF on 84%: an absent store class is an error signal, not a return signal.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -111,6 +121,11 @@ CONDS = {
     # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.
     "aws_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="sim", every=38, gap=300),
     "aws": dict(sleep=None, wl=1.0, awake="sim", every=38, gap=300),
+    # 13:10 loop H6: return-aware arbiter on the awr core (Daw, Niv & Dayan 2005 uncertainty arbitration). When the store
+    # disagrees with FF and the store's class has been absent >= ra ticks before this arrival, the store answers
+    # (ra: always; raq: unless FF's margin is in the top 30% of the last 500).
+    "awr_ra": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, ra=300),
+    "awr_raq": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, ra=300, raq=0.7),
 }
 CAP, CHUNK_TICKS = 128, 40
 
@@ -140,6 +155,7 @@ def live(args):
     forgot = 0
     night_answered = 0
     n_wake = 0
+    ra_used = ra_right = ra_ffright = 0
 
     def forget():
         nonlocal forgot
@@ -202,6 +218,7 @@ def live(args):
         if a is not None:
             x, c, y, ins = a
             age = t - last_seen.get(c, -10 ** 9)
+            prev_seen = dict(last_seen)
             if c in last_seen and age >= LF.RET_GAP:
                 returning[c] = LF.RET_N
             ret = int(returning.get(c, 0) > 0); returning[c] = returning.get(c, 0) - 1; last_seen[c] = t
@@ -210,6 +227,10 @@ def live(args):
             q30 = np.quantile(ffms, 0.3) if len(ffms) == 500 else -np.inf
             dis = s >= 0 and s != f
             use = dis and ((cnt[f] >= 1000 and ffm < q30 and sm >= 0.2) or sm >= 0.3)
+            if dis and not use and cfg.get("ra") and t - prev_seen.get(s, -10 ** 9) >= cfg["ra"]:
+                qh = np.quantile(ffms, cfg["raq"]) if cfg.get("raq") and len(ffms) == 500 else np.inf
+                if ffm < qh:
+                    use = True; ra_used += 1; ra_right += int(s == y); ra_ffright += int(f == y)
             d = s if use else f
             rows.append((t, c, y, ret, 1, f, s, d))
             ffms.append(ffm); cnt[y] += 1
@@ -246,7 +267,7 @@ def live(args):
     nidx = np.flatnonzero(np.isin(C, list(w["novel"])) & (T >= world.novel_at))[:300]
     out = dict(condition=cond, world=wk, seed=seed, days=days, arrivals=len(R), missed=float(1 - ANS.mean()), sleeps=n_sleep,
                replay_per_wake=replayed / max(ANS.sum(), 1), tagged_share=tagged_replayed / max(replayed, 1),
-               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, seconds=time.time() - t0, route={})
+               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, seconds=time.time() - t0, route={})
     for name, P in (("combined", D), ("ff", F), ("store", S)):
         ok = (P == Y) & (ANS == 1)
         out["route"][name] = dict(lifetime=float(ok.mean()), returns=float(ok[RET == 1].mean()),

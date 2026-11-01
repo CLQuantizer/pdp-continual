@@ -700,3 +700,14 @@ star and makes "is sleep organically useful?" a measurable question.
 - Next, ranked: (1) H6 return-aware arbiter: when the store's winning class has been absent >= 300 ticks, let the store
   answer unless the cortex is confident (store-only returns 88-89 vs combined 84); pass needs combined returns +2 with
   lifetime and swap300 within -0.1 / -1.0 of awr. (2) H7 awr + swr2_na combined. (3) awr rate sweep (every 19 / 76).
+
+
+## Update 2026-11-01 13:30 UTC+8 (H6 return-aware arbiter; detail in `results/cls_ra/RESULTS.md`)
+- KILLED as pre-registered (13:15): letting the store answer disagreements whose store class was last seen >= 300 ticks
+  ago (Daw, Niv & Dayan 2005 arbitration by staleness) lifts returns +2.9 / +3.1 but costs 2.1-2.8 lifetime and 13-15
+  novel first-300 in both worlds. ~1,500 overrides per run; store right on 3%, FF on 84%.
+- Closed path: staleness of the *store's* class is not a proxy for the cortex's uncertainty on the input. c3 stays in
+  the default core (z5 + c3 + awr unchanged).
+- Next, ranked: (1) H6b burst-confirmed return gate: the store answers an absent-class disagreement only if the store
+  named that same absent class on another arrival within the last 20 ticks (returns come in runs, store errors do not);
+  pass bar as H6. (2) H7 awr + swr2_na combined. (3) awr rate sweep (every 19 / 76).
