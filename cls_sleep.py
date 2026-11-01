@@ -119,6 +119,15 @@ H10 selective bus vs compression progress, pre-registered 16:10 UTC+8 1 Nov befo
   KEEP selectivity if awr ff_bits.all <= awu - 0.02 AND awr ff_bits.all <= none. If awr's code length is not below awu's
   while its returns are, the selector is buying return accuracy without compressing the history better: flag it to the group
   and test a mixed selector next. awr staying ahead of none on ff_bits is the minimal sanity check of replay itself.
+H11 gain-gated awake replay, pre-registered 17:25 UTC+8 1 Nov before running (s49 seeds 6-8 AND bg002 seeds 6-8; awr
+  bg002 6-8 reused from H10, runs are deterministic). Mattar & Daw 2018: replay priority = gain x need. awr is need-only
+  (absence); H10 asks whether that need term compresses better than uniform. awg drops the absence selector and keeps only
+  a gain gate: one replay token per 38 awake arrivals (cap 8); spend one on a uniform store batch only while the running
+  mean of ff_bits over the last 38 awake arrivals exceeds the median of that running mean over the last 500 arrivals.
+  awg replaces awr only if, in BOTH worlds, returns >= awr + 1.0 AND lifetime >= awr - 0.05, or returns >= awr - 0.5 AND
+  lifetime >= awr - 0.05 at <= half awr's replay per wake. It counts as a selective bus (group constraint) only if, in
+  BOTH worlds, also ff_bits.all <= awu - 0.02. H11b (Gall, awu reference run alongside on s49 6-8): awu (uniform clock,
+  no selector at all) replaces awr if, in BOTH worlds, returns >= awr - 0.5 AND lifetime >= awr - 0.05 AND swap300 >= awr - 1.0.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -182,6 +191,11 @@ CONDS = {
     # 16:00 loop H10 (selective bus vs compression progress): uniform awake replay at the awr rate, no forgetting.
     "awu": dict(sleep=None, wl=1.0, awake="uni", every=38, gap=300),
     "awr_rw": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, rw_gap=300, rw_n=20),
+    # 17:00 loop H11 (Mattar & Daw 2018: replay priority = gain x need). Gain-gated awake replay with no absence selector:
+    # one token per 38 awake arrivals (cap 8); spend a token on one uniform store batch only while the running mean of
+    # ff_bits over the last 38 awake arrivals exceeds the median of that running mean over the last 500 arrivals
+    # (before 500 arrivals: spend whenever a token is there). Budget <= awr's 0.82-0.84 per wake arrival.
+    "awg": dict(sleep=None, wl=1.0, awake="uni", every=38, gap=300, gate=38, cap=8),
 }
 CAP, CHUNK_TICKS = 128, 40
 
@@ -215,6 +229,8 @@ def live(args):
     ra_used = ra_right = ra_ffright = 0
     rb_ev = deque()      # (tick, store class) for store-names-absent-class disagreements (awr_rb)
     rw_left = {}         # class -> labelled arrivals left in its return window (awr_rw)
+    tok, fired = 0.0, 0  # H11 awg: replay tokens and batches fired
+    b38 = deque(maxlen=cfg.get("gate") or 1); rmh = deque(maxlen=500)
 
     def forget():
         nonlocal forgot
@@ -323,7 +339,17 @@ def live(args):
                     j = j[rng.choice(len(j), LF.BS)]
                     ff.fit_batch(mu[j].astype(np.float32), ys[j].astype(int))
                     replayed += LF.BS
-            elif cfg.get("awake") and n_wake % cfg["every"] == 0 and st.mu:
+            fire = n_wake % cfg["every"] == 0
+            if cfg.get("gate"):
+                b38.append(ffbits[-1][0]); rm = sum(b38) / len(b38)
+                tok = min(tok + 1.0 / cfg["every"], cfg["cap"])
+                fire = tok >= 1.0 and (len(rmh) < 500 or rm > np.median(rmh))
+                rmh.append(rm)
+                if fire:
+                    tok -= 1.0; fired += 1
+            if cfg.get("awake") == "sim":
+                pass
+            elif cfg.get("awake") and fire and st.mu:
                 pool = [k for k in st.mu if cfg["awake"] == "uni" or t - last_seen.get(k, -10 ** 9) >= cfg["gap"]]
                 if pool:
                     mu = np.concatenate([st.mu[k] for k in pool])
@@ -342,7 +368,7 @@ def live(args):
                             swap_at=sw, novel_at=world.novel_at)
     out = dict(condition=cond, world=wk, seed=seed, days=days, arrivals=len(R), missed=float(1 - ANS.mean()), sleeps=n_sleep,
                replay_per_wake=replayed / max(ANS.sum(), 1), tagged_share=tagged_replayed / max(replayed, 1),
-               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, seconds=time.time() - t0)
+               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, gate_fired=fired, seconds=time.time() - t0)
     out.update(score(R, sw, world.novel_at, w))
     if ffbits:
         B = np.array(ffbits); h = len(B) // 2
