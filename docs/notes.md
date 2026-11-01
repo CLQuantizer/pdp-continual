@@ -741,3 +741,19 @@ generator, not every raw image), and its size and sleep cost are reported.
   sooner. The catch: on the one stream where the plain store already flips back and forth before any swap, spreading
   makes that 4 to 13 times worse. In complementary learning systems terms the fast store decided the fact and now
   generalises it; next comes a sticky base so only a sound decision spreads.
+
+- 2026-11-01 10:00 UTC+8: the simplest wake/sleep loop runs, and sleep does nothing useful yet. Each night the
+  machine goes offline briefly and the cortex is trained only on replayed store memories, either uniformly or on the
+  day's mistakes. The cortex does consolidate (its own accuracy on returning digits rises 4 to 10 points), but the
+  combined system gains at most 1.4 points on returns and loses exactly the arrivals it missed while asleep. The
+  reason is that the store never forgets, so it already answers returning digits. In complementary learning systems
+  the hippocampus is temporary (Kumaran, Hassabis & McClelland 2016); next, the store forgets digits it has not seen
+  for a while, and sleep has to carry them.
+
+- 2026-11-01 10:45 UTC+8: the simplest wake/sleep dual works mechanically but does not pay. By day the store
+  writes and the cortex learns; at night the machine goes offline and the cortex learns only from the store's
+  replay, either uniform or focused on what the cortex got wrong. Every version loses a little lifetime accuracy,
+  and all of that loss is the time spent asleep: on what it does answer, a sleeping machine is exactly as accurate.
+  Replay does teach the cortex returning digits (4 to 10 points better alone), but the store already answers them,
+  so the system gains only 1 to 3. Making the store forget absent digits, as the hippocampus is supposed to, hurts
+  returns by 17 points and sleep wins back only 2. Next: keep the store answering while the cortex sleeps.

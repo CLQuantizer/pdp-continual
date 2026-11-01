@@ -1842,3 +1842,52 @@ cannot move those that are not, which is what offline replay (sleep) is for in C
    by evidence across prototypes (>= 2 distinct prototypes committed) before it spreads.
 4. **Neuron: contagion radius at matched scale** ('x600' in-radius vs 'a' any distance): a 1.5x radius variant should
    keep most of x600a's swap300 with x600's churn.
+
+## Loop 2026-11-01 10:00 UTC+8
+
+Direction change (user, 1 Nov): Gall's law. Park daytime contagion / copies / vetoes; build the minimal CLS dual
+first: store writes by day, selective replay of store memories into the cortex by night, cortex learns from replay only
+during sleep. Core stays a25w250h2k2_c1.5_uinf_z5 answering through router c3.
+
+- Experiment: `cls_sleep.py` (results/cls_sleep, results/cls_sleep_bg002). Conditions none / uni8 / swr2 / swr8 /
+  swr2_wl3; s49 seeds 3-5 and bg002 seeds 6-8. Pre-registered bar in the docstring.
+- **Killed as pre-registered in both worlds.** Best is swr2: returns +0.9 / +1.4, swap300 +0.0 / +0.2, lifetime
+  -0.27 / -0.23 (bar -0.10). The lifetime loss is exactly the arrivals missed while offline: lifetime on answered
+  arrivals equals `none` within 0.06 for every sleep condition. Replay does no damage.
+- Mechanism check passes inside the cortex only: FF-only returns 56.1 -> 60.7 (swr2) / 62.8 (uni8) on s49, 54.5 ->
+  58.9 / 64.0 on bg002. The combined answer barely moves because the store already answers returns (store-only
+  82-89) and never forgets a class. Slow cortex (wake LR x0.3) loses ~10 points of swap300: killed.
+- Literature: Kumaran, Hassabis & McClelland 2016; McClelland et al. 1995. Consolidation earns its keep only because
+  the hippocampal trace is temporary. Our store is permanent, so sleep has no job in the combined system.
+- Running at commit time: `results/cls_forget` (H15 below), s49 seeds 3-5.
+
+### Hypotheses, ranked
+1. **H15 Architecture: temporary hippocampus.** The store drops any class unseen for >= 2000 ticks (= the return gap,
+   checked every 100 ticks and after each night's replay). Conditions none_f2k / swr2_f2k / uni8_f2k.
+   Pre-registered: PASS if a sleep condition beats none_f2k on combined returns by >= 3 with lifetime >= none_f2k -
+   0.30 (offline cost allowed). Kill if not: then this cortex cannot take over what the store loses and the dual
+   reduces to a permanent store plus a router. Secondary: how close swr2_f2k gets to the permanent-store `none`
+   (74.8 returns) measures how much store memory sleep can replace.
+2. **Training: sleep in place of wake learning at matched compute.** Score lifetime on answered arrivals only, or let
+   the world pause at night, so offline time is not charged twice; decide whether the bar's lifetime clause is fair.
+3. **Router: hand returns to the cortex when it has consolidated.** If H15 passes, the router should prefer FF on
+   classes replayed in the last night; predicts combined returns >= max(store-only, FF-only).
+
+## 2026-11-01 10:45 UTC+8
+
+### Findings
+1. **Minimal CLS dual (`cls_sleep.py`) killed.** Pre-registered PASS needed lifetime >= none - 0.10 and returns
+   >= none + 1.0 (or swap +2). s49: none 96.12/74.8; swr2 95.85/75.7; uni8 95.22/76.7; swr8 95.18/75.6;
+   swr2_wl3 95.34/73.2 (swap -9.9). bg002: none 95.86/75.2; swr2 95.63/76.6; uni8 94.78/77.9; swr8 94.81/78.2.
+2. **Sleep cost = downtime.** Answered-only lifetime 96.11-96.18 vs 96.12 (s49), 95.80-95.87 vs 95.86 (bg002).
+3. **Replay consolidates, but redundantly.** FF-only returns 56.1 -> 60.7-62.8 (s49), 54.5 -> 58.9-64.0 (bg002);
+   store-only returns already 82-89. Uniform >= selective.
+4. **H2 temporary hippocampus killed.** none_f2k 96.06/58.0; swr2_f2k 95.80/58.6; uni8_f2k 95.12/60.1 (bar +3).
+
+### Literature insight
+Diekelmann & Born 2010 / Wilson & McNaughton 1994: consolidation happens offline because the animal is not
+otherwise using its hippocampus then. Our machine pays for sleep in lost answers; the brain keeps quiet-wake
+responses during rest. Separating "cortex learns from replay" from "machine stops answering" is the next cut.
+
+### Next
+Night answering by store only (no learning from arrivals), uni8/swr8, same bars, s49 3-5 + bg002 6-8.

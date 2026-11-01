@@ -622,3 +622,28 @@ star and makes "is sleep organically useful?" a measurable question.
   866 any-distance). Candidate m0.3n4x600 (less churn). z5 stays default.
 - Unpaired old-label errors fall 81 -> 68/run; the rest are prototypes no arrival touches in 300 ticks.
   Next: contagion on a sticky base (hysteresis / copy store), sleep-time contagion, label-noise world.
+
+
+## Update 2026-11-01 10:00 UTC+8 (hourly loop; detail in `docs/loop.md`)
+- Direction: minimal CLS wake/sleep dual first (Gall's law); daytime contagion, copies, vetoes parked. z5 stays default.
+- Killed as pre-registered in s49 (seeds 3-5) and bg002 (seeds 6-8): night replay of store memories into the cortex
+  (`cls_sleep.py`). Best swr2: returns +0.9/+1.4, swap300 +0.0/+0.2, lifetime -0.27/-0.23 (bar -0.10), and the
+  lifetime loss is exactly the arrivals missed offline. FF-only returns rise 4-10 points, so replay consolidates, but
+  the permanent store already answers returns. Slow cortex (wake LR x0.3) loses ~10 swap300: killed.
+- Next: H15 temporary hippocampus (store forgets classes unseen 2000 ticks): does sleep then carry returns?
+
+
+## Update 2026-11-01 10:45 UTC+8 (minimal CLS wake/sleep dual; detail in `results/cls_sleep/RESULTS.md`)
+- Built (`cls_sleep.py`), per Gall's law, on the working default only: wake = store z5 writes + FF learns the world;
+  sleep = circadian nights, machine offline, FF learns only from store replay (`uni` uniform prototypes, or `swr`
+  selective: the store's current memory of episodes the cortex got wrong, 50/50 with uniform). No daytime contagion,
+  copies or vetoes.
+- KILLED as pre-registered vs never-sleeping (s49 seeds 3-5 / bg002 seeds 6-8): best swr2 95.85/75.7 vs 96.12/74.8
+  and 95.63/76.6 vs 95.86/75.2 (lifetime/returns); uni8/swr8 +1.9 to +3.1 returns at about -1.0 lifetime;
+  slow wake x0.3 -10 swap.
+- The whole lifetime cost is downtime: answered-only accuracy equals never-sleeping (96.11-96.18 vs 96.12).
+  Replay does consolidate (FF-only returns +4.6 to +9.5) but the store already answers returns. Selective replay is
+  not better than uniform.
+- H2 temporary hippocampus (store forgets classes unseen 2000 ticks): KILLED. Returns 74.8 -> 58.0; sleep wins back
+  at most +2.1 (bar +3).
+- Default unchanged. Next: let the store keep answering through the night (no learning from arrivals).
