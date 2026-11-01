@@ -727,3 +727,4 @@ star and makes "is sleep organically useful?" a measurable question.
   0.05, both worlds). (2) awr rate sweep every 19 / 76. (3) H8 input-specific store confidence: c3 with the store's relative
   margin computed against the second-nearest *class* prototype at matched radius (Daw, Niv & Dayan 2005: the store's own
   posterior), only if (1)-(2) leave the 4-5 point store/combined gap.
+- 14:45 UTC+8: H7 awr_swr2_na launched on box (results/cls_h7_s49, results/cls_h7_bg002, ~20 min); score at next loop vs awr (cls_awake s49, cls_ra bg002).

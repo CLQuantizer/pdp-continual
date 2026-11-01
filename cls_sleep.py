@@ -98,6 +98,10 @@ H7 (pre-registered 14:10 UTC+8, before running): rerun s49 3-5 and bg002 6-8 und
 Result H6b/H6c (14:40 UTC+8): both KILLED. awr_rb s49 95.47/81.0, store right 2.4% (as predicted). awr_rw s49 92.49/87.0,
   bg002 91.33/86.9: returns +6.1/+5.1 but lifetime -3.7/-4.5, novel300 -11/-10; ~2,500 overrides/run, store right < 4%.
   Background arrivals reopen windows constantly. Routing by class state is closed; c3 stays.
+H7 awr + swr2_na, pre-registered 14:45 UTC+8 1 Nov before running (s49 seeds 3-5 AND bg002 seeds 6-8; awr reused):
+  Does night replay (store answers at night, cortex learns only from selective replay) add on top of awake remote replay?
+  PASS if awr_swr2_na, in BOTH worlds, has returns >= awr + 1.0 AND lifetime >= awr - 0.05 AND novel300 >= awr - 1.0.
+  KILL otherwise (nights stay out of the core).
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -154,6 +158,8 @@ CONDS = {
     "awr_rb": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, ra=300, rb=20),
     # 14:15 loop H6c label-confirmed return window: once a class's *label* reappears after >= rw_gap ticks away, for its
     # next rw_n labelled arrivals the store answers any disagreement in which the store names that class.
+    # 14:45 loop H7: awake remote replay plus two-chunk selective nights with night answering.
+    "awr_swr2_na": dict(sleep="swr", chunks=2, wl=1.0, night_answer=True, awake="remote", every=38, gap=300),
     "awr_rw": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, rw_gap=300, rw_n=20),
 }
 CAP, CHUNK_TICKS = 128, 40
