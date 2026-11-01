@@ -806,3 +806,12 @@ generator, not every raw image), and its size and sleep cost are reported.
   version, when the store and the cortex disagree the store is right only 2 to 4% of the time. Deciding who answers
   has to depend on how sure each system is about this particular image, not on which digit it names. The default
   stays as it is; next, whether night replay adds anything on top of daytime replay.
+
+- 2026-11-01 17:30 UTC+8: rehearsing old memories while awake helps the cortex compress its history; choosing which
+  memories to rehearse, by how long a digit has been away, does not. The measure is how surprised the cortex is by each
+  label before it learns it, in bits. Rehearsal cuts that by about a tenth overall and by a third on returning digits.
+  Rehearsing digits that have been away and rehearsing any digit at random cut it by the same amount, and give the same
+  accuracy. So the selection rule adds nothing here, because the fast store never forgets. Mattar and Daw (2018) argue
+  that a memory is worth replaying in proportion to how often it will be needed times how much replaying it would change
+  things. Absence only estimates the first. Next: replay when the cortex is most surprised, then pick the stored memories
+  the cortex gets most wrong.

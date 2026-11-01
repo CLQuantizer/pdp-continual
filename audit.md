@@ -754,3 +754,32 @@ star and makes "is sleep organically useful?" a measurable question.
   over the last 38 awake arrivals exceeds its 500-arrival median, budget matched to awr (0.82/wake); replaces awr only if
   returns >= awr + 1.0 in both worlds with lifetime >= awr - 0.05 (or same returns at half the budget). (3) H9 store
   confidence vs second-nearest class prototype, to close the 6-7 point store-only vs combined returns gap.
+
+## Update 2026-11-01 17:30 UTC+8 (H10 selective bus vs compression; detail in `results/cls_h10/RESULTS.md`)
+- H10 KILLED: the absence selector does not compress better than uniform replay. bg002 seeds 6-8, ff_bits.all (cortex
+  prequential code length, bits per awake arrival): none 0.5145, awr 0.4603 (0.4465 / 0.4837 / 0.4508), awu 0.4566
+  (0.4483 / 0.4730 / 0.4484). awr - awu = +0.004 (bar <= -0.02), awr - none = -0.054. Returns 75.2 / 81.8 / 81.9,
+  lifetime 95.86 / 95.86 / 95.92, swap300 70.6 / 69.7 / 67.8, novel300 74.2 / 73.4 / 71.4.
+- Group constraint (selectivity gates replay into weight change only if compression improves): replay passes, the
+  absence selector does not. It helps return code length (1.30 vs 1.36 bits) and swap300 (+1.9) and loses novel300
+  (-2.0). Its earlier win (H4: +2.4 returns over uniform) was under a forgetful store; with the permanent z5 store it is
+  not earning its keep. awr stays in the core only until H11/H11b decide what replaces it, on accuracy (swap) grounds.
+- Literature: Mattar & Daw 2018 (Nat Neurosci 21:1609-1617): the value of replaying a memory is gain x need. Need =
+  expected future use of that state (here: absence predicts a return); gain = how much the update would change behaviour
+  (here: the cortex's current error). A need-only selector can replay memories whose update changes nothing. awr is need-only; H10 says need alone buys no
+  compression over uniform. H11 tests the gain term alone.
+- Running: H11 awg (gain-gated uniform awake replay: token per 38 awake arrivals, cap 8, spent only while the 38-arrival
+  running mean of ff_bits exceeds its 500-arrival median). s49 seeds 6-8 awg + awr on the Dubai VPS (tmux h11,
+  results/cls_h11_s49); bg002 6-8 awg on the box (results/cls_h11_bg002; awr reused from H10, runs deterministic); s49
+  awu 6-8 on the box (results/cls_h11_s49_awu) for H11b. Bar in cls_sleep.py: awg replaces awr only if, in BOTH worlds,
+  returns >= awr + 1.0 and lifetime >= awr - 0.05 (or returns >= awr - 0.5 at <= half the replay); it counts as a
+  selective bus only if also ff_bits.all <= awu - 0.02 in both worlds. H11b: awu replaces awr if, in both worlds,
+  returns >= awr - 0.5, lifetime >= awr - 0.05, swap300 >= awr - 1.0 (note: bg002 seeds 6-7 were visible at
+  pre-registration and bg002 already misses swap by 1.9, so H11b is effectively decided KILL; s49 reported for context).
+- Next, ranked: (1) score H11. (2) H12 gain x need product: sample the replay batch from store prototypes with
+  probability proportional to the cortex's current bits on each prototype (gain) times 1 + absence/300 (need), on the
+  awr clock; sharp prediction: ff_bits.all <= awu - 0.02 AND returns >= awr, because per-prototype cortex error picks
+  exactly the memories whose update changes the weights. Kill if ff_bits within 0.02 of awu. (3) H13 forgetful store
+  as the real test bed for selectivity: rerun awr_f2k / awu_f2k / awg_f2k with ff_bits, since the selector only paid
+  when the store forgets (CLS: the hippocampus is temporary, Kumaran, Hassabis & McClelland 2016). (4) H9 store
+  confidence vs second-nearest prototype for the 6-7 point store-only vs combined returns gap.

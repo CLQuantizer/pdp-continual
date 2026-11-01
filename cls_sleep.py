@@ -119,6 +119,9 @@ H10 selective bus vs compression progress, pre-registered 16:10 UTC+8 1 Nov befo
   KEEP selectivity if awr ff_bits.all <= awu - 0.02 AND awr ff_bits.all <= none. If awr's code length is not below awu's
   while its returns are, the selector is buying return accuracy without compressing the history better: flag it to the group
   and test a mixed selector next. awr staying ahead of none on ff_bits is the minimal sanity check of replay itself.
+Result H10 (17:20 UTC+8): KILLED. ff_bits.all none 0.5145 / awr 0.4603 / awu 0.4566 (awr - awu = +0.004, bar <= -0.02);
+  returns 75.2 / 81.8 / 81.9, lifetime 95.86 / 95.86 / 95.92. Replay compresses (-0.054 bits vs none); the absence selector
+  does not (it helps only return bits -0.06 and swap300 +1.9, loses novel300 -2.0). Selectivity is not justified as a bus here.
 H11 gain-gated awake replay, pre-registered 17:25 UTC+8 1 Nov before running (s49 seeds 6-8 AND bg002 seeds 6-8; awr
   bg002 6-8 reused from H10, runs are deterministic). Mattar & Daw 2018: replay priority = gain x need. awr is need-only
   (absence); H10 asks whether that need term compresses better than uniform. awg drops the absence selector and keeps only

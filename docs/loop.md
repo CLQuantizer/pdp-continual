@@ -1996,3 +1996,33 @@ class-level arbitration.
 3. **H8 store-side context match** (TCM): store prototypes carry the drifting context at write time; the store answers a
    disagreement only if its prototype's stored context matches the current context better than chance. Only if 1-2 leave
    the gap.
+
+## 2026-11-01 17:30 UTC+8 (H10 selective bus vs compression; H11 gain gate)
+
+**Read first:** `results/cls_h10/RESULTS.md`; audit.md updates 15:10, 16:20, 17:30 (H7 nights on top of awake replay
+killed, H8 replay rate sweep killed, every=38 stays). Code: `cls_sleep.py` conds `awu`, `awg` (H11 pre-registered 17:25).
+
+### Findings
+1. Replay compresses: the cortex's prequential code length (ff_bits) falls from 0.515 to 0.460 bits per awake arrival
+   with awake replay, and on returns from 1.99 to 1.30 bits.
+2. The absence selector does not: awr 0.4603 vs uniform awu 0.4566 (bar: awr <= awu - 0.02). KILLED. Same returns
+   (81.8 vs 81.9) and lifetime (95.86 vs 95.92). Absence helps return bits (-0.06) and swap300 (+1.9), costs novel300 (-2.0).
+3. By the group constraint, selectivity is not justified as a bus with a permanent store. Its only earlier win (H4,
+   +2.4 returns) was under a forgetful store.
+
+### Literature insight
+Mattar & Daw 2018 (Nat Neurosci 21:1609-1617): the utility of replaying a memory is gain x need. Need is expected future
+use (absence predicts a return); gain is how much the update would change behaviour (the cortex's error on it). awr is
+need-only, and H10 shows need alone buys no compression. H11 tests gain alone as a timing gate; H12 the product.
+
+### Paths closed
+- Absence (need-only) selection as the compression bus with a permanent store.
+
+### Hypotheses, ranked
+1. **H11 awg** gain-gated uniform awake replay (running): replaces awr only if returns >= awr + 1.0 and lifetime >= awr - 0.05
+   in both worlds (or same returns at half the replay); a selective bus only if also ff_bits <= awu - 0.02.
+2. **H12 gain x need batch** (new, sharp): sample replay prototypes with probability proportional to the cortex's bits on
+   each prototype times (1 + absence/300), on the awr clock. Prediction: ff_bits <= awu - 0.02 AND returns >= awr. Kill if
+   ff_bits within 0.02 of awu.
+3. **H13 forgetful store** with ff_bits: awr_f2k / awu_f2k / awg_f2k, the regime where selection decides what survives.
+4. **H9 store confidence** vs second-nearest prototype for the store-only vs combined returns gap.
