@@ -78,6 +78,26 @@ H6 return-aware arbiter, pre-registered 13:15 UTC+8 1 Nov before running (s49 se
   awr bg002 6-8 run alongside. Reported: ra_used per run and the share of overrides where store / FF was right.
 Result H6 (13:30 UTC+8): KILLED. Returns +2.9 (s49) / +3.1 (bg002) but lifetime -2.4 / -2.8 and novel300 -14.6 / -13.4.
   ~1,500 overrides per run, store right on 3%, FF on 84%: an absent store class is an error signal, not a return signal.
+H6b/H6c, pre-registered 14:15 UTC+8 1 Nov before running (s49 seeds 3-5 AND bg002 seeds 6-8; awr reused):
+  Audit of H6: `prev_seen` is updated by every label, so the absent-class override could only ever touch the FIRST arrival
+  of a return (ra_right ~41-60 per run = the +3 returns); every later override was a store error onto a class still away.
+  H6b as written (store names the same absent class twice within 20 ticks) therefore selects repeated *errors*: predicted
+  store-right share < 10% (logic check, s49 seeds 3-4 only). H6c awr_rw instead uses the label as the evidence: after a
+  class reappears (label) following >= 300 ticks away, for its next 20 labelled arrivals the store answers any
+  disagreement naming that class. PASS (same bar as H6) if awr_rw, in BOTH worlds, has returns >= awr + 2.0 AND
+  lifetime >= awr - 0.10 AND swap300 >= awr - 1.0 AND novel300 >= awr - 1.0. KILL otherwise.
+SCORING CHANGE (1 Nov 14:05 UTC+8, Ez: "don't evaluate when it is sleeping"). Arrivals during a sleep chunk are no
+  longer scored, whether they were missed or answered by the store (`*_na`). `route` = awake arrivals only (primary);
+  `route_match` = the same mask for every machine (first 8 chunks of every night dropped, sleepers or not);
+  `route_all` = the old score (asleep misses count wrong). Swap / novel = first 300 evaluated arrivals.
+  Under `route`, `swr8` and `swr8_na` must be identical (answering at night changes nothing that is learned).
+H7 (pre-registered 14:10 UTC+8, before running): rerun s49 3-5 and bg002 6-8 under the new scoring with none, awr,
+  uni8, swr2, swr8, swr8_na, and night replay on top of awake replay (swr8_awr, uni8_awr). Sleep re-enters the core
+  only if some sleep condition, in BOTH worlds, has awake-scored lifetime >= awr - 0.05 AND returns >= awr + 1.0
+  (or swap300 >= awr + 2.0 with returns >= awr - 0.5). Otherwise awr stays the default and nights stay optional.
+Result H6b/H6c (14:40 UTC+8): both KILLED. awr_rb s49 95.47/81.0, store right 2.4% (as predicted). awr_rw s49 92.49/87.0,
+  bg002 91.33/86.9: returns +6.1/+5.1 but lifetime -3.7/-4.5, novel300 -11/-10; ~2,500 overrides/run, store right < 4%.
+  Background arrivals reopen windows constantly. Routing by class state is closed; c3 stays.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -126,6 +146,15 @@ CONDS = {
     # (ra: always; raq: unless FF's margin is in the top 30% of the last 500).
     "awr_ra": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, ra=300),
     "awr_raq": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, ra=300, raq=0.7),
+    # H7 (14:10 UTC+8): night replay on top of the awake-replay default, scored awake-only
+    "swr8_awr": dict(sleep="swr", chunks=8, wl=1.0, awake="remote", every=38, gap=300),
+    "uni8_awr": dict(sleep="uni", chunks=8, wl=1.0, awake="remote", every=38, gap=300),
+    # 14:15 loop H6b (literal, logic check): override as awr_ra only if the store also named that same absent class on
+    # another disagreement within the last rb ticks.
+    "awr_rb": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, ra=300, rb=20),
+    # 14:15 loop H6c label-confirmed return window: once a class's *label* reappears after >= rw_gap ticks away, for its
+    # next rw_n labelled arrivals the store answers any disagreement in which the store names that class.
+    "awr_rw": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, rw_gap=300, rw_n=20),
 }
 CAP, CHUNK_TICKS = 128, 40
 
@@ -156,6 +185,8 @@ def live(args):
     night_answered = 0
     n_wake = 0
     ra_used = ra_right = ra_ffright = 0
+    rb_ev = deque()      # (tick, store class) for store-names-absent-class disagreements (awr_rb)
+    rw_left = {}         # class -> labelled arrivals left in its return window (awr_rw)
 
     def forget():
         nonlocal forgot
@@ -204,10 +235,10 @@ def live(args):
                         ret = int(returning.get(c, 0) > 0); returning[c] = returning.get(c, 0) - 1; last_seen[c] = t
                         if cfg.get("night_answer"):
                             s_, _ = RP.answer(st, x); f_ = int(ff.scores(x)[0].argmax())
-                            rows.append((t, c, y, ret, 1, f_, s_, s_ if s_ >= 0 else f_))
+                            rows.append((t, c, y, ret, 1, f_, s_, s_ if s_ >= 0 else f_, 1))
                             night_answered += 1
                         else:
-                            rows.append((t, c, y, ret, 0, -1, -1, -1))
+                            rows.append((t, c, y, ret, 0, -1, -1, -1, 1))
                     t += 1
             tags.clear()
             forget()
@@ -227,12 +258,25 @@ def live(args):
             q30 = np.quantile(ffms, 0.3) if len(ffms) == 500 else -np.inf
             dis = s >= 0 and s != f
             use = dis and ((cnt[f] >= 1000 and ffm < q30 and sm >= 0.2) or sm >= 0.3)
-            if dis and not use and cfg.get("ra") and t - prev_seen.get(s, -10 ** 9) >= cfg["ra"]:
+            if dis and not use and cfg.get("rw_n") and rw_left.get(s, 0) > 0:
+                use = True; ra_used += 1; ra_right += int(s == y); ra_ffright += int(f == y)
+            if dis and not use and cfg.get("rb") and t - prev_seen.get(s, -10 ** 9) >= cfg["ra"]:
+                while rb_ev and t - rb_ev[0][0] > cfg["rb"]:
+                    rb_ev.popleft()
+                if any(k == s for _, k in rb_ev):
+                    use = True; ra_used += 1; ra_right += int(s == y); ra_ffright += int(f == y)
+                rb_ev.append((t, s))
+            elif dis and not use and cfg.get("ra") and t - prev_seen.get(s, -10 ** 9) >= cfg["ra"]:
                 qh = np.quantile(ffms, cfg["raq"]) if cfg.get("raq") and len(ffms) == 500 else np.inf
                 if ffm < qh:
                     use = True; ra_used += 1; ra_right += int(s == y); ra_ffright += int(f == y)
             d = s if use else f
-            rows.append((t, c, y, ret, 1, f, s, d))
+            if cfg.get("rw_n"):   # the label is seen only after answering
+                if c in prev_seen and age >= cfg["rw_gap"]:
+                    rw_left[c] = cfg["rw_n"]
+                elif rw_left.get(c, 0) > 0:
+                    rw_left[c] -= 1
+            rows.append((t, c, y, ret, 1, f, s, d, 0))
             ffms.append(ffm); cnt[y] += 1
             if f != y:
                 tags.append(x.copy())
@@ -261,26 +305,49 @@ def live(args):
         t += 1
 
     R = np.array(rows)
-    T, C, Y, RET, ANS, F, S, D = R.T
+    T, C, Y, RET, ANS, F, S, D, SLP = R.T
     sw = world.swap_at
-    idx = np.flatnonzero(np.isin(C, list(w["swap"])) & (T >= sw))[:300]
-    nidx = np.flatnonzero(np.isin(C, list(w["novel"])) & (T >= world.novel_at))[:300]
+    if os.environ.get("CLS_SAVE_ROWS"):
+        os.makedirs(os.environ["CLS_SAVE_ROWS"], exist_ok=True)
+        np.savez_compressed(os.path.join(os.environ["CLS_SAVE_ROWS"], f"{wk}_{cond}_{seed}.npz"), rows=R.astype(np.int32),
+                            swap_at=sw, novel_at=world.novel_at)
     out = dict(condition=cond, world=wk, seed=seed, days=days, arrivals=len(R), missed=float(1 - ANS.mean()), sleeps=n_sleep,
                replay_per_wake=replayed / max(ANS.sum(), 1), tagged_share=tagged_replayed / max(replayed, 1),
-               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, seconds=time.time() - t0, route={})
-    for name, P in (("combined", D), ("ff", F), ("store", S)):
-        ok = (P == Y) & (ANS == 1)
-        out["route"][name] = dict(lifetime=float(ok.mean()), returns=float(ok[RET == 1].mean()),
-                                  swap=float(ok[idx].mean()), novel=float(ok[nidx].mean()))
+               pre_swap_remaps=sum(tt < sw for tt, _, _ in st.log), classes_forgotten=forgot, night_answered=night_answered, ra_used=ra_used, ra_right=ra_right, ra_ffright=ra_ffright, seconds=time.time() - t0)
+    out.update(score(R, sw, world.novel_at, w))
     print(f"{wk} {cond:9s} seed={seed} " + " ".join(f"{k}={v['lifetime']*100:.2f}/{v['returns']*100:.1f}/{v['swap']*100:.1f}"
                                             for k, v in out["route"].items()) + f" missed={out['missed']*100:.2f} ({out['seconds']:.0f}s)", flush=True)
     return out
 
 
-def summarise(rows, conds):
-    M = lambda rs, r, k: 100 * np.mean([x["route"][r][k] for x in rs])
+def score(R, sw, novel_at, w):
+    """Route metrics under three scorings (rule from 1 Nov 2026 14:00 UTC+8: do not evaluate while asleep).
+    route        (primary) awake arrivals only: arrivals during a sleep chunk are not scored, whether or not the
+                 store answered them (`*_na`). Swap / novel = first 300 awake arrivals of those digits.
+    route_all    the old score: every arrival, misses while asleep count as wrong, night answers count.
+    route_match  the same tick mask for every machine, sleeper or not: drop the first 8 chunks (the longest night
+                 tested) of every night, so all machines are scored on identical arrivals."""
+    T, C, Y, RET, ANS, F, S, D, SLP = R.T
+    ph = T % w["day"] - (w["day"] - w["night"])
+    masks = dict(route=SLP == 0, route_all=np.ones(len(T), bool),
+                 route_match=~((ph >= 0) & (ph < 8 * CHUNK_TICKS)))
+    out = {}
+    for key, E in masks.items():
+        idx = np.flatnonzero(np.isin(C, list(w["swap"])) & (T >= sw) & E)[:300]
+        nidx = np.flatnonzero(np.isin(C, list(w["novel"])) & (T >= novel_at) & E)[:300]
+        out[key] = {}
+        for name, P in (("combined", D), ("ff", F), ("store", S)):
+            ok = (P == Y) & (ANS == 1)
+            out[key][name] = dict(lifetime=float(ok[E].mean()), returns=float(ok[E & (RET == 1)].mean()),
+                                  swap=float(ok[idx].mean()), novel=float(ok[nidx].mean()))
+    out["asleep_share"] = float(SLP.mean())
+    return out
+
+
+def summarise(rows, conds, key="route"):
+    M = lambda rs, r, k: 100 * np.mean([x[key][r][k] for x in rs])
     base = [x for x in rows if x["condition"] == "none"]
-    out = ["| Machine | Lifetime | Returns | Swap first 300 | Novel first 300 | FF-only lifetime / returns / swap | Store-only lifetime | Missed % | Replay ÷ wake | Δ lifetime | Δ returns | Δ swap |",
+    out = ["| Machine | Lifetime | Returns | Swap first 300 | Novel first 300 | FF-only lifetime / returns / swap | Store-only lifetime | Asleep % | Replay ÷ wake | Δ lifetime | Δ returns | Δ swap |",
            "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     verdict = {}
     for c in conds:
@@ -292,7 +359,7 @@ def summarise(rows, conds):
         ds = M(rs, "combined", "swap") - M(base, "combined", "swap") if base else float("nan")
         out.append(f"| {c} | {M(rs,'combined','lifetime'):.2f} | {M(rs,'combined','returns'):.1f} | {M(rs,'combined','swap'):.1f} | "
                    f"{M(rs,'combined','novel'):.1f} | {M(rs,'ff','lifetime'):.2f} / {M(rs,'ff','returns'):.1f} / {M(rs,'ff','swap'):.1f} | "
-                   f"{M(rs,'store','lifetime'):.2f} | {100*np.mean([x['missed'] for x in rs]):.2f} | {np.mean([x['replay_per_wake'] for x in rs]):.2f} | "
+                   f"{M(rs,'store','lifetime'):.2f} | {100*np.mean([x.get('asleep_share', x['missed']) for x in rs]):.2f} | {np.mean([x['replay_per_wake'] for x in rs]):.2f} | "
                    f"{dl:+.2f} | {dr:+.1f} | {ds:+.1f} |")
         if c != "none":
             verdict[c] = bool(dl >= -0.10 and (dr >= 1.0 or (ds >= 2.0 and dr >= -0.5)))
@@ -316,9 +383,12 @@ def main():
         for r in p.imap_unordered(live, jobs):
             rows.append(r)
             json.dump(dict(world=WORLDS[a.world], conds=CONDS, rows=rows), open(os.path.join(a.out, "results.json"), "w"))
-    md, verdict = summarise(rows, a.conds)
-    json.dump(dict(world=WORLDS[a.world], conds=CONDS, rows=rows, verdict=verdict), open(os.path.join(a.out, "results.json"), "w"))
-    print(md); print(verdict)
+    verdict = {}
+    for key in ("route", "route_match", "route_all"):
+        md, verdict[key] = summarise(rows, a.conds, key)
+        print(f"## {key}"); print(md); print(verdict[key])
+    json.dump(dict(world=WORLDS[a.world], conds=CONDS, rows=rows, verdict=verdict["route"], verdict_by_scoring=verdict),
+              open(os.path.join(a.out, "results.json"), "w"))
 
 
 if __name__ == "__main__":

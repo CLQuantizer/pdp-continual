@@ -797,3 +797,12 @@ generator, not every raw image), and its size and sleep cost are reported.
   14. The rule fires about 1,500 times a run and the store is right only 3% of the time: a stale answer from the store
   is usually a mistake, not a return. Next: trust it only when it names the same absent digit twice in quick
   succession, because real returns come in runs.
+
+- 2026-11-01 14:40 UTC+8: the store's memory of a returning digit cannot be trusted by looking at the digit's history.
+  Two more rules were tried: trust the store when it names the same long-absent digit twice in quick succession, and
+  trust it for a digit's first twenty arrivals after that digit reappears. The first mostly repeats the store's own
+  mistakes (right 2% of the time). The second lifts returning digits by 5 to 6 points, past what the store manages
+  alone, but costs about 4 points of lifetime accuracy, because rare digits reopen the window all the time. In every
+  version, when the store and the cortex disagree the store is right only 2 to 4% of the time. Deciding who answers
+  has to depend on how sure each system is about this particular image, not on which digit it names. The default
+  stays as it is; next, whether night replay adds anything on top of daytime replay.

@@ -1966,3 +1966,33 @@ an input-specific uncertainty for the cortex, or input-specific evidence for the
    the last 20 ticks. Prediction: overrides drop >10x, store-right share > 50%, returns +2 kept. Bar as H6.
 2. **H7 awr + swr2_na.** Does night replay add on top of awake replay? PASS if returns >= awr + 1.0 at lifetime within 0.05.
 3. **awr rate sweep** every 19 / 76.
+
+## 2026-11-01 14:40 UTC+8 (H6b / H6c return gates)
+
+**Read first:** `results/cls_rw/RESULTS.md`. Code: `cls_sleep.py` conds `awr_rb`, `awr_rw` (pre-registered 14:15).
+
+### Findings
+1. H6's gain was only ever first arrivals: labels refresh `prev_seen`, so after one labelled return arrival the class is no
+   longer "absent". H6b as written selects repeated store errors; confirmed (2.4% store-right).
+2. H6c label-confirmed return window lifts returns +6.1 / +5.1, above store-only, but loses 3.7 / 4.5 lifetime: background
+   arrivals reopen windows constantly, and inside a window the store is still right on < 4% of disagreements.
+3. Across H6, H6b, H6c the store is right on 2-4% of disagreements however the class is gated. Class state cannot separate
+   the store's true returns from its errors.
+
+### Literature insight
+Howard & Kahana 2002 (J Math Psych 46:269-299, temporal context model): retrieval of an item reinstates its temporal context,
+which favours its neighbours in time, so the cue for "this is a return" is a context reinstatement, not an item label. H6c
+used the label as a context cue for the whole class, which is too coarse: a single background exemplar reinstates nothing
+about a season. A TCM-faithful gate would need a drifting context vector (recent input statistics) matching the context
+stored with the store's prototype, i.e. input-specific evidence again. Together with Daw, Niv & Dayan 2005 this closes
+class-level arbitration.
+
+### Paths closed
+- Routing by class state (stale, burst-named, recently returned): closed. c3 stays.
+
+### Hypotheses, ranked
+1. **H7 awr + swr2_na.** PASS if returns >= awr + 1.0 at lifetime within 0.05 in both worlds.
+2. **awr rate sweep** every 19 / 76 (is 38 on the knee?).
+3. **H8 store-side context match** (TCM): store prototypes carry the drifting context at write time; the store answers a
+   disagreement only if its prototype's stored context matches the current context better than chance. Only if 1-2 leave
+   the gap.

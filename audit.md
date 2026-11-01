@@ -711,3 +711,19 @@ star and makes "is sleep organically useful?" a measurable question.
 - Next, ranked: (1) H6b burst-confirmed return gate: the store answers an absent-class disagreement only if the store
   named that same absent class on another arrival within the last 20 ticks (returns come in runs, store errors do not);
   pass bar as H6. (2) H7 awr + swr2_na combined. (3) awr rate sweep (every 19 / 76).
+
+
+## Update 2026-11-01 14:40 UTC+8 (H6b/H6c return gates; detail in `results/cls_rw/RESULTS.md`)
+- Audit of H6: labels update `prev_seen`, so the absent-class override could only touch the first arrival of a return; its
+  41-60 store-right overrides per run are the whole +3 returns. H6b as written therefore selects repeated errors.
+- H6b `awr_rb` (s49 seeds 3-4, logic check): KILLED as predicted. Store right 2.4% of 380 overrides; returns 81.0 vs 80.9,
+  lifetime -0.75.
+- H6c `awr_rw` label-confirmed return window (store answers disagreements naming a class within 20 labelled arrivals of its
+  return after >= 300 ticks away): KILLED. Returns +6.1 / +5.1 (beats store-only) but lifetime -3.7 / -4.5, novel300 -11 / -10,
+  ~2,500 overrides/run, store right < 4%. Background arrivals (bg 0.02) open a window for their class almost every time.
+- Closed family: arbitration by class state (stale / burst / recently returned). Store-vs-FF disagreements are 2-4% store-right
+  in every version. Only input-specific confidence can separate them; c3 (margin) stays. Core unchanged: z5 + c3 + awr.
+- Next, ranked: (1) H7 awr + swr2_na (does night replay add on top of awake replay; PASS returns >= awr + 1.0, lifetime within
+  0.05, both worlds). (2) awr rate sweep every 19 / 76. (3) H8 input-specific store confidence: c3 with the store's relative
+  margin computed against the second-nearest *class* prototype at matched radius (Daw, Niv & Dayan 2005: the store's own
+  posterior), only if (1)-(2) leave the 4-5 point store/combined gap.
