@@ -823,3 +823,11 @@ generator, not every raw image), and its size and sleep cost are reported.
   rehearsing at random, as did picking by absence and picking by surprise in earlier hours. Isele and Cosgun (2018) saw
   the same in reinforcement learning: a replay buffer that simply matches the past beats one chosen by surprise. The
   choice of memory only moves effort toward returning digits. Next: does doubling the amount of rehearsal compress more?
+
+- 2026-11-04 09:20 UTC+8: more rehearsal compresses more only up to a point, and the default is already at that point.
+  Rehearsing a batch of stored digits every 76th arrival, every 38th (the default) and every 19th: each halving of the
+  interval up to 38 cuts the cortex's surprise by about 0.03 bits per label, but going from 38 to 19, which doubles the
+  cost, cuts it by only 0.01. Extra rehearsal past the default mostly helps returning digits again. D'Oro and colleagues
+  (2023) found the same wall in reinforcement learning: past some rate, more updates per new example stop paying because
+  the learner itself stops changing usefully. So the next tests change how each rehearsal lands in the cortex: first,
+  mixing the arriving image into the rehearsal batch instead of learning it on its own.

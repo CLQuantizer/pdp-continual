@@ -833,3 +833,18 @@ star and makes "is sleep organically useful?" a measurable question.
   H8 swept rate on accuracy only, never on bits. (2) H16 interleave the arriving item into the replay batch (one batch of
   current + 31 store items instead of a batch-of-one fit plus a separate replay batch; McClelland, McNaughton & Lampinen
   2020 interleaving) at equal gradient steps. (3) H9 store confidence for the router gap.
+
+## Update 2026-11-04 09:20 UTC+8 (H15 replay budget; detail in `results/cls_h15/RESULTS.md`)
+- H15 bits vs replay budget KILLED as "budget-limited": the curve has a knee at every 38. ff_bits.all for no replay /
+  every 76 / 38 / 19: s49 0.5104 / 0.4818 / 0.4530 / 0.4438; bg002 0.5145 / 0.4860 / 0.4594 / 0.4457. 76 to 38 buys
+  0.029 / 0.027 (passes 0.02); 38 to 19 buys 0.009 / 0.014 (fails), lower in 6/6 seeds. Lifetime flat (within 0.05).
+- Decision: every=38 stays the default rate. Above the knee, extra replay mostly moves capacity to returning digits
+  (returns +1.4 / +3.9, return bits -0.11 / -0.14 at every 19) rather than compressing the whole history.
+- Literature: D'Oro et al. 2023 (ICLR) "replay ratio barrier": more updates per datum stop paying once the learner loses
+  plasticity; changing the learner, not the ratio, moves the barrier. Here the bend at 0.84 replayed items per arrival says
+  the same lever: how replay changes the slow cortex.
+- Next, ranked: (1) H16 interleave the arriving item into the replay batch (current + 31 store items, McClelland,
+  McNaughton & Lampinen 2020) at matched gradient steps; keep only if ff_bits.all <= awu_f2k - 0.02 without lifetime
+  drop. (2) H17 cortex plasticity at the knee: at every 38, a cortex with twice the hidden units (or a periodic shrink-and-
+  perturb, Ash & Adams 2020) vs awu_f2k; keep only if ff_bits.all <= awu_f2k - 0.02 in both worlds, and if awu19 on the
+  wider cortex then buys >= 0.02 over awu38 on it, the knee was capacity. (3) H9 store confidence for the router gap.

@@ -153,6 +153,16 @@ H14 per-memory interference (MIR, Aljundi et al. 2019, look-back form), pre-regi
   since they were sampled. KEEP as selective bus only if, in BOTH worlds, ff_bits.all <= awu_f2k - 0.02 AND lifetime >=
   awu_f2k - 0.05. Diagnostic only (cannot rescue a kill): ff_bits.returns vs awr_f2k (protector vs reallocation). KILL
   otherwise: core stays z5 + c3 + awu and per-memory selection is closed for the permanent and f2k stores.
+H15 replay budget (Fedus et al. 2020 replay ratio; Chaudhry et al. 2019 tiny memories), pre-registered 08:55 UTC+8
+  4 Nov 2026 before running (s49 AND bg002 seeds 6-8, forgetful store f2k; awu_f2k / none_f2k reused from H13/H14,
+  deterministic). awu19_f2k / awu76_f2k = uniform awake replay of one 32-prototype batch every 19th / 76th wake arrival
+  (1.68 / 0.42 replayed per wake arrival; awu_f2k = 0.84). KEEP "budget-limited" only if, in BOTH worlds, each doubling
+  buys >= 0.02 bits/arrival on ff_bits.all (awu76 - awu38 >= 0.02 AND awu38 - awu19 >= 0.02) and lifetime >= awu_f2k - 0.05
+  at every budget. KILL (flat) if awu38 - awu19 < 0.02 in either world: the core is not budget-limited above every 38,
+  every=38 stays, and the next lever is how replay changes the weights (H16 interleave / learning rule), not how much.
+Result H15 (09:20 UTC+8 4 Nov): KILLED, knee at every 38. ff_bits.all none/76/38/19: s49 0.5104/0.4818/0.4530/0.4438,
+  bg002 0.5145/0.4860/0.4594/0.4457. 76->38 buys 0.029/0.027 (pass); 38->19 buys 0.009/0.014 (fail, though lower in 6/6
+  seeds). Lifetime passes everywhere. every=38 stays; next lever is how replay changes the weights (H16), not how much.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -191,6 +201,9 @@ CONDS = {
     # 'uni' = any class. 32/38 = 0.84 replayed items per wake arrival, matched to uni8 (0.83).
     "awr_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="remote", every=38, gap=300),
     "awu_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300),
+    # H15 (4 Nov 08:55 UTC+8): replay budget, uniform, forgetful store
+    "awu19_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=19, gap=300),
+    "awu76_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=76, gap=300),
     "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
     # 12:10 loop: similarity-weighted interleaving (McClelland, McNaughton & Lampinen 2020; Saxena et al. 2022). Same rate;
     # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.
