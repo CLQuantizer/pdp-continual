@@ -163,6 +163,26 @@ H15 replay budget (Fedus et al. 2020 replay ratio; Chaudhry et al. 2019 tiny mem
 Result H15 (09:20 UTC+8 4 Nov): KILLED, knee at every 38. ff_bits.all none/76/38/19: s49 0.5104/0.4818/0.4530/0.4438,
   bg002 0.5145/0.4860/0.4594/0.4457. 76->38 buys 0.029/0.027 (pass); 38->19 buys 0.009/0.014 (fail, though lower in 6/6
   seeds). Lifetime passes everywhere. every=38 stays; next lever is how replay changes the weights (H16), not how much.
+H16 interleave at matched gradient steps (McClelland, McNaughton & O'Reilly 1995 interleaved learning; Chaudhry et al.
+  2019 experience replay = one SGD step on current + memory batch), pre-registered 08:55 UTC+8 5 Nov 2026 before scoring
+  (s49 AND bg002 seeds 6-8, forgetful store f2k; awu_f2k reused from H13, determinism re-checked on s49 seed 6).
+  awi_f2k = on each replay slot the arrival is fitted inside the replay batch ([x + 32 store prototypes], one step) instead
+  of alone then a separate batch. awid_f2k = dense: every arrival is one step on [x] plus, with probability 32/38, one
+  uniform store prototype. Both: 38 steps per 38 arrivals (awu 39), 0.84 replayed per arrival. KEEP a variant only if, in
+  BOTH worlds, ff_bits.all <= awu_f2k - 0.02 AND lifetime >= awu_f2k - 0.05. KILL otherwise: separate-step replay stays,
+  and the remaining weight-side lever is cortex capacity / plasticity (H17).
+Result H16 (09:05 UTC+8 5 Nov): awi_f2k KILLED (ff_bits +0.007 both worlds). awid_f2k compression PASSES (ff_bits.all
+  0.4152 / 0.4173 vs awu 0.4530 / 0.4594, -0.038 / -0.042, 6/6 seeds) but lifetime FAILS (95.67 / 95.71 vs 95.82 / 95.89,
+  -0.15 / -0.18 vs bar -0.05, every seed): KILLED as default; core unchanged. Returns +6.6 / +7.9, return bits -0.35 / -0.38.
+H16b dense pairing rate, pre-registered 09:06 UTC+8 5 Nov before running (s49 AND bg002 seeds 6-8, f2k). awid8_f2k /
+  awid16_f2k = awid at pairing probability 8/38 / 16/38 (0.21 / 0.42 replayed per arrival, a quarter / half of awu's
+  items, still 38 steps per 38 arrivals). KEEP the lowest-rate variant that, in BOTH worlds, has ff_bits.all <=
+  awu_f2k - 0.02 AND lifetime >= awu_f2k - 0.05: it becomes the default awake replay. KILL if none does: dense pairing
+  trades present-stream tracking for compression one-for-one, and separate-step awu stays.
+Result H16b (09:20 UTC+8 5 Nov): KILLED, no pairing rate passes both. ff_bits.all p=8/16/32 of 38: s49 0.4600 / 0.4331 /
+  0.4152, bg002 0.4661 / 0.4347 / 0.4173 (awu 0.4530 / 0.4594); lifetime s49 95.72 / 95.73 / 95.67, bg002 95.82 / 95.77 /
+  95.71 (awu 95.82 / 95.89). p=16 reaches the bits bar in bg002 (-0.025) and misses it by 0.0001 in s49; lifetime fails at
+  every rate. Dense pairing trades present-stream accuracy (~0.1 to 0.2 points) for compression; separate-step awu stays.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -204,6 +224,18 @@ CONDS = {
     # H15 (4 Nov 08:55 UTC+8): replay budget, uniform, forgetful store
     "awu19_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=19, gap=300),
     "awu76_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=76, gap=300),
+    # H16 (5 Nov 08:55 UTC+8): interleave the arriving item with replay at matched gradient steps, forgetful store.
+    # awi_f2k: on each replay slot (every 38th wake arrival) the arrival is NOT fitted alone; one step on [x + 32 uniform
+    #   store prototypes] instead (38 steps per 38 arrivals vs awu's 39; replay 0.84/arrival, same as awu).
+    # awid_f2k: dense interleave (McClelland et al. 1995): every wake arrival is one step on [x] plus, with probability
+    #   32/38, one uniform store prototype (38 steps per 38 arrivals; replay 0.84/arrival in expectation).
+    "awi_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, inter="slot"),
+    "awid_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense"),
+    # H16b (5 Nov 09:06 UTC+8): dense pairing at lower rates. Under Adam each step moves ~lr whatever its batch, so dense
+    # pairing at p=32/38 gives old items ~half of 84% of update directions (vs 1 of 39 steps for awu). Is there a rate
+    # that keeps the compression win without the lifetime cost? p = 8/38 and 16/38 (0.21 / 0.42 replayed per arrival).
+    "awid8_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", pn=8),
+    "awid16_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", pn=16),
     "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
     # 12:10 loop: similarity-weighted interleaving (McClelland, McNaughton & Lampinen 2020; Saxena et al. 2022). Same rate;
     # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.
@@ -374,10 +406,17 @@ def live(args):
             ffms.append(ffm); cnt[y] += 1
             if f != y:
                 tags.append(x.copy())
-            ff.opt.lr = lr * cfg["wl"]
-            ff.fit_batch(x, np.array([y]))
-            ff.opt.lr = lr
             st.t = t; st.observe(x, y); st.add(x, y)
+            inter = cfg.get("inter")
+            hold = inter == "slot" and (n_wake + 1) % cfg["every"] == 0 and bool(st.mu)   # x joins this slot's replay batch
+            if inter == "dense" and st.mu and rng.random() < cfg.get("pn", LF.BS) / cfg["every"]:
+                mu, ys = protos(st); u = rng.integers(len(mu))
+                ff.fit_batch(np.concatenate([x, mu[u:u + 1]]).astype(np.float32), np.array([y, int(ys[u])]))
+                replayed += 1
+            elif not hold:
+                ff.opt.lr = lr * cfg["wl"]
+                ff.fit_batch(x, np.array([y]))
+                ff.opt.lr = lr
             n_wake += 1
             if cfg.get("awake") == "sim" and n_wake % cfg["every"] == 0 and st.mu:
                 mu, ys = protos(st)
@@ -417,13 +456,16 @@ def live(args):
                     replayed += LF.BS
                 u = rng.choice(len(mu), cfg["ncand"])
                 mir_c = (mu[u].copy(), ys[u].astype(int), bits(mu[u], ys[u].astype(int)))
-            elif cfg.get("awake") and fire and st.mu:
+            elif cfg.get("awake") in ("uni", "remote") and fire and st.mu:
                 pool = [k for k in st.mu if cfg["awake"] == "uni" or t - last_seen.get(k, -10 ** 9) >= cfg["gap"]]
                 if pool:
                     mu = np.concatenate([st.mu[k] for k in pool])
                     ys = np.concatenate([np.full(len(st.mu[k]), k) for k in pool])
                     u = rng.choice(len(mu), LF.BS)
-                    ff.fit_batch(mu[u].astype(np.float32), ys[u].astype(int))
+                    bx, by = mu[u], ys[u].astype(int)
+                    if hold:
+                        bx, by = np.concatenate([x, bx]), np.concatenate([[y], by])
+                    ff.fit_batch(bx.astype(np.float32), by)
                     replayed += LF.BS
         t += 1
 

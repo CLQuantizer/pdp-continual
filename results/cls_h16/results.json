@@ -1,0 +1,118 @@
+{
+ "s49/awi_f2k": {
+  "ff_bits": [
+   0.4656506046613222,
+   0.4657256699519303,
+   0.44945267268437017
+  ],
+  "ret_bits": 1.4630933648733233,
+  "lifetime": 95.81247036652353,
+  "returns": 69.07910415632251,
+  "swap": 62.33333333333334,
+  "replay_per_wake": 0.8419239678739091
+ },
+ "s49/awid_f2k": {
+  "ff_bits": [
+   0.422460560124934,
+   0.43417739112403697,
+   0.3888674595883103
+  ],
+  "ret_bits": 1.1050887947296257,
+  "lifetime": 95.67208706466553,
+  "returns": 75.22432049303153,
+  "swap": 63.222222222222214,
+  "replay_per_wake": 0.8420046675813918
+ },
+ "bg002/awi_f2k": {
+  "ff_bits": [
+   0.46197087743244525,
+   0.4764418319107415,
+   0.45923522075488504
+  ],
+  "ret_bits": 1.5033631510903724,
+  "lifetime": 95.89654951405716,
+  "returns": 66.86373878263852,
+  "swap": 72.1111111111111,
+  "replay_per_wake": 0.8419239678739091
+ },
+ "bg002/awid_f2k": {
+  "ff_bits": [
+   0.42220831224909194,
+   0.43169473212111936,
+   0.3978622515522878
+  ],
+  "ret_bits": 1.1178173351334442,
+  "lifetime": 95.71178415213927,
+  "returns": 73.96725507024038,
+  "swap": 69.44444444444443,
+  "replay_per_wake": 0.8420046675813918
+ },
+ "reference_awu_f2k": {
+  "s49": {
+   "ff_bits": [
+    0.456,
+    0.465,
+    0.4379
+   ],
+   "lifetime": 95.82,
+   "returns": 68.6
+  },
+  "bg002": {
+   "ff_bits": [
+    0.4565,
+    0.4719,
+    0.4498
+   ],
+   "lifetime": 95.89,
+   "returns": 66.1
+  },
+  "sanity_rerun_s49_seed6": 0.456
+ },
+ "verdict": {
+  "awi_f2k": "KILL (bits +0.007 both worlds)",
+  "awid_f2k": "KILL as default by pre-registered lifetime guard (-0.15/-0.18 vs -0.05) although ff_bits -0.038/-0.042 passes the -0.02 bar in 6/6 seeds"
+ },
+ "H16b": {
+  "s49": {
+   "awid8": {
+    "ff_bits": [
+     0.4701,
+     0.4673,
+     0.4427
+    ],
+    "lifetime": 95.72,
+    "returns": 72.9
+   },
+   "awid16": {
+    "ff_bits": [
+     0.4304,
+     0.4497,
+     0.4193
+    ],
+    "lifetime": 95.73,
+    "returns": 74.2
+   }
+  },
+  "bg002": {
+   "awid8": {
+    "ff_bits": [
+     0.4726,
+     0.4655,
+     0.4601
+    ],
+    "lifetime": 95.82,
+    "returns": 70.5
+   },
+   "awid16": {
+    "ff_bits": [
+     0.436,
+     0.4469,
+     0.4211
+    ],
+    "lifetime": 95.77,
+    "returns": 72.8
+   }
+  },
+  "verdict": "KILL: lifetime fails at every pairing rate; bits bar met only at p>=16 (s49 misses by 0.0001 at 16)"
+ }
+}

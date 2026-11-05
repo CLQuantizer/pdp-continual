@@ -831,3 +831,14 @@ generator, not every raw image), and its size and sleep cost are reported.
   (2023) found the same wall in reinforcement learning: past some rate, more updates per new example stop paying because
   the learner itself stops changing usefully. So the next tests change how each rehearsal lands in the cortex: first,
   mixing the arriving image into the rehearsal batch instead of learning it on its own.
+
+- 2026-11-05 09:20 UTC+8: how a rehearsal lands in the cortex matters more than how much rehearsal there is, but the
+  better arrangement costs a little accuracy on the present. Same number of learning steps and the same number of
+  rehearsed memories as the default, arranged differently: when each new image is learned together with one old memory
+  in the same step, instead of a block of old memories every 38th arrival, the cortex's surprise falls by 0.04 bits per
+  label in both worlds, four times what doubling the rehearsal bought yesterday, and returning digits gain 7 to 8
+  points. That is the core claim of McClelland, McNaughton and O'Reilly (1995) about interleaved learning, and the recipe
+  Chaudhry and colleagues (2019) use for experience replay. But accuracy on the stream as a whole falls by 0.15 to 0.18
+  points, and at lower pairing rates the accuracy loss stays while the compression gain shrinks. By the rule set before
+  the run that is a kill, and the default stays. Folding the new image into the big rehearsal block instead does
+  nothing. Next: give the cortex twice the units and see whether the trade goes away.

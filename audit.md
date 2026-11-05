@@ -848,3 +848,21 @@ star and makes "is sleep organically useful?" a measurable question.
   drop. (2) H17 cortex plasticity at the knee: at every 38, a cortex with twice the hidden units (or a periodic shrink-and-
   perturb, Ash & Adams 2020) vs awu_f2k; keep only if ff_bits.all <= awu_f2k - 0.02 in both worlds, and if awu19 on the
   wider cortex then buys >= 0.02 over awu38 on it, the knee was capacity. (3) H9 store confidence for the router gap.
+
+## Update 2026-11-05 09:20 UTC+8 (H16 / H16b interleave; detail in `results/cls_h16/RESULTS.md`)
+- H16 awi_f2k (arrival folded into the 32-item replay batch on replay slots) KILLED: ff_bits +0.007 in both worlds.
+- H16 awid_f2k (dense: every arrival one step on [x + one uniform store prototype] with p=32/38; same 38 steps and
+  0.84 replayed per arrival as awu) cuts ff_bits.all 0.038 (s49) / 0.042 (bg002), 6/6 seeds, 2x the bar and 3-4x what
+  doubling the budget bought in H15; returns +6.6 / +7.9. But lifetime -0.15 / -0.18 (guard -0.05), every seed. KILLED
+  as default by the pre-registered guard.
+- H16b pairing rate 8/38 and 16/38: lifetime fails at every rate (-0.07 to -0.12); bits bar only from 16/38 (bg002 -0.025,
+  s49 -0.0199). KILLED. Dense pairing is a trade-off curve, not a free win. Core unchanged: z5 + c3 + awu every 38th.
+- Mechanism note: Adam moves weights ~lr per step regardless of batch, so pairing hands old items about half of most
+  update directions (awu: 1 step in 39). The compression gain and the present-stream cost likely share that cause.
+- Literature: McClelland, McNaughton & O'Reilly 1995 (interleaved learning constrains each update) and Chaudhry et al.
+  2019 (experience replay as one SGD step on current + memory). Here the same items, same step count, arranged as
+  co-present pairs, compress 4x more than doubling the budget; the CLS claim holds on bits, but costs the fast stream.
+- Open for the group: the lifetime guard, not compression, killed dense pairing. Keep the guard unless the claim changes.
+- Next, ranked: (1) H17 capacity: awu_f2k and awid_f2k on a cortex with 2x hidden units (1000). Keep awid-wide as default
+  only if, in both worlds, ff_bits.all <= awu_f2k - 0.02 AND lifetime >= awu_f2k - 0.05; if awu-wide alone clears the bits
+  bar, the knee was capacity. (2) H17b shrink-and-perturb (Ash & Adams 2020) at the knee. (3) H9 store confidence.
