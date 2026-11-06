@@ -866,3 +866,18 @@ star and makes "is sleep organically useful?" a measurable question.
 - Next, ranked: (1) H17 capacity: awu_f2k and awid_f2k on a cortex with 2x hidden units (1000). Keep awid-wide as default
   only if, in both worlds, ff_bits.all <= awu_f2k - 0.02 AND lifetime >= awu_f2k - 0.05; if awu-wide alone clears the bits
   bar, the knee was capacity. (2) H17b shrink-and-perturb (Ash & Adams 2020) at the knee. (3) H9 store confidence.
+
+## Update 2026-11-06 09:20 UTC+8 (H17 2× cortex width; detail in `results/cls_h17/RESULTS.md`)
+- H17 awu_w2_f2k (ForwardForward hidden=1000 under standing awu every-38, f2k) KEEP. ff_bits.all 0.4155 / 0.4162 vs
+  awu_f2k 0.4530 / 0.4594 (−0.037 / −0.043), lower in 6/6 seeds; lifetime 95.82 / 95.91 vs 95.82 / 95.89 (flat; guard
+  −0.05). Returns +1.3 / +2.4. Compression matches H16 dense pairing (−0.038 / −0.042) without the lifetime cost.
+- Decision: core updates to z5 store + c3 router + uniform awake replay every 38th wake arrival + cortex hidden=1000.
+  `awu_f2k` / `awu` CONDS now carry `hidden=1000`; live() default width is 1000.
+- Literature: McClelland, McNaughton & O'Reilly 1995 (CLS) — catastrophic interference comes from overlapping
+  distributed codes; French 1991 (cited there) notes that lowering overlap (more capacity / sparser codes) reduces
+  interference at the cost of shared structure. Here capacity alone clears the whole-history bits bar with no
+  present-stream lifetime drop, so the H16 trade was not forced by capacity starvation of awu itself.
+- Next, ranked: (1) H18 dense pairing (awid) under hidden=1000 — KEEP as default only if, in both worlds,
+  ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05 (does H16's trade disappear at the new width?).
+  (2) H17b/H19 shrink-and-perturb (Ash & Adams 2020) or slower wake LR plasticity at the knee.
+  (3) H9 store confidence for the router gap.

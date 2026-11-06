@@ -1,0 +1,52 @@
+{
+  "s49/awu_w2_f2k": {
+    "ff_bits": [
+      0.4234,
+      0.4196,
+      0.4036
+    ],
+    "ff_mean": 0.4155,
+    "ret_bits": 1.407,
+    "lifetime": 95.82,
+    "returns": 69.9,
+    "swap": 67.0,
+    "replay_per_wake": 0.84
+  },
+  "bg002/awu_w2_f2k": {
+    "ff_bits": [
+      0.4171,
+      0.4248,
+      0.4068
+    ],
+    "ff_mean": 0.4162,
+    "ret_bits": 1.415,
+    "lifetime": 95.91,
+    "returns": 68.5,
+    "swap": 75.1,
+    "replay_per_wake": 0.84
+  },
+  "reference_awu_f2k": {
+    "s49": {
+      "ff_bits": [
+        0.456,
+        0.465,
+        0.4379
+      ],
+      "lifetime": 95.82,
+      "returns": 68.6
+    },
+    "bg002": {
+      "ff_bits": [
+        0.4565,
+        0.4719,
+        0.4498
+      ],
+      "lifetime": 95.89,
+      "returns": 66.1
+    },
+    "sanity_rerun_s49_seed6": 0.456
+  },
+  "verdict": {
+    "awu_w2_f2k": "KEEP: ff_bits -0.037/-0.043 vs awu (bar -0.02) in 6/6 seeds; lifetime flat (+0.00/+0.02, guard -0.05). Core cortex width -> 1000."
+  }
+}

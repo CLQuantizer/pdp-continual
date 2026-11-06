@@ -842,3 +842,11 @@ generator, not every raw image), and its size and sleep cost are reported.
   points, and at lower pairing rates the accuracy loss stays while the compression gain shrinks. By the rule set before
   the run that is a kill, and the default stays. Folding the new image into the big rehearsal block instead does
   nothing. Next: give the cortex twice the units and see whether the trade goes away.
+
+- 2026-11-06 09:20 UTC+8: giving the cortex twice as many units compresses the history without costing the present.
+  Same rehearsal schedule as the default (a batch of stored digits every 38th arrival), but each layer has 1000 units
+  instead of 500. The cortex's surprise falls by 0.04 bits per label in both worlds, and accuracy on the stream as a
+  whole stays flat. That is as much compression as yesterday's dense pairing bought, without the accuracy loss that
+  killed it. McClelland, McNaughton and O'Reilly (1995) and French (1991) treat interference as overlapping codes; more
+  capacity lowers the overlap. By the rule set before the run this is a keep, and the default cortex is now twice as
+  wide. Next: put yesterday's dense pairing on top of the wider cortex and see whether the accuracy trade goes away.

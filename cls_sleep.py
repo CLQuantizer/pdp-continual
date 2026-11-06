@@ -183,6 +183,15 @@ Result H16b (09:20 UTC+8 5 Nov): KILLED, no pairing rate passes both. ff_bits.al
   0.4152, bg002 0.4661 / 0.4347 / 0.4173 (awu 0.4530 / 0.4594); lifetime s49 95.72 / 95.73 / 95.67, bg002 95.82 / 95.77 /
   95.71 (awu 95.82 / 95.89). p=16 reaches the bits bar in bg002 (-0.025) and misses it by 0.0001 in s49; lifetime fails at
   every rate. Dense pairing trades present-stream accuracy (~0.1 to 0.2 points) for compression; separate-step awu stays.
+H17 cortex capacity (2x hidden width), pre-registered 08:55 UTC+8, 6 Nov 2026 before running
+  (s49 AND bg002 seeds 6-8, forgetful store f2k; awu_f2k reused from H13/H16, determinism re-checked on s49 seed 6).
+  awu_w2_f2k = awu_f2k with ForwardForward hidden=1000 (default 500). Same replay (uni every 38, BS=32), same lr.
+  KEEP only if, in BOTH worlds, ff_bits.all <= awu_f2k - 0.02 AND lifetime >= awu_f2k - 0.05. KILL otherwise:
+  capacity alone is not the remaining weight-side lever under separate-step awu; next is shrink-and-perturb plasticity
+  or dense pairing under 2x width (H16's open capacity question, one mechanism at a time).
+Result H17 (09:20 UTC+8 6 Nov): KEEP. awu_w2_f2k ff_bits.all 0.4155 / 0.4162 vs awu 0.4530 / 0.4594 (-0.037 / -0.043,
+  6/6 seeds); lifetime 95.82 / 95.91 vs 95.82 / 95.89 (flat, guard -0.05). Core cortex width -> 1000. Next H18: dense
+  pairing under the new width (does H16's lifetime trade disappear?).
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -220,7 +229,7 @@ CONDS = {
     # arrival the cortex fits one batch (BS=32) of store prototypes: 'remote' = only classes unseen for >= 300 ticks,
     # 'uni' = any class. 32/38 = 0.84 replayed items per wake arrival, matched to uni8 (0.83).
     "awr_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="remote", every=38, gap=300),
-    "awu_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300),
+    "awu_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000),  # H17 KEEP
     # H15 (4 Nov 08:55 UTC+8): replay budget, uniform, forgetful store
     "awu19_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=19, gap=300),
     "awu76_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=76, gap=300),
@@ -236,6 +245,8 @@ CONDS = {
     # that keeps the compression win without the lifetime cost? p = 8/38 and 16/38 (0.21 / 0.42 replayed per arrival).
     "awid8_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", pn=8),
     "awid16_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", pn=16),
+    # H17 (6 Nov 08:55 UTC+8): 2x cortex hidden width under standing awu every-38.
+    "awu_w2_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000),
     "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
     # 12:10 loop: similarity-weighted interleaving (McClelland, McNaughton & Lampinen 2020; Saxena et al. 2022). Same rate;
     # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.
@@ -259,7 +270,7 @@ CONDS = {
     "awr76": dict(sleep=None, wl=1.0, awake="remote", every=76, gap=300),
     "awr_swr2_na": dict(sleep="swr", chunks=2, wl=1.0, night_answer=True, awake="remote", every=38, gap=300),
     # 16:00 loop H10 (selective bus vs compression progress): uniform awake replay at the awr rate, no forgetting.
-    "awu": dict(sleep=None, wl=1.0, awake="uni", every=38, gap=300),
+    "awu": dict(sleep=None, wl=1.0, awake="uni", every=38, gap=300, hidden=1000),  # H17 KEEP
     "awr_rw": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300, rw_gap=300, rw_n=20),
     # 17:00 loop H11 (Mattar & Daw 2018: replay priority = gain x need). Gain-gated awake replay with no absence selector:
     # one token per 38 awake arrivals (cap 8); spend a token on one uniform store batch only while the running mean of
@@ -289,7 +300,7 @@ def live(args):
     ticks = days * w["day"]
     world = LF.World(xtr, ytr, ticks, seed, w)
     lr = 1e-3
-    ff = L.ForwardForward(lr=lr, loss="symba", homeo=0.001, seed=seed)
+    ff = L.ForwardForward(lr=lr, loss="symba", homeo=0.001, seed=seed, hidden=cfg.get("hidden", 1000))
     st = RS.ZStore(9, np.random.default_rng(seed + 1000), noise=0.0, K=BASEK)
     rng = np.random.default_rng(seed + 3000)
     tags = deque(maxlen=CAP)
