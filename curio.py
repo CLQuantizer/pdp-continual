@@ -78,6 +78,15 @@ class SGDCompressor:
         return tot
     def score(self, c, hist, seq):
         return self.bits(c, hist, seq, False)
+    def score_pairs(self, c, pairs):
+        """Bits of (context, symbol) pairs without learning: the whole-history sample of eq. 5."""
+        ci, tot = CH.index(c), 0.0
+        for ctx, x in pairs:
+            z = self.W[self.feats(ci, list(ctx))].sum(0); z = z - z.max(); p = np.exp(z); p /= p.sum()
+            tot -= math.log2(max(float(p[x]), 1e-12))
+        return tot
+
+R_RES = 256                                                         # whole-history reservoir per channel (H23c)
 
 def glance(world, c, rng):
     if c == "N": return [int(v) for v in rng.integers(0, A, B)]
@@ -89,6 +98,7 @@ def live(args):
     world, rng = World(seed), np.random.default_rng(10_000 + seed)
     comp = Compressor() if comp_kind == "kt" else SGDCompressor()
     hist = {c: [] for c in CH}
+    res, seen, rng2 = {c: [] for c in CH}, {c: 0 for c in CH}, np.random.default_rng(20_000 + seed)
     v, n = {c: 0.0 for c in CH}, {c: 0 for c in CH}
     log = []
     for g in range(n_gl):
@@ -98,7 +108,19 @@ def live(args):
         elif cond == "cnt": c = min(CH, key=lambda k: (n[k], rng.random()))
         else: c = max(CH, key=lambda k: (v[k], rng.random()))
         x = glance(world, c, rng)
-        if prog_kind == "heldout":                                  # learn the first half; progress = old vs new on the unseen second half
+        if prog_kind == "hist":                                     # eq. 5: old vs new on a uniform sample of the whole history
+            before = comp.score_pairs(c, res[c]) if cond == "prog" and res[c] else 0.0
+            b = comp.bits(c, hist[c], x, learn=True)
+            after = comp.score_pairs(c, res[c]) if cond == "prog" and res[c] else 0.0
+            hs = res[c]
+            full = hist[c] + x
+            for i in range(len(hist[c]), len(full)):               # reservoir-sample (context, symbol) after scoring
+                pair = (tuple(full[max(0, i - max(ORDERS)):i]), full[i]); seen[c] += 1
+                if len(res[c]) < R_RES: res[c].append(pair)
+                else:
+                    k = int(rng2.integers(seen[c]))
+                    if k < R_RES: res[c][k] = pair
+        elif prog_kind == "heldout":                                  # learn the first half; progress = old vs new on the unseen second half
             x1, x2 = x[:B // 2], x[B // 2:]
             before = comp.score(c, hist[c] + x1, x2) if cond == "prog" else 0.0
             b1 = comp.bits(c, hist[c], x1, learn=True)
@@ -128,7 +150,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2]); ap.add_argument("--glances", nargs="+", type=int, default=[1024])
     ap.add_argument("--conds", nargs="+", default=["rand", "rand7", "err", "prog", "cnt"]); ap.add_argument("--out", default="results/h23/pilot.json")
-    ap.add_argument("--comp", default="kt", choices=["kt", "sgd"]); ap.add_argument("--prog", default="window", choices=["window", "heldout"])
+    ap.add_argument("--comp", default="kt", choices=["kt", "sgd"]); ap.add_argument("--prog", default="window", choices=["window", "heldout", "hist"])
     a = ap.parse_args()
     jobs = [(c, s, g, a.comp, a.prog) for g in a.glances for c in a.conds for s in a.seeds]
     with Pool(2) as pool: res = pool.map(live, jobs)

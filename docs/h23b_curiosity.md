@@ -36,3 +36,19 @@ structure (H21).
 
 **Kill:** if 3 fails with headroom present, progress as estimated here does not allocate attention well, and the next
 step is the controller (a learned predictor of progress, as in Schmidhuber 1991), not the compressor.
+
+---
+
+## H23c: the faithful estimator (pre-registered after H23b's kill, before its run)
+
+H23b result: killed (prog worse than rand by +0.29 to +0.44 on every seed; `results/h23b/RESULTS.md`). Held-out-next
+progress rewards tracking a drifting counter, not lasting compression.
+
+**One change:** `--prog hist`. Reward = C(p_old, h) − C(p_new, h) per symbol, where h is a 256-pair uniform reservoir
+sample of *all* (context, symbol) pairs ever seen on that channel, excluding the current glance (added after
+scoring). This is eq. 5 of the guideline on a sample of the whole history. Compressor, lr, bandit, T = 512 and seeds
+6–11 are unchanged, so rand / rand7 / err / cnt are H23b's runs exactly (they do not depend on the estimator).
+
+Prediction: tracking earns ~0 on the whole history, so prog stops locking onto C1. Bars as H23 (3: W(prog) ≤ W(rand)
+− 0.05 in ≥ 5/6 seeds). Diagnostic declared now: if bar 3 fails *and* some learnable channel gets < 3% of glances
+(starvation), the controller is the next change (proportional allocation over progress), not the estimator.
