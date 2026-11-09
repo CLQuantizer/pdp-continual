@@ -2218,3 +2218,36 @@ allowed. H26, after M1.
 2. **H24c** combined store route on episodic MNIST (spec ready).
 3. **H25a** curiosity with the M1 learner (gated on M1).
 4. **H25b** progress-estimator ablation; **H26** local wake / global sleep.
+
+## 2026-11-10 02:40 UTC+8 (orchestrator: overnight run, H21b–H21e and H25a–H25d by codex)
+
+**Read first:** `docs/roadmap.md` (Status), the Verdict sections of `results/h21b..h21e/RESULTS.md` and
+`results/h25a..h25d/RESULTS.md`.
+
+### Findings
+1. **M1 (cortex), Partial; line stopped.** Replay is the lever: ×2 sequential −0.27 bits; batched 2 × 8 better and
+   cheaper, and it cures the grammar crowd-out. GRU rb8x2 + match beats lzma on 2/3 slow seeds (mean 0.772 vs 0.744).
+   A wider GRU is worse at fixed updates (H21d); local attention is worse overall but slightly better on CA (H21e). The CA
+   rule is parked.
+2. **M2 (curiosity with a neural compressor), pass by the letter only.** H25a: ε-greedy progress falls into a dark-room
+   trap (67% on the constant channel), and replay contaminates attribution. H25b: clipping + own-step attribution
+   reduce the trap; gmc_prop beats random and the noise-aware oracle (0.852 vs 0.902) but spends 22% on noise. H25c:
+   per-channel signed GMC fails. H25d: visit-to-visit slope with proportional allocation passes bars 1–2 (seed 8 by
+   0.002) with near-uniform allocation.
+3. **Papers library:** 109 cited papers in D1; 81 stored in R2 (arXiv, Unpaywall, author pages, institutional
+   repositories); 28 wanted, six of them high relevance.
+
+### Literature insight
+Oudeyer et al. (2007) measure learning progress per region over a time window, not per sample. That is what H25d did,
+and it fixed noise robustness but not the attribution scrambling of a shared network. Blad et al. (2026) GMC assumes
+per-group momentum; with shared Adam momentum and an absolute product it degenerates into an error signal (H25b).
+
+### Paths closed
+- Wider GRU and local attention as M1 levers at this budget; single-glance progress for shared neural compressors;
+  GMC with shared momentum; signed per-channel GMC scaled by remaining bits.
+
+### Hypotheses, ranked
+1. **H24c** combined store route on episodic MNIST (M3; spec ready).
+2. **H24b** episodic process F in the symbol world (M3).
+3. Parked open problems: CA rule (GRU + local-attention hybrid); clean progress attribution in shared nets (per-channel
+   progress heads); H26 local wake / global sleep after M3.

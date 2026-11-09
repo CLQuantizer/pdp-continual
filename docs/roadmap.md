@@ -21,6 +21,17 @@ Three results matter. The rest is detail.
   M1 is therefore redefined as **cortex + store** (H21b, running): replay from stored history for more updates per
   observation, plus a match model mixed with the cortex. M1 and M3 now meet.
 
+## Status (10 Nov 2026, early morning)
+
+- **M1: Partial, line stopped.** Best cortex = GRU + batched replay (2 × 8) + match model: beats lzma on 2/3 slow seeds
+  (0.772 vs 0.744 mean). Replay was the big lever (H21b/c); width (H21d) and local attention (H21e) failed. The CA rule
+  (exact one-row-back access) is parked as an open problem.
+- **M2: pass by the letter, mechanism not demonstrated (H25a–d).** Visit-to-visit progress with proportional allocation
+  beats random on all 3 seeds but allocates near-uniformly. Gradient-momentum (gmc_prop) compresses best (beats the
+  noise-aware oracle) but spends 22% on noise. Finding: a shared neural compressor scrambles per-channel progress, so
+  curiosity needs clean credit assignment. Open problem, parked.
+- **Next: M3** (store earns its bits): H24c, then H24b.
+
 ## The one decision that unblocks everything
 
 **Separate "what architecture learns like Schmidhuber's agent" from "can it be trained with local rules".** The goal
