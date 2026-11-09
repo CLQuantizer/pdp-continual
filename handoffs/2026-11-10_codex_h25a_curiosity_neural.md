@@ -3,7 +3,10 @@
 **Orchestrator gate: dispatch only after the H21a verdict, and only if H21a passed or was "Partial".** The
 orchestrator fills in LEARNER below before dispatch.
 
-LEARNER = ________ (the best learner in results/h21a/RESULTS.md, with its exact hyperparameters)
+LEARNER = GRU, embedding 32, hidden 256, Adam lr 3e-3, grad-clip 1.0 (as `h21a_substrate.py` / `h21c_replay_dose.py`),
+trained with **batched replay**: after each glance's own Adam step, 2 more Adam steps, each on a batch of 8 past
+64-symbol segments drawn uniformly from the store of all symbols observed so far (any channel; each segment from a zero
+state, with that segment's channel embedding). Gate check: H21a–H21e verdicts put M1 at "Partial", which allows this run.
 
 Read CLAUDE.md, docs/roadmap.md (M2), docs/h23_curiosity.md, docs/h23b_curiosity.md (the H23c section), results/h23c/RESULTS.md,
 and `curio.py` + `h21a_substrate.py`. Create `h25a_curio_neural.py` and `results/h25a/*` only; do not edit existing
@@ -20,15 +23,16 @@ files; do not commit; do not touch docs/loop.md or audit.md. CPU torch is instal
 - LEARNER, one shared network for all channels, with a learned channel embedding (8 dims) concatenated to every
   input symbol embedding. Keep a separate recurrent state per channel: a glance on channel c starts from c's last state
   and saves it back.
-- Learning: after scoring a glance prequentially (all 64 symbols with the current weights, from c's state), take ONE
-  Adam step on that glance (truncated BPTT over its 64 symbols), as in H21a. No other training: no replay, no extra
-  steps.
+- Learning: after scoring a glance prequentially (all 64 symbols with the current weights, from c's state), take one
+  Adam step on that glance (truncated BPTT over its 64 symbols), then the 2 batched replay steps above. The same
+  learning applies in every condition, so only the controller differs.
 
 ## Whole-history progress (prog, prog_prop)
 - Per channel, a reservoir of 128 samples drawn uniformly over every position ever observed on that channel. Each
   sample = (the 32 symbols before the position on that channel, the target symbol). Scored from a zero state with the
   32-symbol context.
-- Reward = (bits of the reservoir under the weights before this glance's Adam step − bits after) / 128. The glance's
+- Reward = (bits of the reservoir under the weights before this glance's updates − bits after all three of its Adam
+  steps) / 128. The glance's
   own positions are added to the reservoir only after the reward is computed.
 
 ## Budget and seeds
@@ -38,7 +42,7 @@ files; do not commit; do not touch docs/loop.md or audit.md. CPU torch is instal
 - Score W exactly as curio.py: the final frozen compressor on a fresh 2048-symbol continuation of each of the 7
   learnable channels from a deep copy of the world (continuing from each channel's saved state), mean bits/symbol.
 - Report per condition: W mean ± std, per-channel held-out bits, glance share per channel overall and per quarter of
-  life, wall time. Smoke test: T = 32, one seed. Budget: 90 min wall time; if over, use seeds 6–8 only and say so.
+  life, wall time. Smoke test: T = 32, one seed. Budget: 120 min wall time (orchestrator-approved); if the projection is over, use seeds 6–8 only and say so.
 
 ## Report: results/h25a/RESULTS.md (numbers only, no verdict) + results.json
 
