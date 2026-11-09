@@ -881,3 +881,18 @@ star and makes "is sleep organically useful?" a measurable question.
   ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05 (does H16's trade disappear at the new width?).
   (2) H17b/H19 shrink-and-perturb (Ash & Adams 2020) or slower wake LR plasticity at the knee.
   (3) H9 store confidence for the router gap.
+
+## Update 2026-11-09 09:00 UTC+8 (H18 dense pairing @ 2× width; detail in `results/cls_h18/RESULTS.md`)
+- Nov 8 loop FAILED after finishing the H18 runs on the box (~50 min/seed, results on disk) and before
+  RESULTS/audit/commit/publish. Recovered and scored today from `results/cls_h18_{s49,bg002}/results.json`.
+- H18 awid_w2_f2k KILLED as default: ff_bits.all 0.3774 / 0.3772 vs awu_w2 0.4155 / 0.4162 (−0.038 / −0.039),
+  lower in 6/6 seeds; lifetime 95.69 / 95.73 vs 95.82 / 95.91 (−0.13 / −0.18, guard −0.05) every seed. Returns
+  +5.8 / +6.0. Same trade as H16 at hidden=500.
+- Decision: core unchanged — z5 store + c3 router + uniform awake replay every 38th wake arrival + cortex
+  hidden=1000. Dense pairing remains a non-default bits/lifetime trade-off, not rescued by width.
+- Literature: Mirzadeh et al. 2022 (ICML) — wider nets forget less mainly via more-orthogonal task gradients.
+  Capacity (H17) already bought compression under separate-step awu; it does not cancel the Adam step-share cost of
+  co-present pairing (H16 mechanism note still holds at 2× width).
+- Next, ranked: (1) H19 shrink-and-perturb (Ash & Adams 2020) or slower wake LR under standing awu every-38
+  hidden=1000; KEEP only if ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05 in both worlds.
+  (2) H9 store confidence for the router gap. (3) Park contagion/twins/vetoes/class-local arbiter (still).

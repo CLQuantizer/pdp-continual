@@ -2056,3 +2056,28 @@ H13 KILLED on the compression term: under a forgetful store absence beats unifor
 ~0.11 return bits in 6/6 seed pairs, but whole-history code length is unchanged (+0.002 / -0.001 bits, bar -0.02).
 Core becomes z5 store + c3 router + uniform awake replay (awu, every 38th wake arrival). Next: H14 MIR-style per-memory
 interference selection on f2k, and a returns vs present-digit split of ff_bits.
+
+## 2026-11-09 09:00 UTC+8 (H18 scored: dense pairing @ 2× width killed; Nov 8 recovered)
+
+**Read first:** `results/cls_h18/RESULTS.md`; audit.md 2026-11-09. Code: `cls_sleep.py` H18 result + H19 pre-registration.
+Nov 8 loop ran awid_w2_f2k to completion on the box then failed before write-up; closed today from on-disk JSONs.
+
+### Findings
+1. awid_w2_f2k vs awu_w2_f2k: ff_bits −0.038 / −0.039 (bar −0.02, 6/6 seeds); lifetime −0.13 / −0.18 (guard −0.05,
+   every seed). Returns +5.8 / +6.0. KILLED as default.
+2. Same trade as H16 at hidden=500. Width does not dissolve the pairing lifetime cost.
+3. Core stays z5 + c3 + awu every-38 + hidden=1000.
+
+### Literature insight
+Mirzadeh et al. 2022 (ICML): wider nets forget less mainly because gradients of new tasks stay more orthogonal to old
+ones. That mechanism explains H17 (capacity under separate-step awu) and predicts — wrongly, here — that H16's pairing
+cost should shrink at 2× width. The residual cost matches the Adam step-share account from H16, not residual overlap.
+
+### Paths closed
+- Dense pairing (awid) as default awake replay, including under the H17-width cortex.
+
+### Hypotheses, ranked
+1. **H19** shrink-and-perturb (Ash & Adams 2020) or slower wake LR under standing awu every-38 hidden=1000. KEEP only
+   if, in both worlds, ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05.
+2. **H9** store confidence for the router gap.
+3. Parked: contagion / twins / vetoes / class-local arbiter (Gall minimal dual first).

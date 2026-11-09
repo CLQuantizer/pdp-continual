@@ -192,6 +192,27 @@ H17 cortex capacity (2x hidden width), pre-registered 08:55 UTC+8, 6 Nov 2026 be
 Result H17 (09:20 UTC+8 6 Nov): KEEP. awu_w2_f2k ff_bits.all 0.4155 / 0.4162 vs awu 0.4530 / 0.4594 (-0.037 / -0.043,
   6/6 seeds); lifetime 95.82 / 95.91 vs 95.82 / 95.89 (flat, guard -0.05). Core cortex width -> 1000. Next H18: dense
   pairing under the new width (does H16's lifetime trade disappear?).
+H18 dense pairing under 2x width, pre-registered 08:58 UTC+8, 8 Nov 2026 before running (s49 AND bg002 seeds 6-8,
+  forgetful store f2k; awu_w2_f2k reused from H17 as the baseline = current core). awid_w2_f2k = H16 awid_f2k (every
+  arrival one step on [x] plus, with probability 32/38, one uniform store prototype; 38 steps per 38 arrivals) with
+  ForwardForward hidden=1000 explicit. Mirzadeh et al. (ICML 2022) find wider nets forget less mainly because gradients
+  of new tasks stay more orthogonal to old ones; if H16's lifetime cost was interference from pairing in a too-narrow
+  cortex, it should shrink at 2x width. KEEP (dense pairing becomes default awake replay) only if, in BOTH worlds,
+  ff_bits.all <= awu_w2_f2k - 0.02 AND lifetime >= awu_w2_f2k - 0.05. KILL otherwise: pairing still trades present for
+  past one-for-one even with capacity, separate-step awu every-38 at hidden=1000 stays, next lever is plasticity
+  (shrink-and-perturb / wake LR).
+Result H18 (scored 09:00 UTC+8 9 Nov; runs finished 8 Nov, loop failed before write-up): KILLED. awid_w2_f2k
+  ff_bits.all 0.3774 / 0.3772 vs awu_w2 0.4155 / 0.4162 (-0.038 / -0.039, 6/6 seeds); lifetime 95.69 / 95.73 vs
+  95.82 / 95.91 (-0.13 / -0.18, guard -0.05) every seed. Same H16 trade at 2x width. Core unchanged. Next H19.
+H19 shrink-and-perturb plasticity, pre-registered 08:55 UTC+8, 9 Nov 2026 before running (s49 AND bg002 seeds 6-8,
+  forgetful store f2k; awu_w2_f2k / awu_f2k reused from H17 as baseline = current core). awu_sp_f2k = standing awu
+  every-38 hidden=1000 plus, at the start of every day (every 4000 ticks), Ash & Adams 2020 shrink-and-perturb:
+  each cortex weight/bias <- lam * W + N(0, sigma^2) with lam=0.8, sigma=0.01, then Adam moments reset. Ash & Adams
+  (NeurIPS 2020) show shrink-perturb balances gradients of old vs new data while preserving ReLU hypotheses; here the
+  claim is that at the H15 knee the remaining bits are a plasticity / warm-start problem, not a capacity or replay-
+  arrangement problem. KEEP only if, in BOTH worlds, ff_bits.all <= awu_w2_f2k - 0.02 AND lifetime >= awu_w2_f2k - 0.05.
+  KILL otherwise: plasticity-at-day-boundary does not buy whole-history compression under standing awu; next slower
+  wake LR (H19b) or H9 store confidence.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -247,6 +268,10 @@ CONDS = {
     "awid16_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", pn=16),
     # H17 (6 Nov 08:55 UTC+8): 2x cortex hidden width under standing awu every-38.
     "awu_w2_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000),
+    # H18 (8 Nov 08:58 UTC+8): dense pairing (H16 awid) under 2x cortex width. KILLED 9 Nov (lifetime guard).
+    "awid_w2_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", hidden=1000),
+    # H19 (9 Nov 08:55 UTC+8): Ash & Adams 2020 shrink-and-perturb once per day under standing awu every-38.
+    "awu_sp_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000, sp_lam=0.8, sp_sigma=0.01),
     "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
     # 12:10 loop: similarity-weighted interleaving (McClelland, McNaughton & Lampinen 2020; Saxena et al. 2022). Same rate;
     # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.
@@ -379,6 +404,9 @@ def live(args):
             tags.clear()
             forget()
             continue
+        if cfg.get("sp_lam") is not None and t > 0 and t % w["day"] == 0:
+            ff.shrink_perturb(cfg["sp_lam"], cfg["sp_sigma"], rng)
+            ff.opt.reset()
         if t % 100 == 0:
             forget()
         a = world.arrive(t)

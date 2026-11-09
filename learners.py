@@ -41,6 +41,11 @@ class Adam:
         self.m = [np.zeros_like(p) for p in params]
         self.v = [np.zeros_like(p) for p in params]
 
+    def reset(self):
+        self.t = 0
+        self.m = [np.zeros_like(p) for p in self.params]
+        self.v = [np.zeros_like(p) for p in self.params]
+
     def step(self, grads):
         if not self.adam:
             for p, g in zip(self.params, grads):
@@ -217,6 +222,17 @@ class ForwardForward:
         for W in self.W:
             t = delta * np.abs(W).mean()
             np.copyto(W, np.sign(W) * np.maximum(np.abs(W) - t, 0))
+
+    def shrink_perturb(self, lam, sigma, rng):
+        """Ash & Adams 2020 shrink-and-perturb: W <- lam * W + N(0, sigma^2).
+        Preserves ReLU hypotheses under no-bias scaling; raises entropy of the
+        last-layer scores. Caller should reset the Adam moments afterward."""
+        for W in self.W:
+            W *= lam
+            W += sigma * rng.standard_normal(W.shape).astype(W.dtype)
+        for b in self.b:
+            b *= lam
+            b += sigma * rng.standard_normal(b.shape).astype(b.dtype)
 
     def weight_sparsity(self):
         return float(np.mean([(W == 0).mean() for W in self.W]))

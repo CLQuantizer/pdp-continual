@@ -1,0 +1,90 @@
+{
+  "s49/awid_w2_f2k": {
+    "seeds": [
+      6,
+      7,
+      8
+    ],
+    "ff_bits": [
+      0.38,
+      0.389,
+      0.3632
+    ],
+    "ff_mean": 0.3774,
+    "ret_bits": 1.054,
+    "lifetime": 95.69,
+    "returns": 75.7,
+    "swap": 65.1,
+    "replay_per_wake": 0.84
+  },
+  "s49/awu_w2_f2k": {
+    "seeds": [
+      6,
+      7,
+      8
+    ],
+    "ff_bits": [
+      0.4234,
+      0.4196,
+      0.4036
+    ],
+    "ff_mean": 0.4155,
+    "ret_bits": 1.407,
+    "lifetime": 95.82,
+    "returns": 69.9,
+    "swap": 67.0,
+    "replay_per_wake": 0.84
+  },
+  "bg002/awid_w2_f2k": {
+    "seeds": [
+      6,
+      7,
+      8
+    ],
+    "ff_bits": [
+      0.3805,
+      0.3844,
+      0.3668
+    ],
+    "ff_mean": 0.3772,
+    "ret_bits": 1.061,
+    "lifetime": 95.73,
+    "returns": 74.5,
+    "swap": 71.6,
+    "replay_per_wake": 0.84
+  },
+  "bg002/awu_w2_f2k": {
+    "seeds": [
+      6,
+      7,
+      8
+    ],
+    "ff_bits": [
+      0.4171,
+      0.4248,
+      0.4068
+    ],
+    "ff_mean": 0.4162,
+    "ret_bits": 1.415,
+    "lifetime": 95.91,
+    "returns": 68.5,
+    "swap": 75.1,
+    "replay_per_wake": 0.84
+  },
+  "s49/delta": {
+    "ff_bits": -0.0381,
+    "lifetime": -0.13,
+    "returns": 5.8,
+    "ret_bits": -0.353
+  },
+  "bg002/delta": {
+    "ff_bits": -0.039,
+    "lifetime": -0.18,
+    "returns": 6.0,
+    "ret_bits": -0.354
+  },
+  "verdict": {
+    "awid_w2_f2k": "KILLED: ff_bits -0.038/-0.039 vs awu_w2 (bar -0.02) in 6/6 seeds, but lifetime -0.13/-0.19 (guard -0.05) every seed. Same H16 trade at 2x width; core stays awu every-38 hidden=1000."
+  },
+  "recovery_note": "Runs completed on the box 2026-11-08 (~50 min/seed); daily loop failed before RESULTS/audit/commit/publish. Scored and closed 2026-11-09 from the on-disk results/cls_h18_{s49,bg002}/results.json."
+}

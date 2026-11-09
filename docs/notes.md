@@ -850,3 +850,14 @@ generator, not every raw image), and its size and sleep cost are reported.
   killed it. McClelland, McNaughton and O'Reilly (1995) and French (1991) treat interference as overlapping codes; more
   capacity lowers the overlap. By the rule set before the run this is a keep, and the default cortex is now twice as
   wide. Next: put yesterday's dense pairing on top of the wider cortex and see whether the accuracy trade goes away.
+
+- 2026-11-09 09:00 UTC+8: putting each new image next to an old memory in the same learning step still buys
+  compression and still costs present-stream accuracy, even after doubling the cortex. Same schedule as the dense
+  pairing that was killed on 5 Nov, now on the wider cortex kept on 6 Nov: surprise falls another 0.04 bits per label
+  and returning digits gain about 6 points, but whole-stream accuracy drops 0.13 to 0.18 — the same trade as before,
+  past the guard set before the run. Mirzadeh and colleagues (2022) showed wider nets forget less because new-task
+  gradients stay more orthogonal to old ones; that helped when rehearsal stayed on its own step, and does not cancel
+  the cost of handing old items half of most update directions under Adam. By the pre-registered rule this is a kill.
+  Yesterday's loop finished the runs then stopped before writing them up; recovered from the on-disk results today.
+  Default stays. Next: change how plastic the cortex is (shrink-and-perturb, or a slower learning rate on the waking
+  stream), not how rehearsal is arranged.
