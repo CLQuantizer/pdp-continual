@@ -30,11 +30,11 @@ priced. A hypothesis that serves none of the four is polishing.
    (always: `docs/loop.md`, `audit.md`, running experiment code), exact outputs, a smoke test, a time budget, and "do not
    commit".
 2. Run the worker on it. Its final message goes to `handoffs/<same name>.out.md`:
-   - codex: `codex exec --cd /root/pdp --skip-git-repo-check -o handoffs/<name>.out.md "$(cat handoffs/<name>.md)"`
+   - codex: `codex exec --cd /root/pdp --sandbox workspace-write --skip-git-repo-check -o handoffs/<name>.out.md "$(cat handoffs/<name>.md)"`
    - grok: `grok -p "$(cat handoffs/<name>.md)" --cwd /root/pdp --output-format plain --max-turns 40 > handoffs/<name>.out.md`
-   Known issue (9 Nov): codex's `--sandbox workspace-write` fails at startup in this repo (bwrap wants hidden dirs such
-   as `.agents`, `.codex`, `.aws` to pre-exist). Until fixed, give file-writing handoffs to grok, or run codex
-   read-only for review tasks. Do not fall back to codex's default danger-full-access.
+   Always pass `--sandbox workspace-write` to codex (its config defaults to full machine access); never drop it.
+   If the sandbox fails at startup with "Can't mkdir", some repo path is owned by a foreign uid (the Mac copy was
+   uid 501); fix with `find /root/pdp -uid 501 -exec chown root:root {} +`.
    Running a worker unattended with auto-approval (or in the background) needs the user's go-ahead in the session.
    The permission classifier blocks it otherwise; do not route around that.
 3. The orchestrator reviews the diff and the output, reruns the smoke test, and only then commits, crediting the
