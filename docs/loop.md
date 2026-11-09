@@ -2127,9 +2127,17 @@ predicted can be forgotten. Our store + cortex is that pair, but the store keeps
 two-part score T = P + store bits / N is the first place the store has to pay for itself.
 
 ### Hypotheses, ranked
-1. **H19b** slower wake LR, as pre-registered (unchanged).
+1. **H19b** wake lr=5e-4, replay lr unchanged (1e-3), as corrected before any run (see below).
 2. **H20** current core on next-symbol prediction (window 32 one-hot, FF real-vs-corrupted next step), then any
    learner: PASS only if P ≤ lzma − 0.10 in both worlds and every seed, T ≤ lzma − 0.05, no process worse than the KT
    mixture + 0.05, switch bits ≤ the mixture's. Add a PPM/CTW floor first.
 3. **H21** input-dependent state (gated linear recurrence / fast weights), **H22** compression progress as the replay
    selector. Loop budget from now: one hypothesis in three changes world, objective or substrate.
+
+## 2026-11-09 12:10 UTC+8 (H19b pre-registration corrected before any run)
+
+The 09:30 H19b entry in `cls_sleep.py` set `lr=5e-4` for the whole learner, which halved replay as well as waking and
+so changed two things at once. No H19b run had started (none on disk on either machine). Corrected: `awu_lr5_f2k` =
+standing awu every-38 hidden=1000 with **wake lr=5e-4, replay lr unchanged (1e-3)**, via the existing wake multiplier
+(wl=0.5). Wake and replay share one Adam: step sizes differ, moments and step count are shared. Bar unchanged: KEEP only
+if ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05 in both worlds. Core unchanged.

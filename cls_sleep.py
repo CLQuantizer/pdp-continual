@@ -217,8 +217,12 @@ Result H19 (09:30 UTC+8 9 Nov): KILLED. awu_sp_f2k ff_bits.all 0.5269 / 0.5268 v
   (+0.111 / +0.111, 6/6 seeds); lifetime 95.01 / 95.13 vs 95.82 / 95.91 (-0.81 / -0.78). Daily SP undoes consolidation.
   Core unchanged. Next H19b: slower wake LR.
 H19b slower wake LR, pre-registered 09:30 UTC+8, 9 Nov 2026 before any H19b run (s49 AND bg002 seeds 6-8, f2k;
-  awu_w2 baseline). awu_lr5_f2k = standing awu every-38 hidden=1000 with wake/replay lr=5e-4 (half the Adam default
-  1e-3). Claim: at the H15 knee the remaining bits are an update-size / plasticity issue without weight reset (D'Oro
+  awu_w2 baseline). awu_lr5_f2k = standing awu every-38 hidden=1000 with wake lr=5e-4, replay lr unchanged (1e-3).
+  Corrected 12:10 UTC+8 9 Nov, before any H19b run: the 09:30 entry set lr=5e-4 for the whole learner, which also
+  halved replay and so confounded the intended single change. Now wl=0.5 (the existing wake-only multiplier: wake
+  steps run at lr*wl, replay batches at lr). Both paths share ONE Adam optimizer (ff.opt): only the step size differs
+  per call; the first/second moment estimates and the step counter t are shared, so wake and replay gradients still
+  mix in m and v. Claim: at the H15 knee the remaining bits are an update-size / plasticity issue without weight reset (D'Oro
   2023 replay-ratio barrier is a learner problem). KEEP only if, in BOTH worlds, ff_bits.all <= awu_w2_f2k - 0.02 AND
   lifetime >= awu_w2_f2k - 0.05. KILL otherwise: half LR does not buy compression; next gentler SP or H9.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
@@ -280,8 +284,8 @@ CONDS = {
     "awid_w2_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", hidden=1000),
     # H19 (9 Nov 08:55 UTC+8): Ash & Adams 2020 shrink-and-perturb once per day under standing awu every-38.
     "awu_sp_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000, sp_lam=0.8, sp_sigma=0.01),  # H19 KILLED
-    # H19b (9 Nov 09:30 UTC+8): half wake/replay LR under standing awu every-38.
-    "awu_lr5_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000, lr=5e-4),
+    # H19b (9 Nov 09:30 UTC+8; corrected 12:10 before any run): wake lr=5e-4 (wl=0.5), replay lr unchanged (1e-3).
+    "awu_lr5_f2k": dict(sleep=None, wl=0.5, forget=2000, awake="uni", every=38, gap=300, hidden=1000),
     "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
     # 12:10 loop: similarity-weighted interleaving (McClelland, McNaughton & Lampinen 2020; Saxena et al. 2022). Same rate;
     # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.

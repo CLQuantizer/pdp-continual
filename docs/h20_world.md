@@ -8,8 +8,9 @@ stays as pre-registered in `cls_sleep.py`. Generator and floors: `h20_world.py`;
 Since H10 the effects are 0.002–0.04 bits and ±0.1 lifetime points, and the hypotheses are knobs (replay every 38, 2×
 width, shrink-and-perturb, wake LR). Three properties of the MNIST-seasons world cap what the loop can learn:
 
-1. **Nothing algorithmic to find.** The only regularity is "10 clusters come and go". A nearest-prototype store already
-   sits at ~95.7 lifetime; what is left is classification log-loss.
+1. **Nothing algorithmic to find.** The only regularity is "10 clusters come and go". The full system sits at
+   95.82 / 95.91 lifetime and the forgetful store alone at 90.54 / 90.62 (H17, two worlds); what is left to compress
+   is classification log-loss.
 2. **Compression is a label code, not a world code.** `ff_bits` is −log₂ p(label), prequential. That is the right
    *kind* of metric, on the wrong quantity: the machine is never asked to predict what it will see next.
 3. **The store is free.** It costs nothing in the score, so memorisation always wins against generalisation, and the
