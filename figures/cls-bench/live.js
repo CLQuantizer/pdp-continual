@@ -31,13 +31,12 @@ function arrive() {
 }
 while (tick < 1200) arrive();
 arrivals = 0;
-const absentNow = () => lastSeen.map((t, d) => [d, tick - t]).filter(([, a]) => a >= CORE.gap);
 
 // ---- shuttle timeline (sim seconds) ----
 const PH = [["go", 1.0], ["lower", 0.7], ["lift", 1.0], ["travel", 1.6], ["drop", 0.9], ["press", 0.8], ["raise", 0.6], ["home", 1.0]];
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const lerp = (a, b, t) => a + (b - a) * t;
-let shuttle = null; // { t, digit, sx, absent }
+let shuttle = null; // { t, digit, sx, held }
 const REST_HOOK = CARRY_Z + CARD.h;
 function shuttlePose(s) {
   const pose = { cx: PARK_X, hook: REST_HOOK, card: null };
@@ -80,10 +79,11 @@ function onArrival() {
   pulse[last.d] = 1.6;
   pointerTarget = (arrivals % CORE.every) / CORE.every;
   if (arrivals % CORE.every === 0) {
-    const absent = absentNow();
-    if (absent.length && !shuttle) {
-      const [digit] = absent.reduce((a, b) => (b[1] > a[1] ? b : a));
-      shuttle = { t: 0, digit, sx: slotX(digit), absent: absent.length };
+    // uniform awake replay (awu): the batch is drawn uniformly from what the store holds, not from absent digits
+    const held = lastSeen.map((t, d) => [d, tick - t]).filter(([, a]) => a < CORE.forget);
+    if (held.length && !shuttle) {
+      const [digit] = held[Math.floor(rand() * held.length)];
+      shuttle = { t: 0, digit, sx: slotX(digit), held: held.length };
       pressed = false;
     }
   }
@@ -129,7 +129,7 @@ function draw() {
   if (last) {
     const next = CORE.every - (arrivals % CORE.every);
     const who = last.store ? "store answers" : "cortex answers";
-    const tail = shuttle ? `replaying ${CORE.batch} from ${shuttle.absent} absent` : `replay in ${next}`;
+    const tail = shuttle ? `replaying ${CORE.batch}, uniform over ${shuttle.held} held` : `replay in ${next}`;
     const text = `tick ${tick} · ${last.d} → ${who} · ${tail}`;
     if (text !== lastText) { readout.textContent = text; lastText = text; }
   }

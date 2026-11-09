@@ -2105,3 +2105,31 @@ raises whole-history −log₂p by ~0.11 bits/arrival — so the H15 knee is not
    AND lifetime >= awu_w2 − 0.05 in both worlds.
 2. Gentler SP (λ≥0.95 or rarer than daily) only if separately pre-registered after H19b.
 3. **H9** store confidence for the router gap.
+
+## 2026-11-09 12:00 UTC+8 (H20 new world pre-registered; How it works refreshed)
+
+**Read first:** `docs/h20_world.md`, `results/h20_floors/RESULTS.md`. Code: `h20_world.py` (generator + floors only;
+`cls_sleep.py` untouched, H19b runs as pre-registered).
+
+### Findings
+1. External review, accepted: since H10 the loop tunes knobs on a world with nothing algorithmic in it; compression is
+   a label code and the store is free. The next lever is the world and the objective, not the learner.
+2. H20 world: label-free 41-symbol stream from 7 hidden processes (grammar, two counters, CA rules 30/110, two motifs)
+   switching in seasons (slow 16 384 / fast 2 048), N = 524 288, seeds 6–8, deterministic.
+3. Floors (bits/symbol): uniform 5.36; KT order-0–8 fixed-share mixture 1.48 / 1.54; gzip 1.85 / 2.08; bz2 0.95 / 1.09;
+   **lzma 0.675 ± 0.011 / 0.791 ± 0.015**. Short contexts sit at 3.2 bits on counters (generator entropy 0) and 1.2 on
+   CA rows (≈ 0.044).
+4. How it works page and Fig 1 now show the standing core (uniform replay, hidden=1000, forgetful z5 store).
+
+### Literature insight
+Schmidhuber's history compressor (1991–92): a predictor passes upward only what it fails to predict, and what is
+predicted can be forgotten. Our store + cortex is that pair, but the store keeps everything and pays nothing. H20's
+two-part score T = P + store bits / N is the first place the store has to pay for itself.
+
+### Hypotheses, ranked
+1. **H19b** slower wake LR, as pre-registered (unchanged).
+2. **H20** current core on next-symbol prediction (window 32 one-hot, FF real-vs-corrupted next step), then any
+   learner: PASS only if P ≤ lzma − 0.10 in both worlds and every seed, T ≤ lzma − 0.05, no process worse than the KT
+   mixture + 0.05, switch bits ≤ the mixture's. Add a PPM/CTW floor first.
+3. **H21** input-dependent state (gated linear recurrence / fast weights), **H22** compression progress as the replay
+   selector. Loop budget from now: one hypothesis in three changes world, objective or substrate.

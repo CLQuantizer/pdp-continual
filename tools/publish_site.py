@@ -22,7 +22,8 @@ DOCS = [  # (slug, source, title, blurb)
     ("audit", "audit.md", "Audit", "Claims checked against evidence; open items."),
     ("cls-route", "docs/cls_route.md", "CLS routing", "Answering with the hippocampal store."),
     ("readme", "README.md", "Full write-up", "The long README: methods, runs, numbers."),
-    ("how-it-works", "docs/how_it_works.md", "How it works", "One-glance figure of the dual: store, router, awake replay."),
+    ("how-it-works", "docs/how_it_works.md", "How it works", "One-glance figure of the dual: store, router, uniform awake replay."),
+    ("h20", "docs/h20_world.md", "H20: a new world", "Pre-registered next: a label-free algorithmic stream, scored in bits per symbol."),
 ]
 
 SCRUB = [
@@ -184,7 +185,7 @@ def build(out, commit):
             "cycles</b>: a network that answers and learns at once, keeps a hippocampus-like fast store, and sleeps "
             "when it needs to. An hourly loop runs experiments, pre-registers kill tests, and writes down what died. "
             f'This site republishes as the loop commits. Code: <a href="{REPO_URL}">pdp-continual</a>.</p>'
-            + ('<div class="feature"><iframe class="fig" src="figures/cls-bench.html" title="Fig 1: CLS dual bench, store, router, awake replay" loading="lazy"></iframe>'
+            + ('<div class="feature"><iframe class="fig" src="figures/cls-bench.html" title="Fig 1: CLS dual bench, store, router, uniform awake replay" loading="lazy"></iframe>'
                '<p class=meta>Fig 1 · how the default core works at one glance · <a href="how-it-works/">read the figure</a> · '
                '<a href="figures/cls-bench.html">open full size</a></p></div>' if os.path.exists(os.path.join(ROOT, "docs/figures/cls-bench.html")) else "")
             + (link_fix(md(north.group(0)), 0) if north else "")

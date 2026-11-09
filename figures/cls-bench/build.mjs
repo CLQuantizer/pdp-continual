@@ -184,7 +184,7 @@ function lapFront() {
 const T0 = S.CORE.every;
 const svg = k.figureSvg({
   width: WIDTH, height: HEIGHT,
-  label: "A bench instrument for a continual learner. Left, a card file holds one-shot memories, one slot per digit; a raised tab marks a digit unseen for 300 ticks. Centre, a two-pan balance weighs the store against the cortex on each image: the store answers only when its relative margin is at least 0.3, set by a fixed rider on the cortex arm. Right, a slowly turning lap plate is the cortex's weight space. Overhead, a hoist shuttle carries cards from absent digits to the lap every 38th waking arrival.",
+  label: "A bench instrument for a continual learner. Left, a card file holds one-shot memories, one slot per digit; a raised tab marks a digit unseen for 300 ticks (shown for reading; replay does not use it). Centre, a two-pan balance weighs the store against the cortex on each image: the store answers only when its relative margin is at least 0.3, set by a fixed rider on the cortex arm. Right, a slowly turning lap plate is the cortex's weight space (1000 hidden units). Overhead, a hoist shuttle carries a uniformly drawn batch of store cards to the lap every 38th waking arrival.",
   body: [
     base(),
     `<g data-part="ruler-pointer">${Sv(k.slabOf({ x: RX0 - 2.5, y: RULER.y - 3, w: 5, d: 10, r: 1 }, 0.6, 2, P, 2, 0.3), { tone: "mid" })}${L(k.lineOnTop([RX0, RULER.y - 3], [RX0, RULER.y + 7], 2.6, P), { tone: "hi" })}</g>`,
@@ -225,10 +225,10 @@ const body = k.plateHtml({
   readout: "tick 1200 · digit 0 → cortex · replay in 38",
   keys: [
     { mark: "lit", label: "Shuttle card and needle: what moves when the dual acts" },
-    { mark: "raised", label: "Card file: one-shot store, raised tab = digit absent ≥ 300 ticks" },
-    { mark: "edge", label: "Lap plate: cortex weight space, the only part that changes connection strengths" },
+    { mark: "raised", label: "Card file: one-shot store (forgets after 2000 arrivals); raised tab = digit absent ≥ 300 ticks, not used by replay" },
+    { mark: "edge", label: "Lap plate: cortex weight space (hidden=1000), the only part that changes connection strengths" },
   ],
-  caption: "Every waking arrival is written into the card file and weighed on the balance: the store answers only when it disagrees with the cortex at relative margin ≥ 0.3 (c3); otherwise the cortex answers. Every 38th waking arrival the hoist carries one batch of 32 store memories, drawn only from digits absent ≥ 300 ticks, into the lap: awake remote replay, interleaved with answering, no nights. On fresh seeds it lifted returns +4.4 / +5.4 with lifetime accuracy +0.05 / +0.15 (two worlds). The stream here is illustrative; the rules and numbers are the system's.",
+  caption: "Every waking arrival is written into the card file and weighed on the balance: the store answers only when it disagrees with the cortex at relative margin ≥ 0.3 (c3); otherwise the cortex answers. Every 38th waking arrival the hoist carries one batch of 32 store memories, drawn uniformly from the store, into the lap: uniform awake replay (awu), interleaved with answering, no nights. Replay cuts whole-history code length ≈ 0.06 bits per arrival vs none; which memories it picks (absence, gain, interference) changes it by ≤ 0.003; doubling the cortex to 1000 hidden units cut another 0.037 / 0.043 (two worlds, lifetime flat). The stream here is illustrative; the rules and numbers are the system's.",
   body: `<div class="iso-stage" tabindex="0" role="img" aria-label="CLS dual bench: click to pause, right arrow steps one waking tick">${svg}</div>`,
 });
 

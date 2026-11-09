@@ -5,7 +5,7 @@ import { clPrism } from "./prism.mjs";
 export function sharedScript() { return readFileSync(new URL(import.meta.url), "utf8").replace(/^import .*$/gm, "").replace(/^export function sharedScript[^\n]*\n/m, "").replace(/^export /gm, ""); }
 
 // ---- the real numbers (pdp-continual default core: z5 store + c3 router + awake remote replay) ----
-export const CORE = { every: 38, batch: 32, gap: 300, margin: 0.3, digits: 10 };
+export const CORE = { every: 38, batch: 32, gap: 300, forget: 2000, margin: 0.3, digits: 10, hidden: 1000 };
 
 // ---- world layout (units ~ px, x right/back, y toward viewer, z up) ----
 export const Y0 = -7;                                   // the shuttle line: card-file slots, gantry, lap plate
