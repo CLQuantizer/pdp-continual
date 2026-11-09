@@ -896,3 +896,15 @@ star and makes "is sleep organically useful?" a measurable question.
 - Next, ranked: (1) H19 shrink-and-perturb (Ash & Adams 2020) or slower wake LR under standing awu every-38
   hidden=1000; KEEP only if ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05 in both worlds.
   (2) H9 store confidence for the router gap. (3) Park contagion/twins/vetoes/class-local arbiter (still).
+
+## Update 2026-11-09 09:30 UTC+8 (H19 shrink-and-perturb; detail in `results/cls_h19/RESULTS.md`)
+- H19 awu_sp_f2k (daily λ=0.8, σ=0.01 shrink-and-perturb under standing awu every-38 hidden=1000) KILLED.
+  ff_bits.all 0.5269 / 0.5268 vs awu_w2 0.4155 / 0.4162 (+0.111 / +0.111), worse in 6/6 seeds; lifetime
+  95.01 / 95.13 vs 95.82 / 95.91 (−0.81 / −0.78, guard −0.05); returns −8.5 / −8.6.
+- Decision: core unchanged — z5 + c3 + awu every-38 + hidden=1000. Daily shrink-and-perturb undoes consolidation
+  on this stream; not a free plasticity lever at the H15 knee.
+- Literature: Ash & Adams 2020 (NeurIPS) shrink-and-perturb for batch-online warm starts balances old/new gradients
+  across discrete rounds. Mapped onto a circadian day of an already-replaying awake dual, the same reset raises
+  whole-history code length by ~0.11 bits/arrival — the opposite of the compression claim.
+- Next, ranked: (1) H19b slower wake LR (5e-4) under standing awu every-38 hidden=1000; same bits/lifetime bars.
+  (2) Gentler SP (λ≥0.95 or rarer) only if separately pre-registered after H19b. (3) H9 store confidence.

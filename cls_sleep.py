@@ -213,6 +213,14 @@ H19 shrink-and-perturb plasticity, pre-registered 08:55 UTC+8, 9 Nov 2026 before
   arrangement problem. KEEP only if, in BOTH worlds, ff_bits.all <= awu_w2_f2k - 0.02 AND lifetime >= awu_w2_f2k - 0.05.
   KILL otherwise: plasticity-at-day-boundary does not buy whole-history compression under standing awu; next slower
   wake LR (H19b) or H9 store confidence.
+Result H19 (09:30 UTC+8 9 Nov): KILLED. awu_sp_f2k ff_bits.all 0.5269 / 0.5268 vs awu_w2 0.4155 / 0.4162
+  (+0.111 / +0.111, 6/6 seeds); lifetime 95.01 / 95.13 vs 95.82 / 95.91 (-0.81 / -0.78). Daily SP undoes consolidation.
+  Core unchanged. Next H19b: slower wake LR.
+H19b slower wake LR, pre-registered 09:30 UTC+8, 9 Nov 2026 before any H19b run (s49 AND bg002 seeds 6-8, f2k;
+  awu_w2 baseline). awu_lr5_f2k = standing awu every-38 hidden=1000 with wake/replay lr=5e-4 (half the Adam default
+  1e-3). Claim: at the H15 knee the remaining bits are an update-size / plasticity issue without weight reset (D'Oro
+  2023 replay-ratio barrier is a learner problem). KEEP only if, in BOTH worlds, ff_bits.all <= awu_w2_f2k - 0.02 AND
+  lifetime >= awu_w2_f2k - 0.05. KILL otherwise: half LR does not buy compression; next gentler SP or H9.
 Usage: OMP_NUM_THREADS=1 python3 cls_sleep.py [--world s49|bg002] [--seeds 3 4 5] [--conds ...] [--days 16]
 """
 import os
@@ -271,7 +279,9 @@ CONDS = {
     # H18 (8 Nov 08:58 UTC+8): dense pairing (H16 awid) under 2x cortex width. KILLED 9 Nov (lifetime guard).
     "awid_w2_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="dense", every=38, gap=300, inter="dense", hidden=1000),
     # H19 (9 Nov 08:55 UTC+8): Ash & Adams 2020 shrink-and-perturb once per day under standing awu every-38.
-    "awu_sp_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000, sp_lam=0.8, sp_sigma=0.01),
+    "awu_sp_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000, sp_lam=0.8, sp_sigma=0.01),  # H19 KILLED
+    # H19b (9 Nov 09:30 UTC+8): half wake/replay LR under standing awu every-38.
+    "awu_lr5_f2k": dict(sleep=None, wl=1.0, forget=2000, awake="uni", every=38, gap=300, hidden=1000, lr=5e-4),
     "awr": dict(sleep=None, wl=1.0, awake="remote", every=38, gap=300),
     # 12:10 loop: similarity-weighted interleaving (McClelland, McNaughton & Lampinen 2020; Saxena et al. 2022). Same rate;
     # the batch is the LF.BS store prototypes of *other* classes nearest the current arrival, not the absent classes.
@@ -324,7 +334,7 @@ def live(args):
     xtr, ytr, _, _ = load_mnist("mnist")
     ticks = days * w["day"]
     world = LF.World(xtr, ytr, ticks, seed, w)
-    lr = 1e-3
+    lr = float(cfg.get("lr", 1e-3))
     ff = L.ForwardForward(lr=lr, loss="symba", homeo=0.001, seed=seed, hidden=cfg.get("hidden", 1000))
     st = RS.ZStore(9, np.random.default_rng(seed + 1000), noise=0.0, K=BASEK)
     rng = np.random.default_rng(seed + 3000)

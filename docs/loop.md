@@ -2081,3 +2081,27 @@ cost should shrink at 2× width. The residual cost matches the Adam step-share a
    if, in both worlds, ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05.
 2. **H9** store confidence for the router gap.
 3. Parked: contagion / twins / vetoes / class-local arbiter (Gall minimal dual first).
+
+## 2026-11-09 09:30 UTC+8 (H19 shrink-and-perturb killed)
+
+**Read first:** `results/cls_h19/RESULTS.md`; audit.md 2026-11-09 09:30. Code: `cls_sleep.py` H19 result; `learners.py`
+`ForwardForward.shrink_perturb` + `Adam.reset`.
+
+### Findings
+1. awu_sp_f2k vs awu_w2_f2k: ff_bits +0.111 / +0.111 (bar −0.02, wrong direction, 6/6 seeds); lifetime −0.81 / −0.78
+   (guard −0.05); returns −8.5 / −8.6. KILLED.
+2. Daily λ=0.8 σ=0.01 undoes consolidation under standing awake replay. Core unchanged.
+
+### Literature insight
+Ash & Adams 2020 (NeurIPS): shrink-and-perturb closes the warm-start generalization gap by balancing old/new gradients
+across discrete training rounds while preserving ReLU hypotheses. On a continuous wake/replay dual the same daily reset
+raises whole-history −log₂p by ~0.11 bits/arrival — so the H15 knee is not a warm-start problem of that form.
+
+### Paths closed
+- Daily shrink-and-perturb (λ=0.8, σ=0.01) as a cortex plasticity lever on the standing awu every-38 hidden=1000 core.
+
+### Hypotheses, ranked
+1. **H19b** slower wake LR (5e-4) under standing awu every-38 hidden=1000. KEEP only if ff_bits.all <= awu_w2 − 0.02
+   AND lifetime >= awu_w2 − 0.05 in both worlds.
+2. Gentler SP (λ≥0.95 or rarer than daily) only if separately pre-registered after H19b.
+3. **H9** store confidence for the router gap.

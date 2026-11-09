@@ -861,3 +861,12 @@ generator, not every raw image), and its size and sleep cost are reported.
   Yesterday's loop finished the runs then stopped before writing them up; recovered from the on-disk results today.
   Default stays. Next: change how plastic the cortex is (shrink-and-perturb, or a slower learning rate on the waking
   stream), not how rehearsal is arranged.
+
+- 2026-11-09 09:30 UTC+8: once-a-day shrink-and-perturb on the wider cortex makes compression worse, not better.
+  Same rehearsal schedule as the default, but at the start of every day each weight is scaled by 0.8 and a little
+  noise is added (Ash and Adams, 2020). The cortex's surprise rises by about 0.11 bits per label in both worlds, and
+  accuracy on the stream falls by about 0.8 points — past both guards, and the wrong direction on bits. Their trick
+  was built for restarting training when a new batch of data arrives; here the cortex is already learning every
+  arrival and rehearsing every 38th, so the daily reset undoes consolidation instead of unlocking plasticity. By the
+  rule set before the run this is a kill. Default stays. Next: try a slower learning rate on the waking stream, without
+  resetting weights.
