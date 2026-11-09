@@ -32,6 +32,9 @@ priced. A hypothesis that serves none of the four is polishing.
 2. Run the worker on it. Its final message goes to `handoffs/<same name>.out.md`:
    - codex: `codex exec --cd /root/pdp --skip-git-repo-check -o handoffs/<name>.out.md "$(cat handoffs/<name>.md)"`
    - grok: `grok -p "$(cat handoffs/<name>.md)" --cwd /root/pdp --output-format plain --max-turns 40 > handoffs/<name>.out.md`
+   Known issue (9 Nov): codex's `--sandbox workspace-write` fails at startup in this repo (bwrap wants hidden dirs such
+   as `.agents`, `.codex`, `.aws` to pre-exist). Until fixed, give file-writing handoffs to grok, or run codex
+   read-only for review tasks. Do not fall back to codex's default danger-full-access.
    Running a worker unattended with auto-approval (or in the background) needs the user's go-ahead in the session.
    The permission classifier blocks it otherwise; do not route around that.
 3. The orchestrator reviews the diff and the output, reruns the smoke test, and only then commits, crediting the
@@ -39,6 +42,11 @@ priced. A hypothesis that serves none of the four is polishing.
 
 Hand off: anything with a clear spec and a checkable output. Keep: deciding what to test, bars, verdicts, diagnosis,
 anything where being subtly wrong would mislead the research.
+
+## Cadence (usage budget, set by Ez on 9 Nov 2026)
+
+The orchestrator runs **2–3 experiments once a day, in the morning (UTC+8)**, then stops. No continuous running,
+no extra runs between days unless Ez asks.
 
 ## Research protocol (unchanged from the loop; keep it)
 
