@@ -33,8 +33,12 @@ Three results matter. The rest is detail.
 - **M3 on episodic MNIST: PASS (H24c + H24d).** Exact-match gate over a replaying cortex (+5.7 lifetime over either
   part), with surprise-gated writes: a 6.4× smaller store (1 553 vs 10 000 exemplars) for −0.9 lifetime, 99.8% on
   repeat episodes, and faster consolidation. Deletion after "right twice" was killed (normal items never repeat).
-- **Next: M3 in bits** (H24b): the episodic process F in the symbol world, with the surprise-gated store priced under
-  H20's two-part T. Then M4 (all parts in one life).
+- **M3 in bits (H24e): FAIL as scored, and the score was wrong.** H20's two-part T charges stored history as
+  description length, but a prequential decoder already has the history, so storing it is free in code length (hence
+  "store everything"). A store costs *memory*, a hardware axis. **Metric change:** report prediction bits P and memory
+  footprint separately as a Pareto front, and use one number only with an explicit exchange rate. On P vs memory, the
+  surprise store recovers 72% of the full store's gain with 27% of the memory. Next: H24f (symbol-level writes, match
+  order 5 so facts are recalled), then M4.
 
 ## The one decision that unblocks everything
 
