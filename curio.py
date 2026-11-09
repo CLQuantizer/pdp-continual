@@ -16,6 +16,7 @@ constant symbol). The compressor is fixed across conditions, so only the control
   bandit      the same for every reward: optimistic first pass over all channels, then eps-greedy on an EMA of reward.
 Score W (headline): mean bits/symbol of the *final* frozen compressor on a fresh continuation (EVAL symbols) of each of
 the 7 learnable channels, drawn from a copy of the world at the end of life (the agent's own world is not advanced).
+H23b (docs/h23b_curiosity.md): --comp sgd (slow parametric compressor) --prog heldout (progress on the unseen half).
 Usage: python3 curio.py [--seeds 0 1 2] [--glances 1024] [--conds rand err prog cnt] [--out results/h23/x.json]
 """
 import argparse, copy, json, math, os
@@ -57,14 +58,36 @@ class Compressor:
     def score(self, c, hist, seq):
         return self.bits(c, hist, seq, False)
 
+ORDERS, HSZ = (1, 2, 3, 4, 6), 1 << 16
+
+class SGDCompressor:
+    """Slow parametric compressor: online softmax regression on hashed features (channel bias + channel-local contexts of
+    orders ORDERS). One shared weight table, so channels compete for capacity; lr sets how much data learning needs."""
+    def __init__(self, lr=float(os.environ.get("CURIO_LR", "0.02"))):
+        self.W, self.lr = np.zeros((HSZ, A), np.float32), lr
+    def feats(self, ci, ctx):
+        return [hash((ci, 0)) % HSZ] + [hash((ci, k) + tuple(ctx[-k:])) % HSZ for k in ORDERS if len(ctx) >= k]
+    def bits(self, c, hist, seq, learn):
+        ci, ctx, tot = CH.index(c), list(hist[-max(ORDERS):]), 0.0
+        for x in seq:
+            f = self.feats(ci, ctx); z = self.W[f].sum(0); z = z - z.max(); p = np.exp(z); p /= p.sum()
+            tot -= math.log2(max(float(p[x]), 1e-12))
+            if learn:
+                p[x] -= 1.0; self.W[f] -= self.lr * p
+            ctx = (ctx + [x])[-max(ORDERS):]
+        return tot
+    def score(self, c, hist, seq):
+        return self.bits(c, hist, seq, False)
+
 def glance(world, c, rng):
     if c == "N": return [int(v) for v in rng.integers(0, A, B)]
     if c == "Z": return [ALPHA.index(" ")] * B
     return [ALPHA.index(s) for s in world.take(c, B)]
 
 def live(args):
-    cond, seed, n_gl = args
-    world, rng, comp = World(seed), np.random.default_rng(10_000 + seed), Compressor()
+    cond, seed, n_gl, comp_kind, prog_kind = (tuple(args) + ("kt", "window"))[:5]
+    world, rng = World(seed), np.random.default_rng(10_000 + seed)
+    comp = Compressor() if comp_kind == "kt" else SGDCompressor()
     hist = {c: [] for c in CH}
     v, n = {c: 0.0 for c in CH}, {c: 0 for c in CH}
     log = []
@@ -75,11 +98,18 @@ def live(args):
         elif cond == "cnt": c = min(CH, key=lambda k: (n[k], rng.random()))
         else: c = max(CH, key=lambda k: (v[k], rng.random()))
         x = glance(world, c, rng)
-        old = hist[c][-H:]
-        hc, hs = old[:KMAX], old[KMAX:]                             # score h with its first KMAX symbols as context
-        before = comp.score(c, hc, hs) if cond == "prog" and hs else 0.0
-        b = comp.bits(c, hist[c], x, learn=True)                    # prequential bits of this glance, then learn it
-        after = comp.score(c, hc, hs) if cond == "prog" and hs else 0.0
+        if prog_kind == "heldout":                                  # learn the first half; progress = old vs new on the unseen second half
+            x1, x2 = x[:B // 2], x[B // 2:]
+            before = comp.score(c, hist[c] + x1, x2) if cond == "prog" else 0.0
+            b1 = comp.bits(c, hist[c], x1, learn=True)
+            after = comp.score(c, hist[c] + x1, x2) if cond == "prog" else 0.0
+            b = b1 + comp.bits(c, hist[c] + x1, x2, learn=True); hs = x2
+        else:
+            old = hist[c][-H:]
+            hc, hs = old[:KMAX], old[KMAX:]                         # score h with its first KMAX symbols as context
+            before = comp.score(c, hc, hs) if cond == "prog" and hs else 0.0
+            b = comp.bits(c, hist[c], x, learn=True)                # prequential bits of this glance, then learn it
+            after = comp.score(c, hc, hs) if cond == "prog" and hs else 0.0
         r = {"err": b / B, "prog": (before - after) / max(len(hs), 1), "cnt": 1 / math.sqrt(n[c] + 1)}.get(cond, 0.0)
         v[c] = r if n[c] == 0 else (1 - BETA) * v[c] + BETA * r
         n[c] += 1; hist[c] += x
@@ -90,7 +120,7 @@ def live(args):
     share = {c: n[c] / n_gl for c in CH}
     q = n_gl // 4
     share_q = [{c: sum(1 for e in log[i * q:(i + 1) * q] if e[0] == c) / q for c in CH} for i in range(4)]
-    return dict(cond=cond, seed=seed, glances=n_gl, W=float(np.mean(list(held.values()))), held=held, share=share,
+    return dict(cond=cond, seed=seed, glances=n_gl, comp=comp_kind, prog=prog_kind, W=float(np.mean(list(held.values()))), held=held, share=share,
                 share_by_quarter=share_q, life_bits=float(np.mean([e[1] for e in log])),
                 life_bits_learnable=float(np.mean([e[1] for e in log if e[0] in LEARN] or [float("nan")])))
 
@@ -98,8 +128,9 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2]); ap.add_argument("--glances", nargs="+", type=int, default=[1024])
     ap.add_argument("--conds", nargs="+", default=["rand", "rand7", "err", "prog", "cnt"]); ap.add_argument("--out", default="results/h23/pilot.json")
+    ap.add_argument("--comp", default="kt", choices=["kt", "sgd"]); ap.add_argument("--prog", default="window", choices=["window", "heldout"])
     a = ap.parse_args()
-    jobs = [(c, s, g) for g in a.glances for c in a.conds for s in a.seeds]
+    jobs = [(c, s, g, a.comp, a.prog) for g in a.glances for c in a.conds for s in a.seeds]
     with Pool(2) as pool: res = pool.map(live, jobs)
     os.makedirs(os.path.dirname(a.out), exist_ok=True); json.dump(res, open(a.out, "w"), indent=1)
     for r in res:
