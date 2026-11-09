@@ -59,6 +59,18 @@ It is Ez's call; this roadmap assumes yes, and Stage B keeps the criterion hones
 - **Cadence:** once a day, morning UTC+8: the orchestrator reviews yesterday's outputs, writes verdicts, writes the
   next 2–3 specs, dispatches them. Workers finish during the day; the orchestrator reviews and commits.
 
+## From the November literature scan (`docs/literature_2026-11.md`)
+
+- **H25b (M2):** progress-estimator ablation on the same world: whole-history reservoir (ours) vs gradient-momentum
+  coupling (Blad et al. 2026, O(d)) vs a learned error model (LPM, Hou et al. 2025).
+- **H26 (bridge to Stage B): local wake, global sleep.** Awake, only fast weights change (local delta rule, online, no
+  backward pass); asleep, the slow weights are trained from the store's replay, where global credit assignment is
+  allowed. Sleep then does what waking cannot, which is the goal's own test for sleep. Compare against all-online BPTT
+  and against frozen slow weights; score lifetime bits including sleep's downtime charge.
+- **Standing report line for long lives:** dead-unit fraction and a late-life plasticity probe (Dohare et al. 2024,
+  Nature: gradient learners lose plasticity; selective unit re-initialisation keeps it).
+- **H21 follow-up if the plain delta rule lags:** gated delta rule (decay gate), the strongest fast-weight variant.
+
 ## Next specs (in `handoffs/`)
 
 1. H21a: substrate ceiling (M1). Highest priority: everything downstream depends on it.

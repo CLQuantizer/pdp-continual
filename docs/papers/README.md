@@ -87,3 +87,17 @@ Key points from Journé et al.:
 | Paper | Claim | Status |
 |---|---|---|
 | Bartunov et al. 2018. *Assessing the scalability of biologically-motivated deep learning algorithms and architectures.* NeurIPS | methods close to backprop on MNIST fall well behind on CIFAR-10 and ImageNet | memory |
+
+## Curiosity, fast weights, plasticity (scan 9 Nov 2026; see `docs/literature_2026-11.md`)
+
+| Paper | Claim | Status |
+|---|---|---|
+| Hou, An, Du 2025. *Beyond Noisy-TVs: Noise-Robust Exploration via Learning Progress Monitoring.* arXiv 2509.25438 | reward = change in a learned error model's prediction; robust to noisy TV | checked (abstract) |
+| Blad, Längkvist, Loutfi 2026. *Gradient-Momentum Coupling: A Parameter-Space Proxy for Learning Progress.* arXiv 2605.05856 | \|grad · momentum\| as O(d) learning progress; easy-first, noise-robust | checked (summary) |
+| Irie & Gershman 2025/26. *Fast weight programming and linear transformers: from machine learning to neurobiology.* arXiv 2508.08435 | modern linear RNNs are FWPs; Gated DeltaNet strongest; slow weights still need BPTT | checked (summary) |
+| Bellec et al. 2020 (Nat. Commun.), e-prop; *Generalising E-prop to Deep Networks*, arXiv 2512.24506 | online eligibility-trace approximation to RTRL, BPTT-level cost | checked (abstract) |
+| Behrouz, Zhong, Mirrokni 2025. *Titans: Learning to Memorize at Test Time.* arXiv 2501.00663 | memory updated by surprise (gradient), momentum + forgetting gate | checked (summary) |
+| Dohare et al. 2024. *Loss of plasticity in deep continual learning.* Nature | gradient learners lose plasticity; continual backprop (re-init low-utility units) keeps it | checked |
+| Elmoznino et al. 2025. *In-context learning and Occam's razor.* ICML (arXiv 2410.14086) | minimising prequential code length = training error + complexity | checked (abstract) |
+| Zhang et al. 2026. *Fast Weight Attention for Continual Learning.* arXiv 2608.27763 | fast/slow weight split for continual learning; slow weights by backprop | checked (summary, low confidence) |
+
