@@ -45,6 +45,16 @@ Hand off: implementing and running experiments, baselines, plots, lookups. Keep:
 verdicts, diagnosis. Specs must be complete enough that a literal-minded worker gets it right: exact data, seeds, N,
 learners, what "prequential" means, outputs, a smoke test, a time budget, and the bars (marked "do not change").
 
+## Papers library (rule from Ez, 9 Nov 2026)
+
+Every paper we look at or cite gets a row in D1 **`pdp-papers-index`** (table `papers`), and its file goes in R2
+**`pdp-papers`** when we can get it. Two separate columns:
+- `status`, how well we know it: `read` / `checked` / `memory` (same terms as `docs/papers/README.md`).
+- `file_status`, where the file is: `stored` (in R2) / `to_fetch` (open access, next sync downloads it) / `wanted` (hard
+  to get: Ez obtains it, e.g. paying the author, and hands over the file) / `unavailable`.
+Whenever a doc, spec or loop entry cites a new paper, register it in the same commit's work (sync:
+`python3 tools/sync_papers.py`). When Ez provides a `wanted` file, ingest it and flip it to `stored`.
+
 ## Cadence (usage budget, set by Ez on 9 Nov 2026)
 
 The orchestrator runs **2–3 experiments once a day, in the morning (UTC+8)**, then stops. No continuous running,
