@@ -2141,3 +2141,47 @@ so changed two things at once. No H19b run had started (none on disk on either m
 standing awu every-38 hidden=1000 with **wake lr=5e-4, replay lr unchanged (1e-3)**, via the existing wake multiplier
 (wl=0.5). Wake and replay share one Adam: step sizes differ, moments and step count are shared. Bar unchanged: KEEP only
 if ff_bits.all <= awu_w2 − 0.02 AND lifetime >= awu_w2 − 0.05 in both worlds. Core unchanged.
+
+## 2026-11-09 14:30 UTC+8 (orchestrator: curiosity H23/H23b/H23c; hippocampus diagnosis H24a)
+
+**Read first:** `CLAUDE.md` (new: roles, handoffs, guideline), `docs/curiosity.md`, `docs/hippocampus_diagnosis.md`,
+`results/h23*/RESULTS.md`, `results/h24a/RESULTS.md`. Code: `curio.py`, `h24_episodic.py`. Ran on the VPS; nothing in
+`cls_sleep.py` or the H19b/H20 queue was touched.
+
+### Findings
+1. **Guideline adopted:** Schmidhuber 2009 (arXiv 0812.4360, in `docs/papers/`): store everything, compress, reward
+   compression progress, act on it. Every hypothesis names the principle it serves.
+2. **H23 (active world, 9 channels incl. noisy TV and dark) KILLED:** prediction-error curiosity spends 89% on noise,
+   progress 1%; but W(prog) 1.693 vs rand 1.667. The oracle headroom was only 0.031 (KT saturates), and sliding-window
+   progress rewarded re-fitting a counter's prefixes.
+3. **H23b (slow SGD compressor, held-out-next progress) KILLED:** worse than random on every seed (+0.36). Next-chunk
+   progress rewards *tracking* a drifting counter (84% of late glances); the greedy bandit starved the grammar.
+4. **H23c (progress = eq. 5 on a whole-history reservoir) PASS, all bars:** W 2.373 vs rand 2.637 (6/6 seeds,
+   −0.22 to −0.32), beats the noise-aware oracle by 0.108. An easy → hard curriculum emerges (motifs and CA, then the
+   37-motif, then the grammar at 54% in Q4), with 1% on noise.
+5. **H24a (episodic MNIST) diagnosis stands:** with 200 arbitrary-label episodes in the stream, an exemplar store is
+   100% from the 2nd exposure, while cortex and ProtoStore score 13–32%. Exact-match gate: +13.6 lifetime at 0.01% false
+   firing. Exemplar replay teaches the cortex the episodes (79% vs 32% at 6+). P2 missed by 1.3 points in letter.
+
+### Literature insight
+Schmidhuber 1991 / 2009 §3.2 already warns that error-driven curiosity gets stuck on noise; H23–H23c add that *how*
+progress is estimated decides everything: only old vs new on the whole history (eq. 5) separates lasting compression
+from memorising (window) and tracking (next chunk). CLS (McClelland et al. 1995; Kumaran et al. 2016): the hippocampus
+pays off on specific, arbitrary, one-shot content and as a replay source. MNIST seasons had neither, and the averaging
+ProtoStore erased what episodes there could have been.
+
+### Paths closed
+- Prediction-error curiosity; sliding-window and next-chunk progress estimators.
+- "The hippocampus does not help" as a conclusion about CLS. It was a conclusion about the MNIST world plus an averaging
+  store, and it is withdrawn.
+
+### Hypotheses, ranked
+1. **H19b** as pre-registered (unchanged), then **H20** condition 4 (unchanged).
+2. **H24b** episodic process `F` in the symbol world (handoff spec `handoffs/2026-11-09_worker_h24b_world.md`); score
+   an exemplar, surprise-gated store under H20's two-part T (bits saved per stored bit).
+3. **H23d** controller: proportional / UCB allocation over whole-history progress (Graves 2017-style) vs ε-greedy, on
+   the H23c setup; then the same curiosity on H20's world with the H21 substrate, where counters and CA rows become
+   learnable and should become interesting.
+4. **H24c** combined route on episodic MNIST: exact-match gate over the replaying cortex, plus deletion of
+   consolidated entries (store size priced).
+5. Store default for every new world: exemplar traces, not running-mean prototypes.
