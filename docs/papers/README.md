@@ -101,3 +101,16 @@ Key points from Journé et al.:
 | Elmoznino et al. 2025. *In-context learning and Occam's razor.* ICML (arXiv 2410.14086) | minimising prequential code length = training error + complexity | checked (abstract) |
 | Zhang et al. 2026. *Fast Weight Attention for Continual Learning.* arXiv 2608.27763 | fast/slow weight split for continual learning; slow weights by backprop | checked (summary, low confidence) |
 
+
+## Curiosity lineage, verified (grok citation check, 9 Nov 2026)
+
+Full table with DOIs / arXiv ids and one-line relevance: `handoffs/2026-11-09_grok_curiosity_refs.table.md`. All 14
+entries **checked** (authors, title, venue confirmed online). Summary of the split:
+- **Prediction error (gets trapped by noise):** Schmidhuber SAB 1991; Pathak et al. ICML 2017 (ICM); Burda et al. ICLR
+  2019 (RND; large-scale curiosity study, noisy TV).
+- **Learning / compression progress:** Schmidhuber IJCNN 1991; Storck, Hochreiter, Schmidhuber ICANN 1995 (information
+  gain); Schmidhuber 2009 / IEEE TAMD 2010; Oudeyer, Kaplan, Hafner IEEE TEC 2007 (IAC); Lopes et al. NIPS 2012; Graves et
+  al. ICML 2017 (prediction / complexity gain as bandit reward); Schmidhuber 2013 (PowerPlay).
+- **Both forms:** Achiam & Sastry 2017 (surprisal and k-step learning progress).
+- **Substrate / metric / memory:** Schlag, Irie, Schmidhuber ICML 2021; Blier & Ollivier NeurIPS 2018; Teyler & DiScenna
+  1986; Kumaran, Hassabis, McClelland TICS 2016.
