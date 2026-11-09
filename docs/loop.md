@@ -2185,3 +2185,36 @@ ProtoStore erased what episodes there could have been.
 4. **H24c** combined route on episodic MNIST: exact-match gate over the replaying cortex, plus deletion of
    consolidated entries (store size priced).
 5. Store default for every new world: exemplar traces, not running-mean prototypes.
+
+## 2026-11-09 19:30 UTC+8 (orchestrator: H21a scored; papers library; literature scan; worker split)
+
+**Read first:** `docs/roadmap.md`, `results/h21a/RESULTS.md` (Verdict), `docs/literature_2026-11.md`, CLAUDE.md
+("Roles", "Papers library", "Cadence").
+
+### Findings
+1. **Work split changed.** The orchestrator sets direction, writes specs with pre-registered bars, reviews and scores.
+   codex (sandboxed) and grok implement and run. H21a was the first experiment run entirely by a worker.
+2. **H21a PARTIAL (codex):** online GRU 1.259 / 1.657 bits (slow / fast) vs KT mixture 1.735 / 1.712 vs lzma
+   0.744 / 0.976. It beats KT on 5/6 seeds and never beats lzma. Counters partly learnt (C1 0.5–0.9× KT); CA rows not.
+   Plain delta-rule FWP above KT everywhere.
+3. **Mechanism:** about 2 000 updates per life (step-starved), and lzma's advantage is verbatim recall, which is
+   a store. M1 becomes cortex + store; H21b (replay ×2, match model, fixed-share mixtures) dispatched to codex.
+4. **Papers library (grok):** R2 `pdp-papers` + D1 `pdp-papers-index`, idempotent `tools/sync_papers.py`; registry of
+   every cited paper (file_status stored / to_fetch / wanted / unavailable) running.
+5. **Literature scan:** three families of progress estimators (ours, LPM, gradient-momentum coupling); modern linear
+   RNNs are fast-weight programmers whose slow weights still need BPTT; e-prop as the local candidate; Titans'
+   surprise-gated memory; loss of plasticity in long lives.
+
+### Literature insight
+Irie & Gershman (2025/26) plus our wake/sleep criterion suggest **local wake, global sleep**: only fast weights change
+while awake (local, online); the slow weights train from replay while asleep, where global credit assignment is
+allowed. H26, after M1.
+
+### Paths closed
+- Plain (ungated) delta-rule fast weights as the M1 substrate at this scale, untuned.
+
+### Hypotheses, ranked
+1. **H21b** cortex + store (running, codex).
+2. **H24c** combined store route on episodic MNIST (spec ready).
+3. **H25a** curiosity with the M1 learner (gated on M1).
+4. **H25b** progress-estimator ablation; **H26** local wake / global sleep.

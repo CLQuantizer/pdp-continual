@@ -14,6 +14,13 @@ Three results matter. The rest is detail.
    Curiosity can only be as good as the compressor's ability to *keep* improving. With a weak compressor the
    interesting sources run out early, and H23c needed an artificially slowed learner to show anything.
 
+## Status (9 Nov 2026, evening)
+
+- **M1: partial (H21a).** An online GRU beats the KT mixture (5/6 seeds) but not lzma; a plain delta-rule fast-weight
+  net fails. The GRU is step-starved (~2 000 updates per life) and lzma wins by verbatim recall, i.e. by being a store.
+  M1 is therefore redefined as **cortex + store** (H21b, running): replay from stored history for more updates per
+  observation, plus a match model mixed with the cortex. M1 and M3 now meet.
+
 ## The one decision that unblocks everything
 
 **Separate "what architecture learns like Schmidhuber's agent" from "can it be trained with local rules".** The goal
