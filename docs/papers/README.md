@@ -10,8 +10,16 @@
 | File | Paper | Status |
 |---|---|---|
 | `journe2022_hebbian_deep_learning_without_feedback.pdf` | Journé, Garcia Rodriguez, Guo, Moraitis (Huawei). *Hebbian Deep Learning Without Feedback.* ICLR 2023 (arXiv 2209.11883). | read |
+| `schmidhuber2009_driven_by_compression_progress.pdf` / `.html` | Schmidhuber. *Driven by Compression Progress: A Simple Principle Explains Essential Aspects of Subjective Beauty, Novelty, Surprise, Interestingness, Attention, Curiosity, Creativity, Art, Science, Music, Jokes.* arXiv 0812.4360v2 (2009). **Standing guideline**, see `docs/curiosity.md`. | read |
 
-Key points from it:
+Key points from Schmidhuber 2009 (the guideline):
+- Four principles: store the entire raw history; improve an adaptive compressor of it; give intrinsic reward equal to
+  compression progress, C(p_old, h) − C(p_new, h) on the same history (eq. 5); let an RL controller maximise it.
+- Prediction-error curiosity (1990) gets stuck on noise; reward the predictor's *improvement* instead (1991).
+  White noise and an unchanging input are both boring: neither allows further compression progress.
+- Performance measures: l(p) (eq. 3), and l(p) + log τ (eq. 4, one bit is worth halving the runtime).
+
+Key points from Journé et al.:
 - Multilayer SoftHebb trains deep nets with **no feedback, target or error
   signal**. It reports 99.4% MNIST, 80.3% CIFAR-10, 76.2% STL-10 and
   27.3% ImageNet (up to 5 hidden layers plus a linear classifier).
