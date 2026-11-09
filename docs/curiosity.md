@@ -32,10 +32,16 @@ An experiment that serves none of them is polishing, not progress (same rule as 
 
 ## Practical rules that follow (and that H23 already taught us)
 
-- **Measure progress so that memorising earns nothing.** Score old and new compressor on data that tests
-  generalisation: the whole history with the model's description length counted (C_l, eq. 3), or held-out data. A
-  sliding window under a memorising model rewards re-fitting recent history (H23: the progress agent locked onto a
-  counter its compressor could not learn, because the counter's recent prefixes kept re-fitting).
+- **Measure progress on the whole history, as eq. 5 says (confirmed by H23 → H23c).** Score old and new compressor
+  on a uniform sample of *everything seen so far* (a reservoir in the store), excluding the glance just learnt. The two
+  shortcuts both fail, in opposite ways:
+  - a sliding window of recent history rewards memorising (H23);
+  - the next unseen chunk rewards *tracking* a drifting source, not lasting compression (H23b: locked onto a counter,
+    worse than random on every seed).
+  With the whole-history sample, the same compressor, bandit and budget beat random by 0.26 bits and a noise-aware
+  oracle by 0.11, and a curriculum emerged: motifs, then the long motif, then the grammar (H23c).
+- **So the store is what makes curiosity computable.** Old-vs-new on the same history needs the history. This is
+  the hippocampus's first job here.
 - **Check headroom before setting a bar.** Run an oracle allocation first; a bar larger than the oracle's gain is a
   guaranteed kill (H23).
 - **Noise and dark controls in every active world.** A uniform-noise channel (noisy TV) and a constant channel are

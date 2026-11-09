@@ -87,3 +87,11 @@ Predictions (mean over seeds):
   records whose keys recur after long gaps. Score store value in bits saved per stored bit under H20's two-part T.
 - **Default store:** exemplar (pattern-separated) traces with a surprise-gated write (store what the cortex failed to
   predict) and deletion after consolidation. Replaces running-mean prototypes for anything episodic.
+
+## Result (9 Nov 2026, UTC+8): diagnosis stands
+
+`results/h24a/RESULTS.md`. P1, P3, P4 pass; P5 passes its main bar (its guard is exceeded in the good direction); P2
+misses by 1.3 points in letter but holds in substance (averaging store 31.3% = cortex 31.9% on episodes; exemplar
+store 100%). Gate route: +13.6 lifetime with 0.01% false firing. Replay moves episodes into the cortex (+47 at 6+).
+The hippocampus was useless because the world had no episodes and our store averaged them away, not because CLS is
+wrong. H23c adds its second job: a whole-history sample is what makes compression-progress curiosity work.

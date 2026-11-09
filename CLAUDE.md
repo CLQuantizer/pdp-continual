@@ -55,6 +55,8 @@ anything where being subtly wrong would mislead the research.
 
 - This VPS: 2 cores, 3 GB RAM. Use `.venv/bin/python` (system python has no numpy). Pool size ≤ 2. FF costs about
   50 ms per arrival here; budget runs accordingly. Heavy sweeps go to the box.
+- Kaggle (datasets for new worlds): `set -a; . ./.env; set +a; .venv/bin/kaggle datasets download <owner/name> -f <file>`
+  (CLI reads `KAGGLE_API_TOKEN` from `.env`, which is gitignored; never print or commit it). Downloads go to `data/`.
 - The loop commits as `pdp-loop` and pushes to `origin` (GitHub). Before committing: `git pull --rebase origin main`.
   Append to `docs/loop.md`; never rewrite earlier entries. Don't edit a file the loop is running (check
   `docs/loop.md` for "running").
