@@ -4,7 +4,7 @@ Research repo for **learning by Ez** (public log: learning.mywords.io). Goal: a 
 once, no train/inference split) and learns the way Schmidhuber describes: it compresses its history and is curious
 about what it can still learn to compress.
 
-Read first, in order: `docs/curiosity.md` (the guiding principle), `docs/goal.md` (criteria), the newest entries of
+Read first, in order: `docs/roadmap.md` (direction and milestones), `docs/curiosity.md` (the guiding principle), `docs/goal.md` (criteria), the newest entries of
 `docs/loop.md`, `docs/hippocampus_diagnosis.md`.
 
 ## Guideline (binding)
@@ -16,11 +16,12 @@ priced. A hypothesis that serves none of the four is polishing.
 
 ## Roles
 
-- **Orchestrator (Claude):** picks the next hypotheses, writes pre-registrations and bars, writes the core research
-  code, reviews every handoff, scores results against the bars, writes verdicts in `docs/loop.md`, commits.
-- **Workers (codex, grok):** simple, well-specified tasks handed off by the orchestrator: baselines and floors,
-  plotting, refactors with a test, citation checks, literature lookups, reproducing a run, site and publish fixes.
-  Workers never pre-register, never change a bar, never write a verdict, and never edit `docs/loop.md` or `audit.md`.
+- **Orchestrator (Claude):** direction (`docs/roadmap.md`), which hypotheses run, the pre-registration and bars
+  written *inside* each worker spec, review of every result, verdicts in `docs/loop.md`, re-ranking, commits. Writes
+  no experiment code; only spot-checks a worker's code or numbers when something looks wrong.
+- **Workers (codex sandboxed, grok):** implement and run the experiments from the spec, and write
+  `results/<name>/RESULTS.md` with numbers only. Workers never change a bar, never write a verdict, never commit,
+  and never edit `docs/loop.md` or `audit.md`.
 - **The loop (pdp-loop):** the scheduled research loop on the compute box. It follows this file and the hypothesis
   queue at the end of `docs/loop.md`.
 
@@ -40,8 +41,9 @@ priced. A hypothesis that serves none of the four is polishing.
 3. The orchestrator reviews the diff and the output, reruns the smoke test, and only then commits, crediting the
    worker in the commit message.
 
-Hand off: anything with a clear spec and a checkable output. Keep: deciding what to test, bars, verdicts, diagnosis,
-anything where being subtly wrong would mislead the research.
+Hand off: implementing and running experiments, baselines, plots, lookups. Keep: deciding what to test, bars,
+verdicts, diagnosis. Specs must be complete enough that a literal-minded worker gets it right: exact data, seeds, N,
+learners, what "prequential" means, outputs, a smoke test, a time budget, and the bars (marked "do not change").
 
 ## Cadence (usage budget, set by Ez on 9 Nov 2026)
 

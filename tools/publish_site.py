@@ -24,6 +24,7 @@ DOCS = [  # (slug, source, title, blurb)
     ("readme", "README.md", "Full write-up", "The long README: methods, runs, numbers."),
     ("how-it-works", "docs/how_it_works.md", "How it works", "One-glance figure of the dual: store, router, uniform awake replay."),
     ("h20", "docs/h20_world.md", "H20: a new world", "Pre-registered next: a label-free algorithmic stream, scored in bits per symbol."),
+    ("roadmap", "docs/roadmap.md", "Roadmap", "From parts to one curious machine: milestones M1-M5 and their kill conditions."),
     ("curiosity", "docs/curiosity.md", "Guideline: compression progress", "Schmidhuber 2009 as working rules: store, compress, reward progress, act on it."),
     ("h23", "docs/h23_curiosity.md", "H23: curiosity", "An active world with a noisy TV: progress-seeking vs error-seeking attention."),
     ("hippocampus", "docs/hippocampus_diagnosis.md", "Why the hippocampus looked useless", "Diagnosis: no episodes in the data, an averaging store, a rival-answerer test."),
