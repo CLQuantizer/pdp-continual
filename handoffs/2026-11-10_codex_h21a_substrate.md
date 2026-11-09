@@ -4,7 +4,7 @@ Read CLAUDE.md, docs/roadmap.md (milestone M1), docs/h20_world.md. You implement
 bars. Create only new files (h21a_substrate.py, results/h21a/*); do not edit existing files; do not commit; do not touch docs/loop.md or audit.md.
 
 ## Setup
-- `.venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu` (CPU only). `torch.set_num_threads(2)`.
+- CPU PyTorch is already installed in `.venv` (no network inside the sandbox). `torch.set_num_threads(2)`.
 - Data: `from h20_world import stream, ALPHA, PROCS, WORLDS`. Worlds slow and fast, **N = 131072 symbols** (2¹⁷),
   seeds **6 7 8**. Note the season lengths are unchanged (16384 / 2048).
 - Floors at this N (compute them in the same script for the same streams): KT mixture via `kt_floors`, and lzma -9e
