@@ -84,6 +84,13 @@ no extra runs between days unless Ez asks.
   50 ms per arrival here; budget runs accordingly. Heavy sweeps go to the box.
 - Kaggle (datasets for new worlds): `set -a; . ./.env; set +a; .venv/bin/kaggle datasets download <owner/name> -f <file>`
   (CLI reads `KAGGLE_API_TOKEN` from `.env`, which is gitignored; never print or commit it). Downloads go to `data/`.
+- **Kaggle compute (tested 10 Nov 2026):** a headless kernel gets 4 CPUs, 32 GB RAM and a Tesla T4 (torch with CUDA
+  preinstalled), free within Kaggle's weekly GPU quota (~30 h; sessions ~12 h max). Use it for anything bigger than this VPS
+  allows: many seeds in parallel, larger cortices, real-data worlds. Recipe: a folder with the script +
+  `kernel-metadata.json` (`"id": "ezzzzzx/<slug>"`, `"kernel_type": "script"`, **`"is_private": true`**, `"enable_gpu"`
+  as needed, `"enable_internet": false`), then `kaggle kernels push -p <dir>`, poll `kaggle kernels status <id>`, fetch
+  with `kaggle kernels output <id> -p <dir>`. Code and data go up as private Kaggle datasets (`kaggle datasets create`),
+  never with secrets inside. Results still come back into `results/<name>/` and are reviewed here.
 - The loop commits as `pdp-loop` and pushes to `origin` (GitHub). Before committing: `git pull --rebase origin main`.
   Append to `docs/loop.md`; never rewrite earlier entries. Don't edit a file the loop is running (check
   `docs/loop.md` for "running").
