@@ -45,6 +45,15 @@ Three results matter. The rest is detail.
   surprise store recovers 72% of the full store's gain with 27% of the memory. Next: H24f (symbol-level writes, match
   order 5 so facts are recalled), then M4.
 
+## Status (10 Nov 2026, afternoon)
+
+- **M4a (one life, all parts): not passed.** Curiosity works inside the full machine: gmc_prop beats random on all 3
+  seeds (−0.16 mean), matches the noise-skipping oracle on W and beats it on facts, with 14% on noise (one seed 16%).
+  But the store makes the machine *worse* than the GRU alone (+0.08 bits), losing motifs and counters. Suspect: replay
+  drawn only from the utility store, which evicts consolidated content, so the cortex stops rehearsing it and forgets.
+  The history (principle 1) should feed replay; the utility store is a prediction cache. **M4b** ablates replay source,
+  match mixture and a hard budget on selection seeds 0–2; M4 is rescored on fresh seeds afterwards.
+
 ## The one decision that unblocks everything
 
 **Separate "what architecture learns like Schmidhuber's agent" from "can it be trained with local rules".** The goal
