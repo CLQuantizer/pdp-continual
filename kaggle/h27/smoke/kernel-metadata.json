@@ -1,0 +1,15 @@
+{
+  "id": "ezzzzzx/h27-smoke",
+  "title": "h27-smoke",
+  "code_file": "h27_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["ezzzzzx/pdp-code-h27"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
