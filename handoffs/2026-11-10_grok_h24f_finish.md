@@ -13,3 +13,10 @@ unchanged. Codex wrote `h24f_fine_store.py` and partial results in `results/h24f
 3. Write `results/h24f/RESULTS.md` (numbers only, no verdict) as the spec asks, including the Pareto table (P vs peak
    M/N for gru and full from H24e, plus full5, fine, fine3) and F value-digit bits by prior appearances.
 4. Do not commit; do not edit docs/loop.md or audit.md. Final message: the main tables, wall time, and the step-1 check.
+
+## Resume note (orchestrator, 10 Nov)
+The first grok run fixed the touching-window merge (keep that fix) and completed the corrected `fine` seed 6
+(results/h24f/fine_6.npz, 10:26). Its background jobs were killed when the headless run exited. Now: rerun the corrected
+`fine` for seeds 7 and 8, then `fine3` for seeds 6 7 8 if the time allows. **Run the jobs in the foreground (blocking
+commands, no background tasks)**; at most 2 in parallel. Then write RESULTS.md as specified, noting the fix and that
+full5 was not rerun.
