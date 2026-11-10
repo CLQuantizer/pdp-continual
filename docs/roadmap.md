@@ -54,6 +54,20 @@ Three results matter. The rest is detail.
   The history (principle 1) should feed replay; the utility store is a prediction cache. **M4b** ablates replay source,
   match mixture and a hard budget on selection seeds 0–2; M4 is rescored on fresh seeds afterwards.
 
+## Status (10 Nov 2026, evening)
+
+- **M4c (fresh seeds 9–14, Kaggle): M4 not passed by the letter, machine works.** Curiosity + GRU + whole-history
+  replay: W 1.283 vs 1.780 for the GRU alone (−0.50) and 1.538 for GRU + replay (−0.26); ties the noise-skipping oracle
+  (1.272); beats random on 5/6 seeds. Fails only the noise guard (17% of glances on N, bar 15%). The utility store adds
+  nothing in the active life (−0.001 W, facts slightly worse).
+- **Hippocampus, revised:** the part that matters is the *stored raw history, replayed*. Select hard for the cache,
+  sample fairly for the bus: a store chosen by "buys compression" is right for prediction (H24g) and wrong as the
+  replay source (M4a/b).
+- **Metric, revised again (from `docs/compute-vs-data-movement.md`):** report three axes: prediction bits P, memory M,
+  and **bus traffic** (replayed symbols per observed symbol). Full-history replay is currently unpriced memory.
+- **Next:** H27 (can a bounded, uniform sample of history replace the full log?) and the noise leak (clean per-channel
+  progress attribution), then the real-data world W1.
+
 ## The one decision that unblocks everything
 
 **Separate "what architecture learns like Schmidhuber's agent" from "can it be trained with local rules".** The goal

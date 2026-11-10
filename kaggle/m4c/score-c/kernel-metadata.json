@@ -1,0 +1,15 @@
+{
+  "id": "ezzzzzx/m4c-score-c",
+  "title": "m4c-score-c",
+  "code_file": "m4c_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["ezzzzzx/pdp-code-m4c"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

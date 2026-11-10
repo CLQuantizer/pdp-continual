@@ -2315,3 +2315,26 @@ consolidated decay. The CLS view agrees: hippocampal replay interleaves old and 
 1. **M4c** (grok, Kaggle): M4 rescored on fresh seeds 9–14 with history replay.
 2. Curiosity's noise share (17%): clean per-channel progress attribution (parked open problem) becomes the next M2 item.
 3. W1 real-data world, enwik8 cortex calibration, after M4c. Parked: CA rule, H26 local wake / global sleep.
+
+## 2026-11-10 17:00 UTC+8 (orchestrator: M4c scored on Kaggle; H27 from the compute-vs-data-movement note)
+
+**Read first:** Verdict in `results/m4c/RESULTS.md`; `docs/compute-vs-data-movement.md` (Ez's note).
+
+### Findings
+1. **M4c (grok, Kaggle, fresh seeds 9–14):** curiosity + GRU + whole-history replay W 1.283; GRU alone 1.780; GRU +
+   replay 1.538; oracle 1.272. Curiosity beats random 5/6. **M4 fails only the noise guard (17.3% on N).** The utility
+   store contributes −0.001 bits.
+2. First Kaggle run: 36 lives in ~8 min wall across 3 private kernels; Kaggle vs local numerics agree to 2e-7.
+
+### Literature insight
+Ez's note frames the store as HBM, the cortex as compute and replay as the bus. Our data refines it: select hard for
+what sits next to compute (the cache), sample fairly for what crosses the bus to train weights. And the bus should be
+metered: traffic becomes the third reported axis next to P and memory.
+
+### Paths closed
+- The utility store as part of the active machine in this world (kept as a cache option; it is not where the value is).
+
+### Hypotheses, ranked
+1. **H27** (grok, Kaggle): bounded uniform reservoir vs full history vs recent-only replay; traffic dose curve.
+2. Noise leak in curiosity: per-channel progress attribution (M2 open problem), now the main defect of the machine.
+3. W1 real-data world + enwik8 calibration.
