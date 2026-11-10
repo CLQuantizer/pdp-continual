@@ -60,7 +60,7 @@ Whenever a doc, spec or loop entry cites a new paper, register it in the same co
 - **grok is the default worker** for experiments and lookups.
 - **codex has a hard cap of 80% of its weekly plan.** Check `python3 /root/bin/usage_report.py --dry` before any codex
   dispatch; at ≥ 75%, do not dispatch codex at all. Use codex only when Ez says so.
-- grok runs that edit files or call `cf`: `grok -p "..." --cwd /root/pdp --output-format plain --max-turns 120 --always-approve`.
+- grok runs that edit files or call `cf`: `grok -p "..." --cwd /root/pdp --output-format plain --max-turns 150 --always-approve --background-wait-timeout 7200` (headless grok otherwise kills its background jobs after 600 s; tell it to run experiments in the foreground).
 
 ## Cadence (usage budget, set by Ez on 9 Nov 2026)
 
