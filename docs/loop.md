@@ -2375,3 +2375,27 @@ each piece replayed ≲ 10 times. Memory needed ∝ traffic × life / allowed re
 1. **H29** (grok, Kaggle GPU): our cortex on enwik8 vs xz / zstd / bz2 / PPMd on the same 10 MB.
 2. W1 active real-data world (Bible / chess / SQuAD / BTC + noise): curiosity's next test, with headroom checked first.
 3. Parked: CA rule (negative-eigenvalue linear RNNs), H26 local wake / global sleep, progress attribution.
+
+## 2026-11-11 01:30 UTC+8 (orchestrator: H29 scored; architecture page)
+
+### Findings
+1. **H29 (grok, Kaggle T4, 1.49 GPU h):** the H27b cortex (GRU 1024, byte level) on enwik8's first 10 MB scores 3.644
+   bits/byte. xz -9e scores 2.176 and PPMd order 16 scores 1.837 on the same bytes. **Both bars FAIL.**
+2. The model degrades as it reads: 2.26 on the first MB, then 3.5–4.2. Replay cost +0.35 bits/byte on 2 MB (replay
+   2.62, no replay 2.27).
+3. Cause: the spec's replay dose was traffic 32 (batch 32 per chunk), four times the H27b knee. That means hundreds
+   of repeats per early segment. It was an orchestrator spec error, made the same day the knee was recorded.
+4. Site: an architecture page (orchestrator, workers, Kaggle, Cloudflare, Telegram) is live.
+
+### Literature insight
+An online learner at a fixed Adam learning rate has to stay stable over 10^7 steps. The toy worlds (10^4 glances)
+never tested that; real data does.
+
+### Paths closed
+- Replay traffic 32 on real text (it overfits, as H27 predicted).
+
+### Hypotheses, ranked
+1. **H29b** (grok, Kaggle GPU): E10M with no replay, with replay at traffic 8, and with no replay at a lower
+   learning rate. This separates dose from stability.
+2. W1 active real-data world, with headroom checked first.
+3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.
