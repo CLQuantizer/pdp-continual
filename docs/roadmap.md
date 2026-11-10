@@ -33,6 +33,11 @@ Three results matter. The rest is detail.
 - **M3 on episodic MNIST: PASS (H24c + H24d).** Exact-match gate over a replaying cortex (+5.7 lifetime over either
   part), with surprise-gated writes: a 6.4× smaller store (1 553 vs 10 000 exemplars) for −0.9 lifetime, 99.8% on
   repeat episodes, and faster consolidation. Deletion after "right twice" was killed (normal items never repeat).
+- **M3 in the symbol world: PASS (H24f + H24g).** Order-5 matching recalls facts. A utility store (keep windows by the
+  bits they actually saved, evict the least useful under a budget) reaches P within 0.024 bits of the full store at 15%
+  of its memory, recalls facts better than the full store, and evicts irreducible content (CA noise) and consolidated
+  content (motifs, counters) while keeping facts. Surprise-gated writes alone kept irreducible surprise (41% memory).
+  **Memory follows the same principle as curiosity: keep what yields compression progress.**
 - **M3 in bits (H24e): FAIL as scored, and the score was wrong.** H20's two-part T charges stored history as
   description length, but a prequential decoder already has the history, so storing it is free in code length (hence
   "store everything"). A store costs *memory*, a hardware axis. **Metric change:** report prediction bits P and memory
