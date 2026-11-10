@@ -2359,3 +2359,19 @@ each piece replayed ≲ 10 times. Memory needed ∝ traffic × life / allowed re
 1. **H28** (grok, Kaggle): whole-history progress (plain and common-mode-removed) with history replay, to cure the
    17% noise leak; M4 PASS if it does.
 2. W1 real-data world + enwik8 calibration. Parked: CA rule (negative-eigenvalue linear RNNs), H26.
+
+## 2026-11-10 20:30 UTC+8 (orchestrator: H28 scored; M4 paused; H29 dispatched)
+
+### Findings
+1. **H28 (grok, Kaggle):** whole-history progress + replay cures the noise leak (N 8.8%) but stops beating random
+   (2/6 seeds, −0.026 mean). gmc_prop: best W (1.299), beats the oracle, 16.5% on noise.
+2. With dose-1 replay the oracle's headroom over random is only 0.056 bits. My 0.05 bar used almost all of it
+   (headroom rule not applied: orchestrator error).
+
+### Paths closed
+- Noise-leak fixes in this world (H25b–d, H28). M4 paused, not killed: the world stopped rewarding curiosity.
+
+### Hypotheses, ranked
+1. **H29** (grok, Kaggle GPU): our cortex on enwik8 vs xz / zstd / bz2 / PPMd on the same 10 MB.
+2. W1 active real-data world (Bible / chess / SQuAD / BTC + noise): curiosity's next test, with headroom checked first.
+3. Parked: CA rule (negative-eigenvalue linear RNNs), H26 local wake / global sleep, progress attribution.

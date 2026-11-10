@@ -1,0 +1,15 @@
+{
+  "id": "ezzzzzx/h28-score-b",
+  "title": "h28-score-b",
+  "code_file": "h28_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["ezzzzzx/pdp-code-h28"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

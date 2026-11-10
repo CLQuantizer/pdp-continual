@@ -68,6 +68,16 @@ Three results matter. The rest is detail.
 - **Next:** H27 (can a bounded, uniform sample of history replace the full log?) and the noise leak (clean per-channel
   progress attribution), then the real-data world W1.
 
+## Status (10 Nov 2026, night)
+
+- **Replay economics (H27, H27b):** replay needs distinct data, each stored piece replayed ≲ 10 times; a 60% reservoir
+  matches the full log; best dose is one batched step per glance (traffic 8). Memory ∝ traffic × life / repeats.
+- **M4: not passed, line paused (H28).** Whole-history progress with replay cures the noise leak (N 8.8%) but no longer
+  beats random (2/6 seeds); gmc_prop compresses best (beats the oracle) but stays at 16% noise. With good replay the
+  oracle's headroom over random is only 0.056 bits: **this toy world no longer rewards curiosity enough to test it.**
+  Curiosity's next test needs a world where allocation matters more: W1 (real data, very different learnability).
+- **Next:** H29 enwik8 calibration of the cortex (ruler against xz / ppmd / cmix), then the W1 active world on Kaggle.
+
 ## The one decision that unblocks everything
 
 **Separate "what architecture learns like Schmidhuber's agent" from "can it be trained with local rules".** The goal
