@@ -1,0 +1,15 @@
+{
+  "id": "ezzzzzx/h29b-nr-3e4",
+  "title": "h29b-nr-3e4",
+  "code_file": "h29b_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["ezzzzzx/enwik8", "ezzzzzx/pdp-code-h29b"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

@@ -2399,3 +2399,27 @@ never tested that; real data does.
    learning rate. This separates dose from stability.
 2. W1 active real-data world, with headroom checked first.
 3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.
+
+## 2026-11-11 03:10 UTC+8 (orchestrator: H29b scored)
+
+### Findings
+1. **H29b (grok, Kaggle T4, 1.91 GPU h):** on enwik8's first 10 MB, no replay at lr 3e-4 scores **1.974 bits/byte**.
+   That beats xz -9e (2.176) and trails PPMd order 16 (1.837) by 0.14. Slices fall from 2.51 to 1.86. **Both bars
+   PASS.**
+2. The same model at lr 1e-3 diverges after about 5 MB with no replay (2.19 → 4.58). H29's collapse was mostly
+   optimiser instability, compounded by a 4× replay dose.
+3. Replay at traffic 8 with lr 1e-3 costs +0.43, because each replay step is another step at an unstable learning
+   rate. Replay at lr 3e-4 has not been run.
+
+### Literature insight
+On real data, the learner's lifetime is set by its step size: 10^7 online steps need a smaller learning rate than 10^4
+did. The toy worlds could not show this, and the cortex's hyperparameters were tuned there.
+
+### Paths closed
+- lr 1e-3 for long lives (it diverges).
+
+### Hypotheses, ranked
+1. **H29c** (grok, Kaggle GPU): replay at the stable lr 3e-4, at traffic 1 and 8, plus no replay at lr 1e-4. Does
+   store-everything replay help once the learner is stable? Bar: beat PPMd order 16.
+2. W1 active real-data world, run at the stable learning rate, with headroom checked first.
+3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.
