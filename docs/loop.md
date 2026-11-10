@@ -2283,3 +2283,35 @@ mixed the two axes.
 2. PPM floor (grok, after H24f; CPU).
 3. M4 (all parts in one life) after M3 in bits; parked: CA rule, clean progress attribution, H26 local wake / global sleep.
 Codex budget: 76% of the week, resets Thu 10:55. One codex job per day until then.
+
+## 2026-11-10 16:00 UTC+8 (orchestrator: M3 in the symbol world; M4a fails; M4b finds why; Kaggle compute)
+
+**Read first:** `docs/roadmap.md` (Status 10 Nov afternoon), Verdict sections of `results/h24g/`, `results/m4a/`,
+`results/m4b/` (`RESULTS.md`).
+
+### Findings
+1. **H24f/H24g (grok), M3 PASS in the symbol world:** order-5 matching recalls facts; a utility store (keep windows by
+   bits actually saved, evict the least useful under a budget) gets P within 0.024 bits of the full store at 15% of its
+   memory, evicting CA noise and consolidated motifs/counters.
+2. **M4a (grok), M4 not passed:** gmc_prop beats random on 3/3 seeds and matches the noise-skipping oracle, but the
+   store run is 0.08 bits *worse* than the GRU alone (motifs and counters forgotten).
+3. **M4b (grok), diagnosis confirmed:** replay drawn from the utility store starves the cortex of the content the store
+   evicted. Replay from the whole history: −0.30 bits vs no replay; −0.29 vs store-only replay. The match mixture adds
+   only −0.017 in the active life. Curiosity + history replay: W 1.280 vs 1.765 for the GRU alone (seeds 0–2), but 17%
+   of glances on noise.
+4. **Infrastructure:** Kaggle kernels work headlessly (4 CPU, 32 GB, T4, private); recipe in CLAUDE.md. Kaggle lookup
+   picked a real-data world W1 (Bible, chess moves, SQuAD, BTC book, synthetic noise; enwik8 for calibration).
+   Papers: 84 stored, 25 wanted.
+
+### Literature insight
+Schmidhuber 2009 §1.2 again: store the raw history and keep learning from it. Our utility store optimised the wrong
+target for replay: it keeps what the cortex *cannot* predict, so replaying it teaches the surprising and lets the
+consolidated decay. The CLS view agrees: hippocampal replay interleaves old and new, not only the new.
+
+### Paths closed
+- Store-only replay; slope_prop (visit-to-visit progress) as a controller.
+
+### Hypotheses, ranked
+1. **M4c** (grok, Kaggle): M4 rescored on fresh seeds 9–14 with history replay.
+2. Curiosity's noise share (17%): clean per-channel progress attribution (parked open problem) becomes the next M2 item.
+3. W1 real-data world, enwik8 cortex calibration, after M4c. Parked: CA rule, H26 local wake / global sleep.
