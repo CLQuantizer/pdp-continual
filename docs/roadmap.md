@@ -117,3 +117,14 @@ It is Ez's call; this roadmap assumes yes, and Stage B keeps the criterion hones
 2. H24c: combined store route on episodic MNIST (M3 groundwork; cheap, uses existing code).
 3. H24b: episodic process F in the symbol world (M3 world).
 Parked: H23d (controller tuning), PPM floor (useful, low priority), citation check.
+
+## Real-data world, W1 (chosen 10 Nov 2026 from `handoffs/2026-11-10_grok_kaggle_worlds.table.md`)
+
+Byte-level channels, one per source, built and run on Kaggle compute after M4 is scored on the synthetic world:
+- **easy:** King James Bible (Gutenberg #10, header/footer stripped). xz 1.85 bits/byte; Canterbury `bible.txt` refs.
+- **hard-learnable:** Lichess SAN move stream (`datasnaek/chess`, CC0, moves column only). xz 2.32; headroom far below.
+- **episodic:** SQuAD v1.1 dev as plain text (article, question, answer; CC-BY-SA-4.0): answers recur inside the article.
+- **medium numeric:** Coinbase BTC order book (`martinsn/...`, CC0); the 1-second file (1.7 GB) fits only on Kaggle.
+- **controls:** synthetic uniform noise and a dark channel stay (an exactly known noisy TV beats a "nearly random" real one).
+- **calibration (passive, separate):** enwik8 against published numbers (xz 1.976, ppmd 1.711, cmix 1.170 bits/byte),
+  the M1 cortex test on real text.
