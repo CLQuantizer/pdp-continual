@@ -2251,3 +2251,35 @@ per-group momentum; with shared Adam momentum and an absolute product it degener
 2. **H24b** episodic process F in the symbol world (M3).
 3. Parked open problems: CA rule (GRU + local-attention hybrid); clean progress attribution in shared nets (per-channel
    progress heads); H26 local wake / global sleep after M3.
+
+## 2026-11-10 08:45 UTC+8 (daily orchestration: M3 overnight results; metric change; H24f dispatched)
+
+**Read first:** `docs/roadmap.md` (Status), the Verdict sections of `results/h24c/`, `results/h24d/`, `results/h24e/`
+(`RESULTS.md`), and `results/h24b_floors/RESULTS.md`.
+
+### Findings
+1. **H24c (codex): an exact-match gate over a replaying cortex** gives +5.7 lifetime over either part (85.35%).
+   Deletion after "right twice" killed: normal items never repeat, so the store stayed at 84%.
+2. **H24d (codex) PASS, M3 on MNIST:** surprise-gated writes (store only what the system got wrong) keep 15.5% of
+   arrivals, a 6.4× smaller store, for −0.9 lifetime; repeat episodes 99.8%; the cortex consolidates episodes faster.
+3. **H24b world (codex):** facts process F (300 arbitrary key=value records) added to the symbol world; exact recall
+   makes a value free after one appearance, where KT needs 5+ appearances to reach 1.7 bits/digit.
+4. **H24e (codex): FAIL as scored, metric flaw found.** H20's two-part T charges stored history as description length,
+   but a prequential decoder already has the history: storing it is free in code length, and its real cost is memory.
+   From now on, P and memory footprint are reported separately (Pareto). On that axis the surprise store recovers 72%
+   of the full store's P gain with 27% of the memory. The order-8 match model cannot recall facts (the preceding context
+   differs on every occurrence).
+
+### Literature insight
+Schmidhuber 2009 §1.2 ("store everything … the data is holy") is consistent with prequential coding: the history costs
+no extra description length, so a store must be judged on hardware cost (memory) and on what it buys in P. H20's T
+mixed the two axes.
+
+### Paths closed
+- Two-part T as a single score; deletion by repeated correct answers; order-8 matching for episodic facts.
+
+### Hypotheses, ranked
+1. **H24f** (running, codex): symbol-level surprise writes, match order 5, P vs memory Pareto.
+2. PPM floor (grok, after H24f; CPU).
+3. M4 (all parts in one life) after M3 in bits; parked: CA rule, clean progress attribution, H26 local wake / global sleep.
+Codex budget: 76% of the week, resets Thu 10:55. One codex job per day until then.
