@@ -2338,3 +2338,24 @@ metered: traffic becomes the third reported axis next to P and memory.
 1. **H27** (grok, Kaggle): bounded uniform reservoir vs full history vs recent-only replay; traffic dose curve.
 2. Noise leak in curiosity: per-channel progress attribution (M2 open problem), now the main defect of the machine.
 3. W1 real-data world + enwik8 calibration.
+
+## 2026-11-10 19:00 UTC+8 (orchestrator: H27, H27b replay economics; H28 dispatched)
+
+### Findings
+1. **H27 (grok, Kaggle):** a fixed small replay buffer replayed hard is worse than no replay (res77 1.877 vs 1.808;
+   ~100 replays per segment: the cortex memorises it). Full history best; 1 step per glance beats 2 and 4.
+2. **H27b:** at low repeats per segment bounded memory works: a 60% reservoir matches/beats the full log (1.428 vs
+   1.457, traffic 8); 15% recovers part (1.653 vs no replay 1.815). Knee at traffic ≈ 8.
+3. Papers from Ez's compute-vs-data-movement note registered (2 stored, 9 wanted).
+
+### Literature insight
+The note's "fixed state instead of a growing log" fails for learning in its strong form: replay needs distinct data,
+each piece replayed ≲ 10 times. Memory needed ∝ traffic × life / allowed repeats.
+
+### Paths closed
+- Small fixed replay buffers at high dose; replay doses above traffic 8.
+
+### Hypotheses, ranked
+1. **H28** (grok, Kaggle): whole-history progress (plain and common-mode-removed) with history replay, to cure the
+   17% noise leak; M4 PASS if it does.
+2. W1 real-data world + enwik8 calibration. Parked: CA rule (negative-eigenvalue linear RNNs), H26.
