@@ -62,10 +62,11 @@ Whenever a doc, spec or loop entry cites a new paper, register it in the same co
   dispatch; at ≥ 75%, do not dispatch codex at all. Use codex only when Ez says so.
 - grok runs that edit files or call `cf`: `grok -p "..." --cwd /root/pdp --output-format plain --max-turns 150 --always-approve --background-wait-timeout 7200` (headless grok otherwise kills its background jobs after 600 s; tell it to run experiments in the foreground).
 
-## Cadence (usage budget, set by Ez on 9 Nov 2026)
+## Cadence (Ez, 9–10 Nov 2026)
 
-The orchestrator runs **2–3 experiments once a day, in the morning (UTC+8)**, then stops. No continuous running,
-no extra runs between days unless Ez asks.
+The daily 08:40 UTC+8 orchestration is the baseline: review, verdicts, next specs, dispatch. With Kaggle as the runner,
+further cycles the same day are fine while the usage bars allow (Claude 5h/week, grok); codex stays capped. Never run
+continuously without results to review in between.
 
 ## Research protocol (unchanged from the loop; keep it)
 
@@ -80,10 +81,14 @@ no extra runs between days unless Ez asks.
 
 ## Machines and git
 
-- This VPS: 2 cores, 3 GB RAM. Use `.venv/bin/python` (system python has no numpy). Pool size ≤ 2. FF costs about
-  50 ms per arrival here; budget runs accordingly. Heavy sweeps go to the box.
+- This VPS: 2 cores, 3 GB RAM. Use `.venv/bin/python` (system python has no numpy). Pool size ≤ 2. Heavy runs go to
+  Kaggle (below).
 - Kaggle (datasets for new worlds): `set -a; . ./.env; set +a; .venv/bin/kaggle datasets download <owner/name> -f <file>`
   (CLI reads `KAGGLE_API_TOKEN` from `.env`, which is gitignored; never print or commit it). Downloads go to `data/`.
+- **Kaggle is the default runner for experiments (Ez, 10 Nov 2026).** Every scored run goes to private Kaggle kernels
+  (split seeds across up to 3 kernels; M4c: 36 lives in ~8 min vs ~2 h here). This VPS does specs, smoke tests at tiny T,
+  review and commits. Run locally only when the job is under ~10 min or needs something Kaggle lacks, and say why in the
+  spec. Use the GPU only when the model is big enough to gain from it (the weekly GPU quota is finite).
 - **Kaggle compute (tested 10 Nov 2026):** a headless kernel gets 4 CPUs, 32 GB RAM and a Tesla T4 (torch with CUDA
   preinstalled), free within Kaggle's weekly GPU quota (~30 h; sessions ~12 h max). Use it for anything bigger than this VPS
   allows: many seeds in parallel, larger cortices, real-data worlds. Recipe: a folder with the script +
