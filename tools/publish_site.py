@@ -22,6 +22,7 @@ DOCS = [  # (slug, source, title, blurb)
     ("audit", "audit.md", "Audit", "Claims checked against evidence; open items."),
     ("cls-route", "docs/cls_route.md", "CLS routing", "Answering with the hippocampal store."),
     ("readme", "README.md", "Full write-up", "The long README: methods, runs, numbers."),
+    ("architecture", "docs/architecture.md", "Architecture", "How the research runs: Claude Code orchestrates grok and codex, Kaggle computes, Cloudflare serves and stores, Telegram reports."),
     ("how-it-works", "docs/how_it_works.md", "How it works", "One-glance figure of the dual: store, router, uniform awake replay."),
     ("h20", "docs/h20_world.md", "H20: a new world", "Pre-registered next: a label-free algorithmic stream, scored in bits per symbol."),
     ("roadmap", "docs/roadmap.md", "Roadmap", "From parts to one curious machine: milestones M1-M5 and their kill conditions."),
@@ -78,7 +79,7 @@ iframe.fig{width:100%;height:640px;border:0;display:block;margin:0 auto;backgrou
 .feature{margin:22px 0 8px}
 """
 
-NAV = [("", "Home"), ("how-it-works/", "How it works"), ("loop/", "Loop log"), ("results/", "Results"), ("goal/", "Goal"), ("notes/", "Notes"), ("audit/", "Audit")]
+NAV = [("", "Home"), ("how-it-works/", "How it works"), ("architecture/", "Architecture"), ("loop/", "Loop log"), ("results/", "Results"), ("goal/", "Goal"), ("notes/", "Notes"), ("audit/", "Audit")]
 
 def md(text):
     return markdown.markdown(text, extensions=["tables", "fenced_code", "sane_lists", "toc"],
