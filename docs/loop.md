@@ -2423,3 +2423,23 @@ did. The toy worlds could not show this, and the cortex's hyperparameters were t
    store-everything replay help once the learner is stable? Bar: beat PPMd order 16.
 2. W1 active real-data world, run at the stable learning rate, with headroom checked first.
 3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.
+
+## 2026-11-11 04:40 UTC+8 (orchestrator: H29c scored; replay works on real text)
+
+### Findings
+1. **H29c (grok, Kaggle T4, 2.25 GPU h):** at the stable lr 3e-4, replay helps on enwik8 E10M. Traffic 8 scores
+   **1.832 bits/byte**, traffic 1 scores 1.874, and no replay scores 1.974. **Both bars PASS.** That beats xz -9e
+   (2.176) by 0.34 and edges PPMd order 16 (1.837) by 0.006 on one run, so call it a tie with PPMd.
+2. lr 1e-4 is too slow (2.151). The last MB of the traffic-8 arm (1.762) is still falling.
+3. Arc of the night: H29 3.644 → H29b 1.974 (stable step size) → H29c 1.832 (replay at the knee). The toy-world
+   replay findings (store everything, traffic about 8) carried over to real text once stability was fixed.
+
+### Paths closed
+- None new. "Replay hurts on real text" (H29b's reading) is withdrawn: it was an artefact of the unstable learning rate.
+
+### Hypotheses, ranked
+1. **H29d:** the full 100 MB at lr 3e-4 with traffic 8, against the published PPMd J1 (1.711) and xz (1.976).
+   Measure seed spread on E10M (2 more seeds) first, so the PPMd tie gets an error bar. GPU estimate: about 6–7 h
+   for the full file; it may need splitting across sessions.
+2. W1 active real-data world: curiosity at the stable learning rate with replay at traffic 8, headroom checked first.
+3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.

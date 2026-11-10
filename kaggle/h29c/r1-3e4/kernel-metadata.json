@@ -1,0 +1,18 @@
+{
+  "id": "ezzzzzx/h29c-r1-3e4",
+  "title": "h29c-r1-3e4",
+  "code_file": "h29c_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/enwik8",
+    "ezzzzzx/pdp-code-h29c"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
