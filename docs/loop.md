@@ -2571,3 +2571,25 @@ brains control. We have held it fixed: interleaved, one replay step per chunk.
 1. **M4-W2** (spec next): curious controllers on W2, judged against rand6, on held-out world seeds 3–8, probes capped
    at 4 bits per room. Progress reward against surprise and count-novelty rewards.
 2. H26, H31, H30, H32 as listed at 13:35.
+
+## 2026-11-11 15:10 UTC+8 (orchestrator: M4-W2 scored, FAIL; M4-W2b dispatched)
+
+### Findings
+1. **M4-W2 (grok, 3 Kaggle CPU kernels, 74 CPU-min): FAIL, and the kill rule fires.** On PROBE_cap (held-out world
+   seeds 3–8), rand6 0.50, count_q 3.23, prog_q 3.38, err_q 3.48 and oracle 0.005. Every Q arm stayed in rooms 0–2.
+   rand6 reached room 8 on every seed.
+2. **The in-sample progress estimator rewards memorising noise.** Re-scoring the trained chunk gave the TV about
+   0.035 bits per step, against about 0.003 for learned rooms. prog_q watched the TV 62% of the time. err_q watched
+   it 90% (the predicted noisy-TV trap).
+3. **ε over all 8 actions put a random reset every ~80 steps, against ~216 needed to open a lock.** That capped every
+   arm at room 2. My spec error.
+4. Room-only state cannot carry lock progress. Rewards in room 1 were large (0.7–2.5 bits) but rarely reached.
+
+### Paths closed
+- Progress measured by re-scoring the data just trained on, as a curiosity reward when noise is available.
+
+### Hypotheses, ranked
+1. **M4-W2b** (grok, Kaggle CPU, running): ε over manipulations only, plus a visit-to-visit learning-progress reward
+   (prequential, K = 16), on fresh seeds 9–14. Bars: beats rand6 by ≥ 0.25, beats count by ≥ 0.10, TV ≤ 10%.
+2. If M4-W2b fails: a controller with memory (state including the recent action and output).
+3. H26, H31, H30, H32 as listed.
