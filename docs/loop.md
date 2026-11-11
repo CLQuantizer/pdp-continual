@@ -2614,3 +2614,24 @@ brains control. We have held it fixed: interleaved, one replay step per chunk.
    ≥ 0.25, beats count by ≥ 0.10, beats room-only by ≥ 1.0. Kill: if memory does not help, move to a model-based
    planner that uses the learner's own predictions.
 2. H26, H31, H30, H32 as listed.
+
+## 2026-11-11 15:48 UTC+8 (orchestrator: M4-W2c scored; the tabular W2 line stops)
+
+### Findings
+1. **M4-W2c (grok, 3 Kaggle CPU kernels, 42 CPU-min): bar 1 FAIL, bar 2 PASS, bar 3 FAIL.** On PROBE_cap (seeds
+   15–20), rand6 1.13, lp_mem 2.82, lp_room 3.05 and count_mem 3.14. Learning progress beat count novelty by
+   0.32 ± 0.31. Memory gained only 0.23.
+2. **Greedy tie-breaks over all 8 actions press reset.** Fresh states have Q = 0 everywhere, so a uniform tie-break
+   is rand8. With an ideal new-room reward and no learner, the memory controller still reached only room 1 in 20,000
+   steps. Reset shares were 3.5–8%. This is my spec error, carried through M4-W2b and M4-W2c.
+3. **Across M4-W2, M4-W2b and M4-W2c**, the reset action decides every result. The noise leak is solved (visit-to-visit
+   progress, TV share 2–3%). Progress beats count novelty when both share a controller.
+
+### Paths closed
+- Tabular Q controllers on W2 (kill rule of M4-W2c).
+
+### Hypotheses, ranked
+1. **Needs Ez's direction:** the curiosity test in W2 with a controller that treats reset as a deliberate choice.
+   Either (a) a cheap check, with reset excluded from tie-breaks and exploration for every arm, or (b) a model-based
+   planner on the learner's predictions, the bigger build.
+2. H26 and H31 (CPU, ready to spec), then H30, then H32.
