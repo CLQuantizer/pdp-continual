@@ -320,3 +320,86 @@ not anti-PDP. Having only a bus is.
 - **Energy is not bits.** The brain numbers (Attwell & Laughlin; Howarth et al.; Levy & Calvert; Lennie) are energy
   budgets. Our score is code length. They become comparable only through the traffic axis and an explicit exchange rate;
   until we fix one, they motivate the metric but do not enter it.
+
+## Ez, 11 Nov 2026: moving is preserving; is the dichotomy false?
+
+> Mercury can store information because waves travel so slowly in it. Perhaps move vs compute is a false dichotomy:
+> moving itself can be preservation, and compute is another form of moving. Perhaps we can project moving and
+> computing into a frequency domain, so the dichotomy resolves into consistency. And memory addressing: if the brain
+> has no RAM, how does it work? It is content-addressable for sure. The difference from LLMs is that the brain
+> fundamentally does not need address-based memory, the kind GPUs, and so LLM infrastructure, are built on.
+
+### Orchestrator review (11 Nov 2026, UTC+8)
+
+**Delay lines: storage is data in flight. Holds.**
+- Mercury delay-line memories (EDSAC, UNIVAC) kept bits as acoustic pulses. Sound in mercury travels at about
+  1.45 km/s, so a 1.5 m tube held about a millisecond of pulses. Each pulse was read at the far end, regenerated and fed
+  back in.
+- Capacity is bandwidth × delay, the same "bits in the pipe" as a network link. Moving can be preserving.
+
+**Frequency domain: exact for the linear part.**
+- A delay τ multiplies every frequency by e^(−iωτ): gain 1, phase only.
+- Any linear time-invariant operation is also one multiplier per frequency, H(ω). So storage is an all-pass
+  (|H| = 1), forgetting is |H| < 1, and linear computation is shaping. They are one kind of object, and for this part
+  the dichotomy does dissolve.
+- Diagonal linear recurrences (state-space layers: HiPPO, S4, LRU, the Legendre Memory Unit) work this way. Each
+  unit is a damped rotation: the angle is a frequency and the modulus is a retention time. A bank of them is a set of
+  delay lines at many frequencies. HiPPO and the LMU are derived as optimal projections of the history onto a basis,
+  which is "project into a frequency domain" made literal.
+- A negative real eigenvalue is the Nyquist frequency, a sign flip every step: counting mod 2. That ties this idea to
+  the parked counter/CA problem (Grazzi et al. 2025, above).
+
+**Where the line survives, in other forms.**
+- **Nonlinearity.** Comparison, AND and branching mix frequencies. The frequency picture unifies storage only with
+  *linear* computation.
+- **Access.** A delay line is sequential: you wait for your bit to come round. Random access was invented to avoid
+  that wait, and it pays in wires, which is the movement cost this note started from. The surviving cut is
+  sequential versus addressed access.
+- **Energy.** By Landauer, moving and storing can in principle be reversible. Only erasing has a floor of kT ln 2 per
+  bit. The mercury tube's energy went into regenerating against loss, not into moving. Physics draws its line between
+  preserving and destroying information.
+
+**Replay is the regeneration stage.** The cortex loses a little with each update (|H| < 1 per step), and replay
+re-injects stored history before it fades. Our measured dose (traffic about 8, each segment ≲ 10 times; H27b, H29c)
+is the regeneration rate that balances that loss. Testable: the optimal dose should track the cortex's forgetting
+rate.
+
+**Addresses: the brain is content-addressed in both algorithm and substrate.**
+- **LLMs are content-addressed in the algorithm.** Attention is a soft lookup by similarity: query · key, then a
+  weighted read, which is a modern Hopfield update (Ramsauer et al. 2020). The substrate is address-based, though. The
+  KV cache sits at addresses in HBM, and each new token streams every key to the compute units to compare. Content
+  lookup is emulated by a brute-force scan of addressed memory: O(context) bytes moved per token. That is where the
+  memory wall bites.
+- **The brain moves the query, not the memories.** A cue is broadcast along axons. Every synapse computes its match
+  where it sits, in parallel, and recall is the network settling to the completed pattern (attractor dynamics,
+  Hopfield 1982; CA3 autoassociation). Storage and comparison happen in the same place, as in a hardware CAM.
+  Nothing stored has to travel to be compared.
+- **The brain does have "addresses", but they are computed from content.** Hippocampal indexing theory (Teyler &
+  DiScenna 1986) has the hippocampus store a sparse index that reinstates a distributed cortical pattern. The dentate
+  gyrus makes that index by pattern separation (Yassa & Stark 2011): a sparse expansion that acts like
+  locality-sensitive hashing, as in the fly's olfactory circuit (Dasgupta et al. 2017; Babadi & Sompolinsky 2014).
+  It is a hash table with no table: the hash is a set of neurons. Time and place also act as content keys, through a
+  slowly drifting context vector (Howard & Kahana 2002). Order comes back through sequences replayed in compressed
+  time, a delay-line readout.
+- **The price.** Recall is approximate. Stored patterns interfere, since they share synapses (Hopfield capacity is
+  about 0.14 N patterns for N units), and that interference is why there are two systems and replay (McClelland et
+  al. 1995). Arbitrary pointers and exact variable binding are hard for brains and easy for RAM. Each side buys
+  something.
+
+**What this means for our machine: our replay is RAM.**
+- We replay by choosing a uniform random *position* in the log. A brain cannot do that, because it has no positions
+  to sample. Its replay is either cued (the current state retrieves similar past content) or spontaneous (attractor
+  dynamics wander the store; sleep replay reaches remote experiences, Karlsson & Frank 2009).
+- Cued replay is selective by construction, and we have found three times that selective replay hurts (H10, M4a,
+  H27). The prediction: content-cued replay alone underperforms uniform replay, and cued (wake) plus spontaneous,
+  broad (sleep) replay recovers it.
+- That is exactly the parked H26, "local wake, global sleep". H26 is the address-free version of our best replay
+  result, so it moves up the queue, after W2-0.
+- A second test: do the delay-line/oscillator layers above (complex and negative eigenvalues) replace the GRU as the
+  cortex (H30)?
+
+References added for this section: Gu et al. 2020 (HiPPO); Gu, Goel & Ré 2022 (S4); Voelker, Kajić & Eliasmith 2019
+(LMU); Orvieto et al. 2023 (LRU); Ramsauer et al. 2021 (*Hopfield networks is all you need*); Hopfield 1982; Teyler &
+DiScenna 1986; Howard & Kahana 2002; Dasgupta, Stevens & Navlakha 2017; Landauer 1961; Shin et al. 2017 (deep
+generative replay). Already registered: Yassa & Stark 2011, Babadi & Sompolinsky 2014, Karlsson & Frank 2009,
+McClelland et al. 1995, Fries 2005, Mongillo et al. 2008.
