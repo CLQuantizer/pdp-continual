@@ -1,0 +1,171 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brain map</title>
+<style>
+:root{--fg:#1d1d1f;--mut:#6e6e73;--bg:#fbfbf8;--card:#ffffff;--line:#c9c6be;
+--ok:#2f8f5b;--q:#c8610e;--open:#8a877f;--hub:#0b5cad}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fg:#e8e6e1;--mut:#9a978f;--bg:#151514;--card:#1d1d1b;--line:#4a4844;
+--ok:#6bd49a;--q:#ff9a4d;--open:#8f8c85;--hub:#7fb4ff}}
+:root[data-theme="dark"]{--fg:#e8e6e1;--mut:#9a978f;--bg:#151514;--card:#1d1d1b;--line:#4a4844;
+--ok:#6bd49a;--q:#ff9a4d;--open:#8f8c85;--hub:#7fb4ff}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font:14px/1.45 -apple-system,system-ui,sans-serif;padding:4px 0 8px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+svg{display:block;width:100%;min-width:680px;height:auto}
+.node rect{fill:var(--card);stroke-width:1.6}
+.nt{font:600 13px -apple-system,system-ui,sans-serif;fill:var(--fg)}
+.nl{font:11.5px -apple-system,system-ui,sans-serif;fill:var(--mut)}
+.badge{font:600 10px -apple-system,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.tested rect{stroke:var(--ok)}.tested .badge{fill:var(--ok)}
+.queued rect{stroke:var(--q)}.queued .badge{fill:var(--q)}
+.open rect{stroke:var(--open);stroke-dasharray:5 4}.open .badge{fill:var(--open)}
+.absent rect{stroke:var(--open);stroke-dasharray:2 3}.absent text{opacity:.7}.absent .badge{fill:var(--open)}
+.iface rect{stroke:var(--line)}
+.hub rect{stroke-width:2.6}.hub .nt{fill:var(--hub)}
+.edge{fill:none;stroke:var(--mut);stroke-width:1.3}
+.edge.dash{stroke-dasharray:4 4}
+.bus{fill:none;stroke:var(--mut);stroke-width:1.1;stroke-dasharray:2 3}
+.ahead{fill:var(--mut)}
+.elab{font:italic 11px -apple-system,system-ui,sans-serif;fill:var(--fg);paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+.hint{font-size:12px;color:var(--mut);margin:6px 2px 0}
+@media (min-width:680px){.hint{display:none}}
+</style></head><body>
+<div class="scroll"><svg viewBox="0 0 924 718" role="img" aria-labelledby="t d" xmlns="http://www.w3.org/2000/svg">
+<title id="t">Brain map of the pdp machine</title>
+<desc id="d">Each brain part with its job in our machine and its test status. Neuromodulators broadcast to the cortex, striatum, hippocampus and thalamus. The thalamus sits at the centre: it relays the senses to the cortex, routes between cortical areas, loops with the prefrontal cortex, basal ganglia and cerebellum, and opens the cortex to hippocampal replay during sleep. The prefrontal cortex projects to the striatum, and the basal ganglia send actions to the brainstem.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ahead"/></marker></defs>
+<path d="M20,118 H904" class="bus"/>
+<path d="M102.0,102 V118" class="bus"/>
+<path d="M282.0,102 V118" class="bus"/>
+<path d="M462.0,102 V118" class="bus"/>
+<path d="M642.0,102 V118" class="bus"/>
+<path d="M822.0,102 V118" class="bus"/>
+<path d="M120,118 V144" class="edge dash" marker-end="url(#ah)"/>
+<path d="M380,118 V144" class="edge dash" marker-end="url(#ah)"/>
+<path d="M804,118 V144" class="edge dash" marker-end="url(#ah)"/>
+<text x="560" y="113" class="elab" text-anchor="middle">diffuse broadcast to cortex, striatum, hippocampus, thalamus: no addresses</text>
+<g transform="translate(0,14)">
+<path d="M450,620 V404" class="edge" marker-end="url(#ah)"/>
+<path d="M450,276 V222" class="edge" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path d="M220,176 H240" class="edge" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path d="M120,222 V250 H300 V276" class="edge" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path d="M650,222 V250 H804 V276" class="edge" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path d="M804,372 V448" class="edge" marker-end="url(#ah)" marker-start="url(#ah)"/>
+<path d="M704,512 H650" class="edge" marker-end="url(#ah)"/>
+<path d="M560,464 V404" class="edge" marker-end="url(#ah)"/>
+<path d="M335,464 V404" class="edge" marker-end="url(#ah)"/>
+<path d="M170,464 V442 H280 V404" class="edge" marker-end="url(#ah)"/>
+<path d="M20,176 H10 V512 H20" class="edge" marker-end="url(#ah)"/>
+<path d="M120,372 V464" class="edge" marker-end="url(#ah)"/>
+<path d="M90,560 V620" class="edge" marker-end="url(#ah)"/>
+<g class="node open"><rect x="20" y="130" width="200" height="92" rx="9"/><text x="31" y="151" class="nt">Prefrontal cortex</text>
+<text x="211" y="214" class="badge" text-anchor="end">open</text>
+<text x="31" y="169" class="nl">goals and plans across steps</text>
+<text x="31" y="185" class="nl">GRU state only;</text>
+<text x="31" y="201" class="nl">W2 needs it</text>
+</g>
+<g class="node tested"><rect x="240" y="130" width="444" height="92" rx="9"/><text x="251" y="151" class="nt">Neocortex · the compressor</text>
+<text x="675" y="214" class="badge" text-anchor="end">tested</text>
+<text x="251" y="169" class="nl">predicts every symbol and learns online (GRU cortex)</text>
+<text x="251" y="185" class="nl">enwik8 10 MB: 1.836 bits/byte, ties PPMd (H29d)</text>
+<text x="251" y="201" class="nl">next: oscillator-bank cortex (H30)</text>
+</g>
+<g class="node open"><rect x="704" y="130" width="200" height="92" rx="9"/><text x="715" y="151" class="nt">Claustrum</text>
+<text x="895" y="214" class="badge" text-anchor="end">open</text>
+<text x="715" y="169" class="nl">binds areas in sync?</text>
+<text x="715" y="185" class="nl">no role yet</text>
+</g>
+<g class="node tested"><rect x="20" y="276" width="200" height="96" rx="9"/><text x="31" y="297" class="nt">Amygdala</text>
+<text x="211" y="364" class="badge" text-anchor="end">tested</text>
+<text x="31" y="315" class="nl">salience tags for store, replay</text>
+<text x="31" y="331" class="nl">tag-led replay hurt us 3×</text>
+<text x="31" y="347" class="nl">(H10, M4a, H27)</text>
+</g>
+<g class="node queued hub"><rect x="240" y="276" width="444" height="128" rx="9"/><text x="251" y="297" class="nt">Thalamus · the gate and router</text>
+<text x="675" y="396" class="badge" text-anchor="end">queued</text>
+<text x="251" y="315" class="nl">core relay: senses → cortex; TRN gate = searchlight (W1c:</text>
+<text x="251" y="331" class="nl">uniform reading was best)</text>
+<text x="251" y="347" class="nl">pulvinar, MD: route cortex ⇄ cortex; keep PFC rules alive</text>
+<text x="251" y="363" class="nl">tonic = linear relay; burst = surprise flag</text>
+<text x="251" y="379" class="nl">spindles open the cortex to replay in sleep → H31</text>
+</g>
+<g class="node queued"><rect x="704" y="276" width="200" height="96" rx="9"/><text x="715" y="297" class="nt">Entorhinal cortex</text>
+<text x="895" y="364" class="badge" text-anchor="end">queued</text>
+<text x="715" y="315" class="nl">drifting context = content key</text>
+<text x="715" y="331" class="nl">the cue for H26</text>
+</g>
+<g class="node tested"><rect x="20" y="464" width="200" height="96" rx="9"/><text x="31" y="485" class="nt">Basal ganglia</text>
+<text x="211" y="552" class="badge" text-anchor="end">tested</text>
+<text x="31" y="503" class="nl">action selection = controller</text>
+<text x="31" y="519" class="nl">M4 breadth: small headroom</text>
+<text x="31" y="535" class="nl">W2 next</text>
+</g>
+<g class="node queued"><rect x="240" y="464" width="190" height="96" rx="9"/><text x="251" y="485" class="nt">Cerebellum</text>
+<text x="421" y="552" class="badge" text-anchor="end">queued</text>
+<text x="251" y="503" class="nl">fast forward model,</text>
+<text x="251" y="519" class="nl">error-trained;</text>
+<text x="251" y="535" class="nl">count model + mixer → H32</text>
+</g>
+<g class="node queued"><rect x="470" y="464" width="180" height="96" rx="9"/><text x="481" y="485" class="nt">Sleep switch</text>
+<text x="641" y="552" class="badge" text-anchor="end">queued</text>
+<text x="481" y="503" class="nl">VLPO: when senses close,</text>
+<text x="481" y="519" class="nl">replay runs: interleaved</text>
+<text x="481" y="535" class="nl">or in blocks → H31</text>
+</g>
+<g class="node tested"><rect x="704" y="448" width="200" height="132" rx="9"/><text x="715" y="469" class="nt">Hippocampus · the store</text>
+<text x="895" y="572" class="badge" text-anchor="end">tested</text>
+<text x="715" y="487" class="nl">keeps everything (the log)</text>
+<text x="715" y="503" class="nl">DG: content hash (we use</text>
+<text x="715" y="519" class="nl">   positions = RAM) → H26</text>
+<text x="715" y="535" class="nl">CA3: cue completes episode</text>
+<text x="715" y="551" class="nl">ripples = replay: −0.138 bpb</text>
+</g>
+<g class="node iface"><rect x="20" y="620" width="664" height="62" rx="9"/><text x="31" y="641" class="nt">Brainstem, spinal cord, senses · the interface</text>
+<text x="31" y="659" class="nl">tokens in, actions out; the reflexes are our fixed policies (random, oracle)</text>
+</g>
+<text x="458" y="598" class="elab" text-anchor="start">senses</text>
+<text x="458" y="254" class="elab" text-anchor="start">relay up · feedback down</text>
+<text x="210" y="244" class="elab" text-anchor="middle">MD loop</text>
+<text x="727" y="244" class="elab" text-anchor="middle">cortex ⇄ EC</text>
+<text x="677" y="504" class="elab" text-anchor="middle">ripples</text>
+<text x="568" y="438" class="elab" text-anchor="start">spindles</text>
+<text x="343" y="438" class="elab" text-anchor="start">via VL</text>
+<text x="226" y="436" class="elab" text-anchor="middle">BG → thalamus</text>
+<text x="128" y="424" class="elab" text-anchor="start">value</text>
+<text x="98" y="596" class="elab" text-anchor="start">actions</text>
+</g>
+<g class="node tested"><rect x="20" y="20" width="164" height="82" rx="9"/><text x="31" y="41" class="nt">Dopamine</text>
+<text x="31" y="59" class="nl">VTA, SNc</text>
+<text x="31" y="75" class="nl">reward = progress</text>
+<text x="31" y="91" class="nl">H25a, H28: noisy</text>
+</g>
+<g class="node open"><rect x="200" y="20" width="164" height="82" rx="9"/><text x="211" y="41" class="nt">Noradrenaline</text>
+<text x="211" y="59" class="nl">locus coeruleus</text>
+<text x="211" y="75" class="nl">surprise → gain, lr</text>
+<text x="211" y="91" class="nl">fixed lr (H29b)</text>
+</g>
+<g class="node queued"><rect x="380" y="20" width="164" height="82" rx="9"/><text x="391" y="41" class="nt">Acetylcholine</text>
+<text x="391" y="59" class="nl">basal forebrain</text>
+<text x="391" y="75" class="nl">encode or consolidate</text>
+<text x="391" y="91" class="nl">the switch in H31</text>
+</g>
+<g class="node open"><rect x="560" y="20" width="164" height="82" rx="9"/><text x="571" y="41" class="nt">Serotonin</text>
+<text x="571" y="59" class="nl">raphe nuclei</text>
+<text x="571" y="75" class="nl">patience: horizon</text>
+<text x="571" y="91" class="nl">needed in W2</text>
+</g>
+<g class="node absent"><rect x="740" y="20" width="164" height="82" rx="9"/><text x="751" y="41" class="nt">Hypothalamus</text>
+<text x="751" y="59" class="nl">extrinsic drives</text>
+<text x="751" y="75" class="nl">absent: intrinsic</text>
+<text x="751" y="91" class="nl">reward only</text>
+</g>
+<g transform="translate(0,14)">
+<g class="node tested"><rect x="712" y="618" width="22" height="12" rx="3"/></g><text x="742" y="628" class="nl">tested: scored results</text>
+<g class="node queued"><rect x="712" y="636" width="22" height="12" rx="3"/></g><text x="742" y="646" class="nl">queued: test specified or next</text>
+<g class="node open"><rect x="712" y="654" width="22" height="12" rx="3"/></g><text x="742" y="664" class="nl">open: a role, no test yet</text>
+<g class="node absent"><rect x="712" y="672" width="22" height="12" rx="3"/></g><text x="742" y="682" class="nl">absent on purpose</text>
+</g></svg></div>
+<p class="hint">Swipe sideways to see the whole diagram.</p>
+<script>(function(){function post(){parent.postMessage({type:"cls-figure-height",height:Math.ceil(document.documentElement.scrollHeight)},"*")}new ResizeObserver(post).observe(document.body);addEventListener("load",post);post()})();</script>
+</body></html>

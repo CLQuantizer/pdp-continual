@@ -2522,3 +2522,34 @@ only opportunity. Curiosity's case rests on depth worlds, where actions decide w
 3. H26 address-free replay (cued wake + broad sleep) vs uniform-position replay, then H30 oscillator cortex. Both
    CPU-sized.
 4. H29e full 100 MB enwik8 (needs Ez's OK, about 10 GPU h).
+
+## 2026-11-11 13:35 UTC+8 (orchestrator: frequency domain and nonlinearity corrected; brain map with the thalamus)
+
+### Findings
+1. **Correction.** I had written that the frequency picture unifies storage only with *linear* computation. Ez
+   disputed it, and Ez is right. Products in time are convolutions in frequency. Volterra series give nonlinear systems
+   frequency kernels, and any fading-memory operator has a finite Volterra approximation (Boyd & Chua 1985). The
+   Koopman operator makes nonlinear dynamics linear on observables. The refined statement: storage and moving are
+   *diagonal* in frequency; computation is *off-diagonal* coupling between frequencies. The cost of nonlinearity is
+   the size of the lift (on the order of Nⁿ for an order-n kernel), not that it cannot be expressed. This is in
+   `docs/compute-vs-data-movement.md`.
+2. **Brain map** (`docs/brain_map.md`, figure on the site). Every major brain part now has a job in the machine, what
+   we have measured and a next test. Our machine has a cortex, a hippocampus and a basal ganglia, and nothing else.
+   The thalamus had no place at all. It is the gate in front of the cortex (the TRN searchlight, which W1c already
+   priced as small), a router between cortical areas (pulvinar, MD) and the sleep gate that times replay (spindles
+   coupled to ripples).
+
+### Literature insight
+Thalamic spindles locked to slow oscillations and hippocampal ripples predict consolidation (Staresina et al. 2015).
+Driving spindles in phase improves memory (Latchoumane et al. 2017). So *when* replay reaches the cortex is a variable
+brains control. We have held it fixed: interleaved, one replay step per chunk.
+
+### Hypotheses, ranked
+1. **W2-0** (grok, Kaggle CPU, running), then M4 on W2.
+2. H26: content-cued wake replay plus broad sleep replay vs uniform-position replay.
+3. **H31, the thalamic sleep gate (new):** the same replay dose (traffic 8), delivered interleaved or in sleep blocks
+   with input off. CPU.
+4. H30: oscillator-bank cortex, now with an order-2 multiplicative readout (a learned Volterra term).
+5. **H32, the cerebellar mixer (new):** a fast count model mixed with the GRU cortex by a learned mixer on E10M. The bar
+   to beat is PPMd order 16 by a clear margin. About 1.2 GPU h.
+6. H29e: full enwik8 (needs Ez's OK).

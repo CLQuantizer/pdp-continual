@@ -350,8 +350,9 @@ not anti-PDP. Having only a bus is.
   the parked counter/CA problem (Grazzi et al. 2025, above).
 
 **Where the line survives, in other forms.**
-- **Nonlinearity.** Comparison, AND and branching mix frequencies. The frequency picture unifies storage only with
-  *linear* computation.
+- **Nonlinearity.** This first said "the frequency picture unifies storage only with *linear* computation". That
+  was wrong. Ez pushed back, and the correction is the next section. Nonlinearity is not outside the frequency domain. It is what moves energy
+  *between* frequencies.
 - **Access.** A delay line is sequential: you wait for your bit to come round. Random access was invented to avoid
   that wait, and it pays in wires, which is the movement cost this note started from. The surviving cut is
   sequential versus addressed access.
@@ -403,3 +404,53 @@ References added for this section: Gu et al. 2020 (HiPPO); Gu, Goel & Ré 2022 (
 DiScenna 1986; Howard & Kahana 2002; Dasgupta, Stevens & Navlakha 2017; Landauer 1961; Shin et al. 2017 (deep
 generative replay). Already registered: Yassa & Stark 2011, Babadi & Sompolinsky 2014, Karlsson & Frank 2009,
 McClelland et al. 1995, Fries 2005, Mongillo et al. 2008.
+
+## Ez, 11 Nov 2026: can the frequency domain not handle nonlinearity?
+
+> Can the frequency domain not handle non linearity? I don't think so.
+
+### Orchestrator review (11 Nov 2026, UTC+8): Ez is right; the cut is diagonal versus off-diagonal
+
+**It can, and has for a century.**
+- **Products become convolutions.** Multiplying two signals in time convolves their spectra. Squaring a tone at ω
+  gives 0 and 2ω. Multiplying tones at ω₁ and ω₂ gives ω₁ ± ω₂. Every radio mixer depends on this: a superheterodyne
+  receiver is a deliberate nonlinearity that moves a station to a fixed frequency. AND, comparison and thresholds are
+  steep nonlinearities, and their output is a predictable spray of harmonics and intermodulation products.
+- **Volterra series** are the frequency-domain language for nonlinear systems with memory. The output is a sum of
+  terms of order n, each with a kernel h_n(τ₁…τ_n). In frequency that kernel becomes H_n(ω₁…ω_n), which sends inputs
+  at ω₁…ω_n to output at ω₁+…+ω_n. Boyd & Chua (1985) showed that any time-invariant operator with *fading memory*
+  can be approximated arbitrarily well by a finite Volterra series. A learner that forgets (|H| < 1, as above) is one
+  of those operators.
+- **Koopman operator.** A nonlinear dynamical system acts *linearly* on the space of functions of its state (Koopman
+  1931; Mezić 2005). In that lifted space it has eigenvalues, so it has frequencies and decay rates exactly like the
+  oscillator bank above. Dynamic mode decomposition estimates them from data.
+- **Brains show it directly.** Cross-frequency coupling, where the phase of theta (4–8 Hz) modulates the amplitude of
+  gamma (30–100 Hz) in hippocampus and cortex, is a nonlinear interaction measured as a frequency-domain object
+  (Canolty & Knight 2010). The proposed theta-gamma code (Lisman & Jensen 2013) packs a short ordered list of items
+  into gamma cycles nested inside one theta cycle. That is storage, ordering and computation on one frequency
+  ladder.
+
+**So the dichotomy does resolve, into one statement.** In the frequency basis every operation is a matrix acting on
+the spectrum:
+- **Storage and moving are diagonal.** Each frequency keeps its own channel. All-pass is perfect storage, |H| < 1
+  is forgetting, and linear filtering reshapes channels without mixing them.
+- **Computation is off-diagonal.** Nonlinearity couples channels, sending energy from ω₁, ω₂ to ω₁ ± ω₂, 2ω and so on.
+- Move and compute are the same kind of object, an operator on spectra. They differ in *structure*: diagonal versus
+  coupling. That is Ez's "consistency", made precise.
+
+**What it costs, which is where the old cut went.**
+- A diagonal operator on N frequencies needs N numbers. A full order-n Volterra kernel needs on the order of Nⁿ, and
+  a Koopman lift can be infinite-dimensional; chaotic systems have a continuous spectrum. The price of nonlinearity is
+  the dimension of the lift, not being expressible.
+- Architectures already pay it this way. A modern state-space layer (LRU, S4) is a diagonal linear recurrence, which
+  stores and moves, plus a nonlinear, position-wise mixing layer between recurrences, which computes. Orvieto et al.
+  (2023) argue that this stack is still a universal sequence model. The design question becomes how much
+  off-diagonal coupling to buy, and where.
+- For us, that refines H30. An oscillator-bank cortex (a diagonal bank of complex and negative eigenvalues) plus a
+  small multiplicative readout, a learned order-2 Volterra term, is the frequency-native compressor. The test is still
+  bits on E10M against the GRU.
+
+References added for this section: Boyd & Chua 1985 (*Fading memory and the problem of approximating nonlinear
+operators with Volterra series*); Koopman 1931; Mezić 2005; Canolty & Knight 2010; Lisman & Jensen 2013. Orvieto et
+al. 2023 is already listed above.
+
