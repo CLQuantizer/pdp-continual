@@ -2572,7 +2572,7 @@ brains control. We have held it fixed: interleaved, one replay step per chunk.
    at 4 bits per room. Progress reward against surprise and count-novelty rewards.
 2. H26, H31, H30, H32 as listed at 13:35.
 
-## 2026-11-11 15:10 UTC+8 (orchestrator: M4-W2 scored, FAIL; M4-W2b dispatched)
+## 2026-11-11 14:30 UTC+8 (orchestrator: M4-W2 scored, FAIL; M4-W2b dispatched)
 
 ### Findings
 1. **M4-W2 (grok, 3 Kaggle CPU kernels, 74 CPU-min): FAIL, and the kill rule fires.** On PROBE_cap (held-out world
