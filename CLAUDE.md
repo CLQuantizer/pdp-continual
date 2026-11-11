@@ -96,6 +96,9 @@ continuously without results to review in between.
   as needed, `"enable_internet": false`), then `kaggle kernels push -p <dir>`, poll `kaggle kernels status <id>`, fetch
   with `kaggle kernels output <id> -p <dir>`. Code and data go up as private Kaggle datasets (`kaggle datasets create`),
   never with secrets inside. Results still come back into `results/<name>/` and are reviewed here.
+- **GPU quota guard (Ez, 11 Nov 2026):** check `kaggle quota` before every GPU dispatch and put the hours in the spec.
+  Keep a reserve of 10 GPU h per week (refresh Sat 08:00 UTC+8). No single job over 3 GPU h without Ez's go-ahead.
+  Prefer CPU kernels (no weekly quota) when the model fits: smaller cortex, fewer bytes.
 - The loop commits as `pdp-loop` and pushes to `origin` (GitHub). Before committing: `git pull --rebase origin main`.
   Append to `docs/loop.md`; never rewrite earlier entries. Don't edit a file the loop is running (check
   `docs/loop.md` for "running").
