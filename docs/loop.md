@@ -2461,3 +2461,30 @@ did. The toy worlds could not show this, and the cortex's hyperparameters were t
    oracle allocation. Bar: headroom ≥ 0.10 bits/byte (the synthetic world had 0.056).
 3. M4 on W1 if W1-0 passes. H29e on the full 100 MB enwik8. Parked: CA rule (negative-eigenvalue linear RNNs), H26,
    progress attribution.
+
+## 2026-11-11 11:05 UTC+8 (orchestrator: H29d and W1-0 scored; W1b dispatched)
+
+### Findings
+1. **H29d (grok, Kaggle T4, 2.94 GPU h):** over 3 seeds on enwik8 E10M, replay at traffic 8 scores 1.8362 ± 0.0036
+   and no replay scores 1.9739 ± 0.0004. Paired gain −0.138 ± 0.003, negative on every seed. **Bar 1 PASS.** Against
+   PPMd order 16 (1.8373) it is a **TIE**, |difference| 0.0011 < std. H29c's edge was seed noise.
+2. **W1-0 (grok, Kaggle T4, 0.90 GPU h):** the four real channels are built: bible, chess moves, SQuAD text, BTC book.
+   Per-channel learners (lr 3e-4, traffic 8) on 2 MB each give an allocation headroom of **0.039 bits/byte**, under the
+   0.10 bar. **FAIL.** The oracle only shifts budget toward SQuAD.
+3. Mechanism: rich real streams are all unsaturated at 2 MB, with similar log-linear learning curves. Marginal gains are
+   nearly equal across them, so uniform is almost optimal. Curiosity needs channels that differ in kind: unlearnable,
+   saturated and learnable.
+
+### Literature insight
+Schmidhuber's argument for curiosity is about avoiding the unlearnable and the already-learned. Among equally
+learnable streams there is little to choose, and W1-0 measures that: 0.04 bits/byte of headroom.
+
+### Paths closed
+- W1 with only rich learnable channels, as a curiosity test.
+
+### Hypotheses, ranked
+1. **W1b** (grok, Kaggle GPU, running): add dna (quickly learnable), noise (unlearnable) and dark (saturating), then
+   remeasure headroom for the full set and the learnable set. M4 on W1b only if the full set reaches ≥ 0.10.
+2. H29e: the full 100 MB enwik8 (about 10 GPU h at traffic 8), against published PPMd J1 (1.711). Deferred until the
+   weekly GPU quota allows; about 9.5 h used this week.
+3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.

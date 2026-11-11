@@ -1,0 +1,19 @@
+{
+  "id": "ezzzzzx/w1-headroom-a",
+  "title": "w1-headroom-a",
+  "code_file": "w1_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "tentotheminus9/religious-and-philosophical-texts",
+    "datasnaek/chess",
+    "ezzzzzx/pdp-code-w1"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
