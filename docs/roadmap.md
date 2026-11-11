@@ -90,6 +90,18 @@ Three results matter. The rest is detail.
 - **Next:** if W1 has headroom, M4 resumes on W1 at lr 3e-4 with traffic-8 replay. Then the full 100 MB enwik8 run
   (H29e), against published PPMd J1 (1.711) and xz (1.976).
 
+## Depth world, W2 (11 Nov 2026)
+
+Breadth worlds (choose which existing stream to watch) give curiosity only second-order headroom: concave learning
+curves have a flat optimum (toy 0.056, W1 0.039, W1b 0.081 bits). Curiosity's large wins should come where **actions
+have consequences**: they change the world's state and decide what data can exist, and learnable structure sits behind
+chains of the right actions. W2, "locked rooms": 9 rooms in a chain, each opened by a hidden 3-action combination whose
+lock state shows in the room's output. The deepest room is a 6-state machine. There is also a noisy TV and a reset
+button. A random policy reaches depth d with exponentially small probability, while a learner that understands a lock
+walks through it. Scoring: prequential bits plus a path-independent probe of every room, so the agent can't win by
+staring at a dark room. W2-0 measures headroom first (random vs oracle, Kaggle CPU; bar ≥ 0.5 bits/observation). If it
+qualifies, M4 resumes on W2 with the progress-seeking controller.
+
 ## The one decision that unblocks everything
 
 **Separate "what architecture learns like Schmidhuber's agent" from "can it be trained with local rules".** The goal
