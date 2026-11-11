@@ -1,0 +1,18 @@
+{
+  "id": "ezzzzzx/h29d-nr-s2",
+  "title": "h29d-nr-s2",
+  "code_file": "h29d_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/enwik8",
+    "ezzzzzx/pdp-code-h29d"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
