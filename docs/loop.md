@@ -2443,3 +2443,21 @@ did. The toy worlds could not show this, and the cortex's hyperparameters were t
    for the full file; it may need splitting across sessions.
 2. W1 active real-data world: curiosity at the stable learning rate with replay at traffic 8, headroom checked first.
 3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.
+
+## 2026-11-11 08:50 UTC+8 (orchestrator: daily run; H29d and W1-0 dispatched)
+
+### Findings
+1. Nothing new to score: H29, H29b and H29c were scored overnight (entries above). Roadmap status updated: the cortex
+   holds up on real text and ties PPMd on E10M on one seed.
+2. Usage: Claude 29% weekly and codex 79%, so codex stays off. Kaggle GPU about 5.7 h used this week of about 30.
+
+### Paths closed
+- None.
+
+### Hypotheses, ranked
+1. **H29d** (grok, Kaggle GPU, running): seeds 1 and 2 for r8_3e4 and nr_3e4 on E10M. Bars: replay gain < 0 on all 3
+   seeds with mean ≤ −0.05; a PPMd win only if mean + std < 1.837254.
+2. **W1-0** (grok, Kaggle GPU, running): build the 4 real channels, then per-channel learning curves and an exhaustive
+   oracle allocation. Bar: headroom ≥ 0.10 bits/byte (the synthetic world had 0.056).
+3. M4 on W1 if W1-0 passes. H29e on the full 100 MB enwik8. Parked: CA rule (negative-eigenvalue linear RNNs), H26,
+   progress attribution.

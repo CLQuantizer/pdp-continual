@@ -78,6 +78,18 @@ Three results matter. The rest is detail.
   Curiosity's next test needs a world where allocation matters more: W1 (real data, very different learnability).
 - **Next:** H29 enwik8 calibration of the cortex (ruler against xz / ppmd / cmix), then the W1 active world on Kaggle.
 
+## Status (11 Nov 2026, morning)
+
+- **The cortex holds up on real text (H29 → H29c, enwik8 first 10 MB, Kaggle T4).** H29 scored 3.644 bits/byte: an
+  unstable learning rate (1e-3) plus a 4× replay dose. H29b scored 1.974 at lr 3e-4 with no replay, which beats xz -9e
+  (2.176). H29c scored **1.832** with replay at traffic 8, tying PPMd order 16 (1.837) on one seed. The toy-world replay
+  findings carried over once the step size suited a 10^7-step life. This is M1's question asked of real data, and the
+  answer is yes against xz, with PPMd pending seeds.
+- **Running:** H29d (2 more seeds per arm, for the replay gain and PPMd error bars) and W1-0 (the real-data world:
+  Bible, chess, SQuAD, BTC, with oracle headroom measured before any curiosity run; bar ≥ 0.10 bits/byte).
+- **Next:** if W1 has headroom, M4 resumes on W1 at lr 3e-4 with traffic-8 replay. Then the full 100 MB enwik8 run
+  (H29e), against published PPMd J1 (1.711) and xz (1.976).
+
 ## The one decision that unblocks everything
 
 **Separate "what architecture learns like Schmidhuber's agent" from "can it be trained with local rules".** The goal
