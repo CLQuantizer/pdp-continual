@@ -1,0 +1,18 @@
+{
+  "id": "ezzzzzx/w1b-headroom",
+  "title": "w1b-headroom",
+  "code_file": "w1b_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "nageshsingh/dna-sequence-dataset",
+    "ezzzzzx/pdp-code-w1b"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
