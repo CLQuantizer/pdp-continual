@@ -2553,3 +2553,21 @@ brains control. We have held it fixed: interleaved, one replay step per chunk.
 5. **H32, the cerebellar mixer (new):** a fast count model mixed with the GRU cortex by a learned mixer on E10M. The bar
    to beat is PPMd order 16 by a clear margin. About 1.2 GPU h.
 6. H29e: full enwik8 (needs Ez's OK).
+
+## 2026-11-11 14:00 UTC+8 (orchestrator: W2-0 scored; the depth world qualifies)
+
+### Findings
+1. **W2-0 (grok, 3 Kaggle CPU kernels, about 6 min each): PASS.** Headroom (rand8 − oracle) is 9.95 / 9.93 / 8.92
+   bits per observation (bar ≥ 0.5 on every seed). The raw number is inflated by overconfidence in unvisited rooms
+   (12–16 bits, worse than uniform). With each room's probe capped at 4 bits it is still 3.12 / 3.12 / 3.11.
+2. rand8 never gets past room 2 (seed 2: room 4), because it presses reset one step in eight. Its whole-life
+   prequential bits are lower than the oracle's (0.62 vs 0.69). Staying shallow is cheap. The probe, not prequential
+   bits, is the curiosity metric.
+3. Most of the gap is not pressing reset. rand6 (no reset, no TV) reaches room 8 and stays there. rand6 − oracle
+   is 1.57 / 0.50 / 0.76 capped. The planning headroom is that smaller number.
+4. The oracle never watched the TV and mis-predicts it at 9–14 bits, the W1c lesson again.
+
+### Hypotheses, ranked
+1. **M4-W2** (spec next): curious controllers on W2, judged against rand6, on held-out world seeds 3–8, probes capped
+   at 4 bits per room. Progress reward against surprise and count-novelty rewards.
+2. H26, H31, H30, H32 as listed at 13:35.

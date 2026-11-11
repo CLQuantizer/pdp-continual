@@ -1,0 +1,15 @@
+{
+  "id": "ezzzzzx/w2-headroom-s1",
+  "title": "w2-headroom-s1",
+  "code_file": "w2_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["ezzzzzx/pdp-code-w2"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
