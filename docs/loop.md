@@ -2488,3 +2488,37 @@ learnable streams there is little to choose, and W1-0 measures that: 0.04 bits/b
 2. H29e: the full 100 MB enwik8 (about 10 GPU h at traffic 8), against published PPMd J1 (1.711). Deferred until the
    weekly GPU quota allows; about 9.5 h used this week.
 3. Parked: CA rule (negative-eigenvalue linear RNNs), H26, progress attribution.
+
+## 2026-11-11 13:30 UTC+8 (orchestrator: W1b and W1c scored; breadth worlds closed; W2 and notes)
+
+### Findings
+1. **W1b (grok, Kaggle T4, 0.64 GPU h):** adding dna, noise and dark gives a separate-learner headroom of 0.081 for
+   the full set and 0.040 for the learnable set. **FAIL** (< 0.10). The gain comes from skipping noise and spending
+   little on dark.
+2. **W1c (grok, Kaggle T4, 1.21 GPU h):** with one shared cortex, uniform reading over all 7 channels is best.
+   headroom_shared is −1.89, **FAIL**. Most of that is one term: a cortex that never read noise mis-predicts it at
+   21.6 bits/byte. On the learnable channels uniform is still best (2.219 vs 2.304 and 2.368), and reading noise did
+   not damage them. My prediction of interference was wrong.
+3. Knowing what is unpredictable is knowledge. A curious agent should sample the TV briefly, not avoid it.
+
+### Literature insight
+Breadth worlds give curiosity only second-order headroom: concave learning curves have a flat optimum, and noise costs
+only opportunity. Curiosity's case rests on depth worlds, where actions decide what can be learned (W2).
+
+### Paths closed
+- W1, W1b and W1c as curiosity tests (breadth worlds).
+
+### Notes
+- Ez's note on delay lines, frequency domain and content addressing is in `docs/compute-vs-data-movement.md`, with
+  review. Our uniform-position replay is RAM-style. H26 (cued wake plus broad sleep replay) is the address-free test
+  and moves up. H30 is an oscillator-bank cortex (complex and negative eigenvalues). 11 papers handed to grok for the
+  library.
+- Kaggle GPU quota guard added to CLAUDE.md. About 12.3 of 30 GPU h used this week.
+
+### Hypotheses, ranked
+1. **W2-0** (grok, Kaggle CPU, running): locked-rooms depth world; headroom of random vs oracle; bar ≥ 0.5
+   bits/observation.
+2. M4 on W2 if W2-0 qualifies.
+3. H26 address-free replay (cued wake + broad sleep) vs uniform-position replay, then H30 oscillator cortex. Both
+   CPU-sized.
+4. H29e full 100 MB enwik8 (needs Ez's OK, about 10 GPU h).
