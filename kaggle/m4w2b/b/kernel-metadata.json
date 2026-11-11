@@ -1,0 +1,15 @@
+{
+  "id": "ezzzzzx/m4w2b-b",
+  "title": "m4w2b-b",
+  "code_file": "m4w2b_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["ezzzzzx/pdp-code-m4w2b"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

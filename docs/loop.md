@@ -2593,3 +2593,24 @@ brains control. We have held it fixed: interleaved, one replay step per chunk.
    (prequential, K = 16), on fresh seeds 9–14. Bars: beats rand6 by ≥ 0.25, beats count by ≥ 0.10, TV ≤ 10%.
 2. If M4-W2b fails: a controller with memory (state including the recent action and output).
 3. H26, H31, H30, H32 as listed.
+
+## 2026-11-11 15:13 UTC+8 (orchestrator: M4-W2b scored, FAIL; noise leak fixed; M4-W2c dispatched)
+
+### Findings
+1. **M4-W2b (grok, 3 Kaggle CPU kernels, 54 CPU-min): FAIL on bars 1 and 2. Bar 3 holds.** On PROBE_cap (fresh seeds
+   9–14), rand6 0.97, count_q 2.83, prog_q 2.89, prog_lp 3.05 and err_q 3.42. prog_lp is worse than rand6 on all 6
+   seeds.
+2. **Visit-to-visit learning progress fixed the noise leak.** prog_lp's TV share is 2.2%. prog_q, with the same ε fix
+   but the in-sample reward, watched the TV 32–54% of the time. The estimator was the cause.
+3. **Room-only greedy control cannot open locks.** In a learned room, every Q value is about 0.001 and argmax repeats
+   one action, which never types a 3-digit key (seed 9: 50,873 steps in room 1). rand6 opens locks because it is
+   uniformly random.
+
+### Paths closed
+- Room-only tabular controllers in W2, whatever the reward.
+
+### Hypotheses, ranked
+1. **M4-W2c** (grok, Kaggle CPU, running): memory state (room, last two actions), seeds 15–20. Bars: beats rand6 by
+   ≥ 0.25, beats count by ≥ 0.10, beats room-only by ≥ 1.0. Kill: if memory does not help, move to a model-based
+   planner that uses the learner's own predictions.
+2. H26, H31, H30, H32 as listed.
