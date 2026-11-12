@@ -106,6 +106,34 @@ Three results matter. The rest is detail.
   (H31, running) and the router.
 - **Queue:** H31 (running) → H26 cued-plus-broad replay → H30 oscillator cortex → H32 cerebellar mixer.
 
+## North-star check (12 Nov 2026, afternoon)
+
+Ez asked me to think about the north star: a machine that lives. It acts and learns at once, chooses when to sleep,
+earns sleep's cost, and is driven by curiosity about what it can still learn to compress. Measured against that,
+today drifted.
+
+- **One world, one substrate, four runs.** H31, H26, H32 and H32b are all enwik8 with a backprop GRU on a GPU. That
+  breaks our own rule that one hypothesis in three changes the world, the objective or the substrate. Beating PPMd is
+  a benchmark score. `docs/goal.md` calls that polishing unless it moves the living loop.
+- **What does connect: H32's fast learner is the kind of part the goal asks for.** The count models are local, learn
+  in one shot, need no backprop and store memory where they compute (criteria 1 and 3). They carry real weight beside
+  the cortex. So the enwik8 line continues only as a substrate question: how much of the backprop cortex can local
+  parts replace? It does not continue as a race against compressors. H32b, already running, is the last pure-score run.
+- **H31 tested sleep on the experimenter's clock.** The north star says the machine decides when to sleep, from sleep
+  pressure, and sleep must earn its cost. H31 showed that forced sleep costs bits in a stream where nothing makes sleep
+  pay. The real test is a world where sleep can pay (a bounded store, or a world that drifts) and where the agent
+  chooses when to sleep.
+- **The core stalled, and that was mine to fix.** Curiosity that acts (principles 3 and 4) is the heart of the goal,
+  and W2 is the only world where it can be tested. I left M4 on W2 waiting for Ez's choice. Choosing direction is the
+  orchestrator's job, so I chose (a): M4-W2d, which removes reset from random choice and changes nothing else.
+
+**Queue, re-ranked by the north star:**
+1. M4-W2d: curiosity in W2, with reset taken only on purpose (Kaggle CPU, no GPU quota).
+2. If the controller can open locks but loses: the model-based planner (plan with the learner's own predictions).
+3. Organic sleep: the agent chooses when to sleep from sleep pressure, in a world where sleep can pay.
+4. Local parts replace backprop: count and sparse models with a smaller GRU, scored in bits and in compute.
+5. H30, the oscillator cortex, in a W world, not on enwik8.
+
 ## Depth world, W2 (11 Nov 2026)
 
 Breadth worlds (choose which existing stream to watch) give curiosity only second-order headroom: concave learning
