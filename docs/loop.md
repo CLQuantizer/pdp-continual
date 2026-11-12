@@ -2635,3 +2635,17 @@ brains control. We have held it fixed: interleaved, one replay step per chunk.
    Either (a) a cheap check, with reset excluded from tie-breaks and exploration for every arm, or (b) a model-based
    planner on the learner's predictions, the bigger build.
 2. H26 and H31 (CPU, ready to spec), then H30, then H32.
+
+## 2026-11-12 08:50 UTC+8 (orchestrator: daily run; H31 dispatched)
+
+### Findings
+No new worker output since the M4-W2c review. M4 on W2 is paused for Ez's choice between (a) never pressing reset at
+random and (b) a model-based planner. The roadmap status was updated.
+
+### Hypotheses, ranked
+1. **H31, the thalamic sleep gate** (grok, Kaggle GPU, about 1.5 GPU h, dispatched): the same replay dose
+   interleaved or in sleep blocks of 64, 1,024 or 16,384 chunks, on enwik8 E3M. Bars: replay still helps by
+   ≥ 0.03; sleep_1k costs ≤ 0.01 bits/byte.
+2. M4 on W2, option (a) or (b), on Ez's call.
+3. H26 content-cued wake replay plus broad sleep replay (spec after H31; one job at a time).
+4. H30 oscillator cortex; H32 cerebellar mixer; H29e full enwik8 (needs Ez's OK).

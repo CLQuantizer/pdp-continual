@@ -90,6 +90,22 @@ Three results matter. The rest is detail.
 - **Next:** if W1 has headroom, M4 resumes on W1 at lr 3e-4 with traffic-8 replay. Then the full 100 MB enwik8 run
   (H29e), against published PPMd J1 (1.711) and xz (1.976).
 
+## Status (12 Nov 2026, morning)
+
+- **W2 qualified** (W2-0: capped headroom 3.1 bits/observation), so M4 moved onto it. Three closed-loop runs (M4-W2,
+  W2b, W2c) all lost to a no-reset random walk. Two things are settled:
+  - The noise leak is solved. Measuring learning progress visit to visit keeps TV use at 2–3%, where an in-sample
+    re-score spent 62% on the TV.
+  - With a shared controller, learning progress beats count novelty (+0.32, M4-W2c).
+- **What decides W2 is the reset action, not curiosity.** Every tabular controller pressed reset by chance, through
+  ε or through tie-breaks in fresh states, and never got past room 2. The tabular line is closed. M4 on W2 waits for
+  Ez's call:
+  - (a) a cheap rerun in which reset is never pressed at random, for every arm;
+  - (b) a model-based planner that uses the learner's predictions.
+- **Brain map** (`docs/brain_map.md`). Every brain part now has a job in the machine. The thalamus adds the sleep gate
+  (H31, running) and the router.
+- **Queue:** H31 (running) → H26 cued-plus-broad replay → H30 oscillator cortex → H32 cerebellar mixer.
+
 ## Depth world, W2 (11 Nov 2026)
 
 Breadth worlds (choose which existing stream to watch) give curiosity only second-order headroom: concave learning
