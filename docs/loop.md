@@ -2728,3 +2728,23 @@ random and (b) a model-based planner. The roadmap status was updated.
    PROBE_cap (4 of 6 seeds), and beats count novelty by ≥ 0.10. If the capability check stays at room 2 or below, the
    bars are void and the planner is next.
 2. Model-based planner, if needed. 3. Organic sleep, chosen by the agent. 4. Local parts replace backprop.
+
+## 2026-11-12 14:30 UTC+8 (orchestrator: M4-W2d scored; curiosity loses to a random walk in W2; tabular line closed)
+
+### Findings
+1. **M4-W2d (grok, 3 Kaggle CPU kernels, 41 min): bar 1 FAIL, bar 2 PASS (noisy).** With reset and the TV taken only
+   when Q says so, a perfect reward now reaches room 8 (step 1,933; it reached room 1 before). On PROBE_cap over seeds
+   21–26: rand6 0.87, lp_mem 1.17, count_mem 1.34, lp_room 1.12. rand6 − lp_mem = −0.30 ± 0.68 (lp_mem wins 2 of 6);
+   count_mem − lp_mem = +0.17 ± 0.59.
+2. **The behaviour looks right; the knowledge does not follow.** Curious agents take the rooms in order and stay
+   thousands of steps in each, with no TV. But nobody ever presses reset, so everyone ends trapped in room 8. At the
+   end of life the curious arms have more rooms where the model is confidently wrong (1.3–1.7 per life vs 0.8 for
+   rand6). Whether that is forgetting after leaving or uneven coverage during long stays is open.
+3. **Four W2 runs, one lesson:** a tabular controller cannot learn reset as a deliberate choice. Random reset keeps it
+   shallow; no reset traps it. As pre-registered, recorded as the finding; the tabular line on W2 is closed.
+
+### Hypotheses, ranked
+1. **W2-1 headroom** (next cycle): give room 8 a way back to room 0, then check oracle vs rand6 headroom before any
+   controller bar. If the headroom is real, rerun lp_mem against rand6 there.
+2. Model-based planner, which can value going back to rooms where progress remains.
+3. H32b (running). Organic sleep. Local parts replace backprop.
