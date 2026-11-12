@@ -2689,3 +2689,23 @@ random and (b) a model-based planner. The roadmap status was updated.
    order 16.
 2. M4 on W2, (a) or (b), on Ez's call.
 3. H30 oscillator cortex. Random-cue replay (parked).
+
+## 2026-11-12 13:20 UTC+8 (orchestrator: H32 scored; the cerebellar mixer beats PPMd; H32b dispatched)
+
+### Findings
+1. **H32 (grok, 1 Kaggle T4 kernel, v2 after a missing-package failure, 0.75 GPU h in total): both bars PASS.** On
+   E3M: cortex alone 1.958, best count model alone (order 3) 2.810, PPMd order 16 1.924, mix 1.846 bits/byte. The mix
+   is 0.112 better than the cortex and 0.077 better than PPMd. The cortex reproduced H26 `uniform` to the bit.
+2. **Mechanism: fast and slow learners cover each other.** Neither part beats PPMd alone. The count models remember
+   an exact context after one sighting; the cortex generalises. On 90% of bytes the mixer settles near 0.65 · cortex +
+   0.25 · order 4. The gap to PPMd widens with data: −0.018, −0.094 and −0.120 over the three MB.
+3. **Caveat:** the mixer's rows are not normalised, so part of the gain may be a learned temperature on the cortex.
+   H32b tests that directly.
+4. Brain map: the cerebellum and the entorhinal cortex are now marked tested (H32, H26).
+
+### Hypotheses, ranked
+1. **H32b** (grok, Kaggle GPU, ≤ 2.2 GPU h, dispatched): the same mixer on E10M, plus a cortex-only mixer (calibration
+   control) and orders up to 6. Bars: mix4 ≥ 0.05 better than PPMd on E10M, and ≥ 0.05 better than the
+   calibration-only mixer.
+2. M4 on W2, (a) or (b), on Ez's call.
+3. H30 oscillator cortex. Random-cue replay (parked).

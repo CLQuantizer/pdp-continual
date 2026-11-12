@@ -90,10 +90,11 @@ svg{display:block;width:100%;min-width:680px;height:auto}
 <text x="251" y="363" class="nl">tonic = linear relay; burst = surprise flag</text>
 <text x="251" y="379" class="nl">sleep gate: batching replay costs bits (H31)</text>
 </g>
-<g class="node queued"><rect x="704" y="276" width="200" height="96" rx="9"/><text x="715" y="297" class="nt">Entorhinal cortex</text>
-<text x="895" y="364" class="badge" text-anchor="end">queued</text>
+<g class="node tested"><rect x="704" y="276" width="200" height="96" rx="9"/><text x="715" y="297" class="nt">Entorhinal cortex</text>
+<text x="895" y="364" class="badge" text-anchor="end">tested</text>
 <text x="715" y="315" class="nl">drifting context = content key</text>
-<text x="715" y="331" class="nl">the cue for H26</text>
+<text x="715" y="331" class="nl">cued replay lost to</text>
+<text x="715" y="347" class="nl">uniform replay (H26)</text>
 </g>
 <g class="node tested"><rect x="20" y="464" width="200" height="96" rx="9"/><text x="31" y="485" class="nt">Basal ganglia</text>
 <text x="211" y="552" class="badge" text-anchor="end">tested</text>
@@ -101,11 +102,11 @@ svg{display:block;width:100%;min-width:680px;height:auto}
 <text x="31" y="519" class="nl">M4 breadth: small headroom</text>
 <text x="31" y="535" class="nl">W2 next</text>
 </g>
-<g class="node queued"><rect x="240" y="464" width="190" height="96" rx="9"/><text x="251" y="485" class="nt">Cerebellum</text>
-<text x="421" y="552" class="badge" text-anchor="end">queued</text>
-<text x="251" y="503" class="nl">fast forward model,</text>
-<text x="251" y="519" class="nl">error-trained;</text>
-<text x="251" y="535" class="nl">count model + mixer → H32</text>
+<g class="node tested"><rect x="240" y="464" width="190" height="96" rx="9"/><text x="251" y="485" class="nt">Cerebellum</text>
+<text x="421" y="552" class="badge" text-anchor="end">tested</text>
+<text x="251" y="503" class="nl">fast count model + mixer</text>
+<text x="251" y="519" class="nl">beside the cortex: beats</text>
+<text x="251" y="535" class="nl">PPMd by 0.077 b/B (H32)</text>
 </g>
 <g class="node tested"><rect x="470" y="464" width="180" height="96" rx="9"/><text x="481" y="485" class="nt">Sleep switch</text>
 <text x="641" y="552" class="badge" text-anchor="end">tested</text>
@@ -117,7 +118,7 @@ svg{display:block;width:100%;min-width:680px;height:auto}
 <text x="895" y="572" class="badge" text-anchor="end">tested</text>
 <text x="715" y="487" class="nl">keeps everything (the log)</text>
 <text x="715" y="503" class="nl">DG: content hash (we use</text>
-<text x="715" y="519" class="nl">   positions = RAM) → H26</text>
+<text x="715" y="519" class="nl">   positions; cued lost, H26)</text>
 <text x="715" y="535" class="nl">CA3: cue completes episode</text>
 <text x="715" y="551" class="nl">ripples = replay: −0.138 bpb</text>
 </g>

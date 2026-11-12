@@ -60,15 +60,15 @@ no such part. The stream went straight into the cortex. The thalamus does five j
 |---|---|---|---|---|
 | **Neocortex** | The compressor: predicts the next symbol and learns online | 2 | GRU cortex on enwik8 E10M: 1.836 ± 0.004 bits/byte, ties PPMd and beats xz (H29d) | H30: oscillator-bank cortex (diagonal complex/negative eigenvalues plus an order-2 mixing readout) |
 | **Thalamus** | Gate, router and sleep gate (above) | 1, 4 | As a searchlight: uniform reading best (W1c). As a sleep gate: batching replay into sleep costs 0.04–0.23 bits/byte against interleaving (H31) | Router open |
-| **Hippocampus** | Store everything and replay it | 1 | Uniform replay at traffic 8 helps on real text: −0.138 ± 0.003 bits/byte (H29d) | H26: content-cued replay, below |
-| · dentate gyrus | Content hash: a sparse expansion that separates similar episodes, like the fly's LSH (Dasgupta et al. 2017) | 1 | None: we index by *position*, which is RAM | H26 keys replay by content |
-| · CA3 | Pattern completion: a partial cue recalls the whole episode (Hopfield-style attractor) | 1 | None | H26 cued (wake) replay |
+| **Hippocampus** | Store everything and replay it | 1 | Uniform replay at traffic 8 helps on real text: −0.138 ± 0.003 bits/byte (H29d) | Content-cued replay lost to uniform (H26) |
+| · dentate gyrus | Content hash: a sparse expansion that separates similar episodes, like the fly's LSH (Dasgupta et al. 2017) | 1 | Positions, which is RAM. Replay keyed by content lost to uniform positions (H26) | Content keys for retrieval, not consolidation |
+| · CA3 | Pattern completion: a partial cue recalls the whole episode (Hopfield-style attractor) | 1 | H26: the cortex state as the cue; top-32 cued replay lost to uniform | Open: completion for retrieval in a world that needs it |
 | · CA1 | Compares what CA3 recalls with what arrives: a novelty signal | 3 | Our per-symbol surprise plays this part | Feeds the controller |
 | · sharp-wave ripples | Replay in compressed time | 1 | The replay step itself (H27b, H29c, H29d) | H31 sets when ripples run |
-| **Entorhinal cortex** | Grid and time cells; a slowly drifting context that keys memories (Howard & Kahana 2002) | 1 | None | Context vector as the cue in H26 |
+| **Entorhinal cortex** | Grid and time cells; a slowly drifting context that keys memories (Howard & Kahana 2002) | 1 | Tested only as the cue in H26 (cued replay lost) | Open |
 | **Basal ganglia** | Action selection: picks the next action from learned values | 4 | The controller in M4 and H25a (breadth worlds: small headroom) | M4 on W2, if W2-0 qualifies |
 | **VTA and SNc (dopamine)** | Teaching signal. Classic dopamine reports reward prediction error (Schultz et al. 1997). For us the reward is compression progress | 3 | Progress controllers (H25a, H28) did not beat random reading. Noise leaks into the progress signal | Retest on W2, where progress needs action |
-| **Cerebellum** | A fast forward model trained by error, with a huge sparse granule-cell expansion (Marr 1969; Albus 1971; Wolpert et al. 1998) | 2 | None | H32: a fast count model (PPM-like) mixed with the cortex by a learned mixer, as cmix and nncp do |
+| **Cerebellum** | A fast forward model trained by error, with a huge sparse granule-cell expansion (Marr 1969; Albus 1971; Wolpert et al. 1998) | 2 | H32: count models of orders 1–4 mixed with the cortex by an online geometric mixer. On E3M the mix scores 1.846 bits/byte: 0.112 better than the cortex alone and 0.077 better than PPMd order 16 | H32b: separate the counts from calibration; check on E10M |
 | **Prefrontal cortex** | Goals and plans held across steps; sets the task | 4 | The GRU state only; no separate part | Needed in W2; a planner arm after M4 on W2 |
 | **Amygdala** | Tags events as important, which boosts their storage and replay (McGaugh 2004) | 1 | Tag-driven (selective) replay hurt three times (H10, M4a, H27) | A mismatch: our worlds have had no events worth tagging |
 | **Locus coeruleus (noradrenaline)** | Unexpected uncertainty: a surprise raises gain and learning rate; switches exploit and explore (Yu & Dayan 2005; Aston-Jones & Cohen 2005) | 2, 4 | A fixed lr. At 1e-3 the cortex diverges on enwik8; 3e-4 is stable (H29b, H29c) | Surprise-gated learning rate in a world that changes |
@@ -87,19 +87,19 @@ no such part. The stream went straight into the cortex. The thalamus does five j
 - **Three parts are about *when* and *how much* to learn, not *what*.** These are the locus coeruleus (learning
   rate), the basal forebrain (encode or consolidate) and the thalamus (sleep gating). Our machine fixes all three by
   hand. H29b already showed that the learning rate alone decides whether the cortex works on real text.
-- **The cerebellum is the likeliest quick compression gain.** The best compressors (cmix, nncp) mix many predictors,
-  and a fast count model next to a slow network is exactly a cerebellum next to a cortex. H32 tests whether that
-  beats PPMd clearly instead of tying it.
+- **The cerebellum gave the first clear compression gain.** The best compressors (cmix, nncp) mix many predictors,
+  and a fast count model next to a slow network is a cerebellum next to a cortex. In H32 the mix beat PPMd by
+  0.077 bits/byte on E3M, where the cortex alone had only tied it.
 - **Curiosity's parts are the basal ganglia, dopamine, the prefrontal cortex and serotonin.** All four need a world
   where actions matter, and W2 is that world. They are tested there or not at all.
 
 ## Order of tests
 
 1. W2-0 (running), then M4 on W2: basal ganglia and dopamine where actions matter.
-2. H26: cued and broad replay (dentate gyrus, CA3, entorhinal cortex).
+2. H26: cued and broad replay (dentate gyrus, CA3, entorhinal cortex). Done 12 Nov: uniform replay wins.
 3. H31: sleep gate (thalamus, basal forebrain, sleep switch). Done 12 Nov: interleaved wins; batching costs bits.
 4. H30: oscillator-bank cortex (neocortex, frequency domain). CPU first.
-5. H32: cerebellar mixer (cerebellum). One E10M pass on the GPU, about 1.2 GPU h, checked against the quota guard.
+5. H32: cerebellar mixer (cerebellum). Done 12 Nov on E3M: beats PPMd by 0.077 bits/byte. H32b checks it on E10M.
 6. Surprise-gated learning rate (locus coeruleus), once a world changes over time.
 
 References added on this page: Crick 1984; Sherman & Guillery 2002; Sherman 2001; Schmitt et al. 2017; Staresina et
