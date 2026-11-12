@@ -454,3 +454,32 @@ References added for this section: Boyd & Chua 1985 (*Fading memory and the prob
 operators with Volterra series*); Koopman 1931; Mezić 2005; Canolty & Knight 2010; Lisman & Jensen 2013. Orvieto et
 al. 2023 is already listed above.
 
+
+## Status after H26, H31, H32 and H32b (12 Nov 2026, UTC+8): what the data say
+
+Ez asked whether the move-versus-compute question has been resolved. In theory, yes: moving and storing are diagonal
+operators on the spectrum, computing is the coupling between frequencies, and the old cut survives as a cost (the
+dimension of the lift), as sequential versus addressed access, and as erasure (the only energy floor). In data, there
+are four partial answers and one open test.
+
+- **Content addressing has two jobs, and the data split them.** As the sampler that feeds consolidation, content
+  lost to position: cued replay was 0.063 bits/byte worse than uniform, and cued plus uniform was 0.015 worse (H26).
+  As a store read for prediction, content won: the count models are exact lookup tables keyed by the last k bytes,
+  which is content-addressed memory with no positions. Beside the cortex they gain 0.068 bits/byte beyond calibration
+  on E10M, and 0.119 with orders up to 6 (H32b). The rule from 10 Nov holds with a sharper reason: **select by
+  content for recall, sample broadly for the bus.** What we have not built is an address-free broad sampler.
+  Random-cue replay is that test, and it stays parked.
+- **Regeneration has to keep pace with loss.** If replay is the regeneration stage of a delay line, it must arrive
+  while the signal is still there. H31 measured it: the same replay dose delivered in sleep blocks costs +0.04 (8 KB
+  blocks) to +0.23 (2 MB blocks) bits/byte, because the cortex drifts between sleeps. That fits the delay-line
+  picture. The sharper prediction is still untested: the best replay dose should track the cortex's forgetting rate.
+- **Memory where compute is: the first scored case.** The count models update in place, from one sighting, with no
+  backprop and no stored activations. Nothing travels to a separate compute unit. They now carry about 0.1 bits/byte
+  that a backprop cortex on a GPU does not get.
+- **Movement is metered but not priced.** Results report traffic (replayed symbols per observed symbol), but there is
+  still no exchange rate between bits and moved or computed bytes. The substitution test (a smaller cortex plus
+  counts) is the first place a bits-against-compute front can be drawn.
+- **Open: the frequency-native compressor.** H30 is the direct test of the diagonal-plus-coupling view: an
+  oscillator bank of complex and negative eigenvalues (storage and moving) plus a learned order-2 readout (coupling),
+  scored in bits against the GRU. It has not run. It moves up the queue, behind W2-1, and runs on a W world with a
+  counter (the parked counter and CA problem). There a negative eigenvalue should do what the GRU could not.

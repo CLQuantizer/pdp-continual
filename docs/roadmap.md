@@ -132,7 +132,8 @@ today drifted.
 2. If the controller can open locks but loses: the model-based planner (plan with the learner's own predictions).
 3. Organic sleep: the agent chooses when to sleep from sleep pressure, in a world where sleep can pay.
 4. Local parts replace backprop: count and sparse models with a smaller GRU, scored in bits and in compute.
-5. H30, the oscillator cortex, in a W world, not on enwik8.
+5. (moved to 2b on 12 Nov, afternoon) H30, the oscillator cortex: the direct test of the move-versus-compute
+   resolution, on a W world with counters.
 
 ## Depth world, W2 (11 Nov 2026)
 
