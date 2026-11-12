@@ -2669,3 +2669,23 @@ random and (b) a model-based planner. The roadmap status was updated.
    prediction that cued8 is worse by more than 0.01.
 2. M4 on W2, (a) or (b), on Ez's call.
 3. H30 oscillator cortex; H32 cerebellar mixer.
+
+## 2026-11-12 11:33 UTC+8 (orchestrator: H26 scored; content cueing hurts consolidation; H32 dispatched)
+
+### Findings
+1. **H26 (grok, 3 Kaggle T4 kernels, 0.97 GPU h): bar 1 FAIL (narrow); prediction right.** On E3M at the same replay
+   dose: uniform 1.958, mix44 1.973 (+0.015, bar ≤ 0.01) and cued8 2.021 (+0.063). Selective replay has now hurt four
+   times.
+2. **Mechanism: redundancy, not age.** Cued windows are as old as uniform ones and cover almost as much of the log
+   (0.835 vs 0.886). But the cue is *now*, so they replay text like the current input, which the live step is already
+   training on. Replay's job is to counter forgetting of what is *not* in the input.
+3. **For the address question:** content addressing is right for retrieval and wrong as the consolidation sampler.
+   That needs broad, cue-independent sampling: spontaneous replay in brains, uniform position in ours. An address-free
+   broad sampler (a random cue) is parked.
+
+### Hypotheses, ranked
+1. **H32, the cerebellar mixer** (grok, Kaggle GPU, ≤ 1 GPU h, dispatched): count models of orders 1–4 plus a learned
+   geometric mixer beside the cortex, on E3M. Bars: ≥ 0.05 better than the cortex alone, and ≥ 0.05 better than PPMd
+   order 16.
+2. M4 on W2, (a) or (b), on Ez's call.
+3. H30 oscillator cortex. Random-cue replay (parked).
