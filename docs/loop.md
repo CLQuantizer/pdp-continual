@@ -2709,3 +2709,22 @@ random and (b) a model-based planner. The roadmap status was updated.
    calibration-only mixer.
 2. M4 on W2, (a) or (b), on Ez's call.
 3. H30 oscillator cortex. Random-cue replay (parked).
+
+## 2026-11-12 13:45 UTC+8 (orchestrator: north-star check; M4-W2d dispatched)
+
+### Findings
+1. **Drift.** Ez asked me to think about the north star. Today's four runs (H31, H26, H32, H32b) were all enwik8 with a
+   backprop GRU. That is one world and one substrate, against our rule that one hypothesis in three changes the world,
+   the objective or the substrate. Beating PPMd is a benchmark score, not the living loop.
+2. **What carries over:** H32's count models are local, learn in one shot and need no backprop, and they carry real
+   weight beside the cortex. From here the enwik8 line asks how much of the backprop cortex local parts can replace.
+   H32b is its last pure-score run.
+3. **Curiosity that acts is the core, and it stalled while waiting on a call that was mine to make.** I chose (a):
+   M4-W2d. Reset and the TV are taken only when the learned Q says so, never at random. The roadmap now has a
+   north-star check and a re-ranked queue.
+
+### Hypotheses, ranked
+1. **M4-W2d** (grok, Kaggle CPU, dispatched): seeds 21–26. Bars as in M4-W2c: lp_mem beats rand6 by ≥ 0.25 on
+   PROBE_cap (4 of 6 seeds), and beats count novelty by ≥ 0.10. If the capability check stays at room 2 or below, the
+   bars are void and the planner is next.
+2. Model-based planner, if needed. 3. Organic sleep, chosen by the agent. 4. Local parts replace backprop.
