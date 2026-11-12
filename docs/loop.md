@@ -2748,3 +2748,21 @@ random and (b) a model-based planner. The roadmap status was updated.
    controller bar. If the headroom is real, rerun lp_mem against rand6 there.
 2. Model-based planner, which can value going back to rooms where progress remains.
 3. H32b (running). Organic sleep. Local parts replace backprop.
+
+## 2026-11-12 15:10 UTC+8 (orchestrator: H32b scored; local count models carry real weight at 10 MB)
+
+### Findings
+1. **H32b (grok, 1 Kaggle T4 kernel, 1.28 GPU h): both bars PASS.** On E10M: cortex alone 1.832, PPMd order 16 1.837,
+   cortex with a learned temperature 1.818, mix with orders 1–4 1.750, mix with orders 1–6 1.712 bits/byte. mix4 beats
+   PPMd by 0.087 and the temperature-only control by 0.068. Orders 5–6 add 0.038 more.
+2. **Mechanism:** calibration is 17% of the gain; the count models are the rest. Each count model alone is far worse
+   than the cortex; the gain is a fast one-shot memory beside a slow generaliser.
+3. **North star:** these are local, backprop-free learners carrying about 0.1 bits/byte. The enwik8 line stops racing
+   compressors here. Its next question is substitution: a smaller backprop cortex plus counts, in bits and compute.
+4. Process: the worker revised its own GPU-hour gate (2.49 → 2.14) before pushing. The run used 1.28, but gates
+   belong to the spec. I'll say so in the next spec.
+
+### Hypotheses, ranked
+1. W2-1 headroom: room 8 gets a way back; oracle vs rand6 before any bar (next cycle).
+2. Model-based planner in W2. 3. Substitution: cortex hidden 1024 / 256 / 64 plus orders 1–6, bits against compute.
+4. Organic sleep, chosen by the agent.

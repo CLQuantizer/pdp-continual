@@ -68,7 +68,7 @@ no such part. The stream went straight into the cortex. The thalamus does five j
 | **Entorhinal cortex** | Grid and time cells; a slowly drifting context that keys memories (Howard & Kahana 2002) | 1 | Tested only as the cue in H26 (cued replay lost) | Open |
 | **Basal ganglia** | Action selection: picks the next action from learned values | 4 | The controller in M4 and H25a (breadth worlds: small headroom) | M4 on W2, if W2-0 qualifies |
 | **VTA and SNc (dopamine)** | Teaching signal. Classic dopamine reports reward prediction error (Schultz et al. 1997). For us the reward is compression progress | 3 | Progress controllers (H25a, H28) did not beat random reading. Noise leaks into the progress signal | Retest on W2, where progress needs action |
-| **Cerebellum** | A fast forward model trained by error, with a huge sparse granule-cell expansion (Marr 1969; Albus 1971; Wolpert et al. 1998) | 2 | H32: count models of orders 1–4 mixed with the cortex by an online geometric mixer. On E3M the mix scores 1.846 bits/byte: 0.112 better than the cortex alone and 0.077 better than PPMd order 16 | H32b: separate the counts from calibration; check on E10M |
+| **Cerebellum** | A fast forward model trained by error, with a huge sparse granule-cell expansion (Marr 1969; Albus 1971; Wolpert et al. 1998) | 2 | H32: count models of orders 1–4 mixed with the cortex by an online geometric mixer. On E10M the mix scores 1.750 bits/byte (orders 1–4) and 1.712 (orders 1–6), 0.087 and 0.125 better than PPMd order 16. Calibration alone gives 0.014 of it (H32, H32b) | How much of the backprop cortex can local count parts replace? |
 | **Prefrontal cortex** | Goals and plans held across steps; sets the task | 4 | The GRU state only; no separate part | Needed in W2; a planner arm after M4 on W2 |
 | **Amygdala** | Tags events as important, which boosts their storage and replay (McGaugh 2004) | 1 | Tag-driven (selective) replay hurt three times (H10, M4a, H27) | A mismatch: our worlds have had no events worth tagging |
 | **Locus coeruleus (noradrenaline)** | Unexpected uncertainty: a surprise raises gain and learning rate; switches exploit and explore (Yu & Dayan 2005; Aston-Jones & Cohen 2005) | 2, 4 | A fixed lr. At 1e-3 the cortex diverges on enwik8; 3e-4 is stable (H29b, H29c) | Surprise-gated learning rate in a world that changes |
@@ -99,7 +99,7 @@ no such part. The stream went straight into the cortex. The thalamus does five j
 2. H26: cued and broad replay (dentate gyrus, CA3, entorhinal cortex). Done 12 Nov: uniform replay wins.
 3. H31: sleep gate (thalamus, basal forebrain, sleep switch). Done 12 Nov: interleaved wins; batching costs bits.
 4. H30: oscillator-bank cortex (neocortex, frequency domain). CPU first.
-5. H32: cerebellar mixer (cerebellum). Done 12 Nov on E3M: beats PPMd by 0.077 bits/byte. H32b checks it on E10M.
+5. H32: cerebellar mixer (cerebellum). Done 12 Nov: beats PPMd by 0.077 (E3M) and 0.087 (E10M); the counts carry it, not calibration (H32b).
 6. Surprise-gated learning rate (locus coeruleus), once a world changes over time.
 
 References added on this page: Crick 1984; Sherman & Guillery 2002; Sherman 2001; Schmitt et al. 2017; Staresina et
