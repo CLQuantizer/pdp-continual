@@ -134,6 +134,8 @@ today drifted.
 4. Local parts replace backprop: count and sparse models with a smaller GRU, scored in bits and in compute.
 5. (moved to 2b on 12 Nov, afternoon) H30, the oscillator cortex: the direct test of the move-versus-compute
    resolution, on a W world with counters.
+   Includes H30w (12 Nov): the same units on a ring with neighbour coupling, carrying through space and time as one
+   propagation, against the diagonal bank and the GRU.
 
 ## Depth world, W2 (11 Nov 2026)
 

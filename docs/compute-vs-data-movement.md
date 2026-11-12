@@ -518,3 +518,52 @@ Everything we call memory, communication and storage is carriage. Its costs are 
 fight it.
 
 Reference added: Crick 1984 (*Memory and molecular turnover*, Nature 312:101).
+
+## Ez, 12 Nov 2026: moving through time and space should be unified
+
+> Moving thru time space should be unified.
+
+### Orchestrator review (12 Nov 2026, UTC+8)
+
+**They are one operation, and a medium's velocity is the exchange rate.** A wave in a medium is e^(i(kx − ωt)).
+Space and time enter together, and the dispersion relation ω(k) ties them. Carrying a signal a distance d at speed v
+*is* holding it for a time τ = d / v. The mercury tube is the proof. It stored bits *because* it moved them slowly
+through space, which was Ez's first point on 11 Nov. So memory and wire are not two kinds of carriage. They are one
+spacetime translation, and the medium's speed and loss decide which one a device looks like. A slow medium works as a
+memory and a fast one as a wire. Information in it can only spread inside a cone set by the speed of propagation. In
+lattices this is exact: the Lieb–Robinson bound (1972) gives a maximum speed even for quantum spin chains.
+
+**The cut that survives is now precise: local in spacetime versus not.** A medium carries a signal only to its
+neighbours, one step at a time, inside the cone. Random access does not: an address reaches anywhere in one step. Of
+the three cuts that survived on 11 Nov, two now fold into this one. Sequential versus addressed access is local versus
+nonlocal. The movement cost is what it takes to fake nonlocality with wires: HBM, buses, a KV cache scanned for every
+token. The third cut, erasure, stays separate.
+
+**The brain is local in spacetime, and it trades space for time openly.**
+- **Time into space.** In sound localisation, axons of graded length act as delay lines. A coincidence detector fires
+  at the place where the two ears' delays cancel, so a time difference becomes a place (Jeffress 1948; confirmed in
+  the barn owl).
+- **Space into time.** A rat's place cells fire at earlier phases of theta as it crosses a field (phase precession,
+  O'Keefe & Recce 1993). Each theta cycle replays a stretch of path as a short time sequence. Replay in ripples runs
+  whole spatial paths through time at 10–20 times the speed.
+- **Delays as memory.** With realistic axonal delays, spiking networks store patterns as precise time-locked firing
+  chains (polychronous groups, Izhikevich 2006). The storage lives in the delays: wire as memory.
+- **Physical media compute.** Waves on water in a tank, read out linearly, separated speech classes. A medium can
+  carry, hold and mix (Fernando & Sojakka 2003, a physical reservoir).
+
+**What it means for our machine.** We split the two cleanly: space is GPU memory traffic, time is the log and the
+weights. A unified cortex would be a medium: units on a lattice, each passing its state to its neighbours with a
+delay, plus a local nonlinearity at each node. Carriage through space and time is then the same linear propagation
+(diagonal in (k, ω)). Compute is the node coupling. Everything is local, which is design criteria 1, 3 and 5 at once.
+
+**Test (H30w, a variant of H30).** At the same parameter count, compare:
+- (a) the diagonal oscillator bank (time only);
+- (b) the same units on a ring with nearest-neighbour linear coupling, a discretised transport or wave equation,
+  which gives exact delays by propagation;
+- (c) the GRU.
+Score in bits on a W world with counters and on a copy-with-delay stream. Prediction: (b) holds exact long delays that
+(a) can only approximate with decaying modes, and so wins where the task needs an exact past symbol (the parked CA
+"one row back" problem). Kill rule: if (b) does not beat (a) by more than seed std on the delay stream, propagation
+adds nothing over a frequency bank.
+
+References added: Lieb & Robinson 1972; Jeffress 1948; O'Keefe & Recce 1993; Izhikevich 2006; Fernando & Sojakka 2003.

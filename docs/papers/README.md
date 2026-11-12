@@ -101,6 +101,11 @@ Key points from Journé et al.:
 | Elmoznino et al. 2025. *In-context learning and Occam's razor.* ICML (arXiv 2410.14086) | minimising prequential code length = training error + complexity | checked (abstract) |
 | Zhang et al. 2026. *Fast Weight Attention for Continual Learning.* arXiv 2608.27763 | fast/slow weight split for continual learning; slow weights by backprop | checked (summary, low confidence) |
 | Crick 1984. *Memory and molecular turnover.* Nature 312:101 | synaptic molecules turn over in days, so long-term memory must be kept by active renewal | memory |
+| Lieb & Robinson 1972. *The finite group velocity of quantum spin systems.* Commun. Math. Phys. 28:251 | local lattice dynamics spread information no faster than a fixed speed (a light cone) | memory |
+| Jeffress 1948. *A place theory of sound localization.* J. Comp. Physiol. Psychol. 41:35 | axonal delay lines plus coincidence detectors turn time differences into place | memory |
+| O'Keefe & Recce 1993. *Phase relationship between hippocampal place units and the EEG theta rhythm.* Hippocampus 3:317 | phase precession: position across a place field is coded as theta phase | memory |
+| Izhikevich 2006. *Polychronization: computation with spikes.* Neural Computation 18:245 | axonal delays let spiking nets store many time-locked firing patterns | memory |
+| Fernando & Sojakka 2003. *Pattern recognition in a bucket.* ECAL | waves on water as a physical reservoir that separates speech classes | memory |
 
 
 ## Curiosity lineage, verified (grok citation check, 9 Nov 2026)
