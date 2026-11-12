@@ -100,6 +100,7 @@ Key points from Journé et al.:
 | Dohare et al. 2024. *Loss of plasticity in deep continual learning.* Nature | gradient learners lose plasticity; continual backprop (re-init low-utility units) keeps it | checked |
 | Elmoznino et al. 2025. *In-context learning and Occam's razor.* ICML (arXiv 2410.14086) | minimising prequential code length = training error + complexity | checked (abstract) |
 | Zhang et al. 2026. *Fast Weight Attention for Continual Learning.* arXiv 2608.27763 | fast/slow weight split for continual learning; slow weights by backprop | checked (summary, low confidence) |
+| Crick 1984. *Memory and molecular turnover.* Nature 312:101 | synaptic molecules turn over in days, so long-term memory must be kept by active renewal | memory |
 
 
 ## Curiosity lineage, verified (grok citation check, 9 Nov 2026)

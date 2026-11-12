@@ -483,3 +483,38 @@ are four partial answers and one open test.
   oscillator bank of complex and negative eigenvalues (storage and moving) plus a learned order-2 readout (coupling),
   scored in bits against the GRU. It has not run. It moves up the queue, behind W2-1, and runs on a W world with a
   counter (the parked counter and CA problem). There a negative eigenvalue should do what the GRU could not.
+
+## Ez, 12 Nov 2026: persistence is just movement through time
+
+> And note that persistence is just movement thru time.
+
+### Orchestrator review (12 Nov 2026, UTC+8)
+
+**It holds, and it closes the loop on the mercury tube.** A stored bit is a bit carried from t to t + τ. A wire carries
+it from x to x + d. Both are translations, one in time and one in space. In the frequency domain each is a pure phase:
+e^(−iωτ) for time, e^(−ikd) for space. Both are diagonal. So "move" and "store" are not two things. They are the same
+operation along different axes: carry the signal unchanged across a displacement. Compute is whatever does not carry
+it unchanged, the coupling between channels.
+
+**What follows for our machine.**
+- **Forgetting is loss in transit, and replay is a repeater.** The log carries the past through time losslessly (it
+  is digital). The cortex's weights carry it lossily: each update attenuates old content a little. Replay re-injects
+  the signal before it falls below the noise, as a repeater does on a long line. H31 now reads as repeater spacing.
+  Interleaved replay is a repeater every 128 bytes. Sleep blocks of 8 KB, 128 KB and 2 MB space the repeaters
+  further apart, and the cost grows with the spacing (+0.04, +0.13, +0.23 bits/byte), as a lossy line predicts.
+- **The prediction becomes concrete.** The best repeater spacing (replay dose) should scale with the loss per unit
+  time (the cortex's forgetting rate). A faster learning rate means more loss per step, so it needs denser replay.
+  This is testable by crossing lr with sleep block on E3M.
+- **Lossless carriage is not free of cost either.** The count models carry every context forever, with no decay. In
+  a stationary text that is ideal. In a world that drifts, carrying stale counts through time is the loss of
+  plasticity that `docs/goal.md` names as a failure. Prediction: in a drifting stream, count models with a decay
+  (forgetting by age or disuse) beat exact ones.
+- **Brains persist by regenerating.** Synaptic proteins turn over in days, yet memories last decades. Crick (1984)
+  pointed out that memory must therefore be held by active renewal, not by stable molecules. The mercury tube's
+  regeneration stage again: persistence through time is movement that is paid for by repeated rewriting.
+
+So the dichotomy reduces to one line: carry (in space or time, diagonal) versus combine (coupling, off-diagonal).
+Everything we call memory, communication and storage is carriage. Its costs are loss in transit and the repeaters that
+fight it.
+
+Reference added: Crick 1984 (*Memory and molecular turnover*, Nature 312:101).
