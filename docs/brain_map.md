@@ -59,7 +59,7 @@ no such part. The stream went straight into the cortex. The thalamus does five j
 | Part | Job in our machine | Principle | What we have | Next |
 |---|---|---|---|---|
 | **Neocortex** | The compressor: predicts the next symbol and learns online | 2 | GRU cortex on enwik8 E10M: 1.836 ± 0.004 bits/byte, ties PPMd and beats xz (H29d) | H30: oscillator-bank cortex (diagonal complex/negative eigenvalues plus an order-2 mixing readout) |
-| **Thalamus** | Gate, router and sleep gate (above) | 1, 4 | As a searchlight: uniform reading best (W1c) | H31 sleep gate; router open |
+| **Thalamus** | Gate, router and sleep gate (above) | 1, 4 | As a searchlight: uniform reading best (W1c). As a sleep gate: batching replay into sleep costs 0.04–0.23 bits/byte against interleaving (H31) | Router open |
 | **Hippocampus** | Store everything and replay it | 1 | Uniform replay at traffic 8 helps on real text: −0.138 ± 0.003 bits/byte (H29d) | H26: content-cued replay, below |
 | · dentate gyrus | Content hash: a sparse expansion that separates similar episodes, like the fly's LSH (Dasgupta et al. 2017) | 1 | None: we index by *position*, which is RAM | H26 keys replay by content |
 | · CA3 | Pattern completion: a partial cue recalls the whole episode (Hopfield-style attractor) | 1 | None | H26 cued (wake) replay |
@@ -76,7 +76,7 @@ no such part. The stream went straight into the cortex. The thalamus does five j
 | **Raphe (serotonin)** | Patience: how far ahead to value outcomes (Doya 2002) | 4 | None. Breadth worlds needed no horizon | W2: the reward is 3·k actions away |
 | **Hypothalamus** | Homeostatic drives: hunger, temperature, the extrinsic rewards | — | **Absent on purpose**: the machine has only intrinsic reward | — |
 | **Claustrum** | Thin sheet linked to almost all of cortex; proposed to bind areas in sync (Crick & Koch 2005) | — | No role yet | Open |
-| **Sleep switch (VLPO, SCN)** | Decides when the senses close and replay runs (Saper et al. 2005) | 1 | Fixed interleaving | H31 |
+| **Sleep switch (VLPO, SCN)** | Decides when the senses close and replay runs (Saper et al. 2005) | 1 | H31: the same dose in sleep blocks costs more as blocks grow (8 KB +0.04, 128 KB +0.13). An online predictor needs awake replay | H26: sleep as a second, broad pass |
 | **Brainstem, spinal cord, senses** | The interface: tokens in, actions out, reflexes | — | The token stream; fixed policies (random, oracle) are the reflexes | — |
 | **Neuromodulators as a class** | One signal broadcast to whole areas, with no addresses | 3 | One scalar reward to the controller | The same broadcast pattern as content addressing |
 
@@ -97,7 +97,7 @@ no such part. The stream went straight into the cortex. The thalamus does five j
 
 1. W2-0 (running), then M4 on W2: basal ganglia and dopamine where actions matter.
 2. H26: cued and broad replay (dentate gyrus, CA3, entorhinal cortex).
-3. H31: sleep gate (thalamus, basal forebrain, sleep switch). CPU.
+3. H31: sleep gate (thalamus, basal forebrain, sleep switch). Done 12 Nov: interleaved wins; batching costs bits.
 4. H30: oscillator-bank cortex (neocortex, frequency domain). CPU first.
 5. H32: cerebellar mixer (cerebellum). One E10M pass on the GPU, about 1.2 GPU h, checked against the quota guard.
 6. Surprise-gated learning rate (locus coeruleus), once a world changes over time.

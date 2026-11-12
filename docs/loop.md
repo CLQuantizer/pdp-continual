@@ -2649,3 +2649,23 @@ random and (b) a model-based planner. The roadmap status was updated.
 2. M4 on W2, option (a) or (b), on Ez's call.
 3. H26 content-cued wake replay plus broad sleep replay (spec after H31; one job at a time).
 4. H30 oscillator cortex; H32 cerebellar mixer; H29e full enwik8 (needs Ez's OK).
+
+## 2026-11-12 10:01 UTC+8 (orchestrator: H31 scored; awake replay wins; H26 dispatched)
+
+### Findings
+1. **H31 (grok, 5 Kaggle T4 kernels, 1.44 GPU h): bar 1 PASS, bar 2 FAIL.** On E3M, with the same 23,438 replay
+   steps in every arm: inter 1.958, sleep_64 2.002, sleep_1k 2.091, sleep_16k 2.192 and noreplay 2.198 bits/byte.
+   Replay gains 0.240. Batching it into sleeps costs +0.04 (8 KB), +0.13 (128 KB) and +0.23 (2 MB).
+2. **Mechanism: staleness.** While awake, the cortex drifts toward recent text, and every byte is scored by the
+   drifting cortex. Each sleep repairs it: the 128 KB after a sleep is 0.08–0.15 bits/byte better than the 128 KB
+   before. The repair comes after the cost is paid. Caveat: the last sleep's replay is never scored, which inflates
+   the 16k arm.
+3. For the brain map: a predictor that is scored online needs *awake* replay. That fits sharp-wave ripples in awake
+   rest. The sleep gate is likely a second, broad pass, not the main consolidation route.
+
+### Hypotheses, ranked
+1. **H26** (grok, Kaggle GPU, about 1 GPU h, dispatched): replay keyed by content (a random projection of the hidden
+   state as the index, the live state as the cue) vs uniform position, on E3M. Bars: mix44 within 0.01 of uniform;
+   prediction that cued8 is worse by more than 0.01.
+2. M4 on W2, (a) or (b), on Ez's call.
+3. H30 oscillator cortex; H32 cerebellar mixer.
