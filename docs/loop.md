@@ -2887,3 +2887,22 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    dwell glances), with the reward as a progress rate per decision. Held-out world seeds 6–11. Bars: prog beats
    rand_dwell by ≥ 0.10 (5 of 6 seeds), and beats err by ≥ 0.20.
 2. **H30y** (grok, Kaggle CPU, queued until M5 frees the VPS): a bank on the roots of unity.
+
+## 2026-11-13 (orchestrator: M5-W3 scored; H30y dispatched; M5b queued)
+
+### Findings
+1. **M5-W3 (grok, VPS, 6 min): bar 1 FAIL, bar 2 PASS.** On held-out seeds 6–11, the progress controller beats random
+   dwelling by 0.150 on the mean, but on only 4 of 6 seeds (the bar needed 5). It beats the error-seeker by 0.81 on all
+   six, while the error-seeker spends 57% of its life on noise.
+2. **prog is steady (std 0.047) and random dwelling is not (0.199).** prog loses the early life: 13–15% of decisions go
+   to the dark room, which the slow SGD compressor really does learn, but W does not score. Corridors take another
+   15–21%.
+3. **At L = 2,048, prog beats the learnability oracle on 5 of 6 seeds,** and the curriculum runs from easy to hard
+   (the grammar takes 36–38% of the last half). What curiosity buys is an order of study, which pays off only with
+   time.
+
+### Hypotheses, ranked
+1. **H30y** (grok, Kaggle CPU, dispatched): a bank on the roots of unity.
+2. **M5b-W3** (grok, VPS, queued): life length L ∈ {512, 1,024, 2,048} on fresh seeds 12–17. Bars: at L = 2,048 prog
+   beats rand_dwell by ≥ 0.10 on 5 of 6 seeds; prog − oracle7 falls by ≥ 0.10 from L = 512 to 2,048.
+3. Planner on W3, only if M5b fails.
