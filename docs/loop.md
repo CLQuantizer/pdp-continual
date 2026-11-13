@@ -2999,3 +2999,19 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 1. **M7b-W3** (grok, Kaggle CPU, dispatched): a fixed sleep dose (20%) for every controller, with curiosity rewarded by
    per-room progress. Fresh seeds 36–41. Bars: beats random dwelling plus the same sleep by ≥ 0.10 (5 of 6), and beats
    whole-store curiosity plus sleep by ≥ 0.10.
+
+## 2026-11-13 (orchestrator: M7b scored; M7c dispatched, headroom first)
+
+### Findings
+1. **M7b-W3 (grok, 6 Kaggle CPU kernels, 4–9 min each, seeds 36–41): both bars FAIL.** Per-room curiosity with a fixed sleep
+   dose beats random dwelling plus the same sleep by only 0.067 (3 of 6). It beats whole-store curiosity by 0.091
+   (5 of 6; the bar was 0.10).
+2. **Sleep's gain replicates on fresh seeds:** −0.251 (6 of 6), and forgetting halves.
+3. **With sleep handling retention, allocation matters again:** the learnability oracle is now best (0.576, 0.10 ahead of
+   random dwelling), and per-room curiosity sits between the two. Over all nine rooms it is clearly best.
+4. **Process error (mine):** I set the bar equal to the oracle's headroom, without checking it first.
+
+### Hypotheses, ranked
+1. **M7c-W3** (grok, 12 Kaggle CPU kernels, dispatched): L ∈ {2,048, 4,096}, seeds 42–53. The bars are void unless the
+   oracle's headroom at 4,096 is ≥ 0.15. Then curiosity must beat random dwelling plus sleep by ≥ 0.10 (9 of 12), and its
+   edge must grow with life.
