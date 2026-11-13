@@ -14,8 +14,10 @@ local substrate and a local learning rule.
 
 ## Arms (all use the trace rule from `h30x_trace.py`, unchanged; import it, do not edit it)
 - `trace_rand`: H30x's trace arm as it is (same init). This is the reference.
-- `roots_learn`: the same bank, but initialised with θ_k = 2πk/256 for k = 0, …, 255 and |λ_k| = 0.999
-  (ν_k = log(−log 0.999)). λ is learned.
+- `roots_learn`: the same bank, but initialised with θ_k = 2πk/256 for k = 0, …, 255 and |λ_k| = 0.98
+  (ν_k = log(−log 0.98)). λ is learned. (Amended 13 Nov: v1 used 0.999. A bank on the roots of unity holds lags mod
+  256, so the inverse DFT returns s_{t−d} + |λ|^256 s_{t−d−256} + …. At 0.999 that alias weight is 0.774, which
+  makes the memory useless. At 0.98 it is 0.006.)
 - `roots_frozen`: the same init as `roots_learn`, but ν and θ are frozen. B, the readout and the embedding learn.
 Everything else is as in H30x: N = 256, embedding 32, order-2 readout, Adam lr 1e-3, clip 1.0, chunks of 64, score
 before step, float32. The only differences are the init of ν and θ and, for one arm, freezing them.
@@ -28,8 +30,9 @@ are as in H30x.
 1. `trace_rand` on the first 4,096 symbols of echo D = 32 seed 0 matches H30x's trace arm to 1e-6.
 2. **Delay check (this check only):** with the roots init and λ frozen, set B = 1 · cᵀ for a fixed c, so every mode
    receives the same scalar s_t = cᵀ e(x_t). Feed 600 random symbols and reconstruct s_{t−d} from h_t by the inverse
-   DFT (weights ∝ λ_k^(−d)/N), for d = 1, 32, 128, 255 and 256. Print the relative errors. The prediction is small
-   errors up to 255, and that lag 256 aliases with lag 0. This check only confirms the theory; nothing in the real
+   DFT (weights ∝ λ_k^(−d)/N), for d = 1, 32, 128, 255 and 256, over all t ≥ d. Print the relative errors. Prediction
+   (amended): relative error ≤ 0.02 for d ≤ 255 (the alias weight is 0.98^256 ≈ 0.006), and lag 256 aliases with
+   lag 0. v1 stopped here, correctly, at |λ| = 0.999. This check only confirms the theory; nothing in the real
    runs is hand-set.
 3. All three arms give finite bits on 4,096 symbols of every stream. For both roots arms, print max |λ| at init.
 4. Time 8,192 symbols per arm, and estimate each kernel's wall time. If one would exceed 90 minutes, split it, or stop
@@ -62,7 +65,7 @@ line and a counter need different banks, and a cortex needs both kinds of unit.
 ## Budget and rules
 - CPU only. At most 90 minutes of wall time per kernel. A failed kernel may be rerun once.
 - Run experiments in the foreground. Poll with `kaggle kernels status`.
-- Files you may create: `h30y_roots.py`, `kaggle/h30y/**` and `results/h30y/**`.
+- Files you may create or update: `h30y_roots.py` (it exists from v1; change only the init), `kaggle/h30y/**` and `results/h30y/**`.
 - Do not touch: `docs/loop.md`, `audit.md`, `h30x_trace.py`, `h30w_ring.py`, `h20_world.py`, other experiment code,
   other `kaggle/` or `results/` folders, `.env`.
 - Gates and bars in this spec are the orchestrator's. Do not change or reinterpret them; if one looks wrong, stop and
