@@ -121,6 +121,12 @@ it. H30w: the diagonal bank beats the GRU on counters by 1.6 bits/symbol at equa
 its first answer. The ring adds nothing. No model learned a 128-step delay under BPTT-64, which is a credit-assignment
 limit, not a substrate limit. Next on the substrate line is H30x: the bank learned by exact eligibility traces (diagonal RTRL), online and local in time,
 with no unrolling. That is the first learning rule here that the north star would accept.
+**Milestone (13 Nov, night): curiosity works in an embodied world (M5b).** In W3 a progress-driven agent that must
+walk to its sources beats random dwelling at every life length, and beats the learnability oracle over a long life
+(6 of 6 fresh seeds). The delay-line search in the diagonal cortex is closed (H30y): verbatim recall at a distance is
+the store's job. **Queue (13 Nov, night):** M6-W3, sleep as a chosen action (running) → substitution with the
+trace-learned roots bank plus count models → the bank as W3's cortex.
+
 **Update (13 Nov, evening):** H30x: the bank learns by eligibility traces (online, local in time) at no cost. A delay
 line still eludes it, which is a memory issue, and H30y (roots-of-unity init) tests that. W3 has headroom: 0.20 for
 knowing what is learnable, under travel. **Queue (13 Nov, evening):** M5-W3 progress controller (running) → H30y →

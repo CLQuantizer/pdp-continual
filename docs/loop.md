@@ -2928,3 +2928,22 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **Substitution, now with a local cortex:** the trace-learned roots bank, mixed with the count models (H32), in place
    of the backprop GRU. It is scored in bits and in compute. Spec next.
 3. Planner on W3, if M5b fails.
+
+## 2026-11-13 (orchestrator: M5b scored, curiosity works in an embodied world; M6 dispatched)
+
+### Findings
+1. **M5b-W3 (grok, VPS, 9 min, fresh seeds 12–17): both bars PASS.** The progress controller beats random dwelling at
+   every life length, on 6 of 6 seeds each time: −0.141, −0.104 and −0.226 at L = 512, 1,024 and 2,048. Its gap to the
+   learnability oracle falls from +0.034 to −0.128, and at L = 2,048 it beats the oracle on 6 of 6.
+2. **Mechanism:** curiosity buys an order of study (easy sources first, the grammar last). Once the life is long
+   enough to follow it, that order is worth more than an oracle's knowledge of what to ignore. M5-W3's 4-of-6 was the
+   short life plus a noisy baseline.
+3. **Milestone:** the north star's core loop works in an embodied world. The machine acts, learns while acting, and
+   chooses where to go by its own compression progress, paying for travel.
+
+### Hypotheses, ranked
+1. **M6-W3** (grok, Kaggle CPU, dispatched): sleep becomes an action. It costs one decision and replays 64 pairs from
+   the store, and every reward is measured on one yardstick (bits saved on the whole store). Fresh seeds 18–23,
+   L = 2,048. Bars: sleep-as-choice beats no sleep by ≥ 0.05 (5 of 6 seeds), and beats a matched fixed schedule by
+   ≥ 0.03 (4 of 6).
+2. Substitution with a local cortex (the trace-learned roots bank plus count models).
