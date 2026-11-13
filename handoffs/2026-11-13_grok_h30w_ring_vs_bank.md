@@ -21,15 +21,19 @@ improve the compressor (2), with a substrate that is local and diagonal (design 
    the fresh halves and 0 on the copies. Report bits on fresh and copy halves separately.
 
 ## Models (embedding 32 for every model)
-- **gru:** `torch.nn.GRU`, hidden 128, linear readout to the alphabet.
+- **gru:** `torch.nn.GRU`, hidden 166, linear readout to the alphabet. (Amended 13 Nov: hidden 166 brings its
+  parameter count close to the bank's, about 107k at alphabet 41, so the comparison is at equal size.)
 - **bank:** N = 256 complex units. h_t = λ ⊙ h_{t−1} + B x_t, with λ = exp(−exp(ν) + iθ) as in the LRU (Orvieto et al.
   2023). Initialise |λ| uniformly in [0.9, 0.999] and θ uniformly in [0, π], so negative real eigenvalues are
   reachable. B is complex, 256 × 32. Readout: z = [Re h, Im h] (512). Logits = W z + V((P₁ z) ⊙ (P₂ z)), where P₁ and
   P₂ map 512 → 64 and V maps 64 → alphabet. That is the learned order-2 term.
 - **ring:** the same 256 complex units on a ring. h_{i,t} = a_i h_{i,t−1} + b_i h_{i−1,t−1} + (B x_t)_i, with unit 0
-  reading unit 255. a_i is parametrised and initialised like λ. b_i = exp(−exp(μ_i) + iφ_i), initialised with |b|
-  uniform in [0.3, 1.0) and φ uniform in [0, π]. The readout is identical to the bank's. Use no hand-set delay line:
-  learning has to find the transport.
+  reading unit 255. **Stable parametrisation (amended 13 Nov; the first spec's init was unstable, |a| + |b| > 1):**
+  ρ_i = exp(−exp(ν_i)), g_i = sigmoid(γ_i), a_i = ρ_i · g_i · e^(iθ_i) and b_i = ρ_i · (1 − g_i) · e^(iφ_i). Then
+  |a_i| + |b_i| = ρ_i < 1, so the ring is stable for any parameters. Initialise ρ uniformly in [0.9, 0.999], g
+  uniformly in [0.2, 0.8], and θ and φ uniformly in [0, π]. As g → 0 and ρ → 1 a unit becomes pure transport, so an
+  exact delay line is reachable, but nothing is hand-set: learning has to find it. The readout is identical to the
+  bank's.
 Report each model's parameter count. Do not tune anything per model. Every model uses Adam with lr 1e-3, gradient
 clip 1.0 and float32.
 
@@ -43,14 +47,17 @@ seed 0, 7 uses 1 and 8 uses 2; echo seeds use the same model seed as their strea
 
 ## Smoke test (VPS CPU, before any kernel)
 1. On 4,096 symbols of each stream, every model gives finite bits. Print the parameter counts.
-2. **Ring check:** with a hand-set transport (a_i = 0, b_i = 1, B injecting only at unit 0, real), feed a sequence and
+2. **Ring check:** with a hand-set transport (g_i = 0, ρ_i = 1, θ_i = φ_i = 0, i.e. a_i = 0 and b_i = 1, set directly
+   for this check only, B injecting only at unit 0, real), feed a sequence and
    check that unit k holds the input from k steps earlier. Print it for k = 0, 1, 5 and 200. This is a check only;
    the real runs learn from the init above.
 3. **Prequential check:** the bits of chunk c do not change if the stream after chunk c is altered (test this on one
    model).
 4. Time 8,192 symbols per model, and estimate each kernel's wall time. If any kernel would exceed 90 minutes, stop
    and report. Do not shrink the models or the streams yourself.
-If any check fails, stop and report. Do not push kernels.
+5. **Stability check:** at init, max_i (|a_i| + |b_i|) < 1 for every model seed. Print it.
+If any check fails, stop and report. Do not push kernels. A previous attempt stopped at smoke (`results/h30w/`); replace
+those files.
 
 ## Kernels
 Use three private CPU kernels, one per seed index i ∈ {0, 1, 2}: `ezzzzzx/h30w-s0`, `-s1` and `-s2`. Kernel i runs H20
