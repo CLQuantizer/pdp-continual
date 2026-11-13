@@ -121,6 +121,11 @@ it. H30w: the diagonal bank beats the GRU on counters by 1.6 bits/symbol at equa
 its first answer. The ring adds nothing. No model learned a 128-step delay under BPTT-64, which is a credit-assignment
 limit, not a substrate limit. Next on the substrate line is H30x: the bank learned by exact eligibility traces (diagonal RTRL), online and local in time,
 with no unrolling. That is the first learning rule here that the north star would accept.
+**End of 13 Nov.** Sleep pays where the cortex forgets (M7, M7b: −0.25 to −0.30 on the bank, against 0 on the hashed
+learner in M6b). A fixed dose does as well as chosen timing. With a strong cortex plus sleep, W3 has no allocation headroom
+(M7c). **Queue (14 Nov):** W4 headroom sized to the bank cortex → curiosity on W4 → organic sleep timing, once a world
+makes timing matter → substitution on text.
+
 **Milestone (13 Nov, night): curiosity works in an embodied world (M5b).** In W3 a progress-driven agent that must
 walk to its sources beats random dwelling at every life length, and beats the learnability oracle over a long life
 (6 of 6 fresh seeds). The delay-line search in the diagonal cortex is closed (H30y): verbatim recall at a distance is

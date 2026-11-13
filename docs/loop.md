@@ -3015,3 +3015,23 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 1. **M7c-W3** (grok, 12 Kaggle CPU kernels, dispatched): L ∈ {2,048, 4,096}, seeds 42–53. The bars are void unless the
    oracle's headroom at 4,096 is ≥ 0.15. Then curiosity must beat random dwelling plus sleep by ≥ 0.10 (9 of 12), and its
    edge must grow with life.
+
+## 2026-11-13 (orchestrator: M7c scored, no headroom; W4 next)
+
+### Findings
+1. **M7c-W3 (grok, 12 Kaggle CPU kernels, 6–12 min each, seeds 42–53): precondition NOT MET, bars void.** At L = 4,096 the
+   learnability oracle beats random dwelling plus sleep by only 0.020. Per-room curiosity is level with random dwelling.
+2. **Mechanism:** the bank cortex with sleep learns the seven scored rooms to about the same level under any allocation
+   (W ≈ 0.47). M7b's oracle gap of 0.10 was 6-seed noise. Headroom belongs to a world and a learner together.
+
+### Paths closed
+- Curiosity with the bank cortex on W3: no headroom.
+
+### Settled today
+- Curiosity pays in an embodied world with a weak learner (M5b).
+- Sleep pays where the cortex forgets (M7, M7b), and not where it does not (M6b).
+
+### Hypotheses, ranked
+1. **W4 headroom** for the bank cortex with sleep (spec at the next cycle): more sources, harder learnable ones (longer
+   motifs, deeper grammar, slower CA), and a life scarce for the bank. Headroom is checked first.
+2. Substitution with the local cortex on text.
