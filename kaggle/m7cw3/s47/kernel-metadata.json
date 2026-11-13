@@ -1,0 +1,17 @@
+{
+  "id": "ezzzzzx/m7c-w3-s47",
+  "title": "m7c-w3-s47",
+  "code_file": "m7c_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/pdp-code-m7cw3"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
