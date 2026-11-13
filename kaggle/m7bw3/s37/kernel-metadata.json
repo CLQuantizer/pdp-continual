@@ -1,0 +1,17 @@
+{
+  "id": "ezzzzzx/m7b-w3-s37",
+  "title": "m7b-w3-s37",
+  "code_file": "m7b_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/pdp-code-m7bw3"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
