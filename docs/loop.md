@@ -2906,3 +2906,25 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **M5b-W3** (grok, VPS, queued): life length L ∈ {512, 1,024, 2,048} on fresh seeds 12–17. Bars: at L = 2,048 prog
    beats rand_dwell by ≥ 0.10 on 5 of 6 seeds; prog − oracle7 falls by ≥ 0.10 from L = 512 to 2,048.
 3. Planner on W3, only if M5b fails.
+
+## 2026-11-13 (orchestrator: H30y scored; delay-line search closed; M5b dispatched)
+
+### Findings
+1. **H30y v1** stopped correctly at smoke: my init (|λ| = 0.999) let lags alias mod 256 at weight 0.77. v2 used 0.98.
+2. **H30y v2 (grok, 3 Kaggle CPU kernels, about 16 min each): bar 1 FAIL, bar 2 PASS.** A bank started on the roots of
+   unity still does not learn echo D = 128 (4.41, above uniform), even with λ frozen at a point where the memory holds
+   every lag to 0.4%. At D = 32 it reaches 0.97 bits on copies, the best of any model. It also improves H20 totals to
+   0.612, against 0.632 at the random init and 1.177 for the GRU.
+3. **Mechanism:** the limit is code capacity, not decay. A delay readout needs every mode fed the same scalar code of
+   the symbol. A learned, generic B spreads 32 dimensions across 256 modes, and 128 lags then interfere in 512 real
+   numbers of state.
+
+### Paths closed
+- A verbatim long delay in a learned diagonal cortex (H30w ring, H30x, H30y). Holding verbatim symbols at a distance is a
+  store's job (the hippocampus, in the brain map). The cortex keeps regularities over a window of a few dozen steps.
+
+### Hypotheses, ranked
+1. **M5b-W3** (grok, VPS, dispatched): curiosity against life length, on fresh seeds.
+2. **Substitution, now with a local cortex:** the trace-learned roots bank, mixed with the count models (H32), in place
+   of the backprop GRU. It is scored in bits and in compute. Spec next.
+3. Planner on W3, if M5b fails.
