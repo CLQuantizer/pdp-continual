@@ -567,3 +567,15 @@ Score in bits on a W world with counters and on a copy-with-delay stream. Predic
 adds nothing over a frequency bank.
 
 References added: Lieb & Robinson 1972; Jeffress 1948; O'Keefe & Recce 1993; Izhikevich 2006; Fernando & Sojakka 2003.
+
+## A delay line in a diagonal bank (13 Nov 2026, from H30x and H30y v1)
+
+A circular ring of N units is diagonal in the Fourier basis, with modes on the N-th roots of unity. So a diagonal bank
+can be a delay memory. But it holds lags **modulo N**: whatever it saw N steps earlier comes back on top of the lag
+it is asked for. Decay is the eraser. With |λ| < 1 every mode damps, the alias from one cycle back arrives with
+weight |λ|^N, and the inverse readout (weights λ^(−d)/N) undoes the damping on the wanted lag. At N = 256, |λ| =
+0.999 leaves an alias of 0.77 and no usable memory, while |λ| = 0.98 leaves 0.006. A true shift register with an
+absorbing end is nilpotent, so it cannot be diagonalised at all. In a diagonal medium, carriage over a finite window
+is therefore a circulating ring plus erasure. That links back to the third cut in this note: erasure is a separate
+operation, and here it is what turns transport into a bounded memory. The trade-off is precision: the readout
+amplifies by |λ|^(−d), which is 13× at d = 128 for |λ| = 0.98.
