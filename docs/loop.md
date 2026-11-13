@@ -2787,3 +2787,20 @@ random and (b) a model-based planner. The roadmap status was updated.
 3. **H31b** (grok, Kaggle GPU ≤ 1.6 h, queued): sleep1k − inter at lr 1.5e-4 and 6e-4, against H31's 3e-4. Bars:
    the gap grows with lr, by ≥ 0.05 from lowest to highest.
 4. Papers: six new references registered by grok (dispatched).
+
+## 2026-11-13 (orchestrator: W2-1 scored; no headroom; H30w dispatched)
+
+### Findings
+1. **W2-1 (grok, 3 Kaggle CPU kernels, 22 min): bar 1 PASS, bar 2 FAIL; kill rule fires.** With an exit from room
+   8, rand6 completes 25–28 cycles and ends at 0.004–0.024 bits on PROBE_cap. It knows the whole world. No oracle beats
+   it by more than 0.02 (bar 0.5).
+2. **Mechanism:** all of W2's headroom was the trap. The world holds too little to learn for the life, so with
+   revisits everything saturates and where time goes does not matter.
+3. **Lesson for curiosity worlds:** content must exceed what the life can cover, and sources must differ in
+   learnability (easy, hard but learnable, noise). Headroom is set by an oracle that knows learnability. H23c had
+   that; the W-worlds since have not.
+
+### Hypotheses, ranked
+1. **H30w** (grok, Kaggle CPU, dispatched): bank vs ring vs GRU.
+2. **W3 headroom** (spec next): many rooms of graded learnability under a life too short to learn them all.
+3. H31b repeater spacing (GPU, queued).
