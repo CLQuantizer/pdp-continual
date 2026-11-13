@@ -1,0 +1,18 @@
+{
+  "id": "ezzzzzx/h31b-sleep1k-hi",
+  "title": "h31b-sleep1k-hi",
+  "code_file": "h31b_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/enwik8",
+    "ezzzzzx/pdp-code-h31b"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
