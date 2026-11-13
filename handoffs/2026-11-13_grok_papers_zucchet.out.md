@@ -1,0 +1,9 @@
+I'll read the project instructions and the handoff, then follow the handoff exactly.The handoff is to register the Zucchet 2023 paper in D1 and store its arXiv PDF in R2. I'll read how the papers sync works and confirm the README row before changing anything.A recent papers handoff should show the exact register-and-fetch steps. I'll match that, then check the arXiv id before writing anything.The catalogue row is in the README. I'll confirm the arXiv record matches that paper, then check whether D1 already has it.arXiv 2305.15947 matches the README: Zucchet, Meier, Schug, Mujika, and Sacramento, NeurIPS 2023. D1 has no row yet. I'll add it as `memory` / `to_fetch`, then store the PDF the same way the sync tool does.The temporary PDF is only a fetch scratch file. I'll remove it now that the R2 copy matches the index.`zucchet2023` is in D1 `pdp-papers-index` with `status` = `memory`, and the arXiv PDF is in R2 `pdp-papers` with `file_status` = `stored`. arXiv `2305.15947` is the right paper. Nothing was committed.
+
+| cite_key | status | file_status | source URL |
+|---|---|---|---|
+| zucchet2023 | memory | stored | https://arxiv.org/pdf/2305.15947.pdf |
+
+The arXiv record is Nicolas Zucchet, Robert Meier, Simon Schug, Asier Mujika, and João Sacramento, “Online learning of long-range dependencies,” accepted at NeurIPS 2023 (v2, 6 Nov 2023). That matches the README row, which was left as written.
+
+`python3 tools/sync_papers.py --fetch` stored `papers/zucchet2023.pdf` (555,689 bytes, sha256 `a4627de016a3d7d5c27b32a59bb1a3faef856315e2c692f1bcc81d573f309baf`). An authenticated read-back of that object matched the hash and the byte count, and the first page is that paper. The citation paths on the row are `docs/papers/README.md`, `docs/loop.md`, and `handoffs/2026-11-13_grok_h30x_trace_bank.md`.
