@@ -2947,3 +2947,19 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    L = 2,048. Bars: sleep-as-choice beats no sleep by ≥ 0.05 (5 of 6 seeds), and beats a matched fixed schedule by
    ≥ 0.03 (4 of 6).
 2. Substitution with a local cortex (the trace-learned roots bank plus count models).
+
+## 2026-11-13 (orchestrator: M6-W3 scored; M6b dispatched)
+
+### Findings
+1. **M6-W3 (grok, 1 Kaggle CPU kernel, 6 min, seeds 18–23): both bars FAIL.** With sleep as a choice, the agent is
+   worse than without it (+0.098, 6 of 6 seeds) and worse than a matched fixed schedule (+0.041).
+2. **Mechanism:** sleep replayed the same reservoirs on which all progress was scored, so it was memorising its own
+   exam. Its measured reward ran 1.5–2.4× the room reward, and the bandit slept 72% of the last quarter. My spec error;
+   it is H23's lesson in a new place.
+3. A matched fixed dose also loses (1.796 vs 1.739). A 256-pair store does not teach this learner more than the world
+   does.
+
+### Hypotheses, ranked
+1. **M6b-W3** (grok, Kaggle CPU, dispatched): disjoint replay and exam stores (coin flip per pair), R = 2,048 per
+   channel, fresh seeds 24–29, the same bars.
+2. Substitution with a local cortex.
