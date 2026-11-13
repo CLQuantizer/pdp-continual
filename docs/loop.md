@@ -2870,3 +2870,20 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **H30y** (grok, Kaggle CPU, queued): a trace-learned bank initialised on the 256th roots of unity, with λ learned
    or frozen. Bars: copy bits ≤ 3.0 at D = 128 and ≥ 1.0 below H30x's init on every seed; counters are not lost.
    Prediction: D = 512 aliases.
+
+## 2026-11-13 (orchestrator: W3 scored, headroom found; M5-W3 dispatched)
+
+### Findings
+1. **W3 headroom (grok, 1 Kaggle CPU kernel, 26 s): both bars PASS.** The best oracle beats a random walk by 0.86–1.01
+   bits/symbol. A life of 512 is still 0.65–1.04 short of a life of 2,048.
+2. **What the headroom is made of:** dwelling instead of walking recovers 0.76. Knowing which rooms are learnable
+   adds 0.20 more (rand_dwell − oracle7, mean of 3 seeds), slightly more than in H23c without travel (0.156).
+3. **Hard is not learnable:** an oracle that spends time in proportion to a source's difficulty loses to the uniform
+   oracle (3.13 vs 2.70). It sinks time into C1 and C7, where this compressor makes no progress. This is why the reward
+   is progress, not error.
+
+### Hypotheses, ranked
+1. **M5-W3** (grok, VPS CPU, dispatched): H23c's whole-history progress bandit, now deciding visits (travel plus 8
+   dwell glances), with the reward as a progress rate per decision. Held-out world seeds 6–11. Bars: prog beats
+   rand_dwell by ≥ 0.10 (5 of 6 seeds), and beats err by ≥ 0.20.
+2. **H30y** (grok, Kaggle CPU, queued until M5 frees the VPS): a bank on the roots of unity.

@@ -121,6 +121,11 @@ it. H30w: the diagonal bank beats the GRU on counters by 1.6 bits/symbol at equa
 its first answer. The ring adds nothing. No model learned a 128-step delay under BPTT-64, which is a credit-assignment
 limit, not a substrate limit. Next on the substrate line is H30x: the bank learned by exact eligibility traces (diagonal RTRL), online and local in time,
 with no unrolling. That is the first learning rule here that the north star would accept.
+**Update (13 Nov, evening):** H30x: the bank learns by eligibility traces (online, local in time) at no cost. A delay
+line still eludes it, which is a memory issue, and H30y (roots-of-unity init) tests that. W3 has headroom: 0.20 for
+knowing what is learnable, under travel. **Queue (13 Nov, evening):** M5-W3 progress controller (running) → H30y →
+planner on W3 if the bandit loses to travel → substitution → organic sleep.
+
 **Queue (13 Nov, midday):** H31b (GPU, running) → H30x trace-learned bank (CPU) → W3 headroom → curious controller on
 W3 → substitution (bank or counts in place of the GRU cortex) → organic sleep.
 
