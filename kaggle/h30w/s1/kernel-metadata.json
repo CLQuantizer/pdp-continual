@@ -1,0 +1,15 @@
+{
+  "id": "ezzzzzx/h30w-s1",
+  "title": "h30w-s1",
+  "code_file": "h30w_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": ["ezzzzzx/pdp-code-h30w"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
