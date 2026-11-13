@@ -1,0 +1,17 @@
+{
+  "id": "ezzzzzx/m7-w3-s32",
+  "title": "m7-w3-s32",
+  "code_file": "m7_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/pdp-code-m7w3"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
