@@ -2981,3 +2981,21 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    weights that can forget, plus the curious controller, split stores and sleep. Fresh seeds 30–35. Bars: curiosity
    beats rand_dwell by ≥ 0.10 (5 of 6); sleep beats no sleep by ≥ 0.05 (5 of 6). Forgetting is measured directly.
 2. Substitution with a local cortex on text.
+
+## 2026-11-13 (orchestrator: M7 scored, sleep pays on a cortex that forgets; M7b dispatched)
+
+### Findings
+1. **M7-W3 (grok, 6 Kaggle CPU kernels, 7–14 min each, seeds 30–35): bar 2 PASS, bar 1 FAIL.** On the trace-learned bank, sleep
+   gains 0.30 bits/symbol over the same controller without it (6 of 6), and cuts end-of-life forgetting from 0.61 to 0.23.
+   A fixed schedule at the same dose does as well.
+2. **The repeater theory, confirmed by contrast:** sleep bought nothing on the hashed learner, which hardly forgets (M6b,
+   +0.012). It buys 0.30 on a cortex that does forget. Replay pays where carriage is lossy.
+3. **Curiosity on whole-store progress breaks under interference** (+0.26 vs random dwelling, 1 of 6). After quarter
+   1, room visits average negative whole-store progress, so the bandit picks the least harmful rooms, narrows, and forgets
+   the rest. The learnability oracle also loses to random dwelling here.
+4. The bank is a much better learner in W3 than the hashed model (rand_dwell W 0.80 vs 1.99).
+
+### Hypotheses, ranked
+1. **M7b-W3** (grok, Kaggle CPU, dispatched): a fixed sleep dose (20%) for every controller, with curiosity rewarded by
+   per-room progress. Fresh seeds 36–41. Bars: beats random dwelling plus the same sleep by ≥ 0.10 (5 of 6), and beats
+   whole-store curiosity plus sleep by ≥ 0.10.
