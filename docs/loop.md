@@ -2804,3 +2804,33 @@ random and (b) a model-based planner. The roadmap status was updated.
 1. **H30w** (grok, Kaggle CPU, dispatched): bank vs ring vs GRU.
 2. **W3 headroom** (spec next): many rooms of graded learnability under a life too short to learn them all.
 3. H31b repeater spacing (GPU, queued).
+
+## 2026-11-13 (orchestrator: H30w scored; H31b dispatched; H30x specified)
+
+### Findings
+1. **H30w (grok, 3 Kaggle CPU kernels, about 8 min each), bar 2: PASS, by a wide margin.** On H20's counters (C1 + C7),
+   the diagonal complex bank scores 0.263 bits/symbol against the GRU's 1.872, at equal size (107k parameters). It
+   also wins on totals (0.625 vs 1.177) and on the CA and M37 processes. It loses on the grammar G (1.42 vs 0.87).
+   Damped rotations hold a count, and the order-2 readout reads the carry. The H20/H21a failure was the GRU's, not
+   online learning's.
+2. **Bar 1: PASS by the letter, but hollow.** On echo D = 128, ring − bank is −0.337, with the ring lower on all seeds.
+   But the ring sits at 4.07 bits on copies, above uniform (4). The bank sits at 4.41. At D = 32 the bank learns the
+   copies (1.79) and the ring learns nothing. Propagation is not shown, so the ring is parked.
+3. **Mechanism:** BPTT inside 64-symbol chunks with detached state never gives a 128-step dependency a gradient, so
+   no substrate can learn it. **Process error (mine):** the bar compared two models without anchoring either to
+   uniform. Delay bars will now also require copy bits below uniform by a margin.
+
+### Literature insight
+For a diagonal recurrence, exact real-time recurrent learning costs only a trace per parameter, updated forward with
+the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in time, with no backward pass.
+
+### Paths closed
+- Ring propagation as a delay medium under BPTT-64 (H30w): parked.
+
+### Hypotheses, ranked
+1. **H31b** (grok, Kaggle GPU ≤ 1.6 h, dispatched): repeater spacing against lr.
+2. **H30x** (grok, Kaggle CPU, queued until H31b's smoke clears the VPS): the bank under trace learning against
+   BPTT-64. Echo D ∈ {32, 128, 512}, H20 slow. Bars: trace copy bits ≤ 3.0 at D = 128, beating BPTT-64 by ≥ 1.0 on
+   every seed; trace − BPTT-64 on C1 + C7 ≤ +0.10. This changes the learning rule, and counts toward the
+   one-in-three rule.
+3. **W3 headroom** (spec next): graded learnability under a scarce life.

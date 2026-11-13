@@ -106,6 +106,7 @@ Key points from Journé et al.:
 | O'Keefe & Recce 1993. *Phase relationship between hippocampal place units and the EEG theta rhythm.* Hippocampus 3:317 | phase precession: position across a place field is coded as theta phase | memory |
 | Izhikevich 2006. *Polychronization: computation with spikes.* Neural Computation 18:245 | axonal delays let spiking nets store many time-locked firing patterns | memory |
 | Fernando & Sojakka 2003. *Pattern recognition in a bucket.* ECAL | waves on water as a physical reservoir that separates speech classes | memory |
+| Zucchet, Meier, Schug, Mujika & Sacramento 2023. *Online learning of long-range dependencies.* NeurIPS (arXiv 2305.15947) | exact RTRL is cheap for diagonal recurrences: one forward trace per parameter, no BPTT | memory |
 
 
 ## Curiosity lineage, verified (grok citation check, 9 Nov 2026)

@@ -116,7 +116,15 @@ Three results matter. The rest is detail.
 - **Theory to test:** carriage (space and time, diagonal) versus combination (coupling). Replay is a repeater (H31b,
   queued), and propagation in a ring medium is weighed against a frequency bank and the GRU (H30w, queued).
 
-**Queue (13 Nov):** W2-1 headroom (running) → H30w ring vs bank vs GRU (CPU) → H31b repeater spacing (GPU, 1.6 h)
+**Update (13 Nov, midday):** W2-1 has no headroom (a random walk learns the whole world), so W3 must be built for
+it. H30w: the diagonal bank beats the GRU on counters by 1.6 bits/symbol at equal size, so the substrate question has
+its first answer. The ring adds nothing. No model learned a 128-step delay under BPTT-64, which is a credit-assignment
+limit, not a substrate limit. Next on the substrate line is H30x: the bank learned by exact eligibility traces (diagonal RTRL), online and local in time,
+with no unrolling. That is the first learning rule here that the north star would accept.
+**Queue (13 Nov, midday):** H31b (GPU, running) → H30x trace-learned bank (CPU) → W3 headroom → curious controller on
+W3 → substitution (bank or counts in place of the GRU cortex) → organic sleep.
+
+**Queue (13 Nov, morning):** W2-1 headroom (running) → H30w ring vs bank vs GRU (CPU) → H31b repeater spacing (GPU, 1.6 h)
 → curious controller or planner on W2-1, if it has headroom → substitution (smaller cortex plus counts) → organic sleep.
 
 ## North-star check (12 Nov 2026, afternoon)
