@@ -2834,3 +2834,20 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    every seed; trace − BPTT-64 on C1 + C7 ≤ +0.10. This changes the learning rule, and counts toward the
    one-in-three rule.
 3. **W3 headroom** (spec next): graded learnability under a scarce life.
+
+## 2026-11-13 (orchestrator: H31b scored; H30x dispatched)
+
+### Findings
+1. **H31b (grok, 4 Kaggle GPU kernels, 1.31 GPU h): bar 1 PASS, bar 2 FAIL.** The cost of sleep blocks of 1,024
+   chunks over interleaved replay rises with lr: 0.100 (1.5e-4), 0.133 (3e-4, H31), 0.137 (6e-4). The rise over the
+   whole range is 0.037, under the bar of 0.05.
+2. **Mechanism:** the rise saturates. At B = 1,024 the repeats are spaced beyond the weights' decay length at every
+   lr, so spacing sets the cost, not the loss rate. The lr dependence should show at spacings near the decay length.
+   Single seed.
+
+### Paths closed
+- Replay as a repeater (H31b): parked in its weak form. When to sleep is the live question (organic sleep).
+
+### Hypotheses, ranked
+1. **H30x** (grok, Kaggle CPU, dispatched): the bank learned by eligibility traces against BPTT-64.
+2. **W3 headroom** (spec next): graded learnability under a scarce life.
