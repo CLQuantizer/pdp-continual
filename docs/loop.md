@@ -2851,3 +2851,22 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 ### Hypotheses, ranked
 1. **H30x** (grok, Kaggle CPU, dispatched): the bank learned by eligibility traces against BPTT-64.
 2. **W3 headroom** (spec next): graded learnability under a scarce life.
+
+## 2026-11-13 (orchestrator: H30x scored; W3 dispatched; H30y specified)
+
+### Findings
+1. **H30x (grok, 3 Kaggle CPU kernels, about 8 min each): bar 2 PASS, bar 1 FAIL.** The diagonal bank trained by
+   eligibility traces scores the same as BPTT-64 on H20 (C1 + C7 +0.0007, totals 0.632 vs 0.625). Its gradient matches
+   full BPTT to 9e-16. So the bank learns online, local in time, in one forward sweep, at no cost. On echo D = 128 it
+   still fails (copies 4.27, above uniform).
+2. **Mechanism:** memory, not credit. Learning drives mean |λ| to 0.93, a memory of about 14 steps. Half the stream is
+   fresh, and there long memory is noise, so the exact gradient moves away from a delay line.
+3. **Theory:** a transport ring is a diagonal bank on the roots of unity (DFT), so a delay line is a point in the
+   bank's own parameter space. The init sits far from it.
+
+### Hypotheses, ranked
+1. **W3 headroom** (grok, Kaggle CPU, dispatched): H23c's sources as rooms on a ring with travel. This is a world
+   change.
+2. **H30y** (grok, Kaggle CPU, queued): a trace-learned bank initialised on the 256th roots of unity, with λ learned
+   or frozen. Bars: copy bits ≤ 3.0 at D = 128 and ≥ 1.0 below H30x's init on every seed; counters are not lost.
+   Prediction: D = 512 aliases.
