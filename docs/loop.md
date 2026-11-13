@@ -2963,3 +2963,21 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 1. **M6b-W3** (grok, Kaggle CPU, dispatched): disjoint replay and exam stores (coin flip per pair), R = 2,048 per
    channel, fresh seeds 24–29, the same bars.
 2. Substitution with a local cortex.
+
+## 2026-11-13 (orchestrator: M6b scored; M7 dispatched, the whole loop on a local cortex)
+
+### Findings
+1. **M6b-W3 (grok, 1 Kaggle CPU kernel, 28 min, seeds 24–29): both bars FAIL; kill rule 1 fires.** With disjoint replay
+   and exam stores, the agent judges sleep honestly. It sleeps 12% of the time, rising to 20% in the last quarter, once
+   the world's easy progress is spent. But sleep buys nothing on fresh data (+0.012), and neither does a matched fixed
+   dose.
+2. **Mechanism:** the hashed per-context learner hardly forgets, so a repeater has nothing to repair. That is the
+   theory's prediction: replay pays against lossy carriage, and slot-wise storage is nearly lossless.
+3. Side finding: the whole-store yardstick helps the controller over a long life (−0.067 at L = 2,048) and hurts over a
+   short one (+0.344 at L = 512).
+
+### Hypotheses, ranked
+1. **M7-W3** (grok, 6 Kaggle CPU kernels, dispatched): the trace-learned roots bank becomes W3's cortex, with shared
+   weights that can forget, plus the curious controller, split stores and sleep. Fresh seeds 30–35. Bars: curiosity
+   beats rand_dwell by ≥ 0.10 (5 of 6); sleep beats no sleep by ≥ 0.05 (5 of 6). Forgetting is measured directly.
+2. Substitution with a local cortex on text.
