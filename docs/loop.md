@@ -2766,3 +2766,24 @@ random and (b) a model-based planner. The roadmap status was updated.
 1. W2-1 headroom: room 8 gets a way back; oracle vs rand6 before any bar (next cycle).
 2. Model-based planner in W2. 3. Substitution: cortex hidden 1024 / 256 / 64 plus orders 1–6, bits against compute.
 4. Organic sleep, chosen by the agent.
+
+## 2026-11-13 08:55 UTC+8 (orchestrator: daily; W2-1 headroom dispatched; H30w and H31b queued)
+
+### Findings
+1. Nothing new to score. Every handoff up to yesterday is reviewed (H31, H26, H32, H32b and M4-W2d all have verdicts).
+2. Theory from yesterday afternoon, with Ez: persistence is movement through time, and moving through space and time
+   is one carriage, with the medium's speed as the exchange rate. The cut that remains is carry (diagonal) versus
+   combine (coupling), and local in spacetime versus addressed. Two tests follow: replay as a repeater (H31b), and
+   propagation in a medium (H30w).
+
+### Hypotheses, ranked
+1. **W2-1 headroom** (grok, Kaggle CPU, dispatched): room 8 gets a 3-digit exit back to room 0. rand6, rand8, oracle
+   and oracle_deep (half its time in room 8) on seeds 0–2. Bars: rand6 completes ≥ 3 cycles; an oracle beats rand6
+   by ≥ 0.5 PROBE_cap on 2 of 3 seeds. Kill: no headroom means the next world needs rooms of unequal learnability.
+2. **H30w** (grok, Kaggle CPU, queued until W2-1's smoke clears the VPS): a diagonal complex bank with an order-2
+   readout, the same units on a propagating ring, and a GRU, on the H20 slow world and an echo stream. Bars: the ring
+   beats the bank by ≥ 0.25 bits/symbol on echo copies at D = 128; bank or ring beats the GRU by ≥ 0.10 on the
+   counters.
+3. **H31b** (grok, Kaggle GPU ≤ 1.6 h, queued): sleep1k − inter at lr 1.5e-4 and 6e-4, against H31's 3e-4. Bars:
+   the gap grows with lr, by ≥ 0.05 from lowest to highest.
+4. Papers: six new references registered by grok (dispatched).

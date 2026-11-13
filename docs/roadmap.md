@@ -106,6 +106,19 @@ Three results matter. The rest is detail.
   (H31, running) and the router.
 - **Queue:** H31 (running) → H26 cued-plus-broad replay → H30 oscillator cortex → H32 cerebellar mixer.
 
+## Status (13 Nov 2026, morning)
+
+- **Curiosity in W2:** the tabular line is closed (M4-W2d: the controller opens every lock but loses to rand6, and
+  everyone ends trapped in room 8). W2-1 gives room 8 a way back. Its headroom is checked before any curiosity bar
+  (dispatched).
+- **Compressor:** the cerebellar mixer beats PPMd by 0.087 (orders 1–4) and 0.125 (orders 1–6) on E10M. The counts
+  carry it, not calibration (H32b). The score race on enwik8 stops there.
+- **Theory to test:** carriage (space and time, diagonal) versus combination (coupling). Replay is a repeater (H31b,
+  queued), and propagation in a ring medium is weighed against a frequency bank and the GRU (H30w, queued).
+
+**Queue (13 Nov):** W2-1 headroom (running) → H30w ring vs bank vs GRU (CPU) → H31b repeater spacing (GPU, 1.6 h)
+→ curious controller or planner on W2-1, if it has headroom → substitution (smaller cortex plus counts) → organic sleep.
+
 ## North-star check (12 Nov 2026, afternoon)
 
 Ez asked me to think about the north star: a machine that lives. It acts and learns at once, chooses when to sleep,
