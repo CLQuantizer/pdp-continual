@@ -126,6 +126,11 @@ learner in M6b). A fixed dose does as well as chosen timing. With a strong corte
 (M7c). **Queue (14 Nov):** W4 headroom sized to the bank cortex → curiosity on W4 → organic sleep timing, once a world
 makes timing matter → substitution on text.
 
+**Update (14 Nov, afternoon): sleep pays under drift, timing does not, and the agent under-sleeps (M9-W5).** A fixed 0.20 sleep
+dose beats no sleep by 0.32 (12 of 12), though a fifth of replays rehearse rules that are gone. At a matched dose, chosen timing
+adds nothing, as in W3. Left to choose, the agent sleeps 3.4× too little: progress felt during sleep misses its main value, which is
+loss prevented later. **Queue:** a richer local cortex → a sleep reward that credits loss prevented.
+
 **Milestone (14 Nov): curiosity tracks a drifting world on a local cortex with sleep (M8-W5).** With the trace-learned bank,
 honest stores and a fixed sleep dose, a per-room progress bandit whose beliefs about unseen rooms age (τ = 256) beats random
 dwelling by 0.59 bits on tracking (12 of 12 fresh seeds). It holds at every checkpoint after the first, and it beats an oracle

@@ -1,0 +1,17 @@
+{
+  "id": "ezzzzzx/m9-w5-s27",
+  "title": "m9-w5-s27",
+  "code_file": "m9_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/pdp-code-m9w5"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

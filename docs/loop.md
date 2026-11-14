@@ -3130,3 +3130,22 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 1. **M9-W5** (grok, 12 Kaggle CPU kernels, seeds 24–35, dispatched): sleep as a 19th arm of the ageing agent, compared with no sleep, the fixed 0.20 dose and a
    matched fixed dose. Bars: sleep pays under drift (≤ −0.05, 9 of 12); chosen timing beats the matched dose (≤ −0.05, 9 of 12).
 2. A richer local cortex (substrate; from H33).
+
+## 2026-11-14 (orchestrator: M9-W5 scored, sleep pays under drift, timing adds nothing, the chosen dose is far too low)
+
+### Findings
+1. **M9-W5 (grok, 12 Kaggle CPU kernels, 5–9 min each, seeds 24–35): bar 1 PASS, bar 2 FAIL.** The fixed 0.20 sleep dose beats no sleep by −0.319 on T14 (12 of 12),
+   even though a fifth of replay draws rehearse rules that are gone. Chosen sleep against the same dose on a clock: +0.016 (7 of 12).
+2. **The chosen dose is the problem:** the sleep arm sleeps only 0.059 of the life and loses 0.164 to the fixed 0.20 dose (worse on 11 of 12 seeds).
+   Sleep onsets do not track swaps.
+3. **Mechanism:** sleep is rewarded by the progress during the sleep visit, but its value is mostly retention, bits not lost later. Immediate
+   progress cannot credit loss prevented, so a progress-driven agent under-sleeps.
+
+### Paths closed
+- Organic sleep timing, until a world makes rest costly at some times and cheap at others (timing adds nothing at a matched dose, in W3 and W5).
+
+### Hypotheses, ranked
+1. **A richer local cortex** (substrate, from H33): nonlinear depth learned by local rules, scored on W5 and on text at matched live compute. Spec at the next cycle.
+2. **Sleep dose from loss prevented:** credit the sleep arm with forgetting avoided, measured as the exam bits of rooms not visited since the last sleep, relative to their
+   value at that sleep. Compare it with the fixed 0.20 dose.
+3. Curiosity with ageing beliefs on a world with noise that cannot be learned and rooms that drift at different rates.
