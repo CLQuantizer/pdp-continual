@@ -3095,3 +3095,18 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **A richer local cortex** (substrate): nonlinear depth learned by local rules, such as stacked banks with per-layer trace
    learning, or banks feeding a nonlinear mixer. Score it on W-worlds and on text against the GRU at matched live compute. Spec after W5.
 3. Curiosity on W5, if W5 has headroom.
+
+## 2026-11-14 (orchestrator: W5 scored, drift gives allocation headroom; M8-W5 dispatched)
+
+### Findings
+1. **W5 drift headroom (grok, 6 Kaggle CPU kernels, 4–8 min each, seeds 0–5): precondition MET, bar 1 PASS.** When one learnable room's
+   rule is redrawn every 128 decisions, random dwelling's tracking bits get worse by +0.336. An oracle that knows which rooms changed beats random
+   dwelling by −0.253 (≤ −0.15 on 5 of 6 seeds). At period 512 the gap is −0.184. oracle14_s does worse than random dwelling under drift.
+2. **Mechanism:** a swapped room starts near uniform and is relearned only by visiting it. Allocation headroom comes from changing
+   learnability, not from the number of rooms (W4).
+
+### Hypotheses, ranked
+1. **M8-W5** (grok, 12 Kaggle CPU kernels, seeds 12–23, dispatched): curiosity on W5. The controllers are M7b's per-room progress bandit
+   and a variant whose belief about a room grows stale with time since its last visit (τ = 256, fixed in advance). Each must beat random dwelling plus sleep by
+   ≥ 0.10 (9 of 12). The bars are void unless the oracle's headroom is ≥ 0.15 on these seeds.
+2. A richer local cortex (substrate; after H33).

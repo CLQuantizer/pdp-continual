@@ -126,6 +126,11 @@ learner in M6b). A fixed dose does as well as chosen timing. With a strong corte
 (M7c). **Queue (14 Nov):** W4 headroom sized to the bank cortex → curiosity on W4 → organic sleep timing, once a world
 makes timing matter → substitution on text.
 
+**Update (14 Nov, later): drift gives curiosity something to find (W5).** With one room's rule redrawn every 128 decisions,
+knowing where the change is beats random dwelling plus sleep by 0.25 (5 of 6). This is the first world where the bank cortex with
+sleep leaves allocation headroom. **Queue:** M8-W5, curiosity on W5 (running) → a richer local cortex (nonlinear depth, local
+rules) → organic sleep timing.
+
 **Update (14 Nov): more rooms add scarcity, not headroom (W4).** In an 18-room world with 14 learnable rooms, life is scarce
 for the bank cortex (a 4× longer life halves the bits), but the learnability oracle beats random dwelling plus sleep by
 only 0.008. When the sources are stationary and pay at the same rate, spreading time evenly is near optimal. What an
