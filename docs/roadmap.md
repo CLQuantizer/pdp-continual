@@ -126,6 +126,12 @@ learner in M6b). A fixed dose does as well as chosen timing. With a strong corte
 (M7c). **Queue (14 Nov):** W4 headroom sized to the bank cortex → curiosity on W4 → organic sleep timing, once a world
 makes timing matter → substitution on text.
 
+**Update (14 Nov): more rooms add scarcity, not headroom (W4).** In an 18-room world with 14 learnable rooms, life is scarce
+for the bank cortex (a 4× longer life halves the bits), but the learnability oracle beats random dwelling plus sleep by
+only 0.008. When the sources are stationary and pay at the same rate, spreading time evenly is near optimal. What an
+allocation can gain is set by how unequal and how changing the learning rates are. **Queue (14 Nov):** H33, substitution on
+text (running) → W5, W4 with drifting rules (headroom first) → curiosity on W5.
+
 **Milestone (13 Nov, night): curiosity works in an embodied world (M5b).** In W3 a progress-driven agent that must
 walk to its sources beats random dwelling at every life length, and beats the learnability oracle over a long life
 (6 of 6 fresh seeds). The delay-line search in the diagonal cortex is closed (H30y): verbatim recall at a distance is

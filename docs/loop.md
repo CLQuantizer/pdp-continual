@@ -3055,3 +3055,24 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **H33 substitution on text** (grok, 2 Kaggle CPU kernels, queued behind W4's smoke test, one CPU-heavy job at a time).
    Bars: bank_mix6 − 1.917 ≤ +0.03; bank_mix6 − counts_mix6 ≤ −0.05.
 3. Curiosity on W4, if W4 has headroom.
+
+## 2026-11-14 (orchestrator: W4 scored, no headroom; H33 running; W5 drift queued)
+
+### Findings
+1. **W4 headroom (grok, 6 Kaggle CPU kernels, 12–15 min each, seeds 0–5): bar 1 FAIL, bar 2 PASS.** The better oracle
+   (breadth, oracle14_s) beats random dwelling plus sleep by only 0.008 on W14 (≤ −0.15 on 1 of 6 seeds). Time is scarce:
+   W14 at L = 2,048 minus at L = 8,192 is +0.29 to +0.55, on 6 of 6 seeds.
+2. **Breadth beats depth:** spending all the time on half the learnable rooms is +2.22 behind random dwelling. The rooms it
+   never visits end at 5.65 bits, worse than uniform (5.36). The shared weights are tuned away from them.
+3. **Mechanism:** when the learnable rooms are stationary and pay at the same rate, spreading time evenly is near the best
+   allocation, and the noise rooms cost random dwelling less than the seed-to-seed spread. More rooms add scarcity, not headroom.
+
+### Paths closed
+- Headroom from more rooms of the same kind (W4).
+
+### Hypotheses, ranked
+1. **H33 substitution on text** (grok, 2 Kaggle CPU kernels, dispatched).
+2. **W5: W4 with drifting rules** (grok, spec written, queued behind H33). One learnable room's rule is redrawn every 128
+   decisions. The score is held-out bits averaged over 8 checkpoints in the life. Precondition: drift costs random
+   dwelling ≥ 0.10. Bar: an oracle that knows which rooms changed beats random dwelling by ≤ −0.15 (5 of 6).
+3. Curiosity on W5, if W5 has headroom.
