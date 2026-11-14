@@ -126,6 +126,15 @@ learner in M6b). A fixed dose does as well as chosen timing. With a strong corte
 (M7c). **Queue (14 Nov):** W4 headroom sized to the bank cortex → curiosity on W4 → organic sleep timing, once a world
 makes timing matter → substitution on text.
 
+**Direction (14 Nov, evening): open worlds, and a controller that looks ahead.** Curiosity pays only where the world outruns the learner,
+because learnability there is unequal, changing, or larger than a lifetime: W3 with a weak learner and W5 (drift), but not W3 with the bank or
+W4 (stationary). A living machine's world is open by definition, so the W-series stops building closed worlds and then checking them for
+headroom. **W6** is open: new rooms keep appearing from a generator of processes spanning a wide range of learnability (some unlearnable),
+and old rooms drift or vanish. It is scored on the life's prequential bits plus held-out bits on the rooms that exist at each checkpoint. The
+controller moves closer to Schmidhuber's 1991 design: a learned value of *future* progress (TD over visits), rewarded by the whole-store
+change including interference, in place of the myopic per-room bandit and its hand-set ageing. M9's under-sleeping is the first test it must
+pass. **Queue:** W6 (world plus headroom) and the forward-looking controller on W6 → a richer local cortex.
+
 **Update (14 Nov, afternoon): sleep pays under drift, timing does not, and the agent under-sleeps (M9-W5).** A fixed 0.20 sleep
 dose beats no sleep by 0.32 (12 of 12), though a fifth of replays rehearse rules that are gone. At a matched dose, chosen timing
 adds nothing, as in W3. Left to choose, the agent sleeps 3.4× too little: progress felt during sleep misses its main value, which is
