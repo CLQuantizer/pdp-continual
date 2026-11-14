@@ -3035,3 +3035,23 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 1. **W4 headroom** for the bank cortex with sleep (spec at the next cycle): more sources, harder learnable ones (longer
    motifs, deeper grammar, slower CA), and a life scarce for the bank. Headroom is checked first.
 2. Substitution with the local cortex on text.
+
+## 2026-11-14 (orchestrator: daily cycle; W4 headroom dispatched, H33 substitution on text queued)
+
+### Findings
+- Nothing new to score: every spec from 13 Nov has a result and a verdict.
+
+### Design notes
+- **W4** is sized to the bank cortex, not to the hashed learner. It has 18 rooms on a ring: 14 learnable rooms (two independent H20
+  instances over the same 41 symbols, so a shared cortex must keep same-alphabet rules apart), three noise rooms and one dark room.
+  Every policy gets a fixed sleep share of 0.20. A second oracle, `oracle7a_s`, which spends all its time on half the learnable world,
+  tests depth against breadth. The headroom bar is ≤ −0.15 on 5 of 6 seeds for the better oracle. Scarcity is checked at 4× the life.
+- **H33** pits the trace-learned roots bank against H32b's backprop GRU in the cortex slot of mix6, on the first 1 MB of enwik8
+  (H32b's slice 0: GRU 2.105, mix6 1.917). A counts-only mix6 arm checks that the bank adds something the counts do not already hold.
+
+### Hypotheses, ranked
+1. **W4 headroom** (grok, 6 Kaggle CPU kernels, dispatched). Bars: min oracle − rand_dwell_s ≤ −0.15 on W14 (5 of 6);
+   W14(L = 2,048) − W14(L = 8,192) ≥ 0.20 (6 of 6). If it fails: a world with drifting learnability.
+2. **H33 substitution on text** (grok, 2 Kaggle CPU kernels, queued behind W4's smoke test, one CPU-heavy job at a time).
+   Bars: bank_mix6 − 1.917 ≤ +0.03; bank_mix6 − counts_mix6 ≤ −0.05.
+3. Curiosity on W4, if W4 has headroom.
