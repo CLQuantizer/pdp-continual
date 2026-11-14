@@ -1,0 +1,18 @@
+{
+  "id": "ezzzzzx/h33-bank-text-s1",
+  "title": "h33-bank-text-s1",
+  "code_file": "h33_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/enwik8",
+    "ezzzzzx/pdp-code-h33"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

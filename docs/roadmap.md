@@ -130,7 +130,9 @@ makes timing matter → substitution on text.
 for the bank cortex (a 4× longer life halves the bits), but the learnability oracle beats random dwelling plus sleep by
 only 0.008. When the sources are stationary and pay at the same rate, spreading time evenly is near optimal. What an
 allocation can gain is set by how unequal and how changing the learning rates are. **Queue (14 Nov):** H33, substitution on
-text (running) → W5, W4 with drifting rules (headroom first) → curiosity on W5.
+text → W5, W4 with drifting rules (headroom first) → curiosity on W5. **H33 (14 Nov):** substitution on text fails. The
+local bank under the mixer adds only 0.016 over the counts, while the GRU adds 0.26, at about the same live compute. A local cortex
+needs nonlinear depth before it can replace backprop on real data, and this joins the queue after W5.
 
 **Milestone (13 Nov, night): curiosity works in an embodied world (M5b).** In W3 a progress-driven agent that must
 walk to its sources beats random dwelling at every life length, and beats the learnability oracle over a long life

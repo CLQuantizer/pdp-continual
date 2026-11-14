@@ -3076,3 +3076,22 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    decisions. The score is held-out bits averaged over 8 checkpoints in the life. Precondition: drift costs random
    dwelling ≥ 0.10. Bar: an oracle that knows which rooms changed beats random dwelling by ≤ −0.15 (5 of 6).
 3. Curiosity on W5, if W5 has headroom.
+
+## 2026-11-14 (orchestrator: H33 scored, the bank cannot stand in for the GRU on text; W5 dispatched)
+
+### Findings
+1. **H33 (grok, 2 Kaggle CPU kernels, 38–43 min, model seeds 0–1, first 1 MB of enwik8): both bars FAIL.** bank_mix6 scores 2.161
+   bits/byte, against 1.917 for the GRU under the same mixer (+0.244; the bar was ≤ +0.03), and against 2.178 for the counts alone (−0.016;
+   the bar was ≤ −0.05). The bank alone scores 3.098, against the GRU's 2.105.
+2. **Mechanism:** a linear diagonal bank with an order-2 readout (238k parameters) learns mostly short context on text, and
+   the counts hold that exactly. The GRU's nonlinear features add 0.26 over the counts. Its live compute per byte is about the same as the bank's
+   (bank 0.88×), so the gap is in the kind of model, not the budget.
+
+### Paths closed
+- The local bank as a drop-in for the GRU cortex on text, at this size and form.
+
+### Hypotheses, ranked
+1. **W5 drift headroom** (grok, 6 Kaggle CPU kernels, dispatched).
+2. **A richer local cortex** (substrate): nonlinear depth learned by local rules, such as stacked banks with per-layer trace
+   learning, or banks feeding a nonlinear mixer. Score it on W-worlds and on text against the GRU at matched live compute. Spec after W5.
+3. Curiosity on W5, if W5 has headroom.
