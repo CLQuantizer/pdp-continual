@@ -3110,3 +3110,23 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    and a variant whose belief about a room grows stale with time since its last visit (τ = 256, fixed in advance). Each must beat random dwelling plus sleep by
    ≥ 0.10 (9 of 12). The bars are void unless the oracle's headroom is ≥ 0.15 on these seeds.
 2. A richer local cortex (substrate; after H33).
+
+## 2026-11-14 (orchestrator: M8-W5 scored, curiosity tracks a drifting world and beats the swap oracle; M9-W5 dispatched)
+
+### Findings
+1. **M8-W5 (grok, 12 Kaggle CPU kernels, 4–6 min each, seeds 12–23): precondition MET, both bars PASS.** On T14, compared with random dwelling plus sleep: the swap oracle is
+   −0.341 (12 of 12), prog_chan_s −0.405 (11 of 12) and prog_age_s −0.587 (12 of 12).
+2. **Orchestrator check:** T14 weights the first checkpoint heavily. Without it, prog_chan_s is −0.112 (10 of 12) and falls behind late in life,
+   because rooms it stopped visiting keep stale low values (swap latency 239). prog_age_s is −0.315 (12 of 12) at every later checkpoint.
+   Bar 1's pass is mostly a fast start, from less travel. Bar 2's is real tracking.
+3. **Mechanism:** progress knows where learning is fast and when to stop travelling, and ageing beliefs add that an unseen room may have
+   changed. Together they beat an oracle that knows only where the swaps are.
+
+### Settled today
+- In a world whose rules drift, a curious agent on a local cortex with sleep tracks the drift from its own compression progress, if its
+  beliefs about unseen rooms age.
+
+### Hypotheses, ranked
+1. **M9-W5** (grok, 12 Kaggle CPU kernels, seeds 24–35, dispatched): sleep as a 19th arm of the ageing agent, compared with no sleep, the fixed 0.20 dose and a
+   matched fixed dose. Bars: sleep pays under drift (≤ −0.05, 9 of 12); chosen timing beats the matched dose (≤ −0.05, 9 of 12).
+2. A richer local cortex (substrate; from H33).

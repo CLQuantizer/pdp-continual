@@ -1,0 +1,17 @@
+{
+  "id": "ezzzzzx/m8-w5-s15",
+  "title": "m8-w5-s15",
+  "code_file": "m8_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/pdp-code-m8w5"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
