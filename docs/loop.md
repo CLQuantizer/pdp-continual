@@ -3219,3 +3219,32 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **M10b-W6** (grok, 12 Kaggle CPU kernels, fresh seeds 24–35, dispatched): the forward value with prog_age_s's own reward, unclipped
    (≤ −0.05 vs prog_age_s, 8 of 12), and with an interference term net of a running baseline (≤ −0.05 vs the own-reward version, 8 of 12).
 3. H34b (learned cross-layer credit), after H34a.
+
+## 2026-11-17 (orchestrator, daily: M10b scored, forward value parked; open-world curiosity is a milestone; H34a to Kaggle; M11 sleep credit)
+
+### Findings
+1. **M10b-W6 (grok, 12 Kaggle CPU kernels, 17–33 min each, fresh seeds 24–35): both bars FAIL.** With prog_age_s's own reward, unclipped,
+   the learned forward value is +0.170 worse than prog_age_s at period 128 (lower on 2 of 12) and +0.089 at period 512 (1 of 12). Adding
+   interference net of a running baseline: +0.182 (1 of 12).
+2. **prog_age_s replicates a third time:** −0.305 vs random dwelling at period 128 (11 of 12) and −0.185 at period 512 (12 of 12).
+3. **Mechanism:** the learned weights load on age (+7 to +12 on the 64-decision age feature) and travel (positive), with near-zero weight on
+   the room's own reward features. A shared linear value cannot express prog_age_s's form, v + (v_max − v)(1 − e^(−age/τ)), where a room's own
+   value interacts with its staleness, so it falls back to novelty by age. Interference in W6 is small (r_inter within ±0.2 against room
+   rewards of tens of bits) and is not worth crediting.
+4. **H34a:** all six smoke checks pass, including exact traces through a two-layer stack and identity at init. The 300 KB fallback
+   applies (left_4 needs ~68 min per 300 KB on one VPS thread). wide_1 is within 9% of left_4's multiply-adds. Codex's sandbox has no network, so no
+   kernel ran; grok pushes them today.
+
+### Paths closed
+- A shared linear forward value over visit features, as a replacement for hand-set ageing, in W6 (parked until a world makes a room's future
+  value depend on its kind).
+
+### Settled
+- Curiosity pays in an open world on fresh seeds, three times over, where knowledge of categories (learnable, new) does not.
+
+### Hypotheses, ranked
+1. **H34a, local depth** (grok runs the kernels codex prepared).
+2. **M11-W6, organic sleep** (codex implements and smoke-tests; grok pushes kernels after): the sleep arm is credited with
+   bits(shadow that skipped the sleep) − bits(live) after 64 wake decisions on the same glances. Bars: beats the immediate-progress sleep arm
+   by ≤ −0.05 (8 of 12); within +0.03 of the fixed 0.20 dose.
+3. H34b (learned cross-layer credit, or the leftover stack on W5/W6), after H34a.

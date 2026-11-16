@@ -176,6 +176,20 @@ W3 → substitution (bank or counts in place of the GRU cortex) → organic slee
 **Queue (13 Nov, morning):** W2-1 headroom (running) → H30w ring vs bank vs GRU (CPU) → H31b repeater spacing (GPU, 1.6 h)
 → curious controller or planner on W2-1, if it has headroom → substitution (smaller cortex plus counts) → organic sleep.
 
+## Status (17 Nov 2026, morning)
+
+- **Milestone: curiosity pays in an open world.** In W6, rooms die and new ones of random kinds (seven processes or noise) are born
+  without telling the agent. The ageing progress bandit beats random dwelling on two sets of fresh seeds (M10: −0.29, 11 of 12; M10b:
+  −0.30, 11 of 12; −0.19 and 12 of 12 when births are slower). Oracles that know which rooms are learnable or new gain nothing: what pays
+  is how fast a room learns now, which only progress measures.
+- **The learned forward value is parked (M10, M10b).** A shared linear value over visit features does worse than one hand-set ageing
+  constant. Its weights go to age and travel and ignore the room's own progress: the product "a room's value × how stale it is" is
+  outside a linear sum. Interference credit adds nothing.
+- **Two lines from here.** (1) *Local depth* (H34: carry, stack, leftover): does a stack of trace-learned banks improve with depth when
+  each layer learns from the mixer's leftover error, with no gradient between layers? H34a runs today. (2) *Organic sleep* (M11): credit
+  sleep with the loss it prevents, measured against a shadow cortex that skipped it, so the agent can choose its own dose.
+- **Workers:** codex implements and smoke-tests (its sandbox has no network); grok pushes Kaggle kernels and does lookups.
+
 ## North-star check (12 Nov 2026, afternoon)
 
 Ez asked me to think about the north star: a machine that lives. It acts and learns at once, chooses when to sleep,
