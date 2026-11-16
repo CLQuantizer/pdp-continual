@@ -3149,3 +3149,26 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **Sleep dose from loss prevented:** credit the sleep arm with forgetting avoided, measured as the exam bits of rooms not visited since the last sleep, relative to their
    value at that sleep. Compare it with the fixed 0.20 dose.
 3. Curiosity with ageing beliefs on a world with noise that cannot be learned and rooms that drift at different rates.
+
+## 2026-11-16 (orchestrator: restart after a missed day; H34a local depth and W6 open world dispatched)
+
+### Findings
+- Nothing new to score. No cycle ran on 15 Nov: the daily orchestration had stopped. It is restarted at 07:38 UTC+8.
+
+### Design notes
+- **Carry, stack, leftover.** In backprop the residual gives the gradient a short route around each layer. Local learning has no
+  gradient to lose. Its failure is that each layer learns without knowing what is already explained. Three moves answer that
+  without a backward pass. *Carry:* a diagonal linear recurrence is a residual in time, and its credit is a per-unit trace (H30x).
+  *Stack:* nonlinearity between layers, as in state-space models. *Leftover:* every layer has its own zero-init readout, a geometric
+  mixer adds them, and every layer learns from the broadcast error p_mix − onehot. For a geometric mixer that is the exact gradient on
+  the layer's logits, up to its weight. H33's diagnosis (the bank has time but no depth) is what this tests.
+- **W6** makes the world open: every 128 or 512 decisions a room dies and a new one is born, of a random kind (seven H20 processes or
+  noise). The agent is not told.
+
+### Hypotheses, ranked
+1. **H34a, local depth** (codex, 16 Kaggle CPU kernels, dispatched): plain vs leftover stacks of trace-learned banks at D ∈ {1, 2, 4},
+   a no-skip arm and a matched-width control, on the first 500 KB of enwik8. Bars: left_4 − left_1 ≤ −0.10; left_4 − plain_4 ≤ −0.05;
+   left_4 − wide_1 ≤ −0.03.
+2. **W6 headroom** (grok, 6 Kaggle CPU kernels, dispatched): precondition, births cost random dwelling ≥ 0.10; bar, the better oracle
+   beats random dwelling by ≤ −0.15 (5 of 6). The ageing agent is reported.
+3. The forward-looking progress controller on W6, if W6 has headroom. H34b (learned cross-layer credit), after H34a.
