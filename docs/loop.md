@@ -3195,3 +3195,27 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    and `prog_fwd_s`, a shared linear value of a room's future progress learned by TD over visits and rewarded by the whole store's change,
    in place of the hand-set ageing (≤ −0.05 vs prog_age_s, 8 of 12).
 3. H34b (learned cross-layer credit), after H34a.
+
+## 2026-11-17 (orchestrator, night: M10-W6 scored; curiosity pays in the open world on fresh seeds; the forward controller failed on my reward scale)
+
+### Findings
+1. **M10-W6 (grok, 12 Kaggle CPU kernels, 11–21 min each, fresh seeds 12–23): bar 1 PASS, bar 2 FAIL.** The ageing progress bandit beats
+   random dwelling by −0.289 on T_open at birth period 128 (≤ −0.10 on 11 of 12) and by −0.185 at period 512 (12 of 12). W6's report-only
+   gain on selection seeds replicates and grows.
+2. **prog_fwd_s is worse than prog_age_s on 12 of 12** (+0.563 at period 128) and worse than random dwelling.
+3. **Mechanism (orchestrator check, a spec error of mine):** the visit reward was the raw change in the whole exam store's bits, −20 to −350
+   per decision, and I clipped the TD target at ±10. Every target saturated, so the value learned only that age is bad (age weights −0.96,
+   −0.41, −0.12) and kept the agent near rooms it had just left. The whole-store change is also dominated by births and forgetting
+   elsewhere, which no action controls. The idea was not tested.
+4. **H34a, second attempt:** stopped at the float64 check (1.0e-4). Orchestrator check: the layer's input weights started one float32 step
+   (6e-8) from H33's; with identical initial parameters the float64 runs agree to 8.6e-14. The learning rule is exact. Codex resumed.
+
+### Settled
+- In an open world, where rooms die and new ones of random kinds are born, curiosity with ageing beliefs beats random dwelling on fresh
+  seeds, where oracles that know which rooms are learnable or new do not.
+
+### Hypotheses, ranked
+1. **H34a, local depth** (codex, resumed).
+2. **M10b-W6** (grok, 12 Kaggle CPU kernels, fresh seeds 24–35, dispatched): the forward value with prog_age_s's own reward, unclipped
+   (≤ −0.05 vs prog_age_s, 8 of 12), and with an interference term net of a running baseline (≤ −0.05 vs the own-reward version, 8 of 12).
+3. H34b (learned cross-layer credit), after H34a.

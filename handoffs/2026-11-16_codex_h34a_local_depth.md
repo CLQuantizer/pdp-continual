@@ -108,3 +108,10 @@ agree to 1e-6 (11.2334750 vs 11.2334740). That is float32 summation order, not a
 run both the H33 reference and this code's layer in **float64** (model parameters, state and traces) for that check only; the
 limit stays 1e-6 bits per byte. Scored runs stay float32. Everything else in the spec is unchanged. Continue from check 1 with
 the existing `h34a_local_depth.py`, then checks 2–6, then the kernels.
+
+## Amendment 2 (orchestrator, 17 Nov, after the float64 check stopped the second attempt)
+The float64 difference (1.0e-4) comes from initialisation only: this code's B_re/B_im start one float32 rounding step
+(6e-8) away from `h30y.build_arm`'s. The orchestrator loaded the reference's initial parameters into the layer and reran:
+max per-byte difference **8.6e-14** in float64, so the learning rule is exact. **Check 1 is amended again:** copy
+`h30y.build_arm('roots_learn', 256, 0)`'s initial parameters into this code's layer before the float64 comparison (limit 1e-6,
+unchanged). Then run checks 2–6 and the kernels as specified. Nothing else changes.
