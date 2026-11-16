@@ -100,3 +100,11 @@ stack helps only as extra width.
   writes `w6_world.py`, `w6_headroom.py`, `kaggle/w6/**`, `results/w6/**` today: do not edit them.
 - Gates and bars are the orchestrator's. Do not change or reinterpret them; if one looks wrong, stop and report.
 - Never print or upload secrets. Do not commit.
+
+## Amendment (orchestrator, 16 Nov, after smoke check 1 stopped the first attempt)
+The first attempt stopped correctly at smoke check 1 (max per-byte difference 8.7e-4 bits in float32). The orchestrator
+reran it per chunk: the difference is 1.7e-5 before any learning, stays flat (2e-4 to 9e-4) without growing, and the mean bits
+agree to 1e-6 (11.2334750 vs 11.2334740). That is float32 summation order, not a structural difference. **Check 1 is amended:**
+run both the H33 reference and this code's layer in **float64** (model parameters, state and traces) for that check only; the
+limit stays 1e-6 bits per byte. Scored runs stay float32. Everything else in the spec is unchanged. Continue from check 1 with
+the existing `h34a_local_depth.py`, then checks 2–6, then the kernels.

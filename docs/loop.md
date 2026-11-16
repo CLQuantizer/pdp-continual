@@ -3172,3 +3172,26 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **W6 headroom** (grok, 6 Kaggle CPU kernels, dispatched): precondition, births cost random dwelling ≥ 0.10; bar, the better oracle
    beats random dwelling by ≤ −0.15 (5 of 6). The ageing agent is reported.
 3. The forward-looking progress controller on W6, if W6 has headroom. H34b (learned cross-layer credit), after H34a.
+
+## 2026-11-16 (orchestrator: W6 scored; open-world births bite, the oracles find nothing, the curious agent does; M10-W6 dispatched)
+
+### Findings
+1. **W6 open world (grok, 6 Kaggle CPU kernels, 22–26 min each, seeds 0–5, L = 4,096): precondition MET, bar 1 FAIL.** A room dying and a
+   new one of a random kind being born every 128 decisions costs random dwelling +0.392 bits on T_open (+0.170 at period 512). Neither
+   oracle beats random dwelling: oracle_new_s −0.041 (3 of 6), oracle_learn_s +0.037 (2 of 6). The bar was ≤ −0.15 on 5 of 6.
+2. **The curious agent does what the oracles cannot (report only):** M8's ageing progress bandit is −0.194 vs random dwelling at period 128
+   (4 of 6, std 0.20) and −0.127 at period 512 (5 of 6), ahead of both oracles at both periods.
+3. **Mechanism:** noise costs random dwelling only 7% of its decisions, so knowing what is learnable is worth little. Knowing what is new
+   sends the oracle to every newborn for one dwell, including slow kinds that one visit barely dents. What pays is how fast a room is
+   learning *now*, which progress measures and the oracles do not know. The oracles were the wrong yardstick: knowledge of categories,
+   not of rates. An agent that reaches −0.19 is itself a lower bound on the headroom, but it is a lower bound measured on selection seeds.
+4. **H34a, first attempt:** stopped correctly at smoke check 1 (8.7e-4 bits per byte against H33's bank in float32). Orchestrator check:
+   1.7e-5 before any learning, flat afterwards, mean bits equal to 1e-6. Summation order, not a structural error. Check 1 now runs in float64.
+   Codex resumed.
+
+### Hypotheses, ranked
+1. **H34a, local depth** (codex, resumed).
+2. **M10-W6** (grok, 12 Kaggle CPU kernels, fresh seeds 12–23, dispatched): prog_age_s confirmed against random dwelling (≤ −0.10, 9 of 12),
+   and `prog_fwd_s`, a shared linear value of a room's future progress learned by TD over visits and rewarded by the whole store's change,
+   in place of the hand-set ageing (≤ −0.05 vs prog_age_s, 8 of 12).
+3. H34b (learned cross-layer credit), after H34a.
