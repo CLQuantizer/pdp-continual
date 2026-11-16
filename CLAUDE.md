@@ -55,16 +55,16 @@ Every paper we look at or cite gets a row in D1 **`pdp-papers-index`** (table `p
 Whenever a doc, spec or loop entry cites a new paper, register it in the same commit's work (sync:
 `python3 tools/sync_papers.py`). When Ez provides a `wanted` file, ingest it and flip it to `stored`.
 
-## Worker budget (Ez, 10 Nov 2026)
+## Worker budget (Ez, 10 Nov 2026; updated 16 Nov)
 
-- **grok is the default worker** for experiments and lookups.
+- **Use both grok and codex for research every day** (Ez, 16 Nov). grok also does lookups.
 - **codex has a hard cap of 80% of its weekly plan.** Check `python3 /root/bin/usage_report.py --dry` before any codex
-  dispatch; at ≥ 75%, do not dispatch codex at all. Use codex only when Ez says so.
+  dispatch; at ≥ 75%, do not dispatch codex at all (give its work to grok).
 - grok runs that edit files or call `cf`: `grok -p "..." --cwd /root/pdp --output-format plain --max-turns 150 --always-approve --background-wait-timeout 7200` (headless grok otherwise kills its background jobs after 600 s; tell it to run experiments in the foreground).
 
-## Cadence (Ez, 9–10 Nov 2026)
+## Cadence (Ez, 9–16 Nov 2026)
 
-The daily 08:40 UTC+8 orchestration is the baseline: review, verdicts, next specs, dispatch. With Kaggle as the runner,
+The daily 07:38 UTC+8 orchestration is the baseline: review, verdicts, next specs, dispatch. With Kaggle as the runner,
 further cycles the same day are fine while the usage bars allow (Claude 5h/week, grok); codex stays capped. Never run
 continuously without results to review in between.
 
