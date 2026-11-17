@@ -41,6 +41,11 @@ priced. A hypothesis that serves none of the four is polishing.
 3. The orchestrator reviews the diff and the output, reruns the smoke test, and only then commits, crediting the
    worker in the commit message.
 
+**Save Claude usage (Ez, 17 Nov):** every spec asks the worker for a compact scoring table at the top of RESULTS.md (each bar's
+quantities per seed, the pass/fail counts), so the orchestrator reads only that. Diagnosis of a failed smoke test or odd numbers goes to
+codex as a short job ("find the cause, report in ≤ 5 lines"). Grok runs Kaggle dispatchers (codex's sandbox has no network) with
+`--background-wait-timeout 21600` and writes the summary when they finish.
+
 Hand off: implementing and running experiments, baselines, plots, lookups. Keep: deciding what to test, bars,
 verdicts, diagnosis. Specs must be complete enough that a literal-minded worker gets it right: exact data, seeds, N,
 learners, what "prequential" means, outputs, a smoke test, a time budget, and the bars (marked "do not change").
