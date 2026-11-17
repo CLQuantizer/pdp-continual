@@ -3270,3 +3270,22 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    losses (`sumown_D`) vs plain mixer stacks, D ∈ {1, 2, 4}, stateless per-step input normalisation, 300 KB, seeds 0–1. Bars: sum_4 − sum_1
    ≤ −0.10; sum_4 − sumown_4 ≤ −0.05; sum_4 − wide_1 ≤ −0.03.
 2. **M11-W6, organic sleep** (24 kernels running).
+
+## 2026-11-17 (orchestrator, afternoon: H35 curious data diet and H36 curious tokeniser dispatched, at Ez's request)
+
+### Design notes
+- **Curiosity as data cleaning (H35).** Pretraining drops junk by hand: unlearnable text, and repeats it has already learned. Compression progress
+  rejects exactly those two. A count learner chooses what to read next from a 3,200-document pool, half of it junk of five kinds (random bytes,
+  corrupted text, exact duplicates, boilerplate, word-shuffled text), with a budget of a quarter of the pool. The question is whether a peek-based
+  progress estimate gets close to a hand filter that knows the labels, and whether it beats "highest loss first", which should read the junk.
+- **Curiosity as tokenisation (H36).** At a fixed budget of expensive-model steps (a quarter of bytes), place them on a fixed grid, where a cheap
+  model is surprised (entropy patching, as in byte-level models with learned patches), or where the expensive model has been helping or
+  learning. Prediction: surprise spends compute on noise.
+
+### Hypotheses, ranked
+1. H34a2 (codex implementing), M11 (kernels running).
+2. **H35** (grok, 6 Kaggle CPU kernels). Precondition: the hand filter beats random reading by ≥ 0.10 bits/byte on clean test text. Bars: curiosity
+   closes ≥ half of that gap; it beats highest-loss by ≥ 0.05.
+3. **H36** (codex implements; kernels after H35's corpus exists). Bars: entropy placement puts ≥ 1.2× as many expensive steps on junk as the fixed
+   grid; placement by realised gain beats entropy by ≥ 0.03 bits/byte on clean text.
+4. W7, the dotted window (curiosity that changes how it sees).
