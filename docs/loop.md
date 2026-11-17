@@ -3248,3 +3248,25 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    bits(shadow that skipped the sleep) − bits(live) after 64 wake decisions on the same glances. Bars: beats the immediate-progress sleep arm
    by ≤ −0.05 (8 of 12); within +0.03 of the fixed 0.20 dose.
 3. H34b (learned cross-layer credit, or the leftover stack on W5/W6), after H34a.
+
+## 2026-11-17 (orchestrator, midday: H34a scored early; D = 4 void from my normaliser, leftover with a learned mixer hurts; H34a2 to codex)
+
+### Findings
+1. **H34a (codex code, Kaggle; 13 of 16 kernels in, the width control still running; 300 KB, seeds 0–1): bar 1 FAIL, D = 4 void.** Every
+   D = 4 arm, plain and leftover, blew up in the first 50 KB (slice 0 ≈ 40,000 bits/byte) and then recovered (later slices 3.3–3.9). On the
+   full mean, left_4 − left_1 = +6,700. Bar 2 (left_4 − plain_4 = −0.31, both seeds) passes by the letter but compares two blow-ups, so it is
+   void. Bar 3 is void with them.
+2. **Cause of the blow-up, a spec error of mine:** the running RMS that normalises a layer's input started at 1 with decay 0.999, while the
+   features' real RMS is 5 to 600. For the first ~1,000 steps deep layers got unnormalised inputs, and at D = 4 the cascade exploded.
+3. **D = 2 is clean (tail, 50–300 KB):** plain_1 3.311 → plain_2 3.171 (−0.140): a second local layer helps. left_1 3.332 → left_2 3.254
+   (−0.078). **The leftover signal is worse than plain at D = 2** (+0.083).
+4. **Why leftover hurt, a design error of mine:** with a learned mixer, a layer whose weight is small receives p_mix − y, which does not depend
+   on its own logits, so nothing bounds them (left_2's layer 2 scores 38 bits alone at weight 0.01). That signal is not the gradient of anything
+   the layer controls. The exact form of the idea is a fixed sum of logits, p = softmax(Σ z_k): then p − y is the exact gradient on every
+   layer, it closes the loop, and a zero-init layer is the identity. This is boosting, the residual in logit space.
+
+### Hypotheses, ranked
+1. **H34a2** (codex implements and smoke-tests; orchestrator runs the dispatcher): logit-sum stacks (`sum_D`) vs the same combiner with own
+   losses (`sumown_D`) vs plain mixer stacks, D ∈ {1, 2, 4}, stateless per-step input normalisation, 300 KB, seeds 0–1. Bars: sum_4 − sum_1
+   ≤ −0.10; sum_4 − sumown_4 ≤ −0.05; sum_4 − wide_1 ≤ −0.03.
+2. **M11-W6, organic sleep** (24 kernels running).
