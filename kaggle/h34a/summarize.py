@@ -8,6 +8,22 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from h34a_local_depth import ARMS, compute_account, dump
 
+BARS = (('left_4 - left_1', 'left_4', 'left_1', -0.10),
+        ('left_4 - plain_4', 'left_4', 'plain_4', -0.05),
+        ('left_4 - wide_1', 'left_4', 'wide_1', -0.03))
+
+
+def scoring_lines(lookup, key):
+    lines = ['| Quantity | Seed 0 | Seed 1 | Mean | Threshold | Seeds ≤ threshold |',
+             '|---|---:|---:|---:|---:|---:|']
+    for name, left, right, thr in BARS:
+        vals = [lookup[left, s][key] - lookup[right, s][key] for s in (0, 1)]
+        mean = float(np.mean(vals))
+        n = int(sum(v <= thr for v in vals))
+        lines.append(f"| {name} | {vals[0]:.9f} | {vals[1]:.9f} | {mean:.9f} | {thr:.2f} | {n} |")
+    return lines
+
+
 def assemble(out):
     out = Path(out)
     smoke_result = json.loads((out/'smoke.json').read_text())
@@ -47,7 +63,12 @@ def assemble(out):
                   h33_reference_first_1mb=dict(bank=3.097826, counts_mix6=2.177547, GRU=2.104744),
                   kernel_ids=[r['kernel_id'] for r in runs])
     dump(out/'results.json', result)
-    lines = ['# H34a', '', f"Bytes per life: {result['n_bytes']:,}. CPU; float32; chunks 128; seeds 0, 1.", '',
+    lines = ['# H34a', '', '## Scoring', '',
+             'Full run. Each row is the gap per seed, the mean, and how many of the 2 seeds are ≤ the threshold.', '',
+             *scoring_lines(lookup, 'bits_per_byte'), '',
+             'Tail 50–300 KB. Same three gaps.', '',
+             *scoring_lines(lookup, 'tail_bits_per_byte'), '',
+             f"Bytes per life: {result['n_bytes']:,}. CPU; float32; chunks 128; seeds 0, 1.", '',
              '| Arm | Seed 0 bits/byte | Seed 1 bits/byte | Mean |', '|---|---:|---:|---:|']
     for arm in ARMS:
         lines.append(f"| {arm} | {lookup[arm,0]['bits_per_byte']:.9f} | {lookup[arm,1]['bits_per_byte']:.9f} | {means[arm]:.9f} |")

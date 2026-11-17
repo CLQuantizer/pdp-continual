@@ -9,6 +9,21 @@ sys.path.insert(0,str(ROOT))
 from h34a2_logit_sum import ARMS, compute_account, dump
 PAIRS=(('sum_4','sum_1'),('sum_2','sum_1'),('sum_4','sumown_4'),('sum_2','sumown_2'),
        ('sum_4','wide_1'),('plain_4','plain_1'),('sum_4','plain_4'),('sum_4_noskip','sum_4'))
+BARS=(('sum_4 - sum_1','sum_4','sum_1',-0.10),
+      ('sum_4 - sumown_4','sum_4','sumown_4',-0.05),
+      ('sum_4 - wide_1','sum_4','wide_1',-0.03),
+      ('plain_4 - plain_1','plain_4','plain_1',-0.10))
+
+
+def scoring_lines(lookup):
+    lines=['| Quantity | Seed 0 | Seed 1 | Mean | Threshold | Seeds ≤ threshold |',
+           '|---|---:|---:|---:|---:|---:|']
+    for name, left, right, thr in BARS:
+        vals=[lookup[left,s]['bits_per_byte']-lookup[right,s]['bits_per_byte'] for s in (0,1)]
+        mean=float(np.mean(vals))
+        n=int(sum(v<=thr for v in vals))
+        lines.append(f"| {name} | {vals[0]:.9f} | {vals[1]:.9f} | {mean:.9f} | {thr:.2f} | {n} |")
+    return lines
 
 
 def assemble(out):
@@ -44,7 +59,10 @@ def assemble(out):
     result=dict(n_bytes=300_000,runs=runs,means=means,tail_means=tails,slice_means=slices,gaps=gaps,
                 compute=compute,compute_formulas=formulas,wide_over_sum4_macs=ratio,
                 wide_compute_diff_gt_20pct=bool(abs(ratio-1)>.2),smoke=smoke,kernel_ids=[r['kernel_id'] for r in runs])
-    lines=['# H34a2','','Bytes per life: 300,000. CPU; float32; chunks 128; seeds 0, 1.','',
+    lines=['# H34a2','','## Scoring','',
+           'Full run, 300,000 bytes. plain_4 − plain_1 uses threshold −0.10, the number the spec writes on that gap.','',
+           *scoring_lines(lookup),'',
+           'Bytes per life: 300,000. CPU; float32; chunks 128; seeds 0, 1.','',
            '| Arm | Seed 0 bits/byte | Seed 1 | Mean | Tail 50–300 KB seed 0 | Tail seed 1 | Tail mean |',
            '|---|---:|---:|---:|---:|---:|---:|']
     for a in ARMS:

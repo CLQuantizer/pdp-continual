@@ -3289,3 +3289,42 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 3. **H36** (codex implements; kernels after H35's corpus exists). Bars: entropy placement puts ≥ 1.2× as many expensive steps on junk as the fixed
    grid; placement by realised gain beats entropy by ≥ 0.03 bits/byte on clean text.
 4. W7, the dotted window (curiosity that changes how it sees).
+
+## 2026-11-18 (orchestrator: H35 passes, curiosity cleans pretraining data by itself; H34a2 and M11 fail; H34a3 cascade and M11b on W5)
+
+### Findings
+1. **H35, curious data diet (grok, 12 Kaggle CPU kernels, seeds 0–5): precondition MET, bar 1 PASS, bar 2 PASS, all 6 of 6.** A count learner reads 800
+   of 3,200 documents, half of them junk. The hand filter beats random reading by −0.239 bits/byte on clean test text (T_clean). Choosing by peek-based
+   compression progress gets −0.186, 78% of the filter's gain (bar: half). It beats reading by highest loss by −1.14 (bar: −0.05) and RHO-LOSS by
+   about −0.11 (report only).
+2. **What each policy read:** curiosity 79% clean; of the junk, 1.4% random bytes, 3.6% corrupted, 3.0% duplicates, 0.8% boilerplate and 11.8%
+   word-shuffled text. Highest loss read 79% random or corrupted, the noisy TV exactly. RHO-LOSS read 43% clean and 45% random or corrupted. A
+   reference model trained on clean text discounts junk only partly.
+3. **Mechanism:** the progress score asks whether learning from the first 256 bytes of a document helps predict its next 256 bytes and the stored
+   history. Random and corrupted text teaches nothing that transfers, and duplicates and boilerplate are already known. Word-shuffled text is the one
+   junk curiosity keeps reading, and rightly so: its words are real, and only their order is noise.
+4. **H34a2, logit-sum stack (codex code, grok ran 20 kernels): all bars FAIL.** sum_1 3.505 → sum_2 3.575 → sum_4 3.878 bits/byte. Training each layer
+   on its own loss under the same sum (sumown) is far worse (6.95): it counts each layer's confidence D times. **Mechanism:** every layer gets the identical
+   error at the same moment, so D layers take the same step on the same mistake and overshoot, with nothing to make them specialise. The plain stack (own
+   loss, learned mixer) improves with depth on the tail: plain_1 3.311 → plain_2 3.178 → plain_4 3.126, against wide_1 3.308 at about the same compute
+   (report only; its full-run mean is held back by a slower start, plain_4 − plain_1 = +0.05).
+5. **M11-W6, counterfactual sleep credit (codex code, Kaggle, seeds 36–47): bar 1 FAIL** (4 of 12, mean −0.009), bar 2 passes by the letter (+0.009 on the
+   mean). The counterfactual arm slept 3.2% of its life, less than the immediate-credit arm (5.9%). In W6 the fixed dose beats no sleep by only −0.061
+   (7 of 12), so sleep had little to win and bar 2's pass means little.
+6. **H36 smoke stopped correctly:** the entropy rule chose 34% of bytes (allowed 23–27%), a flaw in my percentile threshold. On the stand-in stream, entropy
+   put 94% of its expensive steps on junk, against 50% for the fixed grid.
+
+### Settled
+- Compression progress does pretraining data cleaning by itself. It rejects random, corrupted, duplicated and boilerplate text without labels and gets 78%
+  of a hand filter's gain, where highest-loss selection reads the junk and RHO-LOSS gets half way.
+
+### Paths closed
+- One shared error broadcast to all layers at once (H34a's leftover with a mixer, H34a2's logit sum). Layers need distinct targets.
+
+### Hypotheses, ranked
+1. **H34a3, cascade stack** (codex implements): layer k learns from softmax(z_1 + … + z_k) − y, the residual of the layers below it plus itself. This is
+   boosting's order, with all layers learning at once. Bars: casc_4 − sum_1 ≤ −0.10; casc_4 − plain_4 ≤ −0.05; casc_4 − wide_1 ≤ −0.03.
+2. **H36** (codex fixes the budget with a feedback threshold; kernels after).
+3. **M11b on W5** (grok): the same sleep credit where the fixed dose wins by 0.32. Precondition: sleep pays (≤ −0.10); bars as M11.
+4. **H35b:** curiosity cleaning with a neural learner (shared weights blur credit) and on fresh seeds. Spec at the next cycle.
+5. W7, the dotted window.

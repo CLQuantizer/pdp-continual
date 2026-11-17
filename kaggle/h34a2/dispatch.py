@@ -96,6 +96,89 @@ def status_kind(report):
     raise RuntimeError('Unknown remote status; refusing to submit more work: '+report)
 
 
+CACHE=OUT/'kernel-status-cache.json'
+
+
+def load_cache():
+    if not CACHE.is_file(): return {}
+    data=json.loads(CACHE.read_text())
+    return data if isinstance(data, dict) else {}
+
+
+def save_cache(cache):
+    tmp=CACHE.with_suffix('.tmp')
+    tmp.write_text(json.dumps(cache,indent=2)+'\n')
+    tmp.replace(CACHE)
+
+
+def listed_kernels():
+    report=cli('kernels','list','--mine','--sort-by','dateRun','--page-size','60','--format','json')
+    start,end=report.find('['),report.rfind(']')
+    if start<0 or end<start: raise RuntimeError('kernel list was not a JSON array')
+    data=json.loads(report[start:end+1])
+    if not isinstance(data, list) or not data or not all(isinstance(row, dict) and row.get('ref') for row in data):
+        raise RuntimeError('kernel list returned no rows')
+    return [(row['ref'], row.get('lastRunTime')) for row in data]
+
+
+def other_active_ids():
+    found=[]
+    for path in (ROOT/'results').glob('*/dispatch.json'):
+        if path.parent==OUT: continue
+        try: data=json.loads(path.read_text())
+        except (OSError, json.JSONDecodeError): continue
+        jobs=data.get('jobs') if isinstance(data, dict) else None
+        if not isinstance(jobs, list): continue
+        for job in jobs:
+            if job.get('status') not in ('active','submitting'): continue
+            kid=job.get('id') or job.get('kernel_id')
+            if isinstance(kid, str): found.append(kid)
+    return found
+
+
+def account_running(own_active):
+    """Kernel refs that occupy a slot (running, queued, or pending)."""
+    cache=load_cache()
+    rows=listed_kernels()
+    candidates=[]
+    seen=set()
+    for ref, stamp in rows:
+        seen.add(ref)
+        cached=cache.get(ref)
+        if isinstance(cached, dict) and cached.get('lastRunTime')==stamp and cached.get('kind') in ('complete','failed'):
+            continue
+        candidates.append((ref, stamp))
+    for ref in list(own_active)+other_active_ids():
+        if ref not in seen and ref not in {item[0] for item in candidates}:
+            candidates.append((ref, None))
+    running=set(own_active)
+    print(f'account slot check: {len(candidates)} statuses, {len(own_active)} own active', flush=True)
+    for ref, stamp in candidates:
+        if ref in own_active: continue
+        report=''
+        for attempt in range(4):
+            report=cli('kernels','status',ref,allow_failure=True)
+            low=report.lower()
+            if 'has status' in low or any(x in low for x in ('403','404','not found',"don't have access",'forbidden')):
+                break
+            print('status retry '+ref, flush=True)
+            time.sleep(5*(attempt+1))
+        else:
+            raise RuntimeError('Refusing to push while a kernel status is unknown: '+ref)
+        low=report.lower()
+        if 'has status' not in low:
+            if any(x in low for x in ('403','404','not found',"don't have access",'forbidden')):
+                print('unreadable kernel, not counted '+ref, flush=True)
+                continue
+            raise RuntimeError('Refusing to push while a kernel status is unknown: '+ref)
+        kind=status_kind(report)
+        if stamp is not None and kind in ('complete','failed'):
+            cache[ref]=dict(kind=kind, lastRunTime=stamp)
+        if kind=='active': running.add(ref)
+    save_cache(cache)
+    return running
+
+
 def validate_result(job,smoke):
     dest=OUT/'kernels'/job['tag']; dest.mkdir(parents=True,exist_ok=True)
     print(cli('kernels','output',job['id'],'-p',str(dest)),flush=True)
@@ -125,10 +208,15 @@ def dispatch():
             print(cli('datasets','create','-p',str(BASE/'code')),flush=True)
         state['dataset_created']=True; save(state)
     while True:
-        report=cli('datasets','status','ezzzzzx/pdp-code-h34a2')
+        report=cli('datasets','status','ezzzzzx/pdp-code-h34a2',allow_failure=True)
+        low=report.lower()
         print(report.strip(),flush=True)
-        if 'ready' in report.lower(): break
-        if any(x in report.lower() for x in ('error','fail')): raise RuntimeError('Code dataset processing failed')
+        if 'ready' in low: break
+        # A private dataset that is not visible yet returns 403 "Client Error".
+        # That substring is not a processing failure.
+        if 'has status' not in low and any(x in low for x in ('403','404','forbidden',"don't have access")):
+            time.sleep(30); continue
+        if any(x in low for x in ('error','fail')): raise RuntimeError('Code dataset processing failed')
         time.sleep(30)
     while True:
         for job in state['jobs']:
@@ -148,14 +236,21 @@ def dispatch():
                 job['status']='pending' if job['attempts']<2 else 'failed'
             save(state)
         if any(j['status']=='failed' for j in state['jobs']): raise RuntimeError('Kernel exhausted its single retry')
-        active=sum(j['status']=='active' for j in state['jobs'])
+        own_active={j['id'] for j in state['jobs'] if j['status']=='active'}
+        pending=any(j['status']=='pending' for j in state['jobs'])
+        room=3-len(own_active)
+        if pending and room>0:
+            running=account_running(own_active)
+            room=min(room, 5-len(running))
+            if room<=0:
+                print(f'account running {len(running)}; holding pushes (cap 5)', flush=True)
         for job in state['jobs']:
-            if active>=3: break
+            if room<=0: break
             if job['status']!='pending': continue
             if job['attempts']>=2: raise RuntimeError('Retry limit reached')
             job.update(status='submitting',attempts=job['attempts']+1); save(state)
             print(cli('kernels','push','-p',str(BASE/job['tag'])).strip(),flush=True)
-            job['status']='active'; save(state); active+=1
+            job['status']='active'; save(state); room-=1
         if all(j['status']=='complete' for j in state['jobs']): break
         time.sleep(30)
     subprocess.run([sys.executable,str(BASE/'summarize.py')],cwd=ROOT,check=True)
