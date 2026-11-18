@@ -3390,3 +3390,32 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 1. **H35c** (grok, Kaggle GPU, ≤ 14 GPU hours). Precondition: the hand pipeline beats random by ≥ 0.02 bits/byte at both sizes. Bars: curiosity gets ≥ half
    the pipeline's gain at both sizes; it beats random given the same total compute by ≥ 0.01; its gain at 25 M is ≥ 0.8 of its gain at 3 M.
 2. H35b and H36 (running), H34b (codex).
+
+## 2026-11-18 (orchestrator, afternoon: H35b and H36 fail; H35c and H34b fixed and running; H35b2 tests the snapshot score)
+
+### Findings
+1. **H35b, curious data diet with a GRU (codex code, grok ran 12 kernels, fresh seeds 6–11): precondition MET (6 of 6), bar 1 FAIL (0 of 6), bar 2 PASS (6 of 6).**
+   The hand filter beats random reading by −0.177 on T_clean. Peek-based progress is +0.057 worse than random: it read 55% clean against random's 50%.
+   Highest loss read 60% random bytes and is far worse (bar 2 passes against it). RHO-LOSS read 63% clean and gained −0.078.
+2. **Mechanism (provisional):** for a GRU, one Adam step on 256 bytes barely moves the model. Early in life any text teaches the shared weights about equally,
+   so the trial step's effect is small and not specific to the candidate. What worked for counts (H35), whose statistics are per context, does not carry over
+   as a trial step. A score that measures what the learner has *recently* learned about this kind of text, the loss under an older snapshot minus the
+   current loss, does not need a trial step. H35b2 tests it where junk labels are known.
+3. **H36, curious tokeniser (codex code, grok ran 24 kernels, seeds 0–5): both bars FAIL.** On the real polluted stream, entropy placement put about as many expensive
+   steps on junk as the fixed grid (ratio 1.01–1.03; bar ≥ 1.2). Placement by realised gain was worse than entropy (+0.03 bits/byte on clean text, 0 of 6).
+   Entropy placement beat the fixed grid (−0.02). **Mechanism:** the cheap count model is surprised by random bytes but finds duplicates and boilerplate
+   easy, so on a mixed stream the two kinds of junk cancel. The stand-in stream, which held only random junk, showed 94% against 50%; real junk is not all
+   noise. The noisy-TV objection to entropy patching does not hold on this stream.
+4. **H35c:** the first scored run showed `prog_snap`'s scoring costing 2.5× its training compute (128 candidates × 512-byte peeks), so the compute-matched
+   random arm ran out of pool. Amended: 128-byte peeks and 96 candidates (about 0.5× training compute), and a second epoch allowed for `rand_plus`. Bars unchanged.
+5. **H34b:** smoke flagged plain_6's first 2 KB at 10.9 bits/byte and an 87-minute wall. Amended: bound 12 (it guards against H34a's 40,000-bit blow-up, not ordinary
+   early over-confidence), and 180 KB with the tail on 40–180 KB. Bars unchanged.
+
+### Paths closed
+- Trial-step progress as a data-selection score for a neural learner (H35b).
+- Placing expensive-model steps by realised gain, against entropy, on a mixed junk stream (H36).
+
+### Hypotheses, ranked
+1. **H35c** web data, lab pipelines, two sizes, compute counted (grok, resumed).
+2. **H34b** plain local stack to six layers (grok runs codex's kernels).
+3. **H35b2** snapshot progress with the GRU on the labelled corpus (codex implements; selection on seeds 6–8, scoring on 9–11).

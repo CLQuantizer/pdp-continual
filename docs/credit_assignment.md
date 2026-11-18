@@ -1,6 +1,6 @@
 # How deep networks get credit: a map of gradient and gradient-free learning rules
 
-*By Ez · 18 Nov 2026 · Years and authors are being checked against the original papers.*
+*By Ez · 18 Nov 2026*
 
 A deep network learns only if every layer, and every moment in a sequence, gets some signal about how it contributed to the outcome. Backpropagation sends the exact gradient backwards. Every other rule here is a way to get some or all of that signal more cheaply, more locally, or more like a brain. The rules are grouped by **how credit reaches a deep layer**.
 
@@ -18,11 +18,11 @@ A deep network learns only if every layer, and every moment in a sequence, gets 
 
 | Method | Origin | Idea |
 |---|---|---|
-| UORO | Tallec & Ollivier 2017 | rank-one unbiased RTRL |
+| UORO | Tallec & Ollivier 2018 | rank-one unbiased RTRL |
 | KF-RTRL | Mujika et al. 2018 | Kronecker-factored RTRL |
-| SnAp | Menick et al. 2020 | sparse n-step approximation |
+| SnAp | Menick et al. 2021 | sparse n-step approximation |
 | e-prop | Bellec et al. 2020 | per-synapse eligibility trace times a broadcast learning signal |
-| OSTL | Bohnstingl et al. 2022 | online spatio-temporal learning |
+| OSTL | Bohnstingl et al. 2023 | online spatio-temporal learning |
 | Diagonal linear-recurrence RTRL | Zucchet et al. 2023 | exact and cheap when each unit only feeds itself in time |
 | Three-factor rules | review: Gerstner et al. 2018 | eligibility trace times a neuromodulator such as dopamine |
 
@@ -64,7 +64,7 @@ Bartunov et al. (2018) found that feedback alignment and target propagation fall
 
 | Method | Origin | Idea |
 |---|---|---|
-| Greedy layer-wise pretraining | Hinton et al. 2006; Bengio et al. 2007 | train one layer, freeze it, stack the next |
+| Greedy layer-wise pretraining | Hinton et al. 2006; Bengio et al. 2006 | train one layer, freeze it, stack the next |
 | Deeply supervised nets | Lee et al. 2015 | an auxiliary prediction at every layer |
 | Local error signals | Nøkland & Eidnes 2019 | per-layer prediction and similarity losses |
 | Greedy and decoupled greedy learning | Belilovsky et al. 2019, 2020 | local heads per block, scaled to ImageNet |
@@ -74,18 +74,18 @@ Bartunov et al. (2018) found that feedback alignment and target propagation fall
 | HSIC bottleneck | Ma et al. 2020 | per-layer dependence objectives |
 | Forward-Forward | Hinton 2022 | each layer separates real data from negative data |
 | PEPITA | Dellaferrera & Kreiman 2022 | two forward passes; the error modulates the input |
-| Hebbian family | Oja 1982; Bienenstock, Cooper, Munro 1982; Journé et al. 2023 (SoftHebb) | unsupervised local rules |
+| Hebbian family | Oja 1982; Bienenstock, Cooper, Munro 1982; Moraitis et al. 2022 (SoftHebb) | unsupervised local rules |
 | Slowness, trace rule | Földiák 1991; Wiskott & Sejnowski 2002 | learn what stays stable while the input changes |
 
 ## 7. Perturb and measure (zeroth order)
 
 | Method | Origin |
 |---|---|
-| Weight and node perturbation, REINFORCE | Williams 1992 |
+| Weight and node perturbation, REINFORCE | Jabri & Flower 1992; Widrow & Lehr 1990; Williams 1992 |
 | SPSA | Spall 1992 |
 | Evolution strategies | Salimans et al. 2017 |
 | MeZO, fine-tuning language models with forward passes only | Malladi et al. 2023 |
-| Attention-gated reinforcement learning (AGREL, AuGMEnT) | Roelfsema & van Ooyen 2005; Rombouts et al. 2015 |
+| Attention-gated reinforcement learning (AGREL, AuGMEnT) | Roelfsema & van Ooyen 2005; Rombouts et al. 2012 |
 
 ## Where this research stands on the map
 

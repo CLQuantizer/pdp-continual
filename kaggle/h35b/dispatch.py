@@ -2,11 +2,13 @@
 
 Account-wide <=5 active (running/queued/pending); H35b <=2, including jobs
 launched outside this dispatcher. At most two push attempts per job. A
-process lock serializes H35b dispatchers. Other experiment dispatchers must
-also respect the account cap: the API has no atomic account-wide reservation.
+process lock serializes H35b dispatchers. The account push lock and status
+cache under results/h36 are shared with the H36 dispatcher: the API has no
+atomic account-wide reservation.
 """
 import argparse
 import csv
+from contextlib import contextmanager
 import fcntl
 import hashlib
 import io
@@ -23,6 +25,12 @@ from h35b_neural_diet import POLICIES, SEEDS, dump
 BASE, OUT = ROOT/'kaggle/h35b', ROOT/'results/h35b'
 STATE = OUT/'dispatch.json'
 CLI = str(ROOT/'.venv/bin/kaggle')
+ACCOUNT_LOCK = ROOT/'results'/'h36'/'account-push.lock'
+STATUS_CACHE = ROOT/'results'/'h36'/'kernel-status-cache.json'
+ACCOUNT_CAP = 5
+FAMILY_CAP = 2
+FAMILY_PREFIX = 'ezzzzzx/h35b-'
+DATASET_ID = 'ezzzzzx/pdp-code-h35b'
 FILES = ('h35b_neural_diet.py','h35_corpus.py','h26_cued.py')
 
 
@@ -130,15 +138,54 @@ def status_kind(text):
     raise RuntimeError('Unknown kernel status; refusing submission: '+text)
 
 
+def load_status_cache():
+    if not STATUS_CACHE.is_file():
+        return {}
+    try:
+        data = json.loads(STATUS_CACHE.read_text())
+    except json.JSONDecodeError:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def save_status_cache(cache):
+    dump(STATUS_CACHE, cache)
+
+
+@contextmanager
+def account_push_lock():
+    """One reservation for H36 and H35b. Released when the holder exits."""
+    ACCOUNT_LOCK.parent.mkdir(parents=True, exist_ok=True)
+    with ACCOUNT_LOCK.open('a') as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
 def account_active():
-    """Exhaust account pagination; inspect every remote kernel's live status."""
-    refs = set()
+    """Status recent kernels, skipping ones already known complete or failed.
+
+    The list call returns at most 100 rows and no further page, so sort by
+    dateRun: a running kernel is among the most recently run. Caller holds
+    account_push_lock so both dispatchers share this cache.
+    """
+    stamps = {}
     token = None
     while True:
-        args = ['kernels','list','--mine','--page-size','100','--csv']
+        args = ['kernels','list','--mine','--page-size','100','--csv','--sort-by','dateRun']
         if token:
-            args += ['--page-token',token]
-        _, text = cli(*args)
+            args += ['--page-token', token]
+        text = ''
+        for attempt in range(4):
+            code, text = cli(*args, allow_failure=True)
+            if code == 0 and ('ref,' in text or 'Not found' in text or text.startswith('Next Page Token')):
+                break
+            print('kernel list retry', flush=True)
+            time.sleep(5 * (attempt + 1))
+        else:
+            raise RuntimeError('Kernel list failed')
         lines = text.splitlines()
         tokens = [s.split('=',1)[1].strip() for s in lines if s.startswith('Next Page Token =')]
         body = '\n'.join(s for s in lines if not s.startswith('Next Page Token ='))
@@ -146,18 +193,47 @@ def account_active():
             rows = list(csv.DictReader(io.StringIO(body)))
             if rows and 'ref' not in rows[0]:
                 raise RuntimeError('Unrecognized account listing')
-            refs.update(r['ref'] for r in rows)
+            for row in rows:
+                stamps[row['ref']] = row.get('lastRunTime') or ''
         if not tokens:
             break
         if token == tokens[0]:
             raise RuntimeError('Repeated account page token')
         token = tokens[0]
+    cache = load_status_cache()
     active = []
-    for ref in sorted(refs):
-        _, text = cli('kernels','status',ref)
-        if status_kind(text) == 'active':
+    checked = 0
+    changed = False
+    for ref in sorted(stamps):
+        stamp = stamps[ref]
+        cached = cache.get(ref)
+        if isinstance(cached, dict) and cached.get('lastRunTime') == stamp and cached.get('kind') in ('complete', 'failed'):
+            continue
+        checked += 1
+        if checked == 1 or checked % 25 == 0:
+            print(f'account status {checked}', flush=True)
+        report = ''
+        for attempt in range(4):
+            _, report = cli('kernels', 'status', ref, allow_failure=True)
+            if 'has status' in report.lower():
+                break
+            print('status retry ' + ref, flush=True)
+            time.sleep(5 * (attempt + 1))
+        else:
+            raise RuntimeError('Refusing to push while a kernel status is unknown: ' + ref)
+        kind = status_kind(report)
+        if kind in ('complete', 'failed'):
+            cache[ref] = dict(lastRunTime=stamp, kind=kind)
+            changed = True
+        elif isinstance(cached, dict):
+            cache.pop(ref, None)
+            changed = True
+        if kind == 'active':
             active.append(ref)
-    dump(OUT/'account-active.json',dict(at=time.time(),active=active,total=len(active)))
+    if changed:
+        save_status_cache(cache)
+    print(f'account slot check: listed {len(stamps)} statused {checked} active {len(active)}', flush=True)
+    dump(OUT/'account-active.json', dict(at=time.time(), active=active, total=len(active)))
     return active
 
 
@@ -183,6 +259,55 @@ def validate_payload(row, job, fingerprint):
         assert all(abs(run['shares'][k]-v/200) < 1e-10 for k,v in run['kinds_read'].items())
         if run['policy'] == 'oracle':
             assert run['kinds_read']['clean'] == 200
+
+
+def kernel_report(ref):
+    report = ''
+    for attempt in range(4):
+        _, report = cli('kernels', 'status', ref, allow_failure=True)
+        if 'has status' in report.lower():
+            return report
+        print('status retry ' + ref, flush=True)
+        time.sleep(5 * (attempt + 1))
+    raise RuntimeError('Refusing to continue while a kernel status is unknown: ' + ref)
+
+
+def dataset_missing(text):
+    low = text.lower()
+    return any(s in low for s in ('403', '404', 'forbidden', "don't have access", 'not found', 'does not exist'))
+
+
+def ensure_dataset(fingerprint, message):
+    """Create the private code dataset. A missing private slug returns 403, not 404."""
+    code, text = cli('datasets', 'status', DATASET_ID, allow_failure=True)
+    low = text.lower()
+    missing = dataset_missing(text)
+    exists = (not missing) and any(s in low for s in ('ready', 'pending', 'processing'))
+    if not missing and not exists:
+        raise RuntimeError('Cannot establish dataset existence: ' + text)
+    if exists:
+        cli('datasets', 'version', '-p', str(BASE / 'code'), '-m', message + fingerprint[:16])
+    else:
+        code, text = cli('datasets', 'create', '-p', str(BASE / 'code'), allow_failure=True)  # Private by default.
+        print(text.strip(), flush=True)
+        if code:
+            created = text.lower()
+            if any(s in created for s in ('409', 'already exists', 'conflict')):
+                cli('datasets', 'version', '-p', str(BASE / 'code'), '-m', message + fingerprint[:16])
+            else:
+                raise RuntimeError('Dataset create failed: ' + text)
+    while True:
+        code, text = cli('datasets', 'status', DATASET_ID, allow_failure=True)
+        low = text.lower()
+        print(text.strip(), flush=True)
+        if code == 0 and 'ready' in low:
+            return
+        if dataset_missing(text):
+            time.sleep(30)
+            continue
+        if any(s in low for s in ('error', 'fail')):
+            raise RuntimeError(text)
+        time.sleep(30)
 
 
 def fetch(job, fingerprint):
@@ -212,27 +337,14 @@ def dispatch(manifest, fingerprint):
                 fetch(job,fingerprint)
     dump(STATE,state)
     if not state['dataset_ready']:
-        code, text = cli('datasets','status','ezzzzzx/pdp-code-h35b',allow_failure=True)
-        if code:
-            if not any(s in text.lower() for s in ('not found','404','does not exist')):
-                raise RuntimeError('Cannot establish dataset existence: '+text)
-            cli('datasets','create','-p',str(BASE/'code'))  # Private by default.
-        else:
-            cli('datasets','version','-p',str(BASE/'code'),'-m','H35b source '+fingerprint[:16])
-        while True:
-            _, text = cli('datasets','status','ezzzzzx/pdp-code-h35b')
-            if 'ready' in text.lower():
-                break
-            if any(s in text.lower() for s in ('error','fail')):
-                raise RuntimeError(text)
-            time.sleep(30)
+        ensure_dataset(fingerprint, 'H35b source ')
         state['dataset_ready'] = True
         dump(STATE,state)
     while True:
         for job in state['jobs']:
             if job['status'] not in ('active','submitting'):
                 continue
-            _, text = cli('kernels','status',job['id'])
+            text = kernel_report(job['id'])
             kind = status_kind(text)
             if job['status'] == 'submitting' and kind != 'active':
                 # A completed run's fingerprint proves whether an interrupted
@@ -258,18 +370,22 @@ def dispatch(manifest, fingerprint):
             if job['status'] != 'pending':
                 continue
             # Recheck the entire account immediately before EACH push.
-            active = account_active()
-            local = {j['id'] for j in state['jobs'] if j['status'] == 'active'}
-            active = set(active) | local  # Protect against listing latency.
-            if len(active) >= 5 or sum(ref.startswith('ezzzzzx/h35b-') for ref in active) >= 2:
-                break
-            assert job['attempts'] < 2
-            job.update(status='submitting',attempts=job['attempts']+1)
-            dump(STATE,state)
-            _, text = cli('kernels','push','-p',str(BASE/job['tag']))
-            print(text.strip(),flush=True)
-            job['status'] = 'active'
-            dump(STATE,state)
+            # The lock is shared with H36 so the two cannot both pass the cap.
+            with account_push_lock():
+                active = set(account_active())
+                local = {j['id'] for j in state['jobs'] if j['status'] == 'active'}
+                active |= local  # Protect against listing latency.
+                family = sum(ref.startswith(FAMILY_PREFIX) for ref in active)
+                print(f'account slots {len(active)} family {family}/{FAMILY_CAP}', flush=True)
+                if len(active) >= ACCOUNT_CAP or family >= FAMILY_CAP:
+                    break
+                assert job['attempts'] < 2
+                job.update(status='submitting',attempts=job['attempts']+1)
+                dump(STATE,state)
+                _, text = cli('kernels','push','-p',str(BASE/job['tag']))
+                print(text.strip(),flush=True)
+                job['status'] = 'active'
+                dump(STATE,state)
         time.sleep(30)
     subprocess.run([sys.executable,str(BASE/'summarize.py')],cwd=ROOT,check=True)
 

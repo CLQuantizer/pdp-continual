@@ -89,3 +89,10 @@ Report only: rho, high_loss, heur, dedup, ppl, cls, WikiText numbers.
   CPU kernels from H35b/H36 are running: keep the account's running kernels ≤ 5.
 - Gates and bars are the orchestrator's. Do not change or reinterpret them; if one looks wrong, stop and report.
 - Never print or upload secrets. Do not commit.
+
+## Amendment (orchestrator, 18 Nov 16:30, after the first scored run)
+`prog_snap`'s scoring cost 2.5× its training compute (128 candidates × 512-byte peeks × 2 forward passes per 32 training sequences), so Δ > S and
+`rand_plus` ran out of pool. That cost is a design choice, not a property of the idea. **Changed for the online arms (`high_loss`, `rho`, `prog_snap`):
+peeks are the first 128 bytes, and K = 96 candidates per round.** This puts selection near 0.5× training compute. **`rand_plus` may start a second epoch
+over the pool if it runs out** (report how many sequences it re-read). Everything else, including the bars, is unchanged. The completed `rand` runs stay
+valid (they do not use peeks). Set `results/h35c/plan.json` accordingly and continue with the scored kernels within the same GPU budget.

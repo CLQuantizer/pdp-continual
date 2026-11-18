@@ -43,3 +43,8 @@ Report only: noskip, the full-run gaps.
 ## Rules
 About 90 minutes; smoke in the foreground. Files you may create: `h34b_plain_depth.py`, `kaggle/h34b/**`, `results/h34b/**`. Do not touch `docs/`,
 `audit.md`, `h34a*_*.py`, `h35*`, `h36*`, other kaggle/results folders, `.env`. Bars are the orchestrator's. Never print secrets. Do not commit.
+
+## Amendment (orchestrator, 18 Nov 16:30, after smoke)
+plain_6 scored 10.9 bits/byte on its first 2,048 bytes (bound 9) and needs 87 min at 200 KB (bound 85). The 2,048-byte bound guarded against H34a's blow-up
+(~40,000 bits/byte). 10.9 is ordinary early over-confidence, so **the bound becomes ≤ 12 bits/byte.** **Data becomes the first 180,000 bytes for every
+arm, with the tail scored on 40,000–180,000.** Everything else and all bars are unchanged.
