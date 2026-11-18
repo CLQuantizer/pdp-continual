@@ -1,0 +1,146 @@
+[
+  {
+    "seed": 48,
+    "folder": "s48",
+    "kernel_id": "ezzzzzx/m11b-w5-s48",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s48.json"
+  },
+  {
+    "seed": 49,
+    "folder": "s49",
+    "kernel_id": "ezzzzzx/m11b-w5-s49",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s49.json"
+  },
+  {
+    "seed": 50,
+    "folder": "s50",
+    "kernel_id": "ezzzzzx/m11b-w5-s50",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s50.json"
+  },
+  {
+    "seed": 51,
+    "folder": "s51",
+    "kernel_id": "ezzzzzx/m11b-w5-s51",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s51.json"
+  },
+  {
+    "seed": 52,
+    "folder": "s52",
+    "kernel_id": "ezzzzzx/m11b-w5-s52",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s52.json"
+  },
+  {
+    "seed": 53,
+    "folder": "s53",
+    "kernel_id": "ezzzzzx/m11b-w5-s53",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s53.json"
+  },
+  {
+    "seed": 54,
+    "folder": "s54",
+    "kernel_id": "ezzzzzx/m11b-w5-s54",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s54.json"
+  },
+  {
+    "seed": 55,
+    "folder": "s55",
+    "kernel_id": "ezzzzzx/m11b-w5-s55",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s55.json"
+  },
+  {
+    "seed": 56,
+    "folder": "s56",
+    "kernel_id": "ezzzzzx/m11b-w5-s56",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s56.json"
+  },
+  {
+    "seed": 57,
+    "folder": "s57",
+    "kernel_id": "ezzzzzx/m11b-w5-s57",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s57.json"
+  },
+  {
+    "seed": 58,
+    "folder": "s58",
+    "kernel_id": "ezzzzzx/m11b-w5-s58",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s58.json"
+  },
+  {
+    "seed": 59,
+    "folder": "s59",
+    "kernel_id": "ezzzzzx/m11b-w5-s59",
+    "arms": [
+      "age_fixed20",
+      "age_sleeparm",
+      "age_sleep_cf",
+      "age_nosleep"
+    ],
+    "output": "m11b_s59.json"
+  }
+]

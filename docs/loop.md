@@ -3328,3 +3328,26 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 3. **M11b on W5** (grok): the same sleep credit where the fixed dose wins by 0.32. Precondition: sleep pays (≤ −0.10); bars as M11.
 4. **H35b:** curiosity cleaning with a neural learner (shared weights blur credit) and on fresh seeds. Spec at the next cycle.
 5. W7, the dotted window.
+
+## 2026-11-18 (orchestrator, daily: M11b scored, chosen sleep under-sleeps again; H34a3 kernels; H36 startup rule; H35b with a neural learner)
+
+### Findings
+1. **M11b-W5 (grok, 12 Kaggle CPU kernels, fresh seeds 48–59): precondition MET, both bars FAIL.** On W5 sleep pays: the fixed 0.20 dose beats no sleep by
+   −0.200 on T14 (≤ −0.10 on 10 of 12). The counterfactual-credit agent is +0.035 behind the immediate-credit sleep arm (bar ≤ −0.05, 8 of 12) and +0.119
+   behind the fixed dose (bar ≤ +0.03). It sleeps 2.8% of its life, against 5.7% for the immediate arm and 19.9% for the fixed dose.
+2. **Mechanism:** the counterfactual rewards are small (mean 0.009 bits per exam symbol per sleep decision, n = 85) beside room rewards, and a 64-decision
+   horizon sees only part of what a sleep prevents. A bandit that compares sleep with rooms on one scale will rarely choose sleep while any room still teaches.
+3. **H34a3:** all six smoke checks pass (casc_1 ≡ sum_1, exact cascade gradients, identity at init; casc_4 needs ~70 min per kernel). Kernels launched.
+4. **H36:** the feedback threshold holds ρ at 0.250 for fixed and entropy. Gain and progress need a startup rule for buckets with no data (my spec gave them
+   +∞, which breaks the threshold). Decision: an unscored bucket's byte is chosen with probability 0.25 and left out of the threshold update.
+
+### Paths closed
+- Sleep as a bandit arm rewarded like a room (immediate progress in M9, counterfactual loss prevented in M11 and M11b). Biology does not choose sleep by
+  reward either: pressure builds with waking and is discharged by sleep. Next form, when the sleep line resumes: a homeostatic sleep pressure driven by
+  wake learning (for example, the summed size of wake updates since the last sleep), with the dose set by the pressure.
+
+### Hypotheses, ranked
+1. **H34a3 cascade stack** (grok runs 4 kernels).
+2. **H35b, curious data diet with a neural learner** (codex implements; fresh seeds 6–11; byte GRU; same bars as H35).
+3. **H36 curious tokeniser** (codex adds the startup rule; kernels after).
+4. Sleep pressure (homeostatic) instead of sleep reward; W7 the dotted window.

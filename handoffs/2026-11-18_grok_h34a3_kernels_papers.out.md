@@ -1,0 +1,1 @@
+I'll follow the handoff: read the H34a3 spec and results, then run the kernels and register the papers.Smoke passed and the dispatcher lock is free. I'll start the four kernels and verify the seven papers before registering them.
