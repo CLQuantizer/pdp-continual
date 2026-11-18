@@ -1,0 +1,124 @@
+{
+  "hashes": {
+    "h35b_neural_diet.py": "778f717a1ed22bbf99eb6373d0d778f937f8c3c603a7b6cbb52034185034e836",
+    "h35_corpus.py": "85fec37ac4c47ef9328c4ea6a3c1f2d144f36524bba33a13ddabf2393b377440",
+    "h26_cued.py": "dafc1e4574598f3cb91b48b800fcb556f14d75fe70b7fd16e3784bce4f7d2a40"
+  },
+  "split": true,
+  "jobs": [
+    {
+      "tag": "s6",
+      "id": "ezzzzzx/h35b-s6",
+      "seed": 6,
+      "policies": [
+        "oracle",
+        "high_loss",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s6-p",
+      "id": "ezzzzzx/h35b-s6-p",
+      "seed": 6,
+      "policies": [
+        "rand",
+        "prog_peek"
+      ]
+    },
+    {
+      "tag": "s7",
+      "id": "ezzzzzx/h35b-s7",
+      "seed": 7,
+      "policies": [
+        "oracle",
+        "high_loss",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s7-p",
+      "id": "ezzzzzx/h35b-s7-p",
+      "seed": 7,
+      "policies": [
+        "rand",
+        "prog_peek"
+      ]
+    },
+    {
+      "tag": "s8",
+      "id": "ezzzzzx/h35b-s8",
+      "seed": 8,
+      "policies": [
+        "oracle",
+        "high_loss",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s8-p",
+      "id": "ezzzzzx/h35b-s8-p",
+      "seed": 8,
+      "policies": [
+        "rand",
+        "prog_peek"
+      ]
+    },
+    {
+      "tag": "s9",
+      "id": "ezzzzzx/h35b-s9",
+      "seed": 9,
+      "policies": [
+        "oracle",
+        "high_loss",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s9-p",
+      "id": "ezzzzzx/h35b-s9-p",
+      "seed": 9,
+      "policies": [
+        "rand",
+        "prog_peek"
+      ]
+    },
+    {
+      "tag": "s10",
+      "id": "ezzzzzx/h35b-s10",
+      "seed": 10,
+      "policies": [
+        "oracle",
+        "high_loss",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s10-p",
+      "id": "ezzzzzx/h35b-s10-p",
+      "seed": 10,
+      "policies": [
+        "rand",
+        "prog_peek"
+      ]
+    },
+    {
+      "tag": "s11",
+      "id": "ezzzzzx/h35b-s11",
+      "seed": 11,
+      "policies": [
+        "oracle",
+        "high_loss",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s11-p",
+      "id": "ezzzzzx/h35b-s11-p",
+      "seed": 11,
+      "policies": [
+        "rand",
+        "prog_peek"
+      ]
+    }
+  ]
+}

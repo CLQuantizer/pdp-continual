@@ -3351,3 +3351,25 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. **H35b, curious data diet with a neural learner** (codex implements; fresh seeds 6–11; byte GRU; same bars as H35).
 3. **H36 curious tokeniser** (codex adds the startup rule; kernels after).
 4. Sleep pressure (homeostatic) instead of sleep reward; W7 the dotted window.
+
+## 2026-11-18 (orchestrator, midday: H34a3 scored; the depth map is a 2×2 and only one corner works; H34b, H35b and H36 dispatched)
+
+### Findings
+1. **H34a3, cascade stack (codex code, grok ran 4 kernels): all bars FAIL.** casc_4 is +0.501 bits/byte behind a single layer, +0.463 behind plain_4 and +0.524
+   behind wide_1 over the full 300 KB (tail: +0.484, +0.683, +0.501). Giving each layer its own residual target, layer k correcting softmax(z_1 + … + z_k), does
+   not rescue the logit sum.
+2. **The depth map so far.** Learning signal {own loss, shared error} × combiner {learned geometric mixer, fixed logit sum}, plus the cascade:
+   own + mixer (plain) improves with depth on the tail (3.311 → 3.178 → 3.126) and beats a 4×-wide single layer. Every other corner gets worse with depth.
+3. **Mechanism (provisional):** in local learning a layer cannot be told what the layers above it need, so a stack works only when every layer is a
+   complete predictor on its own loss and a learned gate weighs it. A fixed sum gives each layer a share of the output it cannot see or control. Each
+   layer adds confident logits the others must undo, and with no gradient between layers nobody does. The local "residual" looks like deep supervision
+   plus a learned per-branch scale (ReZero, LayerScale), not a residual decomposition.
+
+### Paths closed
+- Additive-logit stacks trained locally (shared, own, or cascade targets).
+
+### Hypotheses, ranked
+1. **H34b** (codex implements): the plain stack at D ∈ {1, 2, 4, 6}, with a frozen-gate ablation, a no-skip ablation and a width control at D = 6, scored on the
+   tail of 250 KB. Bars: plain_6 − plain_4 ≤ −0.03; fixmix − plain_4 ≥ +0.05; plain_6 − wide_6 ≤ −0.10.
+2. **H35b** curious data diet with a GRU, and **H36** curious tokeniser (grok runs 12 + 24 kernels; codex passed their smoke tests).
+3. Sleep pressure; W7.
