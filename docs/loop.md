@@ -3373,3 +3373,20 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    tail of 250 KB. Bars: plain_6 − plain_4 ≤ −0.03; fixmix − plain_4 ≥ +0.05; plain_6 − wide_6 ≤ −0.10.
 2. **H35b** curious data diet with a GRU, and **H36** curious tokeniser (grok runs 12 + 24 kernels; codex passed their smoke tests).
 3. Sleep pressure; W7.
+
+## 2026-11-18 (orchestrator, evening: H35c dispatched, curiosity against lab data pipelines on raw web text)
+
+### Design notes
+- H35 showed learning-progress selection cleaning a synthetic polluted corpus for a count learner. H35c asks the three questions that decide whether it
+  matters for real pretraining:
+  1. On raw Common Crawl text (C4 `en.noclean`), does it match the filters labs use: heuristics, MinHash dedup, a perplexity filter, the FineWeb-Edu
+     classifier, and all of them in a pipeline?
+  2. Counting its own scoring compute, does it beat random selection given the same total compute?
+  3. Does the gain hold from a 3 M to a 25 M parameter byte-level transformer?
+- The curiosity score is cheap and scales: bits on a document's first 512 bytes under the model from 200 steps ago minus under the current model.
+  It measures how much the model has recently learned about this kind of text, and it is flat for noise and for the already learned.
+
+### Hypotheses, ranked
+1. **H35c** (grok, Kaggle GPU, ≤ 14 GPU hours). Precondition: the hand pipeline beats random by ≥ 0.02 bits/byte at both sizes. Bars: curiosity gets ≥ half
+   the pipeline's gain at both sizes; it beats random given the same total compute by ≥ 0.01; its gain at 25 M is ≥ 0.8 of its gain at 3 M.
+2. H35b and H36 (running), H34b (codex).
