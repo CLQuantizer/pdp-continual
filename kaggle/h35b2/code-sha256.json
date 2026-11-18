@@ -1,0 +1,82 @@
+{
+  "hashes": {
+    "h35b2_snapshot.py": "85612d9084f77acc1536e342a57a99df212254764f36fefb5a9ccd764c0b8162",
+    "h35b_neural_diet.py": "778f717a1ed22bbf99eb6373d0d778f937f8c3c603a7b6cbb52034185034e836",
+    "h35_corpus.py": "85fec37ac4c47ef9328c4ea6a3c1f2d144f36524bba33a13ddabf2393b377440",
+    "h26_cued.py": "dafc1e4574598f3cb91b48b800fcb556f14d75fe70b7fd16e3784bce4f7d2a40"
+  },
+  "jobs": [
+    {
+      "tag": "s6",
+      "id": "ezzzzzx/h35b2-s6",
+      "seed": 6,
+      "policies": [
+        "rand",
+        "oracle",
+        "rho",
+        "prog_snap_5",
+        "prog_snap_20"
+      ]
+    },
+    {
+      "tag": "s7",
+      "id": "ezzzzzx/h35b2-s7",
+      "seed": 7,
+      "policies": [
+        "rand",
+        "oracle",
+        "rho",
+        "prog_snap_5",
+        "prog_snap_20"
+      ]
+    },
+    {
+      "tag": "s8",
+      "id": "ezzzzzx/h35b2-s8",
+      "seed": 8,
+      "policies": [
+        "rand",
+        "oracle",
+        "rho",
+        "prog_snap_5",
+        "prog_snap_20"
+      ]
+    },
+    {
+      "tag": "s9",
+      "id": "ezzzzzx/h35b2-s9",
+      "seed": 9,
+      "policies": [
+        "rand",
+        "oracle",
+        "rho",
+        "prog_snap_5",
+        "prog_snap_20"
+      ]
+    },
+    {
+      "tag": "s10",
+      "id": "ezzzzzx/h35b2-s10",
+      "seed": 10,
+      "policies": [
+        "rand",
+        "oracle",
+        "rho",
+        "prog_snap_5",
+        "prog_snap_20"
+      ]
+    },
+    {
+      "tag": "s11",
+      "id": "ezzzzzx/h35b2-s11",
+      "seed": 11,
+      "policies": [
+        "rand",
+        "oracle",
+        "rho",
+        "prog_snap_5",
+        "prog_snap_20"
+      ]
+    }
+  ]
+}
