@@ -1,10 +1,13 @@
 """Prepare offline, or resume a foreground dispatcher. Never launches on import.
 
-Account-wide <=5 active (running/queued/pending); H35b2 <=2, including jobs
-launched outside this dispatcher. At most two push attempts per job. A
-process lock serializes H35b2 dispatchers. The existing account push lock under results/h36 is shared with
-the H36 and H35b dispatchers; status cache is local to H35b2: the API has no
-atomic account-wide reservation.
+Each seed is three private CPU kernels: rand+oracle+rho, then prog_snap_5,
+then prog_snap_20. Smoke extrapolation for every split kernel must be <= 85
+minutes (reference build counted on the kernel that runs rho). Account-wide
+<=5 active (running/queued/pending); H35b2 <=2, including jobs launched
+outside this dispatcher. At most two push attempts per job. A process lock
+serializes H35b2 dispatchers. The existing account push lock under results/h36
+is shared with the H36 and H35b dispatchers; status cache is local to H35b2:
+the API has no atomic account-wide reservation.
 """
 import argparse
 import csv
@@ -32,6 +35,14 @@ FAMILY_CAP = 2
 FAMILY_PREFIX = 'ezzzzzx/h35b2-'
 DATASET_ID = 'ezzzzzx/pdp-code-h35b2'
 FILES = ('h35b2_snapshot.py','h35b_neural_diet.py','h35_corpus.py','h26_cued.py')
+SPLIT_LIMIT_MIN = 85
+# One kernel for the three baselines; each snapshot lag on its own.
+# Order matches POLICIES so a seed's arms stay disjoint and complete.
+POLICY_GROUPS = (
+    ('base', ('rand', 'oracle', 'rho')),
+    ('k5', ('prog_snap_5',)),
+    ('k20', ('prog_snap_20',)),
+)
 
 
 def load_token():
@@ -66,8 +77,33 @@ def cli(*args, allow_failure=False):
 
 
 def job_specs():
-    return [dict(tag=f's{seed}',id=f'ezzzzzx/h35b2-s{seed}',seed=seed,
-                 policies=list(POLICIES)) for seed in SEEDS]
+    covered = tuple(p for _, policies in POLICY_GROUPS for p in policies)
+    if covered != tuple(POLICIES):
+        raise RuntimeError('split groups must cover each arm once, in POLICIES order')
+    jobs = []
+    for seed in SEEDS:
+        for suffix, policies in POLICY_GROUPS:
+            tag = f's{seed}-{suffix}'
+            jobs.append(dict(tag=tag, id=f'ezzzzzx/h35b2-{tag}', seed=seed, policies=list(policies)))
+    return jobs
+
+
+def split_kernel_minutes(smoke):
+    """Same extrapolation as the smoke report, applied to one kernel's arms.
+
+    reference_seconds is the rho reference build. It is charged only to the
+    kernel that runs rho. Data-load time is not in the smoke extrapolation.
+    """
+    minutes = smoke['estimated_policy_minutes']
+    reference = float(smoke['reference_seconds']) / 60.0
+    rows = []
+    for job in job_specs():
+        estimate = sum(float(minutes[p]) for p in job['policies'])
+        if 'rho' in job['policies']:
+            estimate += reference
+        rows.append(dict(tag=job['tag'], id=job['id'], seed=job['seed'],
+                         policies=list(job['policies']), estimated_minutes=estimate))
+    return rows
 
 
 def prepare():
@@ -75,6 +111,21 @@ def prepare():
     smoke = json.loads(smoke_path.read_text()) if smoke_path.exists() else {}
     if not smoke.get('ok'):
         raise RuntimeError('H35b2 smoke and timing must pass before kernel preparation')
+    estimates = split_kernel_minutes(smoke)
+    checked = next(row for row in estimates if row['tag'] == 's6-base')
+    longest = max(estimates, key=lambda row: row['estimated_minutes'])
+    if checked['estimated_minutes'] > SPLIT_LIMIT_MIN or longest['estimated_minutes'] > SPLIT_LIMIT_MIN:
+        raise RuntimeError(
+            f'split kernel estimate exceeds {SPLIT_LIMIT_MIN} min: '
+            f'{checked["tag"]}={checked["estimated_minutes"]:.3f} '
+            f'longest={longest["tag"]}={longest["estimated_minutes"]:.3f}')
+    dump(OUT/'split-estimates.json', dict(limit_minutes=SPLIT_LIMIT_MIN, checked=checked,
+                                          longest=longest, kernels=estimates))
+    print(json.dumps(dict(checked_kernel=checked['id'],
+                          estimated_minutes=checked['estimated_minutes'],
+                          limit_minutes=SPLIT_LIMIT_MIN,
+                          longest_kernel=longest['id'],
+                          longest_minutes=longest['estimated_minutes'])), flush=True)
     code = BASE/'code'
     code.mkdir(parents=True,exist_ok=True)
     hashes = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in FILES}
@@ -95,6 +146,10 @@ def prepare():
             enable_internet=False,dataset_sources=['ezzzzzx/enwik8','ezzzzzx/pdp-code-h35b2'],
             competition_sources=[],kernel_sources=[],model_sources=[]))
         (folder/'kernel.py').write_text(kernel_source(job,fingerprint,hashes))
+    live = {job['tag'] for job in manifest['jobs']}
+    for child in BASE.iterdir():
+        if child.is_dir() and child.name not in live and child.name != 'code' and (child/'kernel-metadata.json').is_file():
+            shutil.rmtree(child)
     print(json.dumps(dict(prepared=len(manifest['jobs']),code_fingerprint=fingerprint)),flush=True)
     return manifest,fingerprint
 
@@ -161,76 +216,120 @@ def account_push_lock():
             fcntl.flock(fh, fcntl.LOCK_UN)
 
 
-def account_active():
-    """Status recent kernels, skipping ones already known complete or failed.
+def _rate_limited(text):
+    low = text.lower()
+    return '429' in low or 'too many' in low or 'rate limit' in low
 
-    The list call returns at most 100 rows and no further page, so sort by
-    dateRun: a running kernel is among the most recently run. Caller holds
-    account_push_lock so both dispatchers share this cache.
-    """
-    stamps = {}
-    token = None
+
+def status_text(ref):
+    """Return one kernel's status body. HTTP 429 waits; any other body returns."""
+    pause = 20
     while True:
-        args = ['kernels','list','--mine','--page-size','100','--csv','--sort-by','dateRun']
-        if token:
-            args += ['--page-token', token]
-        text = ''
         for attempt in range(4):
+            _, text = cli('kernels', 'status', ref, allow_failure=True)
+            if _rate_limited(text):
+                print('status 429 ' + ref, flush=True)
+                time.sleep(10 * (attempt + 1))
+                continue
+            return text
+        print('status paused ' + ref, flush=True)
+        time.sleep(pause)
+        pause = min(180, pause * 2)
+
+
+def list_kernel_stamps():
+    """Every owned kernel, newest run first. --page, not page-token: the token is empty."""
+    stamps = {}
+    order = []
+    for page in range(1, 51):
+        args = ['kernels', 'list', '--mine', '--page-size', '100', '--page', str(page),
+                '--csv', '--sort-by', 'dateRun']
+        pause = 20
+        hard = 0
+        while True:
             code, text = cli(*args, allow_failure=True)
-            if code == 0 and ('ref,' in text or 'Not found' in text or text.startswith('Next Page Token')):
+            if _rate_limited(text):
+                print('kernel list 429', flush=True)
+                time.sleep(pause)
+                pause = min(180, pause * 2)
+                continue
+            if code == 0 and ('ref,' in text or 'Not found' in text):
                 break
+            hard += 1
             print('kernel list retry', flush=True)
-            time.sleep(5 * (attempt + 1))
-        else:
-            raise RuntimeError('Kernel list failed')
+            if hard >= 4:
+                raise RuntimeError('Kernel list failed')
+            time.sleep(5 * hard)
         lines = text.splitlines()
-        tokens = [s.split('=',1)[1].strip() for s in lines if s.startswith('Next Page Token =')]
         body = '\n'.join(s for s in lines if not s.startswith('Next Page Token ='))
-        if body.strip() != 'Not found':
-            rows = list(csv.DictReader(io.StringIO(body)))
-            if rows and 'ref' not in rows[0]:
-                raise RuntimeError('Unrecognized account listing')
-            for row in rows:
-                stamps[row['ref']] = row.get('lastRunTime') or ''
-        if not tokens:
+        if body.strip() == 'Not found' or not body.strip():
             break
-        if token == tokens[0]:
-            raise RuntimeError('Repeated account page token')
-        token = tokens[0]
+        rows = list(csv.DictReader(io.StringIO(body)))
+        if rows and 'ref' not in rows[0]:
+            raise RuntimeError('Unrecognized account listing')
+        for row in rows:
+            ref = row['ref']
+            if ref not in stamps:
+                order.append(ref)
+                stamps[ref] = row.get('lastRunTime') or ''
+        if len(rows) < 100:
+            break
+    else:
+        raise RuntimeError('Account kernel list did not end within 50 pages')
+    if not stamps:
+        raise RuntimeError('Account kernel list is empty')
+    return stamps, order
+
+
+def account_active():
+    """Status owned kernels. Terminal rows are cached by lastRunTime.
+
+    The newest 40 are always rechecked: a rerun can keep its previous
+    lastRunTime until it finishes. Active rows are not cached, so the next
+    check sees them again. Caller holds account_push_lock.
+    """
+    stamps, order = list_kernel_stamps()
     cache = load_status_cache()
+    newest = set(order[:40])
     active = []
     checked = 0
-    changed = False
-    for ref in sorted(stamps):
+    now = time.time()
+    for ref in order:
         stamp = stamps[ref]
         cached = cache.get(ref)
-        if isinstance(cached, dict) and cached.get('lastRunTime') == stamp and cached.get('kind') in ('complete', 'failed'):
+        # A missing `at` is a row just written by the previous sweep.
+        fresh = (isinstance(cached, dict) and cached.get('lastRunTime') == stamp
+                 and cached.get('kind') in ('complete', 'failed', 'absent'))
+        recent = isinstance(cached, dict) and now - float(cached.get('at') or now) < 600
+        if fresh and (ref not in newest or recent):
             continue
         checked += 1
         if checked == 1 or checked % 25 == 0:
-            print(f'account status {checked}', flush=True)
-        report = ''
-        for attempt in range(4):
-            _, report = cli('kernels', 'status', ref, allow_failure=True)
-            if 'has status' in report.lower():
-                break
-            print('status retry ' + ref, flush=True)
-            time.sleep(5 * (attempt + 1))
-        else:
+            print(f'account status {checked} {ref}', flush=True)
+        report = status_text(ref)
+        if 'has status' not in report.lower():
+            low = report.lower()
+            # A listed kernel with no session is not a running worker.
+            if '404' in low or 'not found' in low:
+                cache[ref] = dict(lastRunTime=stamp, kind='absent', at=now)
+                save_status_cache(cache)
+                time.sleep(0.8)
+                continue
+            if any(s in low for s in ('403', 'forbidden', "don't have access")):
+                raise RuntimeError('Cannot establish account slots: unreadable ' + ref)
             raise RuntimeError('Refusing to push while a kernel status is unknown: ' + ref)
         kind = status_kind(report)
         if kind in ('complete', 'failed'):
-            cache[ref] = dict(lastRunTime=stamp, kind=kind)
-            changed = True
+            cache[ref] = dict(lastRunTime=stamp, kind=kind, at=now)
+            save_status_cache(cache)
         elif isinstance(cached, dict):
             cache.pop(ref, None)
-            changed = True
+            save_status_cache(cache)
         if kind == 'active':
             active.append(ref)
-    if changed:
-        save_status_cache(cache)
+        time.sleep(0.8)
     print(f'account slot check: listed {len(stamps)} statused {checked} active {len(active)}', flush=True)
-    dump(OUT/'account-active.json', dict(at=time.time(), active=active, total=len(active)))
+    dump(OUT/'account-active.json', dict(at=time.time(), active=active, total=len(active), listed=len(stamps)))
     return active
 
 
@@ -264,14 +363,10 @@ def validate_payload(row, job, fingerprint, smoke=None):
 
 
 def kernel_report(ref):
-    report = ''
-    for attempt in range(4):
-        _, report = cli('kernels', 'status', ref, allow_failure=True)
-        if 'has status' in report.lower():
-            return report
-        print('status retry ' + ref, flush=True)
-        time.sleep(5 * (attempt + 1))
-    raise RuntimeError('Refusing to continue while a kernel status is unknown: ' + ref)
+    report = status_text(ref)
+    if 'has status' not in report.lower():
+        raise RuntimeError('Refusing to continue while a kernel status is unknown: ' + ref)
+    return report
 
 
 def dataset_missing(text):

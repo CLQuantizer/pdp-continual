@@ -124,12 +124,32 @@ def status_kind(text):
     raise RuntimeError('Unknown kernel status; refusing submission: '+text)
 
 
+def kernel_status_text(ref):
+    """Return a real status body. A rate limit pauses and retries."""
+    pause = 15
+    while True:
+        for attempt in range(4):
+            _, text = cli('kernels','status',ref,allow_failure=True)
+            low = text.lower()
+            if '429' in low or 'too many' in low or 'rate limit' in low:
+                time.sleep(2 + attempt * 3)
+                continue
+            return text
+        print(f'account status paused {ref}', flush=True)
+        time.sleep(pause)
+        pause = min(180, pause * 2)
+
+
 def account_active():
-    """Exhaust account pagination; inspect every remote kernel's live status."""
+    """Exhaust account pagination; inspect every remote kernel's live status.
+
+    dateRun puts kernels that are running now on the first page. The default
+    hotness sort can omit them, and the account cap would not see them.
+    """
     refs = set()
     token = None
     while True:
-        args = ['kernels','list','--mine','--page-size','100','--csv']
+        args = ['kernels','list','--mine','--page-size','100','--csv','--sort-by','dateRun']
         if token:
             args += ['--page-token',token]
         _, text = cli(*args)
@@ -152,7 +172,7 @@ def account_active():
     for i, ref in enumerate(ordered, 1):
         if i == 1 or i % 25 == 0 or i == len(ordered):
             print(f'account status {i}/{len(ordered)}', flush=True)
-        code, text = cli('kernels','status',ref,allow_failure=True)
+        text = kernel_status_text(ref)
         low = text.lower()
         if 'has status' not in low:
             # A private kernel this token cannot read is not a free slot and not proof of one.
@@ -231,7 +251,7 @@ def dispatch(manifest, fingerprint):
         for job in state['jobs']:
             if job['status'] not in ('active','submitting'):
                 continue
-            _, text = cli('kernels','status',job['id'])
+            text = kernel_status_text(job['id'])
             kind = status_kind(text)
             if job['status'] == 'submitting' and kind != 'active':
                 # A completed run's fingerprint proves whether an interrupted
@@ -253,6 +273,12 @@ def dispatch(manifest, fingerprint):
             raise RuntimeError('A kernel exhausted its one retry')
         if all(j['status'] == 'complete' for j in state['jobs']):
             break
+        # Already at the H34b cap. Polling those kernels above is enough;
+        # another full account scan would only add status calls.
+        local_h34b = sum(j['status'] == 'active' and j['id'].startswith('ezzzzzx/h34b-') for j in state['jobs'])
+        if local_h34b >= 3:
+            time.sleep(30)
+            continue
         for job in state['jobs']:
             if job['status'] != 'pending':
                 continue

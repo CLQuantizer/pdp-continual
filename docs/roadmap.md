@@ -176,6 +176,21 @@ W3 → substitution (bank or counts in place of the GRU cortex) → organic slee
 **Queue (13 Nov, morning):** W2-1 headroom (running) → H30w ring vs bank vs GRU (CPU) → H31b repeater spacing (GPU, 1.6 h)
 → curious controller or planner on W2-1, if it has headroom → substitution (smaller cortex plus counts) → organic sleep.
 
+## Status (19 Nov 2026, morning)
+
+- **Milestone: curiosity discovers that moving reveals a hidden scene (W7-0).** A logo behind a window of dots, 75% opaque. Moving beats standing
+  still (20 of 20 seeds), and a progress-driven agent beats a random walk by 0.49 bits (17 of 20). In a longer life it comes within 0.03 bits of a
+  planned sweep. A learner that ignores its own motion learns nothing, and dots glued to the logo make motion useless. Curiosity here chooses how to
+  see, not only where to look. Next (W7b): a noisy patch in the window, where surprise should be trapped and progress should not.
+- **Curiosity as data selection works for count learners and fails for neural ones.** H35 (counts) got 78% of a hand filter's gain. With a GRU, trial-step
+  progress (H35b) and snapshot progress (H35b2) were no better or far worse than random. On raw web text with transformers (H35c), snapshot progress was worse
+  than random at 3 M and 25 M parameters, where the lab pipeline gained 0.24 and 0.13 bits/byte. Mechanism: a neural model's loss on noise still falls
+  early, while it calibrates to the noise's entropy, and a template it has just learned shows a large drop. Both look like progress. Line closed in these forms.
+- **Local depth, revised.** Only stacks where every layer predicts on its own loss deepen (1 → 6 layers: −0.19 bits/byte on the tail). Returns diminish
+  after four layers. Frozen equal weights do as well as a learned gate, so the working ingredient is deep supervision, not the gate. Depth beats matched
+  width by about 0.1, but deep stacks start slower (first 40 KB: 6.0 against 4.5 bits/byte), and growing the stack layer by layer makes it worse. Next (H34d): real
+  cross-layer credit by direct feedback alignment on top of the own losses.
+
 ## Status (17 Nov 2026, morning)
 
 - **Milestone: curiosity pays in an open world.** In W6, rooms die and new ones of random kinds (seven processes or noise) are born

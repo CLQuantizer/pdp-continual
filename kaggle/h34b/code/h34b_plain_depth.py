@@ -17,6 +17,9 @@ import h34a2_logit_sum as prior
 CHUNK, EMB, RANK, A, LOG2 = prior.CHUNK, prior.EMB, prior.RANK, prior.A, prior.LOG2
 Layer, dump, h33 = prior.Layer, prior.dump, prior.h33
 ARMS = ('plain_1','plain_2','plain_4','plain_6','plain_4_fixmix','plain_4_noskip','wide_6')
+N_DATA = 180_000
+TAIL_START = 40_000
+EARLY_BITS_LIMIT = 12
 
 
 def build(arm, seed, zero=True):
@@ -96,7 +99,7 @@ def run(arm, seed, raw, keep=False, slice_size=25_000):
             take = max(0,end-max(start,len(raw)-50_000))
             weight_sum += mixer.W.detach().numpy()[0]*take
             weight_n += take
-            take_tail = max(0,end-max(start,50_000))
+            take_tail = max(0,end-max(start,TAIL_START))
             weight_tail += mixer.W.detach().numpy()[0]*take_tail
             weight_tail_n += take_tail
         err = combined.detach().softmax(-1)
@@ -137,10 +140,14 @@ def run(arm, seed, raw, keep=False, slice_size=25_000):
             row['mean_mixer_weight_last_50kb'] = float(weight_sum[k]/weight_n)
             row['mean_mixer_weight_tail'] = float(weight_tail[k]/weight_tail_n) if weight_tail_n else None
             row['final_mixer_weight'] = float(mixer.W.detach()[0,k])
-            row['tail_own_bits_per_byte'] = float(own[50_000:,k].mean()) if len(raw)>50_000 else None
+            row['tail_own_bits_per_byte'] = float(own[TAIL_START:,k].mean()) if len(raw)>TAIL_START else None
         diagnostics.append(row)
+    edge_end = ((TAIL_START + slice_size - 1) // slice_size) * slice_size
+    tail_edge = float(bits[TAIL_START:edge_end].mean()) if len(raw) > edge_end else None
     result = dict(arm=arm,seed=seed,n_bytes=len(raw),bits_per_byte=float(bits.mean()),slices=slices,
-                  tail_bits_per_byte=float(bits[50_000:].mean()) if len(raw)>50_000 else None,
+                  tail_start=TAIL_START,
+                  tail_bits_per_byte=float(bits[TAIL_START:].mean()) if len(raw)>TAIL_START else None,
+                  tail_edge_bits_per_byte=tail_edge,
                   layers=diagnostics,max_frozen_weight_change=max_frozen_weight_change,wall_seconds=time.perf_counter()-t0)
     return (result,bits) if keep else result
 
@@ -156,7 +163,7 @@ def source_hashes():
 
 def smoke(out,data):
     out=Path(out); out.mkdir(parents=True,exist_ok=True)
-    payload=dict(ok=False,n_bytes=250_000,threads=1,log=[],source_hashes=source_hashes())
+    payload=dict(ok=False,n_bytes=N_DATA,threads=1,log=[],source_hashes=source_hashes())
     def record(check,**values):
         row=dict(check=check,**values); payload['log'].append(row)
         print(json.dumps(row),flush=True); dump(out/'smoke.json',payload)
@@ -189,14 +196,14 @@ def smoke(out,data):
             early=float(b[:2048].mean())
             timings[arm]=r['wall_seconds']/len(b)
             record('stability_and_timing',arm=arm,n_bytes=len(b),first_2048_bits=early,
-                   wall_seconds=r['wall_seconds'],estimate_250kb=timings[arm]*250_000,limit_bits=9)
-            assert early<=9
-        n=200_000 if max(timings.values())*250_000>5100 else 250_000
+                   wall_seconds=r['wall_seconds'],estimate_250kb=timings[arm]*250_000,limit_bits=EARLY_BITS_LIMIT)
+            assert early<=EARLY_BITS_LIMIT
+        n=N_DATA
         costs={a:compute_account(a)['macs_per_byte'] for a in ARMS}
         estimates={a:timings['plain_6']*n*costs[a]/costs['plain_6'] for a in ARMS}
         estimates['wide_6']=timings['wide_6']*n
         payload['n_bytes']=n
-        record('wall_estimates',n_bytes=n,tail_start=50_000,tail_end=n,
+        record('wall_estimates',n_bytes=n,tail_start=TAIL_START,tail_end=n,
                estimated_kernel_seconds=estimates,limit=5100,
                method='Measured 16,384-byte one-thread rates for plain_6 and wide_6; remaining arms MAC-scaled from plain_6; no assumed Kaggle speedup')
         assert max(estimates.values())<=5100

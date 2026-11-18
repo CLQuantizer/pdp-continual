@@ -7,74 +7,158 @@
   },
   "jobs": [
     {
-      "tag": "s6",
-      "id": "ezzzzzx/h35b2-s6",
+      "tag": "s6-base",
+      "id": "ezzzzzx/h35b2-s6-base",
       "seed": 6,
       "policies": [
         "rand",
         "oracle",
-        "rho",
-        "prog_snap_5",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s6-k5",
+      "id": "ezzzzzx/h35b2-s6-k5",
+      "seed": 6,
+      "policies": [
+        "prog_snap_5"
+      ]
+    },
+    {
+      "tag": "s6-k20",
+      "id": "ezzzzzx/h35b2-s6-k20",
+      "seed": 6,
+      "policies": [
         "prog_snap_20"
       ]
     },
     {
-      "tag": "s7",
-      "id": "ezzzzzx/h35b2-s7",
+      "tag": "s7-base",
+      "id": "ezzzzzx/h35b2-s7-base",
       "seed": 7,
       "policies": [
         "rand",
         "oracle",
-        "rho",
-        "prog_snap_5",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s7-k5",
+      "id": "ezzzzzx/h35b2-s7-k5",
+      "seed": 7,
+      "policies": [
+        "prog_snap_5"
+      ]
+    },
+    {
+      "tag": "s7-k20",
+      "id": "ezzzzzx/h35b2-s7-k20",
+      "seed": 7,
+      "policies": [
         "prog_snap_20"
       ]
     },
     {
-      "tag": "s8",
-      "id": "ezzzzzx/h35b2-s8",
+      "tag": "s8-base",
+      "id": "ezzzzzx/h35b2-s8-base",
       "seed": 8,
       "policies": [
         "rand",
         "oracle",
-        "rho",
-        "prog_snap_5",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s8-k5",
+      "id": "ezzzzzx/h35b2-s8-k5",
+      "seed": 8,
+      "policies": [
+        "prog_snap_5"
+      ]
+    },
+    {
+      "tag": "s8-k20",
+      "id": "ezzzzzx/h35b2-s8-k20",
+      "seed": 8,
+      "policies": [
         "prog_snap_20"
       ]
     },
     {
-      "tag": "s9",
-      "id": "ezzzzzx/h35b2-s9",
+      "tag": "s9-base",
+      "id": "ezzzzzx/h35b2-s9-base",
       "seed": 9,
       "policies": [
         "rand",
         "oracle",
-        "rho",
-        "prog_snap_5",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s9-k5",
+      "id": "ezzzzzx/h35b2-s9-k5",
+      "seed": 9,
+      "policies": [
+        "prog_snap_5"
+      ]
+    },
+    {
+      "tag": "s9-k20",
+      "id": "ezzzzzx/h35b2-s9-k20",
+      "seed": 9,
+      "policies": [
         "prog_snap_20"
       ]
     },
     {
-      "tag": "s10",
-      "id": "ezzzzzx/h35b2-s10",
+      "tag": "s10-base",
+      "id": "ezzzzzx/h35b2-s10-base",
       "seed": 10,
       "policies": [
         "rand",
         "oracle",
-        "rho",
-        "prog_snap_5",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s10-k5",
+      "id": "ezzzzzx/h35b2-s10-k5",
+      "seed": 10,
+      "policies": [
+        "prog_snap_5"
+      ]
+    },
+    {
+      "tag": "s10-k20",
+      "id": "ezzzzzx/h35b2-s10-k20",
+      "seed": 10,
+      "policies": [
         "prog_snap_20"
       ]
     },
     {
-      "tag": "s11",
-      "id": "ezzzzzx/h35b2-s11",
+      "tag": "s11-base",
+      "id": "ezzzzzx/h35b2-s11-base",
       "seed": 11,
       "policies": [
         "rand",
         "oracle",
-        "rho",
-        "prog_snap_5",
+        "rho"
+      ]
+    },
+    {
+      "tag": "s11-k5",
+      "id": "ezzzzzx/h35b2-s11-k5",
+      "seed": 11,
+      "policies": [
+        "prog_snap_5"
+      ]
+    },
+    {
+      "tag": "s11-k20",
+      "id": "ezzzzzx/h35b2-s11-k20",
+      "seed": 11,
+      "policies": [
         "prog_snap_20"
       ]
     }

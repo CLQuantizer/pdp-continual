@@ -1,6 +1,6 @@
 {
   "hashes": {
-    "h34b_plain_depth.py": "d7be431fa05bd064615a5b8ba6e9b54cb2f7e23ada72e2eb841973562794fbb5",
+    "h34b_plain_depth.py": "bbd77a82b1e8c05ed19cf32f1a503779032be6cd375944608681e2c9347563b7",
     "h34a2_logit_sum.py": "31d9314f3dc1c8eddaa34e245075896503ed6fc919c046e17f79d654f25b7dbe",
     "h34a_local_depth.py": "f1470a25aecd93db1aa915a3ae1be3d917d5363dcad2651daadeaa297bcbfb00",
     "h26_cued.py": "dafc1e4574598f3cb91b48b800fcb556f14d75fe70b7fd16e3784bce4f7d2a40",
@@ -13,5 +13,5 @@
     "h30y_roots.py": "fa94014039e3d140265bd456d2090ef20d2a88c3d4ecea89b6b834263f87f214"
   },
   "missing": [],
-  "documents": 200000
+  "documents": 180000
 }

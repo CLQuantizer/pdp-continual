@@ -83,11 +83,25 @@ def main():
     import hashlib
     fp=hashlib.sha256(json.dumps(manifest,sort_keys=True).encode()).hexdigest()
     tails={'plain_1':3.3,'plain_2':3.2,'plain_4':3.15,'plain_6':3.10,'plain_4_fixmix':3.22,'plain_4_noskip':3.2,'wide_6':3.25}
+    tail_start=40_000
+    def full_bits(n, tail):
+        return (4.*tail_start+tail*(n-tail_start))/n
+    def fake_slices(n, tail):
+        rows=[]
+        for i in range(0,n,25000):
+            a,b=i,min(i+25000,n)
+            total=0.
+            p0,p1=max(a,0),min(b,tail_start)
+            if p1>p0: total+=4.*(p1-p0)
+            t0=max(a,tail_start)
+            if b>t0: total+=tail*(b-t0)
+            rows.append(dict(start=a,end=b,bits_per_byte=total/(b-a)))
+        return rows
     for a in d.ARMS:
         for s in (0,1):
             tail=tails[a]; depth=1 if a=='wide_6' else int(a.split('_')[1]); w=.25 if a.endswith('fixmix') else 1.
             layers=[dict(own_bits_per_byte=4.,tail_own_bits_per_byte=3.5,mean_mixer_weight_tail=w,mean_mixer_weight_last_50kb=w,final_mixer_weight=w) for _ in range(depth)]
-            r=dict(arm=a,seed=s,n_bytes=n,kernel_id=f"ezzzzzx/h34b-{a.replace('_','-')}-s{s}",code_fingerprint=fp,sha256_e10m=sm['sha256_e10m'],bits_per_byte=(4.*50000+tail*(n-50000))/n,tail_bits_per_byte=tail,wall_seconds=1.,layers=layers,max_frozen_weight_change=0,slices=[dict(start=i,end=i+25000,bits_per_byte=4. if i<50000 else tail) for i in range(0,n,25000)])
+            r=dict(arm=a,seed=s,n_bytes=n,kernel_id=f"ezzzzzx/h34b-{a.replace('_','-')}-s{s}",code_fingerprint=fp,sha256_e10m=sm['sha256_e10m'],bits_per_byte=full_bits(n,tail),tail_bits_per_byte=tail,tail_edge_bits_per_byte=tail,tail_start=40_000,wall_seconds=1.,layers=layers,max_frozen_weight_change=0,slices=fake_slices(n,tail))
             d.dump(fixture/'kernels'/f'{a}-s{s}'/'results.json',r)
     summary.assemble(fixture)
     result=json.loads((fixture/'results.json').read_text()); assert [x['count'] for x in result['scoring']]==[2,2,2]

@@ -21,3 +21,7 @@ __pycache__/
 .codex/
 .cloudflare/
 internal/
+kaggle/h35c/cls/
+kaggle/h35c/scores/
+*.safetensors
+*.pt

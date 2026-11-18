@@ -1,6 +1,10 @@
-H35b2 runs five arms on each seed 6–11, one private offline CPU kernel per seed.
-No scored kernels were submitted by Codex. The code dataset contains only the
-four Python files listed in `code-sha256.json` and dataset metadata.
+H35b2 runs five arms on each seed 6–11. One seed of all five arms extrapolates
+to about 122 minutes, over the 90-minute cap, so each seed is three private
+offline CPU kernels: `rand`+`oracle`+`rho`, `prog_snap_5`, and `prog_snap_20`.
+Packaging refuses to build kernels when the smoke extrapolation for any split
+exceeds 85 minutes. The checked kernel is `s6-base` (the three baselines, plus
+the rho reference build). The code dataset contains only the four Python files
+listed in `code-sha256.json` and dataset metadata.
 
 Local smoke (one CPU thread, real corpus):
 

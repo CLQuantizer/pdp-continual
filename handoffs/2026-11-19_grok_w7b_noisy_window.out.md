@@ -1,0 +1,1 @@
+I'll read the project instructions and the handoff file first, then follow that handoff exactly.The handoff is W7b: a noisy patch in the window, with a smoke test against W7-0. I'll read the design, the world, the runner, and the W7 results next.

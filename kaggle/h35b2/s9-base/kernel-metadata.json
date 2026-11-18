@@ -1,0 +1,18 @@
+{
+  "id": "ezzzzzx/h35b2-s9-base",
+  "title": "h35b2-s9-base",
+  "code_file": "kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/enwik8",
+    "ezzzzzx/pdp-code-h35b2"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

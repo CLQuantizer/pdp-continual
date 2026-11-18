@@ -3419,3 +3419,38 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 1. **H35c** web data, lab pipelines, two sizes, compute counted (grok, resumed).
 2. **H34b** plain local stack to six layers (grok runs codex's kernels).
 3. **H35b2** snapshot progress with the GRU on the labelled corpus (codex implements; selection on seeds 6–8, scoring on 9–11).
+
+## 2026-11-19 (orchestrator, daily: W7-0 passes, curiosity finds the motion that reveals a hidden logo; H35c, H35b2, H34b, H34c fail)
+
+### Findings
+1. **W7-0, the dotted window (grok, VPS, fresh seeds 10–29): all three bars PASS.** At 768/1024 dots: random walk − still = −0.878 at L = 25 (≤ −0.30 on 20 of 20).
+   Progress-driven curiosity − random = −0.488 (17 of 20; bar 16). At L = 64, curiosity − planned sweep = +0.034 on the mean (bar ≤ +0.10).
+   Mechanism: a glance from a new viewpoint uncovers logo pixels the dots hid. The integrator, told its own motion, places them in one scene. Progress is high
+   where unread pixels remain, so the agent walks there.
+2. **H35c, curiosity against lab pipelines on raw web text (grok, Kaggle GPU, 3 M and 25 M byte transformers): precondition MET, all bars FAIL.** The lab
+   pipeline (heuristics → dedup → FineWeb-Edu classifier) beats random selection by 0.244 (small) and 0.128 (medium) bits/byte on C4 validation. Snapshot progress
+   is worse than random: −0.141 and −0.031. Random with the extra training steps that curiosity's scoring would have cost beats every arm at the small size.
+3. **H35b2, snapshot progress with a GRU on the labelled corpus (codex code, grok kernels): both bars FAIL**, +0.2 to +1.2 bits/byte worse than random for k = 5 and 20.
+   It read 37% clean, 22% boilerplate and 18% random bytes, against random's 50% and 10% each.
+4. **Mechanism for 2–3:** a neural model's loss on random bytes still falls early, as it calibrates down to their entropy, and its loss on a template drops sharply just
+   after it has read one. Both look like learning progress on the candidate. A count model calibrates at once and has no such transient. Compression progress
+   measured on a candidate document is not the same as progress the document would cause on the history.
+5. **H34b, the plain local stack to six layers (codex code, grok kernels, 180 KB, tail 40–180 KB): bars 1 and 2 FAIL, bar 3 FAIL by one seed.** Tail: 1 → 2 → 4 → 6 layers =
+   3.275, 3.138, 3.091, 3.081 (plain_6 − plain_4 = −0.010; bar −0.03). Frozen equal mixer weights are only +0.012 behind the learned gate (bar ≥ +0.05).
+   plain_6 − wide_6 = −0.108 on the mean (−0.091 and −0.126; bar ≤ −0.10 on both seeds). Deep stacks start slowly: first 40 KB 6.04 (plain_4) against 4.48 (plain_1).
+6. **H34c, grow the stack (grok, 8 kernels): bar FAIL.** Growing on a schedule is +0.142 behind training all four layers at once. Growing when the layer below settles is
+   +0.092 behind, and greedy freezing +0.669. Late layers simply get less time.
+
+### Settled
+- Curiosity discovers, by its own learning progress, that moving its viewpoint reveals a scene hidden behind an occluder (W7-0).
+- In local stacks, deep supervision (every layer predicts on its own loss) is the ingredient that makes depth pay. The learned gate is not.
+
+### Paths closed
+- Learning-progress data selection for neural learners, as trial-step or snapshot scores on candidates (H35b, H35b2, H35c).
+- Growing local stacks layer by layer (H34c).
+
+### Hypotheses, ranked
+1. **W7b** (grok, VPS): a noisy patch in the window. Surprise should be trapped there and progress should not. Bars: curious_prog − curious_surp ≤ −0.20 (16 of 20) and its noise
+   share ≤ 1.5× fair.
+2. **H34d** (codex implements): direct feedback alignment on top of the own losses, so lower layers learn something for the stack. Bar: dfa_4 − plain_4 ≤ −0.03.
+3. Sleep pressure (homeostatic); the forward-looking controller with a nonlinear value.

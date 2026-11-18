@@ -69,13 +69,35 @@ def main():
             state=json.loads((out/'dispatch.json').read_text())
             assert all(j['status']=='complete' for j in state['jobs'])
             assert attempts[jobs[0]['id']]==2 and all(attempts[j['id']]==1 for j in jobs[1:])
-            assert len(fetches)==12
+            assert len(fetches)==2*len(jobs)
             checks.append(dict(external=len(external),external_family=sum(x.startswith(d.FAMILY_PREFIX) for x in external),
-                               peak_account=peaks[0],peak_family=peaks[1],one_retry=True,resume_no_new_push=True,complete=6))
-    ast.parse(d.kernel_source(d.job_specs()[0],'test',{'h35b2_snapshot.py':'test'}))
-    d.dump(d.OUT/'offline-checks.json',dict(ok=True,dispatcher_simulations=checks,
-        heldout_isolation=True,selection_missing_guard=True,selection_tie_k5=True,unknown_status_rejected=True))
+                               peak_account=peaks[0],peak_family=peaks[1],one_retry=True,resume_no_new_push=True,complete=len(jobs)))
+    jobs = d.job_specs()
+    assert len(jobs)==18
+    src = d.kernel_source(jobs[0],'test',{'h35b2_snapshot.py':'test'})
+    ast.parse(src)
+    assert "['rand', 'oracle', 'rho']" in src and 'prog_snap' not in src
+    smoke = json.loads((d.OUT/'smoke.json').read_text())
+    estimates = d.split_kernel_minutes(smoke)
+    checked = next(row for row in estimates if row['tag']=='s6-base')
+    assert checked['policies']==['rand','oracle','rho']
+    assert checked['estimated_minutes'] <= d.SPLIT_LIMIT_MIN
+    assert all(row['estimated_minutes'] <= d.SPLIT_LIMIT_MIN for row in estimates)
+    for seed in d.SEEDS:
+        arms = [p for row in estimates if row['seed']==seed for p in row['policies']]
+        assert arms == list(d.POLICIES)
+    prior_path = d.OUT/'offline-checks.json'
+    prior = json.loads(prior_path.read_text()) if prior_path.exists() else {}
+    payload = dict(ok=True,dispatcher_simulations=checks,
+        heldout_isolation=True,selection_missing_guard=True,selection_tie_k5=True,unknown_status_rejected=True,
+        split_kernel_checked=checked['id'], split_kernel_estimated_minutes=checked['estimated_minutes'],
+        split_limit_minutes=d.SPLIT_LIMIT_MIN)
+    if 'summary_fixture' in prior:
+        payload['summary_fixture'] = prior['summary_fixture']
+    d.dump(prior_path, payload)
     print('Offline dispatch caps, retry, source syntax, and seed-isolation checks passed.')
+    print(json.dumps(dict(checked_kernel=checked['id'], estimated_minutes=checked['estimated_minutes'],
+                          limit_minutes=d.SPLIT_LIMIT_MIN)))
 
 if __name__ == '__main__':
     main()
