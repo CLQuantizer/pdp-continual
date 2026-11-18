@@ -27,6 +27,7 @@ DOCS = [  # (slug, source, title, blurb)
     ("how-it-works", "docs/how_it_works.md", "How it works", "One-glance figure of the dual: store, router, uniform awake replay."),
     ("h20", "docs/h20_world.md", "H20: a new world", "Pre-registered next: a label-free algorithmic stream, scored in bits per symbol."),
     ("roadmap", "docs/roadmap.md", "Roadmap", "From parts to one curious machine: milestones M1-M5 and their kill conditions."),
+    ("gradient", "docs/credit_assignment.md", "Credit assignment map", "Every way a deep network gets credit: backprop, RTRL and e-prop, feedback alignment, targets, equilibrium, layer-local, perturbation."),
     ("literature", "docs/literature_2026-11.md", "Literature scan, Nov 2026", "Progress estimators, fast weights, e-prop, Titans, loss of plasticity: what each changes."),
     ("curiosity", "docs/curiosity.md", "Guideline: compression progress", "Schmidhuber 2009 as working rules: store, compress, reward progress, act on it."),
     ("h23", "docs/h23_curiosity.md", "H23: curiosity", "An active world with a noisy TV: progress-seeking vs error-seeking attention."),
