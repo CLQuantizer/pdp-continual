@@ -1,0 +1,158 @@
+[
+  {
+    "seed": 60,
+    "folder": "s60",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s60",
+    "output": "w9_s60.json"
+  },
+  {
+    "seed": 61,
+    "folder": "s61",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s61",
+    "output": "w9_s61.json"
+  },
+  {
+    "seed": 62,
+    "folder": "s62",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s62",
+    "output": "w9_s62.json"
+  },
+  {
+    "seed": 63,
+    "folder": "s63",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s63",
+    "output": "w9_s63.json"
+  },
+  {
+    "seed": 64,
+    "folder": "s64",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s64",
+    "output": "w9_s64.json"
+  },
+  {
+    "seed": 65,
+    "folder": "s65",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s65",
+    "output": "w9_s65.json"
+  },
+  {
+    "seed": 66,
+    "folder": "s66",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s66",
+    "output": "w9_s66.json"
+  },
+  {
+    "seed": 67,
+    "folder": "s67",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s67",
+    "output": "w9_s67.json"
+  },
+  {
+    "seed": 68,
+    "folder": "s68",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s68",
+    "output": "w9_s68.json"
+  },
+  {
+    "seed": 69,
+    "folder": "s69",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s69",
+    "output": "w9_s69.json"
+  },
+  {
+    "seed": 70,
+    "folder": "s70",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s70",
+    "output": "w9_s70.json"
+  },
+  {
+    "seed": 71,
+    "folder": "s71",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp"
+    ],
+    "kernel_id": "ezzzzzx/w9-day-night-s71",
+    "output": "w9_s71.json"
+  }
+]

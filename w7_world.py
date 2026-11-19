@@ -8,6 +8,9 @@ The integrator is a KT counter in logo coordinates. It reads the agent's
 viewpoint and applies the true shifts. The view table memorizes (viewpoint,
 raster cell) and does not register motion. The probe asks either learner for
 the unoccluded greys at held-out viewpoints. Holes are not scored.
+
+NoiseRegion is off unless a caller builds one. Frames, counts and the probe
+then match the deterministic logo bit for bit.
 """
 import math
 import os
@@ -117,14 +120,21 @@ def kt_from_counts(counts, values):
     return -np.log2((got + ALPHA) / (tot + ALPHA * G))
 
 
-def logo_bits(counts, scene):
-    flat_c = counts.reshape(-1, G)
-    flat_v = scene.reshape(-1).astype(np.int64)
+def logo_bits(counts, scene, skip=None):
+    if skip is None:
+        flat_c = counts.reshape(-1, G)
+        flat_v = scene.reshape(-1).astype(np.int64)
+    else:
+        flat_c = counts[~skip]
+        flat_v = scene[~skip].astype(np.int64)
     return float(kt_from_counts(flat_c, flat_v).mean())
 
 
-def coverage(counts):
-    return float((counts.sum(axis=2) > 0).mean())
+def coverage(counts, skip=None):
+    seen = counts.sum(axis=2) > 0
+    if skip is None:
+        return float(seen.mean())
+    return float(seen[~skip].mean())
 
 
 def probe_points(seed):
@@ -148,12 +158,17 @@ def accumulate(scene, occ, path, scene_shift, dot_shift):
     return counts, visits
 
 
-def score_probe(scene, occ, counts, visits, probes, scene_shift, dot_shift):
-    """Mean KT bits on unoccluded probe pixels. Integrator and view table."""
+def score_probe(scene, occ, counts, visits, probes, scene_shift, dot_shift, skip=None):
+    """Mean KT bits on unoccluded probe pixels. Integrator and view table.
+
+    skip is a logo-coordinate mask. Those pixels are not scored.
+    """
     integ = []
     view = []
     for qx, qy in probes:
         grey, vis, sx, sy = frame(scene, occ, qx, qy, scene_shift, dot_shift)
+        if skip is not None:
+            vis = vis & ~skip[sy, sx]
         if not np.any(vis):
             continue
         vs = grey[vis].astype(np.int64)
@@ -169,16 +184,76 @@ def score_probe(scene, occ, counts, visits, probes, scene_shift, dot_shift):
     return float(np.concatenate(integ).mean()), float(np.concatenate(view).mean()), int(np.concatenate(integ).size)
 
 
-def evaluate(scene, occ, path, probes, scene_shift, dot_shift):
+def evaluate(scene, occ, path, probes, scene_shift, dot_shift, skip=None):
     counts, visits = accumulate(scene, occ, path, scene_shift, dot_shift)
-    probe, view, n_pix = score_probe(scene, occ, counts, visits, probes, scene_shift, dot_shift)
+    probe, view, n_pix = score_probe(
+        scene, occ, counts, visits, probes, scene_shift, dot_shift, skip=skip
+    )
     return {
         "probe": probe,
         "view": view,
-        "logo": logo_bits(counts, scene),
-        "cover": coverage(counts),
+        "logo": logo_bits(counts, scene, skip=skip),
+        "cover": coverage(counts, skip=skip),
         "n_pix": n_pix,
     }
+
+
+def region_mask(region):
+    """Boolean logo mask for one 8×8 region. Index is row-major, x within y."""
+    region = int(region)
+    side = N // REG
+    if region < 0 or region >= side * side:
+        raise RuntimeError("region index")
+    ry, rx = divmod(region, side)
+    mask = np.zeros((N, N), dtype=bool)
+    mask[ry * REG:(ry + 1) * REG, rx * REG:(rx + 1) * REG] = True
+    if int(mask.sum()) != REG * REG:
+        raise RuntimeError("region mask")
+    return mask
+
+
+def noise_region_index(seed):
+    """One 8×8 scene region. Never the origin's region, index 0.
+
+    Single draw: default_rng(9500 + seed).integers(1, 16), uniform on 1..15.
+    """
+    rng = np.random.default_rng(9_500 + int(seed))
+    region = int(rng.integers(1, 16))
+    if region <= 0 or region >= (N // REG) * (N // REG):
+        raise RuntimeError("noise region landed on the origin")
+    return region
+
+
+def apply_noise(grey, sy, sx, mask, rng):
+    """Fresh uniform greys on the masked logo pixels. One draw per hit cell, row-major."""
+    grey = np.array(grey, copy=True)
+    hit = mask[sy, sx]
+    n = int(hit.sum())
+    if n:
+        grey[hit] = rng.integers(0, G, size=n)
+    return grey
+
+
+class NoiseRegion:
+    """8×8 block of the scene redrawn as uniform greys 0..7 on every glance.
+
+    The region index comes from noise_region_index. Greys use a separate stream,
+    default_rng(9600 + seed), so the region draw stays a single integers() call.
+    Construct one per policy; each stream starts at the same seed.
+    """
+
+    GREY_STREAM = 9_600
+
+    def __init__(self, seed):
+        self.seed = int(seed)
+        self.region = noise_region_index(self.seed)
+        self.mask = region_mask(self.region)
+        self.rng = np.random.default_rng(self.GREY_STREAM + self.seed)
+
+    def frame(self, scene, occ, px, py, scene_shift, dot_shift):
+        grey, vis, sx, sy = frame(scene, occ, px, py, scene_shift, dot_shift)
+        grey = apply_noise(grey, sy, sx, self.mask, self.rng)
+        return grey, vis, sx, sy
 
 
 class GlanceReservoir:
@@ -227,6 +302,83 @@ class GlanceReservoir:
         before = -np.log2((c + ALPHA) / (t + ALPHA * G))
         after = -np.log2((c + 1.0 + ALPHA) / (t + 1.0 + ALPHA * G))
         return float(np.sum(m * (before - after)))
+
+
+class ObservedReservoir(GlanceReservoir):
+    """Same reservoir, but each sight keeps its grey and progress is eq. 5.
+
+    On a deterministic pixel every stored grey matches the current one, so the
+    sum equals GlanceReservoir.progress. A pixel whose greys disagree, the
+    noise patch, is scored at the greys actually stored.
+    """
+
+    def include(self, ys, xs, vs):
+        ys = np.asarray(ys, dtype=np.int64).copy()
+        xs = np.asarray(xs, dtype=np.int64).copy()
+        vs = np.asarray(vs, dtype=np.int64).copy()
+        if vs.shape != ys.shape or xs.shape != ys.shape:
+            raise RuntimeError("reservoir sight shape")
+        self.n_seen += 1
+        if self.n_seen <= self.cap:
+            self.slots.append((ys, xs, vs))
+            if ys.size:
+                np.add.at(self.mult, (ys, xs), 1)
+            return
+        j = int(self.rng.integers(0, self.n_seen))
+        if j < self.cap:
+            oys, oxs, _ovs = self.slots[j]
+            if oys.size:
+                np.add.at(self.mult, (oys, oxs), -1)
+            self.slots[j] = (ys, xs, vs)
+            if ys.size:
+                np.add.at(self.mult, (ys, xs), 1)
+
+    def progress(self, counts, ys, xs, vs, mask=None):
+        """Codelength of stored sights before this glance is learned, minus after.
+
+        mask on logo coordinates splits the sum into (total, noise, logo).
+        Without it, the return is the total only.
+        """
+        empty = (0.0, 0.0, 0.0) if mask is not None else 0.0
+        if len(vs) == 0:
+            return empty
+        parts_k = []
+        parts_v = []
+        for sy, sx, sv in self.slots:
+            if sy.size == 0:
+                continue
+            parts_k.append(sy * N + sx)
+            parts_v.append(sv)
+        if not parts_k:
+            return empty
+        ak = np.concatenate(parts_k)
+        av = np.concatenate(parts_v)
+        key = ys.astype(np.int64) * N + xs.astype(np.int64)
+        order = np.argsort(key, kind="mergesort")
+        key_s = key[order]
+        v_s = vs.astype(np.int64)[order]
+        pos = np.searchsorted(key_s, ak)
+        inb = np.where(pos < key_s.size, pos, 0)
+        ok = (pos < key_s.size) & (key_s[inb] == ak)
+        if not np.any(ok):
+            return empty
+        ak = ak[ok]
+        av = av[ok]
+        vn = v_s[inb[ok]]
+        yy = ak // N
+        xx = ak % N
+        c_rows = counts[yy, xx]
+        t = c_rows.sum(axis=1).astype(np.float64)
+        c = c_rows[np.arange(av.size), av].astype(np.float64)
+        c_after = c + (av == vn).astype(np.float64)
+        before = -np.log2((c + ALPHA) / (t + ALPHA * G))
+        after = -np.log2((c_after + ALPHA) / (t + 1.0 + ALPHA * G))
+        delta = before - after
+        total = float(np.sum(delta))
+        if mask is None:
+            return total
+        noise = mask[yy, xx]
+        return total, float(np.sum(delta[noise])), float(np.sum(delta[~noise]))
 
 
 def self_check():
