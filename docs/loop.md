@@ -3454,3 +3454,27 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
    share ≤ 1.5× fair.
 2. **H34d** (codex implements): direct feedback alignment on top of the own losses, so lower layers learn something for the stack. Bar: dfa_4 − plain_4 ≤ −0.03.
 3. Sleep pressure (homeostatic); the forward-looking controller with a nonlinear value.
+
+## 20 Nov 2026
+
+### Verdicts
+1. **W7b, a noisy patch in the window (grok, VPS): void by design.** Both bars score as failures (curious_prog − curious_surp = 0.000 on 20 of 20; bar ≤ −0.20 on 16), but
+   the test never had a chance. The noise sat in an 8×8 region of the *scene*. A glance is the whole frame, so that patch appears in every glance from every viewpoint,
+   adds the same reward to every viewpoint region, and the two bandits took identical paths. The spec's error, not the agents'. Curiosity still beat random (−0.43 at L = 64).
+2. W7c corrects it: glare that depends on where you stand (codex, below).
+
+### Direction
+- The open-world line moves to the real world: **W8-0, the curious camera on real photographs**. W7's dotted window and parallax on Imagenette images, with a frozen
+  ResNet-18 as the eye. The curious agent only tries to compress pixels; it never sees the label. Does its walk still let the eye name what is behind the window?
+- H34d (direct feedback alignment on top of deep supervision) and W9 (sleep under pressure on a day-night world) have passed their smoke tests and are running on Kaggle.
+
+### Dispatched
+- grok: H34d (6 kernels) and W9 (12 kernels).
+- grok: W8-0, the virtual camera. Bars at L = 16 on 500 images: random − still ≥ +0.10 accuracy; curious_prog − random ≥ +0.03 accuracy with lower log-loss, both CIs excluding 0.
+- codex: W7c, glare in one viewpoint region. Bars: surprise spends ≥ 3/16 of glances there, progress ≤ 1.5/16, and curious_prog − curious_surp ≤ −0.20 on 16 of 20.
+
+### Hypotheses, ranked
+1. W8-0: task-free curiosity helps a frozen eye see through an occluder.
+2. W9: sleep that comes from pressure and poor input (night) earns its keep without a clock or a reward for sleeping.
+3. H34d: feedback alignment gives lower layers credit for the stack's error.
+4. W7c: progress escapes a noisy TV that surprise cannot.
