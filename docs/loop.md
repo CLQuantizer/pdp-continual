@@ -3519,3 +3519,32 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 - grok: W9b's 12 kernels.
 - grok: **W8-1b**, the same wall, with the bandit choosing among the 4 panels (prog_age_s, as W5/W6) and the same resumed sweep inside every panel, so the only
   difference between policies is where they look. Bars unchanged.
+
+## 21 Nov 2026
+
+### Verdicts
+1. **W8-1b, the watching wall with a panel bandit (grok): bar 3 PASS, bars 1–2 FAIL.** The bandit now finishes its first pass in 32 decisions and watches what
+   changes: fast 0.26 > slow 0.10 > static 0.05 of its time. But it spent 59% on the flickering TV and lost to round-robin by 0.19 accuracy. Mechanism: the reward
+   (W7's `GlanceReservoir` progress) assumes every stored sight of a pixel showed the same grey as the current glance. True on a still logo, false on a TV, where each
+   new random grey looks like a large gain multiplied by every stored sight. It measures progress on the glance itself.
+2. **W9b, sleep when input costs many bits (codex code, grok kernels): bar 1 PASS (replication), bars 2–3 FAIL.** Night is worth sleeping through again: fixed_night
+   − fixed_random = −0.108 (8 of 12). The signal is plain (3.3 bits/symbol by day, 7.4 at night), but pressure_bits slept at night only 32% of its sleep (bar 60%) and beat
+   random times by only 0.033. Mechanism: the pressure arithmetic. A sleep lasts about 8 decisions (S from 32 to 0 at −4 each), the next needs 32 wake decisions, and
+   while asleep the agent sees nothing, so it cannot tell it is still dark.
+
+### Insight
+Three lines have now hit the same wall: data selection (H35b, H35c), sleep (W9) and the camera (W8-1b). **Progress measured on the item just seen rewards noise.**
+Learning from noise always lowers the loss on that noise. Progress has to be measured on what was already stored: does learning this make the *history* shorter?
+That is principle 3 taken literally, and `ObservedReservoir` (equation 5) already does it.
+
+### Dispatched
+- grok: **W8-1c**, the wall with progress measured on the stored sights. Bars unchanged.
+- codex: **W9c**, pressure balanced to the day (S +1 awake, −3 asleep) and an eyelid: while asleep the agent still sees how poor the input is, and sleeps on while it
+  stays poor. Bars: ≥ 60% of sleep at night; beats random times by ≥ 0.07 on 8 of 12; within +0.05 of the clock.
+- codex (after W9c): **H34e**, self-distillation in a local stack. Every layer also learns to predict the stack's mixture (λ = 0.5), a broadcast signal in output space,
+  with no random matrices. Bar: distill_4 − plain_4 ≤ −0.03 on both seeds.
+
+### Hypotheses, ranked
+1. W8-1c: with true progress, the curious camera ignores the TV and beats a fixed plan in a changing world.
+2. W9c: sleep from pressure and poor input finds the night without a clock.
+3. H34e: self-distillation is a second depth trick for local stacks.
