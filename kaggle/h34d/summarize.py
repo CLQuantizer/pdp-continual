@@ -47,7 +47,7 @@ def validate(r,arm,seed,smoke,manifest,fingerprint):
         assert [(v['start'],v['end'],v['layer']) for v in rows]==expected
         for v in rows:
             assert all(math.isfinite(v[key]) for key in ('own_norm','raw_dfa_norm','alpha','dfa_norm'))
-            assert abs(v['own_norm']-v['dfa_norm'])<=1e-6*max(v['own_norm'],1e-30)
+            assert abs(v['own_norm']-v['dfa_norm'])<=1e-5*max(v['own_norm'],1e-30)
             assert v['only']==(arm=='dfa_only_4' and v['layer']>=2)
 
 

@@ -3506,3 +3506,16 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
   round-robin by ≥ +0.03 life accuracy; TV share ≤ 0.15 for progress and ≥ 0.35 for surprise; it looks most at what changes fastest.
 - codex: **W9b**, sleep when the glance's own codelength is high (noisy night input looks costly, not rich). Bars: night replication; ≥ 60% of sleep at night;
   beats random times by ≥ 0.07 on 8 of 12. Plus the H34d summarizer fix.
+
+### Addendum, 20 Nov evening
+1. **W8-1, the camera watching a wall of four pictures (grok): all bars FAIL, void by design.** Curiosity lost to taking the panels in turn by 0.41 accuracy. The
+   64-arm bandit (4 panels × 16 viewpoint regions) must try every arm once, about 16 decisions each, and the first pass took the whole life of 1,024 decisions: it
+   finished on 0 of 20 lives. The agent never used what it learned (shares exactly a quarter per panel). The spec's error: in W4–W6 the bandit chose among rooms,
+   and here the panel is the room. Surprise did get trapped by the TV (50% of its decisions).
+2. **H34d summary** (codex fixed a float32 tolerance): confirmed FAIL, dfa_4 − plain_4 = +0.280 on the tail, both seeds.
+3. **W9b smoke (codex): passed.** The glance's own codelength is 3.28 bits/symbol by day and 7.35 at night: poor input is plainly visible without a clock.
+
+### Dispatched
+- grok: W9b's 12 kernels.
+- grok: **W8-1b**, the same wall, with the bandit choosing among the 4 panels (prog_age_s, as W5/W6) and the same resumed sweep inside every panel, so the only
+  difference between policies is where they look. Bars unchanged.

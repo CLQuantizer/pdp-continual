@@ -1,0 +1,158 @@
+[
+  {
+    "seed": 72,
+    "folder": "s72",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s72",
+    "output": "w9b_s72.json"
+  },
+  {
+    "seed": 73,
+    "folder": "s73",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s73",
+    "output": "w9b_s73.json"
+  },
+  {
+    "seed": 74,
+    "folder": "s74",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s74",
+    "output": "w9b_s74.json"
+  },
+  {
+    "seed": 75,
+    "folder": "s75",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s75",
+    "output": "w9b_s75.json"
+  },
+  {
+    "seed": 76,
+    "folder": "s76",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s76",
+    "output": "w9b_s76.json"
+  },
+  {
+    "seed": 77,
+    "folder": "s77",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s77",
+    "output": "w9b_s77.json"
+  },
+  {
+    "seed": 78,
+    "folder": "s78",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s78",
+    "output": "w9b_s78.json"
+  },
+  {
+    "seed": 79,
+    "folder": "s79",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s79",
+    "output": "w9b_s79.json"
+  },
+  {
+    "seed": 80,
+    "folder": "s80",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s80",
+    "output": "w9b_s80.json"
+  },
+  {
+    "seed": 81,
+    "folder": "s81",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s81",
+    "output": "w9b_s81.json"
+  },
+  {
+    "seed": 82,
+    "folder": "s82",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s82",
+    "output": "w9b_s82.json"
+  },
+  {
+    "seed": 83,
+    "folder": "s83",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure",
+      "pressure_opp",
+      "pressure_bits"
+    ],
+    "kernel_id": "ezzzzzx/w9b-s83",
+    "output": "w9b_s83.json"
+  }
+]
