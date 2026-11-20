@@ -105,11 +105,13 @@ def maps(px, py, scene_shift, dot_shift):
     return sx, sy, ox, oy
 
 
-def frame(scene, occ, px, py, scene_shift, dot_shift):
+def frame(scene, occ, px, py, scene_shift, dot_shift, glare_region=None):
     """Grey, visibility, and logo coordinates of one 32×32 glance."""
     sx, sy, ox, oy = maps(px, py, scene_shift, dot_shift)
     vis = ~occ[oy, ox]
     grey = scene[sy, sx]
+    if glare_region is not None and glare_region.contains(px, py):
+        grey[vis] = glare_region.rng.integers(0, G, size=int(vis.sum()))
     return grey, vis, sx, sy
 
 
@@ -143,12 +145,14 @@ def probe_points(seed):
     return [(int(i % P), int(i // P)) for i in pick]
 
 
-def accumulate(scene, occ, path, scene_shift, dot_shift):
+def accumulate(scene, occ, path, scene_shift, dot_shift, glare_region=None):
     """Integrator counts and per-viewpoint visit counts along a path."""
     counts = np.zeros((N, N, G), dtype=np.int32)
     visits = np.zeros((P, P), dtype=np.int32)
     for px, py in path:
-        grey, vis, sx, sy = frame(scene, occ, px, py, scene_shift, dot_shift)
+        grey, vis, sx, sy = frame(
+            scene, occ, px, py, scene_shift, dot_shift, glare_region=glare_region
+        )
         if np.any(vis):
             ys = sy[vis]
             xs = sx[vis]
@@ -184,8 +188,10 @@ def score_probe(scene, occ, counts, visits, probes, scene_shift, dot_shift, skip
     return float(np.concatenate(integ).mean()), float(np.concatenate(view).mean()), int(np.concatenate(integ).size)
 
 
-def evaluate(scene, occ, path, probes, scene_shift, dot_shift, skip=None):
-    counts, visits = accumulate(scene, occ, path, scene_shift, dot_shift)
+def evaluate(scene, occ, path, probes, scene_shift, dot_shift, skip=None, glare_region=None):
+    counts, visits = accumulate(
+        scene, occ, path, scene_shift, dot_shift, glare_region=glare_region
+    )
     probe, view, n_pix = score_probe(
         scene, occ, counts, visits, probes, scene_shift, dot_shift, skip=skip
     )
@@ -254,6 +260,23 @@ class NoiseRegion:
         grey, vis, sx, sy = frame(scene, occ, px, py, scene_shift, dot_shift)
         grey = apply_noise(grey, sy, sx, self.mask, self.rng)
         return grey, vis, sx, sy
+
+
+class GlareRegion:
+    """Viewpoint-dependent glare; pass a fresh instance per policy/replay.
+
+    Only clear cells are redrawn, in raster order, on glances inside the chosen
+    viewpoint block. Outside glances consume no random draws. The probe does
+    not use this option: it always scores the underlying logo.
+    """
+
+    def __init__(self, seed):
+        self.seed = int(seed)
+        self.region = int(np.random.default_rng(9_600 + self.seed).integers(1, 16))
+        self.rng = np.random.default_rng(9_700 + self.seed)
+
+    def contains(self, px, py):
+        return (int(py) // REG) * (P // REG) + int(px) // REG == self.region
 
 
 class GlanceReservoir:
