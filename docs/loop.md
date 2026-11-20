@@ -3478,3 +3478,31 @@ the unit's own λ (Zucchet et al. 2023). So the bank can learn online, local in 
 2. W9: sleep that comes from pressure and poor input (night) earns its keep without a clock or a reward for sleeping.
 3. H34d: feedback alignment gives lower layers credit for the stack's error.
 4. W7c: progress escapes a noisy TV that surprise cannot.
+
+### Addendum, 20 Nov afternoon
+1. **W8-0, the curious camera on real photographs (grok): all bars PASS. Milestone.** 500 Imagenette images behind a dotted window, a frozen ResNet-18 as the eye,
+   16 glances. The unoccluded eye scores 0.978; standing still 0.228; random walking 0.672; the curious camera **0.918** (+0.246 over random, CI 0.204 to 0.288; log-loss
+   −0.785). The camera tried only to compress pixels and never saw a label. A planned sweep scored 0.984: on one still picture with no noise, a fixed plan is right.
+   Surprise and progress chose the same paths (the scene is deterministic).
+2. **W7c, glare from one viewpoint region (codex): bars 1–2 PASS, bar 3 FAIL.** Surprise spent 27% of its glances in the glare (bar ≥ 19%), progress 7.5% (bar ≤ 9.4%).
+   Progress saw more of the logo by 0.43 bits on the mean, but only 8 of 20 seeds reached −0.20 (bar 16). On 10 seeds neither bandit found the glare region within
+   64 glances and their paths were identical. Mechanism: where the noisy TV is met, surprise stays and progress leaves; in a short life it is often never met.
+3. **W9, sleep on a day-night world (codex code, grok kernels): bar 1 FAIL by one seed, bar 2 FAIL.** Sleeping exactly through the nights beats sleeping at random times
+   by 0.197 bits (8 of 12 at ≤ −0.10; bar 9). Night is worth sleeping through. But the opportunistic sleeper slept at night only 8% of its sleep time, below
+   chance, and lost to random times by +0.070. Its poor-input signal was the gain from learning a glance, measured on that same glance. A noise glance is
+   memorised and that gain is large, so night looked rich. The same failure as H35b and H35c: progress measured on the item itself rewards noise.
+4. **H34d, direct feedback alignment on top of deep supervision (codex code, grok kernels): bar FAIL.** dfa_4 − plain_4 = +0.280 on the tail (bar ≤ −0.03); DFA alone is
+   +0.310. Random feedback at the own gradient's norm adds noise as large as the signal. The summarizer's float32 tolerance check stopped the write-up; codex is fixing it.
+
+### Settled
+- Task-free curiosity about pixels helps a frozen eye recognise real objects behind an occluder (W8-0).
+
+### Paths closed
+- DFA as an addition at matched norm to deep supervision (H34d).
+- Item-level gain as the "poor input" signal for sleep (W9).
+
+### Dispatched
+- grok: **W8-1**, the camera watches a wall of four pictures: one static, one changed every 32 decisions, one every 128, one a flickering TV. Bars: curious beats
+  round-robin by ≥ +0.03 life accuracy; TV share ≤ 0.15 for progress and ≥ 0.35 for surprise; it looks most at what changes fastest.
+- codex: **W9b**, sleep when the glance's own codelength is high (noisy night input looks costly, not rich). Bars: night replication; ≥ 60% of sleep at night;
+  beats random times by ≥ 0.07 on 8 of 12. Plus the H34d summarizer fix.

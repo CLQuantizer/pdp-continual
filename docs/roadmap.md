@@ -322,3 +322,9 @@ Byte-level channels, one per source, built and run on Kaggle compute after M4 is
 - **controls:** synthetic uniform noise and a dark channel stay (an exactly known noisy TV beats a "nearly random" real one).
 - **calibration (passive, separate):** enwik8 against published numbers (xz 1.976, ppmd 1.711, cmix 1.170 bits/byte),
   the M1 cortex test on real text.
+
+
+## Status, 20 Nov 2026
+- **Milestone: W8-0.** The curious camera on real photographs: curiosity about pixels alone lifts a frozen eye's accuracy behind a dotted window from 0.67 (random walk) to 0.92. Next: W8-1, a changing wall with a noisy TV, where no fixed plan is right.
+- Local depth: direct feedback alignment at matched norm hurts (+0.28). Deep supervision remains the only depth trick that pays.
+- Sleep: night is worth sleeping through (−0.20 with a clock). Sleep without a clock fails when poor input is judged by item-level gain; W9b judges it by the input's codelength.
