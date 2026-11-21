@@ -3557,3 +3557,24 @@ That is principle 3 taken literally, and `ObservedReservoir` (equation 5) alread
    fell asleep at S ≥ 16 whenever input looked poor, drained S to 0, and never built a day's pressure. Amended, as in Borbély's model: sleep starts only when pressure
    is high (S ≥ 96) and input is poor. Rerunning the smoke.
 3. **H34e smoke passed (codex):** λ = 0 equals plain exactly; the error matches autograd to 4e-16. grok runs its 8 kernels.
+
+### Addendum, 21 Nov afternoon
+1. **W8-1c, the wall with progress scored on stored sights (grok): bar 2 PASS, bars 1 and 3 FAIL.** The TV is now ignored: its first-visit reward is −166 bits against about
+   550 elsewhere, and it gets 7.6% of decisions (surprise: 73%). But the camera spent 70% of its time on the static picture and 10% on the fast one, and lost to
+   round-robin by 0.19. Mechanism: the pixel model counts over the whole life. A new picture contradicts the stored sights of the old one, so learning it makes the
+   history longer, and progress is negative exactly where the world changed. The reward is right for this learner; the learner cannot represent change.
+2. **H34e, self-distillation in the local stack (codex code, grok kernels): bar FAIL.** distill_4 − plain_4 = +0.047 on the tail and +0.94 over the whole stream. Early
+   on, the mixture is poor and teaches every layer its mistakes.
+3. **W9c's amended smoke stopped again (codex):** 3.6% of sleep at night. "Poor input" was b above the median of wake b, and since wake decisions are mostly day, half of every
+   day counts as poor. The pressure fell out of phase with the night on day 1.
+
+### Settled
+- Progress must be measured on what was stored before the glance, and the learner must be able to represent the kind of change the world has. Both conditions are needed.
+
+### Paths closed
+- Cross-layer credit by broadcast signals added to own losses: random feedback (H34d) and distillation from the mixture (H34e).
+
+### Dispatched
+- grok: **W8-1d**, forgetting counts (γ = 0.8) and a reservoir of the last 32 glances per panel, so a replaced picture is progress, not a contradiction. Bars unchanged.
+- codex: W9c amendment 2 (poor = b > 1.5 × median; gate on days 3–8), then **H34f**: zero-init gates. The mixer starts as [1, 0, 0, 0], so the deep stack starts as one layer and
+  grows into its depth (the local twin of zero-γ, SkipInit and ReZero). Bars: whole-stream zgate_4 − plain_4 ≤ −0.10, tail no worse than +0.01, zgate_6 − plain_1 ≤ −0.05.

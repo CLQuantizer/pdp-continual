@@ -73,7 +73,7 @@ class EyelidPressure:
         elif self.asleep:
             self.asleep = self.S > 0 and self.w > self.m
         else:
-            self.asleep = self.S >= 16 and self.w is not None and self.w > self.m
+            self.asleep = self.S >= 96 and self.w is not None and self.w > self.m
         return self.asleep
 
     def observe(self, bits):

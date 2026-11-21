@@ -1,0 +1,2431 @@
+{
+  "n_bytes": 180000,
+  "tail_start": 40000,
+  "scoring": [
+    {
+      "range": "Tail",
+      "quantity": "distill_4 - plain_4",
+      "per_seed": [
+        0.04866756588158205,
+        0.04525957841049877
+      ],
+      "mean": 0.04696357214604041,
+      "threshold": -0.03,
+      "seeds_meeting": 0,
+      "evaluated": 2
+    },
+    {
+      "range": "Tail",
+      "quantity": "distill_4_top - plain_4",
+      "per_seed": [
+        0.03335407777562782,
+        0.03790449668553597
+      ],
+      "mean": 0.035629287230581896,
+      "threshold": null,
+      "seeds_meeting": null,
+      "evaluated": 2
+    },
+    {
+      "range": "Full",
+      "quantity": "distill_4 - plain_4",
+      "per_seed": [
+        0.9028948454228347,
+        0.9825614651814929
+      ],
+      "mean": 0.9427281553021638,
+      "threshold": null,
+      "seeds_meeting": null,
+      "evaluated": 2
+    },
+    {
+      "range": "Full",
+      "quantity": "distill_4_top - plain_4",
+      "per_seed": [
+        0.6037987893376258,
+        0.6264726822243203
+      ],
+      "mean": 0.615135735780973,
+      "threshold": null,
+      "seeds_meeting": null,
+      "evaluated": 2
+    }
+  ],
+  "runs": [
+    {
+      "arm": "plain_4",
+      "seed": 0,
+      "distill_lambda": 0.0,
+      "layer_lambdas": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 3.7458287440412663,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 7.060994478428667
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 4.110554676421851
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.6644260754873765
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.4933187809355544
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.4307807434056983
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.762121332344861
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.015459387817328
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.1615574112789164
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.0912249824097073,
+      "tail_edge_bits_per_byte": 3.7811052481193896,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.5491812200795407,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 4.7471558479969795,
+              "mean_abs_logit": 4.68483749156923,
+              "max_abs_logit": 16.51047706604004
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 3.999436504069345,
+              "mean_abs_logit": 5.598647552911852,
+              "max_abs_logit": 18.965015411376953
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.8780876077192796,
+              "mean_abs_logit": 5.54714815520479,
+              "max_abs_logit": 25.09299659729004
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6591102016177763,
+              "mean_abs_logit": 6.093533002794291,
+              "max_abs_logit": 20.10761260986328
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.6485644145856058,
+              "mean_abs_logit": 5.895357401156817,
+              "max_abs_logit": 32.068294525146484
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.9561247157637687,
+              "mean_abs_logit": 6.221806296564592,
+              "max_abs_logit": 43.647666931152344
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.195583768012535,
+              "mean_abs_logit": 6.572396383473347,
+              "max_abs_logit": 43.845191955566406
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.3502086240369913,
+              "mean_abs_logit": 6.737639433312931,
+              "max_abs_logit": 37.88728713989258
+            }
+          ],
+          "mean_mixer_weight_full": 0.43958398056030273,
+          "mean_mixer_weight_last_50kb": 0.3983353750228882,
+          "mean_mixer_weight_tail": 0.37436486082077025,
+          "final_mixer_weight": 0.3887450098991394,
+          "tail_own_bits_per_byte": 3.2807966409661002
+        },
+        {
+          "own_bits_per_byte": 3.666601602168272,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.031144781706278,
+              "mean_abs_logit": 5.011291099513598,
+              "max_abs_logit": 15.368778228759766
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.108602659937701,
+              "mean_abs_logit": 6.5297028930934236,
+              "max_abs_logit": 16.773805618286133
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9642913796375048,
+              "mean_abs_logit": 6.4772977594072625,
+              "max_abs_logit": 32.312137603759766
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.7130561265161943,
+              "mean_abs_logit": 7.652614035495805,
+              "max_abs_logit": 22.822864532470703
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.7507967668664235,
+              "mean_abs_logit": 7.031617592616817,
+              "max_abs_logit": 36.78651809692383
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.0633484853312645,
+              "mean_abs_logit": 7.234318407758237,
+              "max_abs_logit": 46.70447540283203
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.282540032070106,
+              "mean_abs_logit": 7.674019010394936,
+              "max_abs_logit": 56.12969970703125
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.4287565177304344,
+              "mean_abs_logit": 7.451635441421624,
+              "max_abs_logit": 50.64554977416992
+            }
+          ],
+          "mean_mixer_weight_full": 0.3213318611568875,
+          "mean_mixer_weight_last_50kb": 0.2184061633682251,
+          "mean_mixer_weight_tail": 0.2333707003048488,
+          "final_mixer_weight": 0.20991286635398865,
+          "tail_own_bits_per_byte": 3.366669938521364
+        },
+        {
+          "own_bits_per_byte": 3.7904420548621145,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.179215172010905,
+              "mean_abs_logit": 5.2064650661537035,
+              "max_abs_logit": 15.383904457092285
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.2450072748389625,
+              "mean_abs_logit": 6.622200615172816,
+              "max_abs_logit": 17.427650451660156
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.1221436858508955,
+              "mean_abs_logit": 6.472120264706811,
+              "max_abs_logit": 32.144107818603516
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.8142846034366884,
+              "mean_abs_logit": 7.5078369368198885,
+              "max_abs_logit": 22.61245346069336
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.89631293292838,
+              "mean_abs_logit": 6.886264394805885,
+              "max_abs_logit": 33.058475494384766
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.1514342031682774,
+              "mean_abs_logit": 7.494270126833215,
+              "max_abs_logit": 43.673282623291016
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.3619725607714126,
+              "mean_abs_logit": 8.057053393359997,
+              "max_abs_logit": 52.22373580932617
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.6040618100085378,
+              "mean_abs_logit": 8.29536793531293,
+              "max_abs_logit": 55.833030700683594
+            }
+          ],
+          "mean_mixer_weight_full": 0.27248461904525756,
+          "mean_mixer_weight_last_50kb": 0.13508323793411256,
+          "mean_mixer_weight_tail": 0.16741258825574604,
+          "final_mixer_weight": 0.126218780875206,
+          "tail_own_bits_per_byte": 3.4835560183460816
+        },
+        {
+          "own_bits_per_byte": 3.8103337828142174,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.221710111693804,
+              "mean_abs_logit": 4.968532464257218,
+              "max_abs_logit": 15.613998413085938
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.277649147233178,
+              "mean_abs_logit": 6.29352701629974,
+              "max_abs_logit": 15.952421188354492
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.143573777986221,
+              "mean_abs_logit": 6.31031685851636,
+              "max_abs_logit": 28.193058013916016
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.8415682940168883,
+              "mean_abs_logit": 7.518503588538054,
+              "max_abs_logit": 24.098175048828125
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.9063237509694604,
+              "mean_abs_logit": 6.964877648684884,
+              "max_abs_logit": 50.22802734375
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.174807276636623,
+              "mean_abs_logit": 7.652478717828961,
+              "max_abs_logit": 55.756874084472656
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.350058160329341,
+              "mean_abs_logit": 8.358907736444188,
+              "max_abs_logit": 53.732269287109375
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.593563586984248,
+              "mean_abs_logit": 8.52435890405144,
+              "max_abs_logit": 54.955078125
+            }
+          ],
+          "mean_mixer_weight_full": 0.30360996183554334,
+          "mean_mixer_weight_last_50kb": 0.19133450236320496,
+          "mean_mixer_weight_tail": 0.20486910983153753,
+          "final_mixer_weight": 0.1972828209400177,
+          "tail_own_bits_per_byte": 3.4983362661161865
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 2314.1114883749997,
+      "kernel_id": "ezzzzzx/h34e-plain-4-s0",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    },
+    {
+      "arm": "plain_4",
+      "seed": 1,
+      "distill_lambda": 0.0,
+      "layer_lambdas": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 3.769168529990437,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 7.187971261304195
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 4.156564955235052
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.6761799158877886
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.4899336794881988
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.4223313730115117
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.768367054491926
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.015311101389967
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.1067703756125327
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.091462938774679,
+      "tail_edge_bits_per_byte": 3.796788144365751,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.581901120323058,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 4.829611695158297,
+              "mean_abs_logit": 4.840535157110354,
+              "max_abs_logit": 18.028026580810547
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.045293409351688,
+              "mean_abs_logit": 5.989819803482222,
+              "max_abs_logit": 20.322063446044922
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9089150792523277,
+              "mean_abs_logit": 5.7167860353849465,
+              "max_abs_logit": 30.0567684173584
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6687666774762806,
+              "mean_abs_logit": 6.324259117804241,
+              "max_abs_logit": 23.04412841796875
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.6747176622194635,
+              "mean_abs_logit": 6.094519742710462,
+              "max_abs_logit": 35.82699966430664
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.993345755282472,
+              "mean_abs_logit": 6.404912352197848,
+              "max_abs_logit": 51.22355651855469
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.212503606404393,
+              "mean_abs_logit": 6.811275256275072,
+              "max_abs_logit": 50.06366729736328
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.282670905905477,
+              "mean_abs_logit": 6.946673760294744,
+              "max_abs_logit": 46.80711364746094
+            }
+          ],
+          "mean_mixer_weight_full": 0.4121547583685981,
+          "mean_mixer_weight_last_50kb": 0.3686971551513672,
+          "mean_mixer_weight_tail": 0.34296463080814904,
+          "final_mixer_weight": 0.3641532063484192,
+          "tail_own_bits_per_byte": 3.3024870105627997
+        },
+        {
+          "own_bits_per_byte": 3.6764867413407307,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.114337557610974,
+              "mean_abs_logit": 4.927189043015395,
+              "max_abs_logit": 15.071603775024414
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.122108579254567,
+              "mean_abs_logit": 6.447032578877295,
+              "max_abs_logit": 17.249372482299805
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9790539582634494,
+              "mean_abs_logit": 6.494135020458046,
+              "max_abs_logit": 37.15087127685547
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.709177750316778,
+              "mean_abs_logit": 7.427040534509786,
+              "max_abs_logit": 23.148128509521484
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.7386771797089215,
+              "mean_abs_logit": 6.79813041221393,
+              "max_abs_logit": 33.59474563598633
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.046794731976483,
+              "mean_abs_logit": 7.565357500686008,
+              "max_abs_logit": 57.99897384643555
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.2697416313819416,
+              "mean_abs_logit": 8.242271389236882,
+              "max_abs_logit": 51.991943359375
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.4540657457007407,
+              "mean_abs_logit": 8.829035344578626,
+              "max_abs_logit": 51.07876205444336
+            }
+          ],
+          "mean_mixer_weight_full": 0.33624369289345213,
+          "mean_mixer_weight_last_50kb": 0.23438006964683533,
+          "mean_mixer_weight_tail": 0.24522223980426788,
+          "final_mixer_weight": 0.22314214706420898,
+          "tail_own_bits_per_byte": 3.362395466192518
+        },
+        {
+          "own_bits_per_byte": 3.7714946566155207,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.2200693464802255,
+              "mean_abs_logit": 5.060353205458863,
+              "max_abs_logit": 14.187606811523438
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.237763531721878,
+              "mean_abs_logit": 6.567183207405141,
+              "max_abs_logit": 16.90637969970703
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.0926610606200535,
+              "mean_abs_logit": 6.298617317358364,
+              "max_abs_logit": 25.173877716064453
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.7892704597525717,
+              "mean_abs_logit": 7.717229776318464,
+              "max_abs_logit": 23.300249099731445
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.8430061557648907,
+              "mean_abs_logit": 7.040022206781438,
+              "max_abs_logit": 36.317413330078125
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.144156844565105,
+              "mean_abs_logit": 7.735244284793044,
+              "max_abs_logit": 49.85088348388672
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.3440325568481115,
+              "mean_abs_logit": 8.106776235696511,
+              "max_abs_logit": 52.739498138427734
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.4190078593945463,
+              "mean_abs_logit": 8.436045095940996,
+              "max_abs_logit": 54.69371032714844
+            }
+          ],
+          "mean_mixer_weight_full": 0.3018485537317064,
+          "mean_mixer_weight_last_50kb": 0.16217128795623778,
+          "mean_mixer_weight_tail": 0.19682562265396117,
+          "final_mixer_weight": 0.1631440818309784,
+          "tail_own_bits_per_byte": 3.452304197324546
+        },
+        {
+          "own_bits_per_byte": 3.810237813395787,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.213646953464055,
+              "mean_abs_logit": 5.095728429159615,
+              "max_abs_logit": 15.076841354370117
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.264346371281365,
+              "mean_abs_logit": 6.681889222728462,
+              "max_abs_logit": 16.84023094177246
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.135725453719392,
+              "mean_abs_logit": 6.470698948090213,
+              "max_abs_logit": 28.714313507080078
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.842493117584497,
+              "mean_abs_logit": 7.589868445275908,
+              "max_abs_logit": 22.91450309753418
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.895979635063604,
+              "mean_abs_logit": 7.113364057780921,
+              "max_abs_logit": 41.20686721801758
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.1925524428350855,
+              "mean_abs_logit": 7.6223350062644295,
+              "max_abs_logit": 66.42403411865234
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.3704924223729944,
+              "mean_abs_logit": 8.413975592009397,
+              "max_abs_logit": 62.53046417236328
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.5923793006433944,
+              "mean_abs_logit": 8.545667723264932,
+              "max_abs_logit": 68.37804412841797
+            }
+          ],
+          "mean_mixer_weight_full": 0.30191071286731297,
+          "mean_mixer_weight_last_50kb": 0.17985610034942626,
+          "mean_mixer_weight_tail": 0.19902174209867204,
+          "final_mixer_weight": 0.18397320806980133,
+          "tail_own_bits_per_byte": 3.5005854610958047
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 1876.794391699,
+      "kernel_id": "ezzzzzx/h34e-plain-4-s1",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    },
+    {
+      "arm": "distill_4",
+      "seed": 0,
+      "distill_lambda": 0.5,
+      "layer_lambdas": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 4.648723589464101,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 12.921838515600989
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 4.497740694635616
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.7457175546239725
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.5301582199145796
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.5035745165919665
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.805259004270915
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.016124491659711
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.251984234218917
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.1398925482912894,
+      "tail_edge_bits_per_byte": 3.830419091315716,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.6512280129550936,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.339113090087075,
+              "mean_abs_logit": 4.867091874529371,
+              "max_abs_logit": 16.761167526245117
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.156254691059431,
+              "mean_abs_logit": 5.444029459474012,
+              "max_abs_logit": 13.879121780395508
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.908720677376561,
+              "mean_abs_logit": 5.267706306667169,
+              "max_abs_logit": 20.918210983276367
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.64245958350244,
+              "mean_abs_logit": 6.00943068277595,
+              "max_abs_logit": 16.423479080200195
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.664150232958912,
+              "mean_abs_logit": 5.8060075105046645,
+              "max_abs_logit": 30.35271453857422
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.9494860798438154,
+              "mean_abs_logit": 6.2560267638907385,
+              "max_abs_logit": 44.804786682128906
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1467571200942293,
+              "mean_abs_logit": 6.577111618125609,
+              "max_abs_logit": 40.40848159790039
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.4095010917710877,
+              "mean_abs_logit": 6.588048836476557,
+              "max_abs_logit": 41.80164337158203
+            }
+          ],
+          "mean_mixer_weight_full": 0.36451118363804286,
+          "mean_mixer_weight_last_50kb": 0.3185346346282959,
+          "mean_mixer_weight_tail": 0.29682300201824735,
+          "final_mixer_weight": 0.3295329213142395,
+          "tail_own_bits_per_byte": 3.2803064573989236
+        },
+        {
+          "own_bits_per_byte": 3.692774563502156,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.6001446182913845,
+              "mean_abs_logit": 5.102441029124894,
+              "max_abs_logit": 13.726797103881836
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.2263144357787565,
+              "mean_abs_logit": 6.16819749231674,
+              "max_abs_logit": 13.779376029968262
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.89955341836648,
+              "mean_abs_logit": 6.004565542649309,
+              "max_abs_logit": 23.526512145996094
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.636424499950068,
+              "mean_abs_logit": 7.154481679664784,
+              "max_abs_logit": 19.65224266052246
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.64565961084929,
+              "mean_abs_logit": 6.581853284063653,
+              "max_abs_logit": 34.90582275390625
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.952356686919988,
+              "mean_abs_logit": 7.024660146767798,
+              "max_abs_logit": 50.33900451660156
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1461313805752416,
+              "mean_abs_logit": 7.222585491109591,
+              "max_abs_logit": 48.085838317871094
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.406961032421571,
+              "mean_abs_logit": 7.183567567153221,
+              "max_abs_logit": 42.32716751098633
+            }
+          ],
+          "mean_mixer_weight_full": 0.3189453663720025,
+          "mean_mixer_weight_last_50kb": 0.25122015855789187,
+          "mean_mixer_weight_tail": 0.24527553039278302,
+          "final_mixer_weight": 0.2558806538581848,
+          "tail_own_bits_per_byte": 3.2747162002387675
+        },
+        {
+          "own_bits_per_byte": 3.7836322238339215,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.745318733867032,
+              "mean_abs_logit": 5.306938234163214,
+              "max_abs_logit": 17.244701385498047
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.318296857798965,
+              "mean_abs_logit": 6.315353845745628,
+              "max_abs_logit": 14.519641876220703
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.010636328784296,
+              "mean_abs_logit": 6.059150085849219,
+              "max_abs_logit": 24.088958740234375
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.693223527469778,
+              "mean_abs_logit": 7.4762759487835595,
+              "max_abs_logit": 20.977569580078125
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.75706754364768,
+              "mean_abs_logit": 6.668025488280729,
+              "max_abs_logit": 27.482114791870117
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.0213123565828894,
+              "mean_abs_logit": 7.2792257774387235,
+              "max_abs_logit": 52.698307037353516
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.2033192637468524,
+              "mean_abs_logit": 7.552143309280262,
+              "max_abs_logit": 49.955318450927734
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.464886998533696,
+              "mean_abs_logit": 7.282636614058932,
+              "max_abs_logit": 47.717491149902344
+            }
+          ],
+          "mean_mixer_weight_full": 0.2994294103251563,
+          "mean_mixer_weight_last_50kb": 0.1940666192436218,
+          "mean_mixer_weight_tail": 0.21653323700087412,
+          "final_mixer_weight": 0.18825823068618774,
+          "tail_own_bits_per_byte": 3.355220329769724
+        },
+        {
+          "own_bits_per_byte": 3.8104402027342816,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.794815785396365,
+              "mean_abs_logit": 4.97541388390392,
+              "max_abs_logit": 15.9091796875
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.349653234461564,
+              "mean_abs_logit": 5.890940909542188,
+              "max_abs_logit": 14.222491264343262
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.03674583405323,
+              "mean_abs_logit": 5.80465753008663,
+              "max_abs_logit": 23.91070556640625
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.708106874807803,
+              "mean_abs_logit": 7.080419474049757,
+              "max_abs_logit": 18.499605178833008
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.7767808026919014,
+              "mean_abs_logit": 6.540243080893456,
+              "max_abs_logit": 30.313308715820312
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.0513241919613963,
+              "mean_abs_logit": 7.060799494373812,
+              "max_abs_logit": 44.427494049072266
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.2156264284548226,
+              "mean_abs_logit": 7.388670604936229,
+              "max_abs_logit": 45.71623611450195
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.5105815392987294,
+              "mean_abs_logit": 7.2727903750496825,
+              "max_abs_logit": 51.04093551635742
+            }
+          ],
+          "mean_mixer_weight_full": 0.3157051297956043,
+          "mean_mixer_weight_last_50kb": 0.21737502806663514,
+          "mean_mixer_weight_tail": 0.2350992807694844,
+          "final_mixer_weight": 0.21649052202701569,
+          "tail_own_bits_per_byte": 3.3773457138740315
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 1981.688632109,
+      "kernel_id": "ezzzzzx/h34e-distill-4-s0",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    },
+    {
+      "arm": "distill_4",
+      "seed": 1,
+      "distill_lambda": 0.5,
+      "layer_lambdas": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 4.75172999517193,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 13.52349390628801
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 4.662709977604124
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.759078222858896
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.5178288858420768
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.483606177795646
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.812726237803174
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.017757208841779
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.176276741020937
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.1367225171851776,
+      "tail_edge_bits_per_byte": 3.8484850372280817,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.6936233432156795,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.469699780743444,
+              "mean_abs_logit": 5.206097882410161,
+              "max_abs_logit": 17.70879554748535
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.233401579140511,
+              "mean_abs_logit": 5.729424594801531,
+              "max_abs_logit": 18.818269729614258
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9631746333562554,
+              "mean_abs_logit": 5.271416385077194,
+              "max_abs_logit": 25.748817443847656
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6542222651562337,
+              "mean_abs_logit": 6.164371854494983,
+              "max_abs_logit": 19.36788558959961
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.679546217090327,
+              "mean_abs_logit": 5.890847123239936,
+              "max_abs_logit": 31.136699676513672
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.9913177310973262,
+              "mean_abs_logit": 6.42087021074178,
+              "max_abs_logit": 48.2463493347168
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.152141790702431,
+              "mean_abs_logit": 6.768480227478107,
+              "max_abs_logit": 40.90654373168945
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.252920369331816,
+              "mean_abs_logit": 6.786552455023849,
+              "max_abs_logit": 37.51658630371094
+            }
+          ],
+          "mean_mixer_weight_full": 0.3377903750313653,
+          "mean_mixer_weight_last_50kb": 0.28078046566009524,
+          "mean_mixer_weight_tail": 0.26351211086000714,
+          "final_mixer_weight": 0.29941442608833313,
+          "tail_own_bits_per_byte": 3.300636196097966
+        },
+        {
+          "own_bits_per_byte": 3.711429853846827,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.763223851459901,
+              "mean_abs_logit": 5.213716151236797,
+              "max_abs_logit": 17.705020904541016
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.261328862738972,
+              "mean_abs_logit": 6.12435136665134,
+              "max_abs_logit": 14.425931930541992
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9010327260699147,
+              "mean_abs_logit": 5.923138921976546,
+              "max_abs_logit": 23.289810180664062
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.611783752865331,
+              "mean_abs_logit": 7.050301648719441,
+              "max_abs_logit": 17.854658126831055
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.630537462834716,
+              "mean_abs_logit": 6.473154431796991,
+              "max_abs_logit": 29.22408676147461
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.9304644416722447,
+              "mean_abs_logit": 7.09378419768403,
+              "max_abs_logit": 46.636619567871094
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1575025590126806,
+              "mean_abs_logit": 7.442001835322254,
+              "max_abs_logit": 53.648780822753906
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.3321064552169775,
+              "mean_abs_logit": 7.758168419798344,
+              "max_abs_logit": 45.51496887207031
+            }
+          ],
+          "mean_mixer_weight_full": 0.34238124259842767,
+          "mean_mixer_weight_last_50kb": 0.2731569320106506,
+          "mean_mixer_weight_tail": 0.267102831860951,
+          "final_mixer_weight": 0.27472633123397827,
+          "tail_own_bits_per_byte": 3.263636936807961
+        },
+        {
+          "own_bits_per_byte": 3.7934373116562563,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.860284767722652,
+              "mean_abs_logit": 5.28389746765855,
+              "max_abs_logit": 18.719018936157227
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.338497031812236,
+              "mean_abs_logit": 6.182843459339655,
+              "max_abs_logit": 17.18183708190918
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.020900785691083,
+              "mean_abs_logit": 6.013627881946928,
+              "max_abs_logit": 27.680622100830078
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.667142642461854,
+              "mean_abs_logit": 7.374302570133318,
+              "max_abs_logit": 19.32086181640625
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.7083829115861993,
+              "mean_abs_logit": 6.565922259591154,
+              "max_abs_logit": 30.367292404174805
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.0327033762590028,
+              "mean_abs_logit": 7.070716734261333,
+              "max_abs_logit": 48.51610565185547
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1928789738467156,
+              "mean_abs_logit": 7.054458777040089,
+              "max_abs_logit": 44.33693313598633
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.4597907727265267,
+              "mean_abs_logit": 7.482808308620203,
+              "max_abs_logit": 48.699913024902344
+            }
+          ],
+          "mean_mixer_weight_full": 0.3229995044734743,
+          "mean_mixer_weight_last_50kb": 0.2154818538570404,
+          "mean_mixer_weight_tail": 0.23870669945648737,
+          "final_mixer_weight": 0.2072051465511322,
+          "tail_own_bits_per_byte": 3.343037616612084
+        },
+        {
+          "own_bits_per_byte": 3.811081901215964,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.8137750970015905,
+              "mean_abs_logit": 5.33979498392962,
+              "max_abs_logit": 16.70595932006836
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.375262848319957,
+              "mean_abs_logit": 6.3423898403528725,
+              "max_abs_logit": 15.124284744262695
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.026785413515702,
+              "mean_abs_logit": 6.065358365475741,
+              "max_abs_logit": 23.215972900390625
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.701213558440521,
+              "mean_abs_logit": 7.171672025980085,
+              "max_abs_logit": 19.71088218688965
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.7459672362543537,
+              "mean_abs_logit": 6.640406291527592,
+              "max_abs_logit": 29.735301971435547
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.0630713092447603,
+              "mean_abs_logit": 7.169368148615776,
+              "max_abs_logit": 37.12469482421875
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.2143697615527023,
+              "mean_abs_logit": 7.249922149658915,
+              "max_abs_logit": 39.82096481323242
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.496722322126755,
+              "mean_abs_logit": 7.163559892123944,
+              "max_abs_logit": 44.54569625854492
+            }
+          ],
+          "mean_mixer_weight_full": 0.311154030919075,
+          "mean_mixer_weight_last_50kb": 0.2102227908039093,
+          "mean_mixer_weight_tail": 0.2270185464484351,
+          "final_mixer_weight": 0.20692448318004608,
+          "tail_own_bits_per_byte": 3.370566683708977
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 1946.5079400350003,
+      "kernel_id": "ezzzzzx/h34e-distill-4-s1",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    },
+    {
+      "arm": "distill_4_top",
+      "seed": 0,
+      "distill_lambda": 0.5,
+      "layer_lambdas": [
+        0.5,
+        0.5,
+        0.5,
+        0.0
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 4.349627533378892,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 10.965463727397864
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 4.38191456039135
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.7272880797833916
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.5126554816721804
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.4808257942459515
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.790933153106022
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.0127793896813437
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.227290270249598
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.124579060185335,
+      "tail_edge_bits_per_byte": 3.8192569612476728,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.631053480973691,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.2871097917656185,
+              "mean_abs_logit": 4.9483760999200035,
+              "max_abs_logit": 18.303192138671875
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.093040235216715,
+              "mean_abs_logit": 5.533994154593458,
+              "max_abs_logit": 15.324491500854492
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9029203785978357,
+              "mean_abs_logit": 5.338519446226067,
+              "max_abs_logit": 26.077062606811523
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6320450793621473,
+              "mean_abs_logit": 6.063855338469804,
+              "max_abs_logit": 16.28228759765625
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.650772315985498,
+              "mean_abs_logit": 5.86738426854908,
+              "max_abs_logit": 28.14165496826172
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.9524121842759867,
+              "mean_abs_logit": 6.299148179660906,
+              "max_abs_logit": 44.63083267211914
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.143729039781352,
+              "mean_abs_logit": 6.569370973114766,
+              "max_abs_logit": 41.85050964355469
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.407780190127104,
+              "mean_abs_logit": 6.795899870223354,
+              "max_abs_logit": 40.1160774230957
+            }
+          ],
+          "mean_mixer_weight_full": 0.37892794858084783,
+          "mean_mixer_weight_last_50kb": 0.32588841510772704,
+          "mean_mixer_weight_tail": 0.3095060450690133,
+          "final_mixer_weight": 0.33487075567245483,
+          "tail_own_bits_per_byte": 3.274071989287549
+        },
+        {
+          "own_bits_per_byte": 3.6699339517704552,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.545009395625399,
+              "mean_abs_logit": 5.082432815536645,
+              "max_abs_logit": 13.776360511779785
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.148992471470098,
+              "mean_abs_logit": 6.20104189194305,
+              "max_abs_logit": 14.750380516052246
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.8807658910029112,
+              "mean_abs_logit": 6.1446771799278554,
+              "max_abs_logit": 28.57550811767578
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6274411712194037,
+              "mean_abs_logit": 7.239365829039563,
+              "max_abs_logit": 19.04725456237793
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.6509921929280837,
+              "mean_abs_logit": 6.574384430732446,
+              "max_abs_logit": 34.54214859008789
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.939561384195668,
+              "mean_abs_logit": 7.180995221815934,
+              "max_abs_logit": 45.11394119262695
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1489870532008766,
+              "mean_abs_logit": 7.317092696136525,
+              "max_abs_logit": 41.84529113769531
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.4088744655241636,
+              "mean_abs_logit": 7.176139527006637,
+              "max_abs_logit": 41.12614822387695
+            }
+          ],
+          "mean_mixer_weight_full": 0.33653045011096533,
+          "mean_mixer_weight_last_50kb": 0.259709444770813,
+          "mean_mixer_weight_tail": 0.26105370749064855,
+          "final_mixer_weight": 0.2602032721042633,
+          "tail_own_bits_per_byte": 3.2670287561627553
+        },
+        {
+          "own_bits_per_byte": 3.758051898586531,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.670387628658899,
+              "mean_abs_logit": 5.324636228203451,
+              "max_abs_logit": 17.152225494384766
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.246477473187206,
+              "mean_abs_logit": 6.338034029097294,
+              "max_abs_logit": 15.073409080505371
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.020427242735451,
+              "mean_abs_logit": 6.1180280751712495,
+              "max_abs_logit": 27.230594635009766
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.669754748873219,
+              "mean_abs_logit": 7.472644247939,
+              "max_abs_logit": 19.58475112915039
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.7468635432279327,
+              "mean_abs_logit": 6.715049094775126,
+              "max_abs_logit": 26.05366325378418
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.0265074740442843,
+              "mean_abs_logit": 7.294079145604001,
+              "max_abs_logit": 46.154632568359375
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1945043134116595,
+              "mean_abs_logit": 7.356412254043465,
+              "max_abs_logit": 39.219032287597656
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.4152562284218666,
+              "mean_abs_logit": 7.41307476992563,
+              "max_abs_logit": 43.89669418334961
+            }
+          ],
+          "mean_mixer_weight_full": 0.31367774322297837,
+          "mean_mixer_weight_last_50kb": 0.20078818199157714,
+          "mean_mixer_weight_tail": 0.2289556680543082,
+          "final_mixer_weight": 0.19819952547550201,
+          "tail_own_bits_per_byte": 3.347041974171883
+        },
+        {
+          "own_bits_per_byte": 3.7786225296964844,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.1564869232994575,
+              "mean_abs_logit": 4.988800025988602,
+              "max_abs_logit": 15.52804183959961
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.231104918433549,
+              "mean_abs_logit": 6.527500462639561,
+              "max_abs_logit": 16.926801681518555
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.140724299027771,
+              "mean_abs_logit": 6.373012730205042,
+              "max_abs_logit": 31.18734359741211
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.8106255873418426,
+              "mean_abs_logit": 7.656215230935094,
+              "max_abs_logit": 23.208438873291016
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.862529559463252,
+              "mean_abs_logit": 7.209727944737093,
+              "max_abs_logit": 46.71056365966797
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.1403866678464,
+              "mean_abs_logit": 7.970727874036732,
+              "max_abs_logit": 62.382747650146484
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.3419984739015596,
+              "mean_abs_logit": 8.699820379233119,
+              "max_abs_logit": 59.1710090637207
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.611128922504244,
+              "mean_abs_logit": 8.851048496709373,
+              "max_abs_logit": 76.59346771240234
+            }
+          ],
+          "mean_mixer_weight_full": 0.294435904012786,
+          "mean_mixer_weight_last_50kb": 0.18646827044487,
+          "mean_mixer_weight_tail": 0.1935453720331192,
+          "final_mixer_weight": 0.18707047402858734,
+          "tail_own_bits_per_byte": 3.4739226951258937
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 2149.836366403,
+      "kernel_id": "ezzzzzx/h34e-distill-4-top-s0",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    },
+    {
+      "arm": "distill_4_top",
+      "seed": 1,
+      "distill_lambda": 0.5,
+      "layer_lambdas": [
+        0.5,
+        0.5,
+        0.5,
+        0.0
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 4.395641212214757,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 11.209406149900698
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 4.452932738145442
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.7372548772707086
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.509072547972207
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.4809613799320864
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.808629381146307
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.0156577231235953
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.173509652276056
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.129367435460215,
+      "tail_edge_bits_per_byte": 3.8454494966927144,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.66989179831716,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.400588270251563,
+              "mean_abs_logit": 5.216112762669058,
+              "max_abs_logit": 17.652511596679688
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.159814789441031,
+              "mean_abs_logit": 5.756099279716588,
+              "max_abs_logit": 19.41591453552246
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9490458012148255,
+              "mean_abs_logit": 5.305297177039502,
+              "max_abs_logit": 26.979446411132812
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.644013043455886,
+              "mean_abs_logit": 6.188153386435785,
+              "max_abs_logit": 19.552692413330078
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.67753984890335,
+              "mean_abs_logit": 5.925231576716857,
+              "max_abs_logit": 29.425107955932617
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.994931135318405,
+              "mean_abs_logit": 6.453673777919997,
+              "max_abs_logit": 46.49647903442383
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1445839731249263,
+              "mean_abs_logit": 6.86953191791685,
+              "max_abs_logit": 40.55103302001953
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.2635204308678354,
+              "mean_abs_logit": 6.744998645182134,
+              "max_abs_logit": 39.73958969116211
+            }
+          ],
+          "mean_mixer_weight_full": 0.35564407514996,
+          "mean_mixer_weight_last_50kb": 0.2973727901268005,
+          "mean_mixer_weight_tail": 0.2817602409499032,
+          "final_mixer_weight": 0.31310686469078064,
+          "tail_own_bits_per_byte": 3.2949525106455413
+        },
+        {
+          "own_bits_per_byte": 3.6914843778614848,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.690062088046223,
+              "mean_abs_logit": 5.210717089224939,
+              "max_abs_logit": 17.375694274902344
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.179442531387474,
+              "mean_abs_logit": 6.146138027219535,
+              "max_abs_logit": 14.577754020690918
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.899214667270934,
+              "mean_abs_logit": 5.8815702133387315,
+              "max_abs_logit": 26.706798553466797
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.60954672641544,
+              "mean_abs_logit": 7.03458146546056,
+              "max_abs_logit": 19.28937530517578
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.641869414433683,
+              "mean_abs_logit": 6.483830393851567,
+              "max_abs_logit": 27.039764404296875
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.93569131241583,
+              "mean_abs_logit": 7.021836385310548,
+              "max_abs_logit": 42.05854797363281
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1535200132354353,
+              "mean_abs_logit": 7.160107728903055,
+              "max_abs_logit": 41.053592681884766
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.3467038369883793,
+              "mean_abs_logit": 7.4887453754302,
+              "max_abs_logit": 38.86423873901367
+            }
+          ],
+          "mean_mixer_weight_full": 0.35301778868569267,
+          "mean_mixer_weight_last_50kb": 0.27902630428314207,
+          "mean_mixer_weight_tail": 0.27674160827909194,
+          "final_mixer_weight": 0.27682703733444214,
+          "tail_own_bits_per_byte": 3.2645088556945083
+        },
+        {
+          "own_bits_per_byte": 3.7668216633795604,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.7837668796226,
+              "mean_abs_logit": 5.299979391500682,
+              "max_abs_logit": 18.529293060302734
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.250908947836109,
+              "mean_abs_logit": 6.237352160368376,
+              "max_abs_logit": 16.047245025634766
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.9987389725501505,
+              "mean_abs_logit": 5.998560697899824,
+              "max_abs_logit": 24.762771606445312
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6596329170606827,
+              "mean_abs_logit": 7.367017433033432,
+              "max_abs_logit": 20.466426849365234
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.7130703738511843,
+              "mean_abs_logit": 6.662067051192155,
+              "max_abs_logit": 25.103946685791016
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.0252613816966827,
+              "mean_abs_logit": 7.162978396246826,
+              "max_abs_logit": 41.59393310546875
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.2007415073270296,
+              "mean_abs_logit": 7.254387690840964,
+              "max_abs_logit": 44.14585494995117
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.444974981941989,
+              "mean_abs_logit": 7.369617258389405,
+              "max_abs_logit": 46.50457763671875
+            }
+          ],
+          "mean_mixer_weight_full": 0.3376114171531465,
+          "mean_mixer_weight_last_50kb": 0.23031770504951476,
+          "mean_mixer_weight_tail": 0.25376435970238276,
+          "final_mixer_weight": 0.21878010034561157,
+          "tail_own_bits_per_byte": 3.336112066906721
+        },
+        {
+          "own_bits_per_byte": 3.7926229741068678,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 5.177399156775105,
+              "mean_abs_logit": 5.264557496268224,
+              "max_abs_logit": 16.260299682617188
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.249520811592059,
+              "mean_abs_logit": 6.940800930551966,
+              "max_abs_logit": 18.819873809814453
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 4.1216818975663445,
+              "mean_abs_logit": 6.7765752023690755,
+              "max_abs_logit": 35.198448181152344
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.8121526485227393,
+              "mean_abs_logit": 7.83767701540062,
+              "max_abs_logit": 23.2645206451416
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.8744095976449713,
+              "mean_abs_logit": 7.331624509275521,
+              "max_abs_logit": 39.98761749267578
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 3.1966030503487617,
+              "mean_abs_logit": 7.8518528320863625,
+              "max_abs_logit": 52.76614761352539
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.354386844363067,
+              "mean_abs_logit": 8.485489963491743,
+              "max_abs_logit": 58.317501068115234
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.603657033782026,
+              "mean_abs_logit": 8.394810472695452,
+              "max_abs_logit": 56.17732620239258
+            }
+          ],
+          "mean_mixer_weight_full": 0.2892908779435688,
+          "mean_mixer_weight_last_50kb": 0.16676334494590758,
+          "mean_mixer_weight_tail": 0.18358895789214544,
+          "final_mixer_weight": 0.16014647483825684,
+          "tail_own_bits_per_byte": 3.485759788585137
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 2236.787032713,
+      "kernel_id": "ezzzzzx/h34e-distill-4-top-s1",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    },
+    {
+      "arm": "distill_1",
+      "seed": 0,
+      "distill_lambda": 0.5,
+      "layer_lambdas": [
+        0.5
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 3.537297310639533,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 4.7437773407874
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 3.994323941958784
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.8614423000511717
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.6527101887893902
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.6384997911079346
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.945593533691052
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.1661592191513193
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.3301716053379584
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.2666191838798926,
+      "tail_edge_bits_per_byte": 3.9065701896723484,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.5394180713910752,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 4.747952699645511,
+              "mean_abs_logit": 4.410401027465784,
+              "max_abs_logit": 15.709309577941895
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 3.996422073174252,
+              "mean_abs_logit": 5.133127837533392,
+              "max_abs_logit": 17.076396942138672
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.8628924652882914,
+              "mean_abs_logit": 4.95615836748192,
+              "max_abs_logit": 21.067974090576172
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6529236940257475,
+              "mean_abs_logit": 5.550401023761219,
+              "max_abs_logit": 18.663345336914062
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.63916905412306,
+              "mean_abs_logit": 5.3118195268373976,
+              "max_abs_logit": 27.257339477539062
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.9472430822264024,
+              "mean_abs_logit": 5.592670258833587,
+              "max_abs_logit": 38.84226989746094
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1709074077249024,
+              "mean_abs_logit": 5.879457664530139,
+              "max_abs_logit": 37.725738525390625
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.3314981890378763,
+              "mean_abs_logit": 5.927402822017819,
+              "max_abs_logit": 33.29124069213867
+            }
+          ],
+          "mean_mixer_weight_full": 0.9518048530896505,
+          "mean_mixer_weight_last_50kb": 0.9513408813095092,
+          "mean_mixer_weight_tail": 0.9503693624360221,
+          "final_mixer_weight": 0.9538921117782593,
+          "tail_own_bits_per_byte": 3.2684153980464195
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 320.682497847,
+      "kernel_id": "ezzzzzx/h34e-distill-1-s0",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    },
+    {
+      "arm": "distill_1",
+      "seed": 1,
+      "distill_lambda": 0.5,
+      "layer_lambdas": [
+        0.5
+      ],
+      "n_bytes": 180000,
+      "bits_per_byte": 3.5717382254078887,
+      "slices": [
+        {
+          "start": 0,
+          "end": 25000,
+          "bits_per_byte": 4.828454699671839
+        },
+        {
+          "start": 25000,
+          "end": 50000,
+          "bits_per_byte": 4.037999631739148
+        },
+        {
+          "start": 50000,
+          "end": 75000,
+          "bits_per_byte": 3.894010570625577
+        },
+        {
+          "start": 75000,
+          "end": 100000,
+          "bits_per_byte": 3.6616833501158226
+        },
+        {
+          "start": 100000,
+          "end": 125000,
+          "bits_per_byte": 3.6625254204993825
+        },
+        {
+          "start": 125000,
+          "end": 150000,
+          "bits_per_byte": 2.986436732151972
+        },
+        {
+          "start": 150000,
+          "end": 175000,
+          "bits_per_byte": 2.1876863082087965
+        },
+        {
+          "start": 175000,
+          "end": 180000,
+          "bits_per_byte": 2.2885925496213058
+        }
+      ],
+      "tail_start": 40000,
+      "tail_bits_per_byte": 3.2905671967087726,
+      "tail_edge_bits_per_byte": 3.9427885251082806,
+      "layers": [
+        {
+          "own_bits_per_byte": 3.573851688301801,
+          "fraction_lambda_lt_half": 0.0,
+          "slices": [
+            {
+              "start": 0,
+              "end": 25000,
+              "own_bits_per_byte": 4.83192628542693,
+              "mean_abs_logit": 4.564479881034769,
+              "max_abs_logit": 18.05411720275879
+            },
+            {
+              "start": 25000,
+              "end": 50000,
+              "own_bits_per_byte": 4.040874346177468,
+              "mean_abs_logit": 5.4384952135824856,
+              "max_abs_logit": 18.16536521911621
+            },
+            {
+              "start": 50000,
+              "end": 75000,
+              "own_bits_per_byte": 3.8960867530488397,
+              "mean_abs_logit": 5.105976793533146,
+              "max_abs_logit": 24.731887817382812
+            },
+            {
+              "start": 75000,
+              "end": 100000,
+              "own_bits_per_byte": 3.6622756897281907,
+              "mean_abs_logit": 5.718489247514687,
+              "max_abs_logit": 20.97241973876953
+            },
+            {
+              "start": 100000,
+              "end": 125000,
+              "own_bits_per_byte": 3.663916054315013,
+              "mean_abs_logit": 5.482068855010361,
+              "max_abs_logit": 32.29389190673828
+            },
+            {
+              "start": 125000,
+              "end": 150000,
+              "own_bits_per_byte": 2.9870482111374113,
+              "mean_abs_logit": 5.812122186250005,
+              "max_abs_logit": 44.894840240478516
+            },
+            {
+              "start": 150000,
+              "end": 175000,
+              "own_bits_per_byte": 2.1923625802555784,
+              "mean_abs_logit": 6.050799216982053,
+              "max_abs_logit": 46.21929931640625
+            },
+            {
+              "start": 175000,
+              "end": 180000,
+              "own_bits_per_byte": 2.2862111784176755,
+              "mean_abs_logit": 6.11596935497575,
+              "max_abs_logit": 39.97461700439453
+            }
+          ],
+          "mean_mixer_weight_full": 0.9509872252464294,
+          "mean_mixer_weight_last_50kb": 0.9523945997238159,
+          "mean_mixer_weight_tail": 0.9498504757881164,
+          "final_mixer_weight": 0.9638688564300537,
+          "tail_own_bits_per_byte": 3.2922899350520938
+        }
+      ],
+      "max_frozen_weight_change": 0.0,
+      "wall_seconds": 106.178605533,
+      "kernel_id": "ezzzzzx/h34e-distill-1-s1",
+      "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+      "code_fingerprint": "a1d1f0cf7be5646d61f7715942f88a25aaae2255a21abe8c688fb519fead8a65"
+    }
+  ],
+  "missing": [],
+  "smoke": {
+    "ok": true,
+    "n_bytes": 180000,
+    "tail_start": 40000,
+    "threads": 1,
+    "log": [
+      {
+        "check": "logit_gradient_autograd",
+        "n_bytes": 512,
+        "dtype": "float64",
+        "max_abs": 4.440892098500626e-16,
+        "limit": 1e-06,
+        "equal_distribution_distillation_max_abs": 0.0,
+        "layer_cases": 12
+      },
+      {
+        "check": "lambda_zero_and_h34b_equivalence",
+        "seed": 0,
+        "n_bytes": 8192,
+        "h34b_max_bits_abs": 0.0,
+        "lambda_zero_max_bits_abs": 0.0,
+        "limit": 0,
+        "bits_per_byte": 8.664208657786467
+      },
+      {
+        "check": "lambda_zero_and_h34b_equivalence",
+        "seed": 1,
+        "n_bytes": 8192,
+        "h34b_max_bits_abs": 0.0,
+        "lambda_zero_max_bits_abs": 0.0,
+        "limit": 0,
+        "bits_per_byte": 8.844678844063042
+      },
+      {
+        "check": "prequential_prefix",
+        "arm": "plain_4",
+        "prefix_bytes": 1024,
+        "extended_bytes": 2048,
+        "max_bits_abs": 0.0,
+        "changed_suffix_max_bits_abs": 0.0
+      },
+      {
+        "check": "finite",
+        "arm": "distill_4",
+        "n_bytes": 8192,
+        "all_finite": true,
+        "bits_per_byte": 15.660154960363714,
+        "wall_seconds": 52.69984225463122
+      },
+      {
+        "check": "prequential_prefix",
+        "arm": "distill_4",
+        "prefix_bytes": 1024,
+        "extended_bytes": 2048,
+        "max_bits_abs": 0.0,
+        "changed_suffix_max_bits_abs": 0.0
+      },
+      {
+        "check": "finite",
+        "arm": "distill_4_top",
+        "n_bytes": 8192,
+        "all_finite": true,
+        "bits_per_byte": 13.815925192469546,
+        "wall_seconds": 52.7303271163255
+      },
+      {
+        "check": "prequential_prefix",
+        "arm": "distill_4_top",
+        "prefix_bytes": 1024,
+        "extended_bytes": 2048,
+        "max_bits_abs": 0.0,
+        "changed_suffix_max_bits_abs": 0.0
+      },
+      {
+        "check": "finite",
+        "arm": "distill_1",
+        "n_bytes": 8192,
+        "all_finite": true,
+        "bits_per_byte": 5.1544340671216755,
+        "wall_seconds": 8.293600019067526
+      },
+      {
+        "check": "prequential_prefix",
+        "arm": "distill_1",
+        "prefix_bytes": 1024,
+        "extended_bytes": 2048,
+        "max_bits_abs": 0.0,
+        "changed_suffix_max_bits_abs": 0.0
+      },
+      {
+        "check": "wall_estimates",
+        "n_bytes": 180000,
+        "estimated_kernel_seconds": {
+          "plain_4": 1236.6352261847169,
+          "distill_4": 1157.9555182902368,
+          "distill_4_top": 1158.625351677074,
+          "distill_1": 182.2324222939642
+        },
+        "limit": 5100,
+        "method": "8192-byte one-thread rates; linear extrapolation; no assumed Kaggle speedup"
+      }
+    ],
+    "source_hashes": {
+      "h34b_plain_depth.py": "bbd77a82b1e8c05ed19cf32f1a503779032be6cd375944608681e2c9347563b7",
+      "h34a2_logit_sum.py": "31d9314f3dc1c8eddaa34e245075896503ed6fc919c046e17f79d654f25b7dbe",
+      "h34a_local_depth.py": "f1470a25aecd93db1aa915a3ae1be3d917d5363dcad2651daadeaa297bcbfb00",
+      "h26_cued.py": "dafc1e4574598f3cb91b48b800fcb556f14d75fe70b7fd16e3784bce4f7d2a40",
+      "h32_mixer.py": "c512cab2a41aff0512ead37dcda53d7afa5eb48ca40b52579f468ffc64aca7a1",
+      "h32b_mixer.py": "fe78c6c3fc628144e72d836b0b113b9af2c44c03d1ff5d34f1ae3ad0b07a1076",
+      "h33_bank_text.py": "c1a52b3cfe7d63b42108adcb8b054e57c4358d553aafdef0b59be6a7c67d380c",
+      "h20_world.py": "e2101fcfa7e5580e73142648380abd257c8b8dfeeb9431f3545a55c5537f81e2",
+      "h30w_ring.py": "6ab4927e244faa18cff258e0bf153fc6e56a4b80139b13a12ff4f7bb6187d1ac",
+      "h30x_trace.py": "852a9cd9826e4c75687996c33beae14001920bb5cc1d49b1b9b095d821f7c5b9",
+      "h30y_roots.py": "fa94014039e3d140265bd456d2090ef20d2a88c3d4ecea89b6b834263f87f214",
+      "h34e_self_distill.py": "97a1c2cc30f2e0c558d5a90e75f490c088e61bf091960bcd74f2de3323704c20"
+    },
+    "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97"
+  }
+}

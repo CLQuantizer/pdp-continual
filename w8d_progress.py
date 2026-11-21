@@ -3,8 +3,10 @@
 curious_prog and curious_prog_noage keep one ObservedReservoir per panel
 (cap 256, seed = life, the same seed W8-1b passed to GlanceReservoir).
 The visit reward is the sum of ObservedReservoir.progress over the visit
-(equation 5, no mask). curious_prog_glance is W8-1b's curious_prog:
-GlanceReservoir and R._reward, report only.
+(equation 5, no mask), scored on the sights stored before this glance.
+The glance is included after the score. An empty reservoir scores 0, so
+the first glance of each panel is 0. curious_prog_glance is W8-1b's
+curious_prog: GlanceReservoir and R._reward, report only.
 
 round_robin, random and curious_surp are the W8-1b code path.
 World, lives 0-19, L = 1024, the sweep, the eye and the bars are W8-1b.
@@ -97,26 +99,75 @@ def code_sha():
     return h.hexdigest()
 
 
-def observed_reward(counts, reservoir, grey, vis, sx, sy):
-    """Same order as R._reward: store this glance, score, then count it.
+class FirstPassStop(Exception):
+    """Life 0 curious_prog failed the TV-smallest gate."""
 
-    progress is ObservedReservoir.progress with no mask, so the return is
-    the total over stored sights, not the (total, noise, logo) split.
-    """
+    def __init__(self, rewards, tv_visits):
+        self.rewards = rewards
+        self.tv_visits = tv_visits
+
+
+def _sight(grey, vis, sx, sy):
     ys = sy[vis]
     xs = sx[vis]
     vs = grey[vis].astype(np.int64)
-    reservoir.include(ys, xs, vs)
-    if vs.size == 0:
-        return 0.0
-    reward = reservoir.progress(counts, ys, xs, vs)
+    return ys, xs, vs
+
+
+def _checked_progress(reward):
     if isinstance(reward, tuple):
         raise RuntimeError("observed progress returned a split")
-    np.add.at(counts, (ys, xs, vs), 1)
     reward = float(reward)
     if not math.isfinite(reward):
         raise RuntimeError("nonfinite observed progress")
     return reward
+
+
+def observed_reward(counts, reservoir, grey, vis, sx, sy, order="before"):
+    """Score ObservedReservoir.progress, then count this glance.
+
+    order "before" scores the sights stored before this glance, then includes
+    it. An empty reservoir scores 0, so the first glance into a panel is 0.
+    order "after" includes this glance and then scores, which is R._reward.
+    curious_prog and curious_prog_noage use "before".
+    """
+    ys, xs, vs = _sight(grey, vis, sx, sy)
+    if order == "before":
+        if vs.size == 0 or len(reservoir.slots) == 0:
+            reward = 0.0
+        else:
+            reward = _checked_progress(reservoir.progress(counts, ys, xs, vs))
+        reservoir.include(ys, xs, vs)
+    elif order == "after":
+        reservoir.include(ys, xs, vs)
+        if vs.size == 0:
+            reward = 0.0
+        else:
+            reward = _checked_progress(reservoir.progress(counts, ys, xs, vs))
+    else:
+        raise ValueError(order)
+    if vs.size:
+        np.add.at(counts, (ys, xs, vs), 1)
+    return float(reward)
+
+
+def glance_reward(counts, reservoir, grey, vis, sx, sy, order="after"):
+    """GlanceReservoir reward. order "after" is R._reward, unchanged."""
+    if order == "after":
+        return float(R._reward("prog", counts, reservoir, grey, vis, sx, sy))
+    if order != "before":
+        raise ValueError(order)
+    ys, xs, vs = _sight(grey, vis, sx, sy)
+    if vs.size == 0 or len(reservoir.slots) == 0:
+        reward = 0.0
+    else:
+        reward = float(reservoir.progress(counts, ys, xs, vs))
+        if not math.isfinite(reward):
+            raise RuntimeError("nonfinite glance progress")
+    reservoir.include(ys, xs)
+    if vs.size:
+        np.add.at(counts, (ys, xs, vs), 1)
+    return float(reward)
 
 
 class ProgressLife(panels.PanelLife):
@@ -198,6 +249,10 @@ def run_policy(life, kinds, schedule, pack, policy, model, demo):
     panel = 0
     visit_sum = 0.0
     first_pass = []
+    trace_tv = life == 0 and policy == "curious_prog"
+    tv_visits = []
+    gate_fail = None
+    gate_by = None
     t0 = time.perf_counter()
     for t in range(N_DECISIONS):
         if t % DWELL == 0:
@@ -212,7 +267,12 @@ def run_policy(life, kinds, schedule, pack, policy, model, demo):
             visit_sum = 0.0
         x, y = sweep.step(panel)
         run.px[panel], run.py[panel] = x, y
-        visit_sum += run.observe(panel, t)
+        reward = run.observe(panel, t)
+        if trace_tv and kinds[panel] == "tv":
+            if t % DWELL == 0:
+                tv_visits.append([])
+            tv_visits[-1].append({"t": int(t), "reward": float(reward)})
+        visit_sum += reward
         if bandit is not None and (t + 1) % DWELL == 0:
             bandit.finish(panel, visit_sum, t + 1)
             if len(first_pass) < N_PANELS:
@@ -221,6 +281,20 @@ def run_policy(life, kinds, schedule, pack, policy, model, demo):
                     "kind": kinds[panel],
                     "reward": float(visit_sum),
                 })
+            if trace_tv and gate_by is None and len(first_pass) == N_PANELS:
+                assert_first_pass(bandit)
+                ok, gate_by = tv_smallest(first_pass)
+                if not ok:
+                    gate_fail = gate_by
+            if (
+                gate_fail is not None
+                and len(tv_visits) >= 3
+                and len(tv_visits[2]) == DWELL
+            ):
+                raise FirstPassStop(gate_fail, tv_visits[:3])
+    if gate_fail is not None:
+        complete = [visit for visit in tv_visits if len(visit) == DWELL]
+        raise FirstPassStop(gate_fail, complete[:3])
     for p in range(N_PANELS):
         if sweep.cursor[p] != int(run.share_n[kinds[p]]):
             raise RuntimeError("sweep cursor is not the number of glances")
@@ -229,18 +303,13 @@ def run_policy(life, kinds, schedule, pack, policy, model, demo):
     row = run.finish(model, bandit)
     row["wall_s"] = time.perf_counter() - t0
     row["first_pass"] = first_pass
+    if trace_tv:
+        row["first_pass_by"] = gate_by
+        row["tv_smallest"] = True
     if bandit is not None:
         if bandit.n_choices != N_DECISIONS // DWELL:
             raise RuntimeError("choice count")
-        if bandit.n_first != N_PANELS or bandit.first_pass_t != N_PANELS * DWELL:
-            raise RuntimeError(
-                f"first pass n {bandit.n_first} t {bandit.first_pass_t}"
-            )
-        first = [c["panel"] for c in bandit.choices[:N_PANELS]]
-        if first != list(range(N_PANELS)):
-            raise RuntimeError(f"first pass order {first}")
-        if any(c["mode"] != "first" for c in bandit.choices[:N_PANELS]):
-            raise RuntimeError("first pass mode")
+        assert_first_pass(bandit)
         if len(first_pass) != N_PANELS:
             raise RuntimeError("first-pass reward count")
     seq = row["panel_seq"]
@@ -287,7 +356,12 @@ def check_seed_and_split():
 
 
 def check_still(pack):
-    """Life 0, static panel, first 64 sweep glances. Both progress functions."""
+    """Life 0, static panel, first 64 sweep glances.
+
+    The two progress functions must agree to 1e-9 under each order. The
+    printed before/after columns are the observed rewards. There is no bar
+    on the difference between the orders.
+    """
     kinds, schedule = wall.make_world(0)
     panel = kinds.index("static")
     if schedule[panel].min() != schedule[panel].max():
@@ -295,25 +369,61 @@ def check_still(pack):
     index = int(schedule[panel, 0])
     scene = pack["greys"][index]
     occ = pack["occs"][index]
-    sweep = panels.PanelSweep(N_DECISIONS)
-    glance = wall.W.GlanceReservoir(0)
-    observed = wall.W.ObservedReservoir(0, cap=256)
-    g_counts = np.zeros((wall.W.N, wall.W.N, wall.W.G), dtype=np.int32)
-    o_counts = np.zeros_like(g_counts)
-    max_abs = 0.0
-    for _t in range(64):
-        x, y = sweep.step(panel)
-        grey, vis, sx, sy = wall.glance(pack["maps"], scene, occ, x, y)
-        g = float(R._reward("prog", g_counts, glance, grey, vis, sx, sy))
-        o = observed_reward(o_counts, observed, grey, vis, sx, sy)
-        max_abs = max(max_abs, abs(g - o))
-    if not np.array_equal(g_counts, o_counts):
-        raise RuntimeError("still-panel counts diverged")
-    agree = max_abs <= 1e-9
-    log(f"smoke still max_abs {max_abs:.3e} agree {str(agree).lower()}")
+    orders = ("before", "after")
+    sweep = {name: panels.PanelSweep(N_DECISIONS) for name in orders}
+    glance = {name: wall.W.GlanceReservoir(0) for name in orders}
+    observed = {name: wall.W.ObservedReservoir(0, cap=256) for name in orders}
+    g_counts = {
+        name: np.zeros((wall.W.N, wall.W.N, wall.W.G), dtype=np.int32)
+        for name in orders
+    }
+    o_counts = {name: np.zeros_like(g_counts[name]) for name in orders}
+    series = {name: [] for name in orders}
+    max_abs = {name: 0.0 for name in orders}
+    for t in range(64):
+        for name in orders:
+            x, y = sweep[name].step(panel)
+            grey, vis, sx, sy = wall.glance(pack["maps"], scene, occ, x, y)
+            g = glance_reward(
+                g_counts[name], glance[name], grey, vis, sx, sy, order=name
+            )
+            o = observed_reward(
+                o_counts[name], observed[name], grey, vis, sx, sy, order=name
+            )
+            max_abs[name] = max(max_abs[name], abs(g - o))
+            series[name].append(float(o))
+    for name in orders:
+        if not np.array_equal(g_counts[name], o_counts[name]):
+            raise RuntimeError(f"still-panel counts diverged order {name}")
+    if series["before"][0] != 0.0:
+        raise RuntimeError(f"first glance reward {series['before'][0]}")
+    agree = max_abs["before"] <= 1e-9 and max_abs["after"] <= 1e-9
+    log(
+        "smoke still max_abs_before "
+        f"{max_abs['before']:.3e} max_abs_after {max_abs['after']:.3e} "
+        f"agree {str(agree).lower()}"
+    )
+    log("life 0 static panel, first 64 glances, both orders")
+    log("before: score stored sights, then include the glance")
+    log("after: include the glance, then score (W8-1b order)")
+    log("t before after")
+    for t in range(64):
+        log(f"{t} {f6(series['before'][t])} {f6(series['after'][t])}")
     if not agree:
-        raise RuntimeError(f"still progress disagreed by {max_abs}")
-    return {"max_abs": max_abs, "agree": True, "n_glances": 64, "panel": "static"}
+        raise RuntimeError(
+            "still progress disagreed "
+            f"before {max_abs['before']} after {max_abs['after']}"
+        )
+    return {
+        "max_abs": max_abs["before"],
+        "max_abs_before": max_abs["before"],
+        "max_abs_after": max_abs["after"],
+        "agree": True,
+        "n_glances": 64,
+        "panel": "static",
+        "first_before": series["before"][0],
+        "orders": series,
+    }
 
 
 def load_w8c():
@@ -381,6 +491,18 @@ def check_glance_choices(choices, kinds, w8c):
     log("smoke glance choices match w8c life 0 first 32")
 
 
+def assert_first_pass(bandit):
+    if bandit.n_first != N_PANELS or bandit.first_pass_t != N_PANELS * DWELL:
+        raise RuntimeError(
+            f"first pass n {bandit.n_first} t {bandit.first_pass_t}"
+        )
+    first = [c["panel"] for c in bandit.choices[:N_PANELS]]
+    if first != list(range(N_PANELS)):
+        raise RuntimeError(f"first pass order {first}")
+    if any(c["mode"] != "first" for c in bandit.choices[:N_PANELS]):
+        raise RuntimeError("first pass mode")
+
+
 def tv_smallest(rewards):
     if len(rewards) != N_PANELS:
         raise RuntimeError("first pass is not one visit per panel")
@@ -402,10 +524,31 @@ def tv_smallest(rewards):
     return ok, by
 
 
-def write_stop(partial, by):
+def order_lines(still):
+    orders = still.get("orders") or {}
+    before = orders.get("before") or []
+    after = orders.get("after") or []
+    lines = [
+        "life 0 static panel, first 64 glances, both orders",
+        "",
+        "before: score stored sights, then include the glance",
+        "after: include the glance, then score (W8-1b order)",
+        "",
+        "| t | before | after |",
+        "|---:|---:|---:|",
+    ]
+    for t, (b, a) in enumerate(zip(before, after)):
+        lines.append(f"| {t} | {f6(b)} | {f6(a)} |")
+    lines.append("")
+    return lines
+
+
+def write_stop(partial, by, tv_visits):
     os.makedirs(OUT_DIR, exist_ok=True)
     lines = [
         "stopped before the scored run",
+        "",
+        "curious_prog scores ObservedReservoir.progress on the sights stored before the glance, then includes the glance.",
         "",
         "life 0 curious_prog first-pass visit rewards",
         "",
@@ -414,20 +557,44 @@ def write_stop(partial, by):
     ]
     for kind in ("static", "tv", "fast", "slow"):
         lines.append(f"| {kind} | {f6(by[kind])} |")
+    smallest = min(by, key=lambda k: (by[k], k))
     lines.append("")
     lines.append("tv_smallest false")
+    lines.append(f"smallest {smallest}")
+    lines.append("")
+    lines.append("tv per-glance rewards, first visits, score then include")
+    lines.append("")
+    lines.append("| visit | glance | t | reward |")
+    lines.append("|---:|---:|---:|---:|")
+    reported = list(tv_visits[:3])
+    for visit_i, visit in enumerate(reported, start=1):
+        for glance_i, step in enumerate(visit, start=1):
+            lines.append(
+                f"| {visit_i} | {glance_i} | {int(step['t'])} | {f6(step['reward'])} |"
+            )
+    lines.append("")
+    lines.append(f"tv_visits_reported {len(reported)}")
+    if len(reported) < 3:
+        lines.append("tv_visits_short true")
     still = partial.get("smoke", {}).get("still", {})
     if still:
         lines.append(
-            f"still_panel max_abs {still['max_abs']:.3e} agree {str(still['agree']).lower()}"
+            "still_panel life 0 static first 64 glances "
+            f"max_abs_before {still.get('max_abs_before', still['max_abs']):.3e} "
+            f"max_abs_after {still.get('max_abs_after', still['max_abs']):.3e} "
+            f"agree {str(still['agree']).lower()}"
         )
+        lines.append("")
+        lines.extend(order_lines(still))
     lines.append("scored lives not run")
+    lines.append("demo strips not written; the life stopped at the first-pass gate")
     lines.append("")
     text = "\n".join(lines)
     wall.atomic_write(os.path.join(OUT_DIR, "RESULTS.md"), text)
     wall.atomic_write(os.path.join(OUT_DIR, "results.json"), json.dumps({
         "stopped": "tv_not_smallest",
         "first_pass": by,
+        "tv_visits": reported,
         "smoke": partial.get("smoke", {}),
     }))
     log("STOP tv is not the smallest; wrote results/w8d/RESULTS.md")
@@ -457,7 +624,16 @@ def run_lives(pack, model, partial, lives, w8c):
                 continue
             demo = life == 0
             log(f"life {life} {policy} start")
-            row = run_policy(life, kinds, schedule, pack, policy, model, demo)
+            try:
+                row = run_policy(life, kinds, schedule, pack, policy, model, demo)
+            except FirstPassStop as stop:
+                partial["smoke"]["first_pass_curious_prog"] = stop.rewards
+                partial["smoke"]["tv_smallest"] = False
+                partial["smoke"]["tv_visits"] = stop.tv_visits
+                partial["stopped"] = "tv_not_smallest"
+                save_partial(partial)
+                write_stop(partial, stop.rewards, stop.tv_visits)
+                raise SystemExit(2)
             if life == 0 and policy == "curious_prog":
                 log(
                     "life 0 panel kinds "
@@ -474,14 +650,12 @@ def run_lives(pack, model, partial, lives, w8c):
                     for c in head
                 ]
                 partial["life0_kinds"] = list(kinds)
-                ok, by = tv_smallest(row["first_pass"])
+                by = row.pop("first_pass_by")
+                ok = row.pop("tv_smallest")
+                if by is None or not ok:
+                    raise RuntimeError("life 0 curious_prog returned without a passed gate")
                 partial["smoke"]["first_pass_curious_prog"] = by
-                partial["smoke"]["tv_smallest"] = bool(ok)
-                if not ok:
-                    partial["stopped"] = "tv_not_smallest"
-                    save_partial(partial)
-                    write_stop(partial, by)
-                    raise SystemExit(2)
+                partial["smoke"]["tv_smallest"] = True
             if life == 0 and policy == "curious_prog_glance":
                 check_glance_choices(row["choices"], kinds, w8c)
                 partial["smoke"]["first_pass_curious_prog_glance"] = {
@@ -522,6 +696,14 @@ def run_lives(pack, model, partial, lives, w8c):
 
 def save_partial(payload):
     wall.atomic_write(PARTIAL, json.dumps(payload))
+
+
+def clear_demos():
+    if not os.path.isdir(DEMO_DIR):
+        return
+    for name in os.listdir(DEMO_DIR):
+        if name.endswith(".png"):
+            os.remove(os.path.join(DEMO_DIR, name))
 
 
 def load_partial():
@@ -584,9 +766,13 @@ def render(payload):
     lines = ["", "progress smoke", ""]
     still = payload["smoke"]["still"]
     lines.append(
-        f"still_panel life 0 static first 64 glances max_abs {still['max_abs']:.3e} "
+        "still_panel life 0 static first 64 glances "
+        f"max_abs_before {still.get('max_abs_before', still['max_abs']):.3e} "
+        f"max_abs_after {still.get('max_abs_after', still['max_abs']):.3e} "
         f"agree {str(still['agree']).lower()}"
     )
+    lines.append("")
+    lines.extend(order_lines(still))
     lines.append(
         "life 0 random round_robin curious_surp match results/w8c exactly; "
         "curious_prog_glance matches results/w8c curious_prog exactly"
@@ -686,7 +872,7 @@ def assemble(partial, pack, load_start, t_wall):
         "tau": str(TAU),
         "dwell": str(DWELL),
         "optimistic": "nearest unvisited on a 4-ring, start panel 0, values start at 0",
-        "reward": "curious_prog and curious_prog_noage sum ObservedReservoir.progress with no mask over the visit; curious_prog_glance sums GlanceReservoir.progress; curious_surp sums per-glance surprise; EMA once per visit",
+        "reward": "curious_prog and curious_prog_noage sum ObservedReservoir.progress on the sights stored before the glance, then include the glance (an empty reservoir scores 0); curious_prog_glance sums GlanceReservoir.progress after including the glance, as W8-1b; curious_surp sums per-glance surprise; EMA once per visit",
         "age": "at the choice, completed decisions minus last_end; last_end is the completed count when the visit ended; greedy step only; stored EMA is not aged",
         "v_max": "largest visit reward so far",
         "noage": "curious_prog_noage ranks the raw EMA on the greedy step",
@@ -781,6 +967,7 @@ def main():
     if partial is None:
         partial = empty_partial(pack, smoke, load)
         partial["eye_s"] = eye_s
+        clear_demos()
     else:
         partial["smoke"]["still"] = smoke["still"]
         partial["smoke"]["split"] = smoke["split"]

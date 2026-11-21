@@ -48,3 +48,15 @@ The trace shows why. The agent falls asleep at S ≥ 16 whenever b_t > m_t, so S
 pressure is high **and** the circadian signal allows it. **Change only the onset threshold: fall asleep when S ≥ 96 and b_t > m_t** (or S ≥ 256, forced, until S ≤ 128).
 Staying asleep is unchanged (while b_t > m_t and S > 0). Everything else, including the smoke gate and the bars, is unchanged. Rerun the smoke; if the gate passes,
 stage the 12 kernels as the spec says. If it fails again, stop and report with the same trace.
+
+## Amendment 2 (orchestrator, 21 Nov afternoon, after the smoke stopped at 3.6% night sleep)
+The S ≥ 96 onset made things worse. The trace shows S at only 28 at dusk on day 1: in the first day, while everything is still being learned, b is high everywhere,
+so the agent slept mid-day whenever it could, and its pressure fell out of phase with the night. The root cause is the threshold "b_t > m_t" with m_t the median of
+**wake** b: wake decisions are mostly day, so by construction half of all day decisions count as "poor input". Night input is not slightly worse than the median; it
+is twice as costly (7.4 against 3.3 bits/symbol in W9b).
+**Change (replaces amendment 1):**
+- poor_t = **b_t > 1.5 · m_t** (m_t as before).
+- Fall asleep when S ≥ 32 and poor_t. Stay asleep while poor_t and S > 0. Forced sleep when S ≥ 256, until S ≤ 128. S +1 awake, −3 asleep, as before.
+- **Smoke gate change:** run seed 84 for the full 2,048 decisions, print for each of the 8 days its sleep decisions by day and by night (and how many were forced), and
+  gate on the night share of sleep over **days 3–8 ≥ 0.50** (the first two days are a learning transient). Also print the trace for t = 180–260 and t = 1,716–1,796.
+Bars unchanged. If the gate passes, stage the 12 kernels. If it fails, stop and report with the per-day table.
