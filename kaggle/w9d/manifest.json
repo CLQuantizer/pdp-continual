@@ -1,0 +1,146 @@
+[
+  {
+    "seed": 84,
+    "folder": "s84",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s84",
+    "output": "w9d_s84.json"
+  },
+  {
+    "seed": 85,
+    "folder": "s85",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s85",
+    "output": "w9d_s85.json"
+  },
+  {
+    "seed": 86,
+    "folder": "s86",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s86",
+    "output": "w9d_s86.json"
+  },
+  {
+    "seed": 87,
+    "folder": "s87",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s87",
+    "output": "w9d_s87.json"
+  },
+  {
+    "seed": 88,
+    "folder": "s88",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s88",
+    "output": "w9d_s88.json"
+  },
+  {
+    "seed": 89,
+    "folder": "s89",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s89",
+    "output": "w9d_s89.json"
+  },
+  {
+    "seed": 90,
+    "folder": "s90",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s90",
+    "output": "w9d_s90.json"
+  },
+  {
+    "seed": 91,
+    "folder": "s91",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s91",
+    "output": "w9d_s91.json"
+  },
+  {
+    "seed": 92,
+    "folder": "s92",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s92",
+    "output": "w9d_s92.json"
+  },
+  {
+    "seed": 93,
+    "folder": "s93",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s93",
+    "output": "w9d_s93.json"
+  },
+  {
+    "seed": 94,
+    "folder": "s94",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s94",
+    "output": "w9d_s94.json"
+  },
+  {
+    "seed": 95,
+    "folder": "s95",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9d-s95",
+    "output": "w9d_s95.json"
+  }
+]
