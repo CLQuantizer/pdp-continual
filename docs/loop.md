@@ -3578,3 +3578,19 @@ That is principle 3 taken literally, and `ObservedReservoir` (equation 5) alread
 - grok: **W8-1d**, forgetting counts (γ = 0.8) and a reservoir of the last 32 glances per panel, so a replaced picture is progress, not a contradiction. Bars unchanged.
 - codex: W9c amendment 2 (poor = b > 1.5 × median; gate on days 3–8), then **H34f**: zero-init gates. The mixer starts as [1, 0, 0, 0], so the deep stack starts as one layer and
   grows into its depth (the local twin of zero-γ, SkipInit and ReZero). Bars: whole-stream zgate_4 − plain_4 ≤ −0.10, tail no worse than +0.01, zgate_6 − plain_1 ≤ −0.05.
+
+### Addendum, 21 Nov evening
+1. **W8-1d, the wall with a forgetting pixel model (grok): bar 2 PASS, bars 1 and 3 FAIL.** The TV stays ignored (5.6% of decisions), but the camera camps on the static picture
+   (78%) and loses to round-robin by 0.28. When a picture is replaced, the next visit's progress is strongly negative (−3,161 bits on life 0, against +419 before): the
+   last 32 stored glances still show the old picture, and learning the new one contradicts them. Recovery comes over the following visits, but the bandit has already moved on.
+   Measured on recent history, a change costs before it pays, and a bandit that follows the last visit's reward avoids change.
+   **The wall is parked** after four rounds. Pure compression progress does not value freshness, and the wall's score (recognising the *current* pictures) does. Round-robin is
+   close to ideal for freshness. The settled result for the curious camera remains W8-0.
+2. **W9c, amendment 2 (codex): the smoke gate failed again**, 33% of sleep at night over days 3–8. Day sleep stays at 24–68 decisions per day. Mechanism: b is the glance's cost to
+   the cortex, and a room whose rule was just redrawn costs as much as night noise. The cortex cannot tell novelty from noise by bits alone.
+3. **H34f smoke passed (codex).** grok runs its 10 kernels.
+
+### Dispatched
+- grok: H34f kernels (zero-init gates).
+- codex: **W9d**, judge the light at the eye. Poor input is the glance's own order-0 codelength, coded by a fresh estimator per glance, with no cortex involved. Night noise is
+  incompressible to any model; a new room's rule is not.

@@ -71,9 +71,9 @@ class EyelidPressure:
         if self.S >= 256:
             self.forced = self.asleep = True
         elif self.asleep:
-            self.asleep = self.S > 0 and self.w > self.m
+            self.asleep = self.S > 0 and self.w > 1.5 * self.m
         else:
-            self.asleep = self.S >= 96 and self.w is not None and self.w > self.m
+            self.asleep = self.S >= 32 and self.w is not None and self.w > 1.5 * self.m
         return self.asleep
 
     def observe(self, bits):
@@ -163,9 +163,9 @@ def run_life(seed, arm, L=L_SCORE, night_enabled=True, trace=False, check_eyelid
                     sleep_learned = 0
         sleeping = sleep_left > 0
         # Trace reports controller state BEFORE this decision and AFTER selection.
-        if trace and 180 <= t <= 260:
+        if trace and (180 <= t <= 260 or 1716 <= t <= 1796):
             rec = dict(t=t, night=int(night(t)), S=controller.S, b_t=controller.w,
-                       m_t=controller.m, asleep=int(sleeping))
+                       m_t=controller.m, asleep=int(sleeping), forced=int(controller.forced))
             traces.append(rec)
             print('TRACE ' + json.dumps(rec), flush=True)
         if sleeping:
@@ -275,13 +275,32 @@ def smoke(out):
                 print('BASELINE ' + arm + ' ' + json.dumps(info), flush=True)
                 assert gap <= 1e-6 and cp_gap <= 1e-6
                 payload['baselines'][arm] = info
-            timed = run_life(84, 'pressure_eyelid', 1024, trace=True, check_eyelid=True)
-            dump(out / 'pressure_eyelid_L1024.json', timed)
-            payload['eyelid_L1024'] = {k: timed[k] for k in
+            timed = run_life(84, 'pressure_eyelid', 2048, trace=True, check_eyelid=True)
+            dump(out / 'pressure_eyelid_L2048.json', timed)
+            payload['eyelid_L2048'] = {k: timed[k] for k in
                 ('sleep_share', 'night_sleep_share', 'sleep_decisions', 'night_sleep_decisions', 'wall_s')}
-            print('EYELID ' + json.dumps(payload['eyelid_L1024']), flush=True)
+            print('EYELID ' + json.dumps(payload['eyelid_L2048']), flush=True)
+            days = []
+            for day in range(8):
+                sleeps = [r for r in timed['input_bits'] if r['t'] // 256 == day and r['asleep']]
+                info = dict(day=day + 1,
+                            day_sleep=sum(not night(r['t']) for r in sleeps),
+                            night_sleep=sum(night(r['t']) for r in sleeps),
+                            forced_day=sum(r['forced'] and not night(r['t']) for r in sleeps),
+                            forced_night=sum(r['forced'] and night(r['t']) for r in sleeps),
+                            forced=sum(r['forced'] for r in sleeps))
+                days.append(info)
+                print('DAY ' + json.dumps(info), flush=True)
+            payload['per_day'] = days
+            late_sleep = sum(r['day_sleep'] + r['night_sleep'] for r in days[2:])
+            late_night = sum(r['night_sleep'] for r in days[2:])
+            share = late_night / late_sleep if late_sleep else None
+            payload['gate'] = dict(days=[3, 8], sleep_decisions=late_sleep,
+                                   night_sleep_decisions=late_night, night_sleep_share=share,
+                                   threshold=.5, meets=share is not None and share >= .5)
+            print('GATE ' + json.dumps(payload['gate']), flush=True)
             # Preregistered stop: do not proceed to finite checks or staging.
-            assert timed['night_sleep_share'] is not None and timed['night_sleep_share'] >= .5, 'night sleep share < 0.5'
+            assert payload['gate']['meets'], 'days 3-8 night sleep share < 0.5'
             checks = timed['eyelid_checks']
             assert checks and all(c['intact'] and c['before'] == c['after'] for c in checks)
             payload['eyelid_checksum'] = dict(decisions=len(checks), intact=sum(c['intact'] for c in checks),
@@ -297,7 +316,7 @@ def smoke(out):
             estimate = sum(v['wall_s'] for v in payload['finite_L512'].values()) * 4 * 2
             payload['estimate'] = dict(kernel_wall_s=estimate, limit_s=85 * 60,
                                        within_limit=estimate <= 85 * 60, factor=8,
-                                       pressure_eyelid_L1024_wall_s=timed['wall_s'])
+                                       pressure_eyelid_L2048_wall_s=timed['wall_s'])
             print('WALL_ESTIMATE ' + json.dumps(payload['estimate']), flush=True)
             assert estimate <= 85 * 60, 'kernel estimate exceeds 85 minutes'
             payload['ok'] = True
