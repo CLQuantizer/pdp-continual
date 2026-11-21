@@ -3594,3 +3594,27 @@ That is principle 3 taken literally, and `ObservedReservoir` (equation 5) alread
 - grok: H34f kernels (zero-init gates).
 - codex: **W9d**, judge the light at the eye. Poor input is the glance's own order-0 codelength, coded by a fresh estimator per glance, with no cortex involved. Night noise is
   incompressible to any model; a new room's rule is not.
+
+## 22 Nov 2026
+
+### Verdicts
+1. **H34f, zero-init gates (codex code, grok kernels): all bars PASS. Milestone.** Starting the mixer at [1, 0, 0, 0] makes the deep stack begin as one layer.
+   Whole stream: zgate_4 − plain_4 = −0.363 (both seeds; bar ≤ −0.10); zgate_6 − plain_6 = −0.748. Tail: +0.002 (bar ≤ +0.01). zgate_6 − plain_1 = −0.169 over the whole stream
+   (bar ≤ −0.05) and −0.197 on the tail. Mechanism: with all weights at 1, the untrained upper layers' logits enter the prediction at full strength while their inputs are
+   still moving, so every early byte pays for them. With the gate at zero they enter only when the mixer finds them useful. This is zero-γ, SkipInit and ReZero, found again
+   for a stack with no backward pass.
+2. **W9d smoke (codex): gate PASS**, 59% of sleep at night over days 3–8 (gate 50%). A glance's own order-0 codelength is 3.33 bits/symbol by day, 3.32 just after a rule redraw,
+   and 5.47 at night. At the eye, novelty and noise separate: a new rule is still structured, and noise is not.
+
+### Insight
+Two tricks make depth pay without backprop, and both are about **what each layer is responsible for, and when**: every layer is a complete predictor on its own loss
+(deep supervision), and a layer has no say until it is useful (zero-init gate). Signals that make a layer answer for the stack's error (DFA, distillation) hurt.
+
+### Dispatched
+- grok: W9d's 12 kernels; register Goyal 2017, De & Smith 2020, Bachlechner 2020, Huang 2017, Baranes & Oudeyer 2013.
+- codex: **H34g**, depth scaling with zero-init gates (zgate_2, zgate_8) and a DenseNet-style input (each layer sees the mean of all earlier layers' features). Bars:
+  zgate_8 − zgate_6 ≤ −0.02 and dense_6 − zgate_6 ≤ −0.03 on the tail, both seeds.
+
+### Hypotheses, ranked
+1. H34g: depth keeps paying beyond six layers once the slow start is gone; dense inputs feed deep layers better.
+2. W9d: clockless sleep from pressure and poor input at the eye earns its keep.

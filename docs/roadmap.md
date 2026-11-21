@@ -328,3 +328,8 @@ Byte-level channels, one per source, built and run on Kaggle compute after M4 is
 - **Milestone: W8-0.** The curious camera on real photographs: curiosity about pixels alone lifts a frozen eye's accuracy behind a dotted window from 0.67 (random walk) to 0.92. Next: W8-1, a changing wall with a noisy TV, where no fixed plan is right.
 - Local depth: direct feedback alignment at matched norm hurts (+0.28). Deep supervision remains the only depth trick that pays.
 - Sleep: night is worth sleeping through (−0.20 with a clock). Sleep without a clock fails when poor input is judged by item-level gain; W9b judges it by the input's codelength.
+
+## Status, 22 Nov 2026
+- **Milestone, local depth: H34f, zero-init gates.** A local stack whose gate starts on layer 1 starts as one layer and grows into its depth. The whole-stream cost of depth disappears (−0.36 at 4 layers, −0.75 at 6), the tail is unchanged, and six layers beat one by 0.17 over the whole stream. Deep supervision plus zero-init gates are the two depth tricks so far. Cross-layer credit by broadcast signals (DFA, self-distillation) failed.
+- The camera wall (W8-1) is parked; W8-0 stands.
+- Sleep: judging poor input at the eye (the glance's own compressibility) is the first clockless rule to pass its gate (59% of sleep at night in the smoke); kernels running.
