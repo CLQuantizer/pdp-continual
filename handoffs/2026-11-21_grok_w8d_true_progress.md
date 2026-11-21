@@ -37,3 +37,11 @@ before). One process, `torch.set_num_threads(2)`. Files you may create: `w8d_pro
 ## Papers (do this too)
 Register in D1 `pdp-papers-index` if missing, as CLAUDE.md says: Zhang, Song, Gao, Chen, Bao, Ma 2019, "Be Your Own Teacher: Improve the Performance of Convolutional
 Neural Networks via Self Distillation" (ICCV 2019, arXiv 1905.08094); Borbély 1982, "A two process model of sleep regulation" (Human Neurobiology 1(3):195–204).
+
+## Amendment (orchestrator, 21 Nov, after the first-pass gate stopped: TV 2,281 bits, the largest)
+`w7_run._reward` puts the current glance into the reservoir **before** scoring progress, so the stored sights include the glance being learned. Its own random greys
+then gain when learned: progress on the item again, only diluted. **Change: score `ObservedReservoir.progress` on the sights stored before this glance, then include
+the glance.** (On the first glance of a life the reward is 0.) Do this for `curious_prog` and `curious_prog_noage` only; `curious_prog_glance` stays W8-1b's arm unchanged.
+Add a smoke check: on life 0's static panel, print the first 64 glances' rewards under both orders (no bar; just show them). Everything else, the first-pass gate
+(TV smallest) and the bars, is unchanged. If the gate fails again, stop and report the four first-pass rewards and the TV's per-glance rewards over its first
+3 visits.

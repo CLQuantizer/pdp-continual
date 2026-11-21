@@ -41,3 +41,10 @@ and night_sleep_share. Then T14 per arm and seed, smoke output, walls.
 ## Rules
 About 90 minutes. Smoke in the foreground, one process. Files you may create: `w9c_eyelid.py` (import from `w9_day_night.py`, `w9b_poor_input.py`; do not edit them),
 `kaggle/w9c/**`, `results/w9c/**`. Do not touch `docs/`, `audit.md`, other code, `.env`. Do not change bars. Never print secrets. Do not commit.
+
+## Amendment (orchestrator, 21 Nov, after the smoke gate stopped: night share 0.359)
+The trace shows why. The agent falls asleep at S ≥ 16 whenever b_t > m_t, so S drains to 0 again and again and never builds a day's worth of pressure. At nightfall S is about
+10, so each night sleep lasts about 4 decisions, then 16 wake decisions. A low onset threshold makes the agent nap, not sleep. In Borbély's model sleep starts when
+pressure is high **and** the circadian signal allows it. **Change only the onset threshold: fall asleep when S ≥ 96 and b_t > m_t** (or S ≥ 256, forced, until S ≤ 128).
+Staying asleep is unchanged (while b_t > m_t and S > 0). Everything else, including the smoke gate and the bars, is unchanged. Rerun the smoke; if the gate passes,
+stage the 12 kernels as the spec says. If it fails again, stop and report with the same trace.

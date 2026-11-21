@@ -3548,3 +3548,12 @@ That is principle 3 taken literally, and `ObservedReservoir` (equation 5) alread
 1. W8-1c: with true progress, the curious camera ignores the TV and beats a fixed plan in a changing world.
 2. W9c: sleep from pressure and poor input finds the night without a clock.
 3. H34e: self-distillation is a second depth trick for local stacks.
+
+### Addendum, 21 Nov midday
+1. **W8-1c stopped at its gate (grok).** With progress scored on the stored sights, the TV's first-visit reward fell from 4,119 to 2,281 bits, but it is still the largest.
+   The reservoir takes in the current glance **before** progress is scored, so the glance's own random greys are among the "stored" sights and gain when learned.
+   That is progress on the item again, diluted. Amended: score on the sights stored before the glance, then store it. Rerunning.
+2. **W9c stopped at its smoke gate (codex):** only 36% of sleep at night. The eyelid works (no learner state changed in 304 of 304 checks). The trace shows naps: the agent
+   fell asleep at S ≥ 16 whenever input looked poor, drained S to 0, and never built a day's pressure. Amended, as in Borbély's model: sleep starts only when pressure
+   is high (S ≥ 96) and input is poor. Rerunning the smoke.
+3. **H34e smoke passed (codex):** λ = 0 equals plain exactly; the error matches autograd to 4e-16. grok runs its 8 kernels.
