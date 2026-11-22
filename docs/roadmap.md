@@ -333,3 +333,7 @@ Byte-level channels, one per source, built and run on Kaggle compute after M4 is
 - **Milestone, local depth: H34f, zero-init gates.** A local stack whose gate starts on layer 1 starts as one layer and grows into its depth. The whole-stream cost of depth disappears (−0.36 at 4 layers, −0.75 at 6), the tail is unchanged, and six layers beat one by 0.17 over the whole stream. Deep supervision plus zero-init gates are the two depth tricks so far. Cross-layer credit by broadcast signals (DFA, self-distillation) failed.
 - The camera wall (W8-1) is parked; W8-0 stands.
 - Sleep: judging poor input at the eye (the glance's own compressibility) is the first clockless rule to pass its gate (59% of sleep at night in the smoke); kernels running.
+
+## Status, 22 Nov 2026 (evening)
+- **Milestone, sleep: W9d plus replication.** A machine that is never told the time sleeps 62% at night, beats sleeping at random times (−0.149, 16 of 24 fresh seeds), and matches the clock oracle (−0.025). Sleep pressure builds while awake, and sleep comes when the input at the eye turns to noise. Sleep-by-reward stays closed.
+- Local depth: a third trick, dense inputs (each layer sees the mean of all earlier layers' features), −0.062 at six layers. With zero-init gates alone, depth saturates by eight layers (−0.009). H34h tests dense at depth and whether the tricks are independent.

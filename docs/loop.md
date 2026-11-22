@@ -3628,3 +3628,21 @@ Two tricks make depth pay without backprop, and both are about **what each layer
 
 ### Dispatched
 - grok: H34g kernels and the W9d replication (seeds 96–119).
+
+### Addendum, 22 Nov evening
+1. **W9d replication, 24 fresh seeds (grok): all bars PASS. Milestone.** Clockless sleep puts 62.4% of its sleep at night (bar 60%), beats sleeping at random times by 0.149 bits
+   (16 of 24 at ≤ −0.07; bar 16), and is 0.025 bits *better* than the clock oracle on the mean (bar ≤ +0.05). The rule: pressure builds by one per waking decision and drains by three
+   per sleeping one; the machine falls asleep when pressure is up and the light at its eye turns to noise (the glance's own order-0 codelength above 1.5 × its waking median),
+   and it keeps a lid half open to know when the light returns. It is the user's 19 Nov idea, and the first sleep rule in this project that earns its keep.
+   The path took five rounds; each failure showed the same lesson in a new place: judge input by what it is, not by what learning from it does to itself, and not by what the
+   cortex happens to know.
+2. **H34g, depth scaling and dense inputs (codex code, grok kernels): bar 1 FAIL, bar 2 PASS.** Tail depth curve with zero-init gates: 1, 2, 4, 6, 8 layers = 3.275, 3.142, 3.093,
+   3.078, 3.069. 6 → 8 gains 0.009 (bar 0.02). A dense input (each layer sees the mean of all earlier layers' normalised features) gains **0.062** at six layers on both seeds,
+   more than two extra layers do. Deep layers were starved of the lower layers' features, not of depth.
+
+### Settled
+- Clockless sleep from pressure plus poor input at the eye (W9d, replicated).
+- Three local depth tricks: deep supervision, zero-init gates, dense inputs.
+
+### Dispatched
+- codex: **H34h**, dense inputs at eight layers, and the ablation table (does dense need the zero gate). Bars: dense_8 − dense_6 ≤ −0.02, dense_6 − zgate_8 ≤ −0.03.
