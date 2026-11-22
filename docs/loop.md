@@ -3646,3 +3646,17 @@ Two tricks make depth pay without backprop, and both are about **what each layer
 
 ### Dispatched
 - codex: **H34h**, dense inputs at eight layers, and the ablation table (does dense need the zero gate). Bars: dense_8 − dense_6 ≤ −0.02, dense_6 − zgate_8 ≤ −0.03.
+
+## 23 Nov 2026
+
+### Verdicts
+- **H34h smoke passed (codex):** 16 of 16 checks, exact reproduction of H34g, split eight-layer runs ready. No scored results yet.
+
+### Direction
+Both main lines now have a working piece of a living machine: a curious camera (W8-0), clockless sleep (W9d), and three local depth tricks (H34). The next step is
+to make the pieces survive outside the world they were found in. W10 puts the sleep rule, unchanged, into the open world (W6), where rooms are born and die, and
+some rooms are noise by day.
+
+### Dispatched
+- grok: H34h's kernels (dense inputs at eight layers; the ablation table).
+- codex: **W10**, the W9d sleep rule in W6 with nights, constants unchanged. Bars: ≥ 55% of sleep at night; beats random times by ≥ 0.05 on 8 of 12; within +0.05 of the clock.
