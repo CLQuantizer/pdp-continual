@@ -3618,3 +3618,13 @@ Two tricks make depth pay without backprop, and both are about **what each layer
 ### Hypotheses, ranked
 1. H34g: depth keeps paying beyond six layers once the slow start is gone; dense inputs feed deep layers better.
 2. W9d: clockless sleep from pressure and poor input at the eye earns its keep.
+
+### Addendum, 22 Nov midday
+1. **W9d, clockless sleep judged at the eye (codex code, grok kernels): bars 1 and 3 PASS, bar 2 FAIL by two seeds.** 62% of its sleep falls at night (bar 60%), and it is within
+   +0.026 bits of the clock oracle that sleeps exactly the nights (bar ≤ +0.05). Against sleeping at random times it gains 0.114 on the mean, but only 6 of 12 seeds reach −0.07
+   (bar 8). The machine is never told the time. Pressure builds while it is awake, and it sleeps when the light at its eye turns to noise, the way the user proposed (19 Nov).
+   A replication on 24 fresh seeds is pre-registered with the same bars (≥ 16 of 24 for bar 2).
+2. **H34g smoke passed (codex)**, with exact checkpoint resume for the eight-layer runs.
+
+### Dispatched
+- grok: H34g kernels and the W9d replication (seeds 96–119).
