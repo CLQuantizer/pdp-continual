@@ -1,0 +1,290 @@
+[
+  {
+    "seed": 96,
+    "folder": "s96",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s96",
+    "output": "w9d_s96.json"
+  },
+  {
+    "seed": 97,
+    "folder": "s97",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s97",
+    "output": "w9d_s97.json"
+  },
+  {
+    "seed": 98,
+    "folder": "s98",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s98",
+    "output": "w9d_s98.json"
+  },
+  {
+    "seed": 99,
+    "folder": "s99",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s99",
+    "output": "w9d_s99.json"
+  },
+  {
+    "seed": 100,
+    "folder": "s100",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s100",
+    "output": "w9d_s100.json"
+  },
+  {
+    "seed": 101,
+    "folder": "s101",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s101",
+    "output": "w9d_s101.json"
+  },
+  {
+    "seed": 102,
+    "folder": "s102",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s102",
+    "output": "w9d_s102.json"
+  },
+  {
+    "seed": 103,
+    "folder": "s103",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s103",
+    "output": "w9d_s103.json"
+  },
+  {
+    "seed": 104,
+    "folder": "s104",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s104",
+    "output": "w9d_s104.json"
+  },
+  {
+    "seed": 105,
+    "folder": "s105",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s105",
+    "output": "w9d_s105.json"
+  },
+  {
+    "seed": 106,
+    "folder": "s106",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s106",
+    "output": "w9d_s106.json"
+  },
+  {
+    "seed": 107,
+    "folder": "s107",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s107",
+    "output": "w9d_s107.json"
+  },
+  {
+    "seed": 108,
+    "folder": "s108",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s108",
+    "output": "w9d_s108.json"
+  },
+  {
+    "seed": 109,
+    "folder": "s109",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s109",
+    "output": "w9d_s109.json"
+  },
+  {
+    "seed": 110,
+    "folder": "s110",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s110",
+    "output": "w9d_s110.json"
+  },
+  {
+    "seed": 111,
+    "folder": "s111",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s111",
+    "output": "w9d_s111.json"
+  },
+  {
+    "seed": 112,
+    "folder": "s112",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s112",
+    "output": "w9d_s112.json"
+  },
+  {
+    "seed": 113,
+    "folder": "s113",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s113",
+    "output": "w9d_s113.json"
+  },
+  {
+    "seed": 114,
+    "folder": "s114",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s114",
+    "output": "w9d_s114.json"
+  },
+  {
+    "seed": 115,
+    "folder": "s115",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s115",
+    "output": "w9d_s115.json"
+  },
+  {
+    "seed": 116,
+    "folder": "s116",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s116",
+    "output": "w9d_s116.json"
+  },
+  {
+    "seed": 117,
+    "folder": "s117",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s117",
+    "output": "w9d_s117.json"
+  },
+  {
+    "seed": 118,
+    "folder": "s118",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s118",
+    "output": "w9d_s118.json"
+  },
+  {
+    "seed": 119,
+    "folder": "s119",
+    "arms": [
+      "fixed_random",
+      "fixed_night",
+      "pressure_eyelid",
+      "pressure_retina"
+    ],
+    "kernel_id": "ezzzzzx/w9drep-s119",
+    "output": "w9d_s119.json"
+  }
+]
