@@ -3681,3 +3681,17 @@ some rooms are noise by day.
    against the results files (grok's draft, edited by the orchestrator).
 3. grok's usage balance ran out during this run (HTTP 402) after the kernels had finished; the W10 summary was run here. Grok jobs pause until it is topped up; codex takes the
    work meanwhile.
+
+## 24 Nov 2026
+
+### Status
+- No results came in overnight. grok's usage balance is still exhausted (HTTP 402), so no grok job ran. Until it is topped up, codex implements and stages, and the
+  orchestrator launches the staged Kaggle dispatchers (a single command; the dispatchers load the token themselves).
+
+### Direction
+The depth tricks were found on one stream. Kaiming He's test for a trick is that it holds where it was not found. H34i repeats the core ablation, every constant unchanged,
+on clean web text (C4), an old book (the King James Bible) and images read as a byte stream (MNIST pixels).
+
+### Dispatched
+- codex: **H34i**. Bars per stream, both seeds: Own (plain_6 − plain_1 ≤ −0.05, tail), Wait (zgate_6 − plain_6 ≤ −0.10, whole stream), See (dense_6 − zgate_6 ≤ −0.02, tail).
+  A trick is general if it passes on all three.
