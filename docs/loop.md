@@ -3671,3 +3671,13 @@ some rooms are noise by day.
 
 ### Dispatched
 - grok: W10's 12 kernels, and an internal first draft of the depth essay ("Own. Wait. See."), modelled on the form of "Split. Stack. Residual.". It is published only after the orchestrator edits it.
+
+### Addendum, 23 Nov evening
+1. **W10, the clockless sleep rule in the open world, constants unchanged (codex code, grok kernels): all bars PASS.** In W6, with births, deaths, daytime noise rooms and
+   nights, it puts 65% of its sleep at night (bar 55%), beats sleeping at random times by 0.195 (11 of 12 at ≤ −0.05; bar 8), beats no sleep by 0.380 (12 of 12), and is
+   0.020 better than the clock oracle on the mean (bar ≤ +0.05). 48% of its day sleep falls while it is in a noise room, where the input is worthless anyway. A rule found in one
+   world carried into the next without a single change.
+2. **Essay published: "Own. Wait. See."** (/depth). The three local depth tricks, the failures that led to them, and the ablation that gives each its job. Every number is checked
+   against the results files (grok's draft, edited by the orchestrator).
+3. grok's usage balance ran out during this run (HTTP 402) after the kernels had finished; the W10 summary was run here. Grok jobs pause until it is topped up; codex takes the
+   work meanwhile.
