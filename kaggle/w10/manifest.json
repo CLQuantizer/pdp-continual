@@ -1,0 +1,146 @@
+[
+  {
+    "seed": 120,
+    "folder": "s120",
+    "kernel_id": "ezzzzzx/w10-s120",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s120.json"
+  },
+  {
+    "seed": 121,
+    "folder": "s121",
+    "kernel_id": "ezzzzzx/w10-s121",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s121.json"
+  },
+  {
+    "seed": 122,
+    "folder": "s122",
+    "kernel_id": "ezzzzzx/w10-s122",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s122.json"
+  },
+  {
+    "seed": 123,
+    "folder": "s123",
+    "kernel_id": "ezzzzzx/w10-s123",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s123.json"
+  },
+  {
+    "seed": 124,
+    "folder": "s124",
+    "kernel_id": "ezzzzzx/w10-s124",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s124.json"
+  },
+  {
+    "seed": 125,
+    "folder": "s125",
+    "kernel_id": "ezzzzzx/w10-s125",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s125.json"
+  },
+  {
+    "seed": 126,
+    "folder": "s126",
+    "kernel_id": "ezzzzzx/w10-s126",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s126.json"
+  },
+  {
+    "seed": 127,
+    "folder": "s127",
+    "kernel_id": "ezzzzzx/w10-s127",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s127.json"
+  },
+  {
+    "seed": 128,
+    "folder": "s128",
+    "kernel_id": "ezzzzzx/w10-s128",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s128.json"
+  },
+  {
+    "seed": 129,
+    "folder": "s129",
+    "kernel_id": "ezzzzzx/w10-s129",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s129.json"
+  },
+  {
+    "seed": 130,
+    "folder": "s130",
+    "kernel_id": "ezzzzzx/w10-s130",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s130.json"
+  },
+  {
+    "seed": 131,
+    "folder": "s131",
+    "kernel_id": "ezzzzzx/w10-s131",
+    "arms": [
+      "nosleep",
+      "fixed_random",
+      "fixed_night",
+      "pressure_retina"
+    ],
+    "output": "w10_s131.json"
+  }
+]

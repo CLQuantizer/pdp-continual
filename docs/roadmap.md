@@ -337,3 +337,6 @@ Byte-level channels, one per source, built and run on Kaggle compute after M4 is
 ## Status, 22 Nov 2026 (evening)
 - **Milestone, sleep: W9d plus replication.** A machine that is never told the time sleeps 62% at night, beats sleeping at random times (−0.149, 16 of 24 fresh seeds), and matches the clock oracle (−0.025). Sleep pressure builds while awake, and sleep comes when the input at the eye turns to noise. Sleep-by-reward stays closed.
 - Local depth: a third trick, dense inputs (each layer sees the mean of all earlier layers' features), −0.062 at six layers. With zero-init gates alone, depth saturates by eight layers (−0.009). H34h tests dense at depth and whether the tricks are independent.
+
+## Status, 23 Nov 2026
+- **Milestone, local depth: three tricks with a clean ablation (H34h).** Own loss per layer (depth possible), zero-init gate (fixes the start), dense inputs (fix the asymptote; depth pays again at 8 layers, 2.990 against 3.069). Next: generality (longer streams, other data) and the essay.

@@ -3660,3 +3660,14 @@ some rooms are noise by day.
 ### Dispatched
 - grok: H34h's kernels (dense inputs at eight layers; the ablation table).
 - codex: **W10**, the W9d sleep rule in W6 with nights, constants unchanged. Bars: ≥ 55% of sleep at night; beats random times by ≥ 0.05 on 8 of 12; within +0.05 of the clock.
+
+### Addendum, 23 Nov midday
+1. **H34h, dense inputs at depth (codex code, grok kernels): both bars PASS. Milestone.** dense_8 − dense_6 = −0.026 on the tail (both seeds; bar ≤ −0.02): with dense inputs, depth pays
+   again. dense_6 − zgate_8 = −0.053 (bar ≤ −0.03): six dense layers beat eight plain-input ones. Tail by depth, dense with zero gate: 4, 6, 8 layers = 3.056, 3.016, 2.990;
+   zero gate only: 3.093, 3.078, 3.069.
+   **Ablation:** dense without the zero gate has the same tail (−0.006) but costs +0.683 over the whole stream. The zero gate fixes the start; the dense input fixes where
+   learning ends up. Own losses make depth possible at all. Three tricks, three jobs.
+2. **W10 smoke passed (codex).** On seed 120 the unchanged W9d rule sleeps 25.5% of the time, 71% of it at night; 44% of its day sleep falls in noise rooms.
+
+### Dispatched
+- grok: W10's 12 kernels, and an internal first draft of the depth essay ("Own. Wait. See."), modelled on the form of "Split. Stack. Residual.". It is published only after the orchestrator edits it.
