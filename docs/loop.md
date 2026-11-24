@@ -3707,3 +3707,17 @@ on clean web text (C4), an old book (the King James Bible) and images read as a 
    memory (|λ| = 0.98), so upper layers have little to share.
    **Verdict: Wait is general. Own and See are general across text.** The essay (/depth) and /gradient now say so.
 2. grok is still out of balance (HTTP 402).
+
+## 25 Nov 2026
+
+### Status
+grok is back. No results came in since the H34i review.
+
+### Direction
+Two steps for the depth line. First, length: a trick that only speeds up 180,000 bytes is a warm-up trick, so H34j runs the core arms on 1,000,000 bytes. Second, the north
+star: the tricks were found on passive streams, and the machine that lives still has a one-layer cortex. W11 gives it a four-layer cortex built with Own, Wait and See, inside
+W10's world (open world, nights, the clockless sleep rule), and asks whether the life gets better.
+
+### Dispatched
+- grok: **H34j**, 1 MB of enwik8 (plain_1, zgate_6, dense_6, dense_8). Bars on the tail 200 KB–1 MB: zgate_6 − plain_1 ≤ −0.10; dense_6 − zgate_6 ≤ −0.02; dense_8 − dense_6 ≤ −0.01.
+- codex: **W11**, the deep local cortex in the living world. Bars: deep_4 − bank_1 ≤ −0.05 on 8 of 12; night sleep ≥ 55% with it.
