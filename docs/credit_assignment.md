@@ -94,4 +94,5 @@ Bartunov et al. (2018) found that feedback alignment and target propagation fall
 - **Tested and failed:** cross-layer credit added to each layer's own loss, by direct feedback alignment (+0.28 bits/byte) and by distillation from the stack's combined prediction (+0.05).
 - **Tested since:** with zero-initialised gates, depth saturates by eight layers (6 → 8 layers gains 0.009 bits/byte). A third trick does pay: a layer that sees the mean of all earlier layers' features, as in DenseNet, gains 0.062 at six layers.
 - **Tested since:** with dense inputs, depth pays again at eight layers (4, 6, 8 layers: 3.056, 3.016, 2.990 bits/byte on the tail). Dense inputs without the zero-initialised gate reach the same tail but pay 0.68 bits/byte more over the whole stream: the gate fixes the start, dense inputs fix where learning ends up.
-- **Next:** the same three tricks on longer streams and other data.
+- **Tested since:** on two new texts (web text and the King James Bible) all three tricks held, every setting unchanged. On handwritten digits read as a stream of pixel bytes only the zero-initialised gate held; own losses and dense inputs added almost nothing there.
+- **Next:** longer streams, and what a local layer needs to use the second dimension of an image.

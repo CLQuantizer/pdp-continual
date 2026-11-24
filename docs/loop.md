@@ -3695,3 +3695,15 @@ on clean web text (C4), an old book (the King James Bible) and images read as a 
 ### Dispatched
 - codex: **H34i**. Bars per stream, both seeds: Own (plain_6 − plain_1 ≤ −0.05, tail), Wait (zgate_6 − plain_6 ≤ −0.10, whole stream), See (dense_6 − zgate_6 ≤ −0.02, tail).
   A trick is general if it passes on all three.
+
+### Addendum, 24 Nov evening
+1. **H34i, are Own, Wait and See general? (codex code; dispatcher launched by the orchestrator, grok being out): Wait PASS on all three streams; Own and See PASS on both
+   texts and FAIL on MNIST.** Every setting unchanged from enwik8.
+   - c4 (web text): Own −0.135 / −0.158, Wait −0.691 / −0.682, See −0.048 / −0.053 (seeds 0 / 1). All pass.
+   - bible: Own −0.164 / −0.172, Wait −0.630 / −0.612, See −0.056 / −0.063. All pass.
+   - mnist (pixel bytes, row-major): Own −0.015 / −0.001 (bar −0.05), Wait −0.706 / −0.736, See −0.005 / −0.006 (bar −0.02).
+   Mechanism for MNIST: with the gate open, the slow start lasts into the tail (plain_6 first 40 KB 4.5 against 1.5), so plain_6 barely beats plain_1; with the zero gate six
+   layers beat one by 0.062 on the tail (report only). Dense inputs add nothing because an image read as a line keeps its structure 28 bytes back, within the first layer's
+   memory (|λ| = 0.98), so upper layers have little to share.
+   **Verdict: Wait is general. Own and See are general across text.** The essay (/depth) and /gradient now say so.
+2. grok is still out of balance (HTTP 402).

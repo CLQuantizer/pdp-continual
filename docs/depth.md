@@ -56,7 +56,17 @@ So each trick has its own job:
 
 All three are about responsibility. A layer answers for its own prediction, gets a say only when it has earned it, and can see what the layers below have already worked out. The signals that failed all broke the first rule.
 
-What these runs do not show: whether the tricks hold on longer streams, on other kinds of data, or at much larger depth; and whether some honest form of credit from above, not tried here, could add to them. Those are the next runs.
+## Away from home
+
+A trick found on one stream may only describe that stream. So the same five stacks, with every setting unchanged, read three new streams of 180,000 bytes: clean web text (C4), the King James Bible, and handwritten digits (MNIST) read as a stream of pixel bytes, row after row.
+
+On both texts all three tricks held, on both seeds. Own: six layers beat one by 0.15 on web text and 0.17 on the Bible. Wait: 0.69 and 0.62 saved over the whole stream. See: 0.05 and 0.06.
+
+On the digits only Wait held (0.72 saved over the whole stream). With the gate open from the start, six layers barely beat one even late in the stream (0.008). With the gate at zero they beat it by 0.06, so on images Wait does more than fix the start. And seeing every lower layer added only 0.005. A picture read as a line has its structure 28 bytes back, in the row above, and the first layer's memory already reaches that far; there is little for the layers above to share.
+
+**Wait is general. Own and See held on every text, and not on images read as a line.**
+
+What these runs do not show: whether the tricks hold on much longer streams or at much larger depth, what a layer needs to use the second dimension of an image, and whether some honest form of credit from above, not tried here, could add to them.
 
 ## Papers
 
