@@ -62,9 +62,11 @@ Whenever a doc, spec or loop entry cites a new paper, register it in the same co
 
 ## Worker budget (Ez, 10 Nov 2026; updated 16 Nov)
 
-- **Use both grok and codex for research every day** (Ez, 16 Nov). grok also does lookups.
+- **Codex only for research (Ez, 25 Nov 2026): do not use grok.** Codex implements, smoke-tests and stages Kaggle kernels with a resumable
+  dispatcher that loads the token from `.env` itself; codex's sandbox has no network, so the orchestrator launches the staged dispatcher
+  (`setsid` in the background) and runs the summarizer. Paper registration and lookups that need the network wait or are done by the orchestrator.
 - **codex has a hard cap of 80% of its weekly plan.** Check `python3 /root/bin/usage_report.py --dry` before any codex
-  dispatch; at ≥ 75%, do not dispatch codex at all (give its work to grok).
+  dispatch; at ≥ 75%, do not dispatch codex at all (the work waits; tell Ez).
 - grok runs that edit files or call `cf`: `grok -p "..." --cwd /root/pdp --output-format plain --max-turns 150 --always-approve --background-wait-timeout 7200` (headless grok otherwise kills its background jobs after 600 s; tell it to run experiments in the foreground).
 
 ## Cadence (Ez, 9–16 Nov 2026)
