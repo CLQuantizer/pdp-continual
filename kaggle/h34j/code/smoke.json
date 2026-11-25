@@ -1,0 +1,293 @@
+{
+  "boundaries": {
+    "dense_6": [
+      142848,
+      285696,
+      428544,
+      571392,
+      714240,
+      857088,
+      1000000
+    ],
+    "dense_8": [
+      111104,
+      222208,
+      333312,
+      444416,
+      555520,
+      666624,
+      777728,
+      888832,
+      1000000
+    ],
+    "plain_1": [
+      1000000
+    ],
+    "zgate_6": [
+      142848,
+      285696,
+      428544,
+      571392,
+      714240,
+      857088,
+      1000000
+    ]
+  },
+  "log": [
+    {
+      "arm": "plain_1",
+      "bits_per_byte": 5.142095267713781,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34i_generality",
+      "reference_bits_per_byte": 5.142095267713781,
+      "seed": 0
+    },
+    {
+      "arm": "plain_1",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 0,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 17.98467046301812
+    },
+    {
+      "arm": "plain_1",
+      "bits_per_byte": 5.295348220502141,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34i_generality",
+      "reference_bits_per_byte": 5.295348220502141,
+      "seed": 1
+    },
+    {
+      "arm": "plain_1",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 1,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 15.401333099231124
+    },
+    {
+      "arm": "zgate_6",
+      "bits_per_byte": 5.136672077864404,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34i_generality",
+      "reference_bits_per_byte": 5.136672077864404,
+      "seed": 0
+    },
+    {
+      "arm": "zgate_6",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 0,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 201.51251445244998
+    },
+    {
+      "arm": "zgate_6",
+      "bits_per_byte": 5.276438589593237,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34i_generality",
+      "reference_bits_per_byte": 5.276438589593237,
+      "seed": 1
+    },
+    {
+      "arm": "zgate_6",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 1,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 201.96345736365765
+    },
+    {
+      "arm": "dense_6",
+      "bits_per_byte": 5.1429546675619315,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34h_dense",
+      "reference_bits_per_byte": 5.1429546675619315,
+      "seed": 0
+    },
+    {
+      "arm": "dense_6",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 0,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 204.36174629069865
+    },
+    {
+      "arm": "dense_6",
+      "bits_per_byte": 5.288052342338434,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34h_dense",
+      "reference_bits_per_byte": 5.288052342338434,
+      "seed": 1
+    },
+    {
+      "arm": "dense_6",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 1,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 199.7279977425933
+    },
+    {
+      "arm": "dense_8",
+      "bits_per_byte": 5.1485027604247104,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34h_dense",
+      "reference_bits_per_byte": 5.1485027604247104,
+      "seed": 0
+    },
+    {
+      "arm": "dense_8",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 0,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 269.5436093593016
+    },
+    {
+      "arm": "dense_8",
+      "bits_per_byte": 5.293692536607763,
+      "check": "reference_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "reference": "h34h_dense",
+      "reference_bits_per_byte": 5.293692536607763,
+      "seed": 1
+    },
+    {
+      "arm": "dense_8",
+      "check": "checkpoint_equivalence",
+      "max_bits_abs": 0.0,
+      "n_bytes": 8192,
+      "offset": 4096,
+      "seed": 1,
+      "split_at": 4096,
+      "state_exact": true,
+      "wall_seconds": 266.7831211797893
+    },
+    {
+      "boundaries": {
+        "dense_6": [
+          142848,
+          285696,
+          428544,
+          571392,
+          714240,
+          857088,
+          1000000
+        ],
+        "dense_8": [
+          111104,
+          222208,
+          333312,
+          444416,
+          555520,
+          666624,
+          777728,
+          888832,
+          1000000
+        ],
+        "plain_1": [
+          1000000
+        ],
+        "zgate_6": [
+          142848,
+          285696,
+          428544,
+          571392,
+          714240,
+          857088,
+          1000000
+        ]
+      },
+      "check": "wall_plan",
+      "estimated_full_seconds": {
+        "dense_6": 24946.5022327513,
+        "dense_8": 32903.272626867874,
+        "plain_1": 2195.3943436301415,
+        "zgate_6": 24653.742353962116
+      },
+      "estimated_part_seconds": {
+        "dense_6": 3563.7860332501855,
+        "dense_8": 3655.9191807630973,
+        "plain_1": 2195.3943436301415,
+        "zgate_6": 3521.9631934231593
+      },
+      "limit_seconds": 5100,
+      "part_counts": {
+        "dense_6": 7,
+        "dense_8": 9,
+        "plain_1": 1,
+        "zgate_6": 7
+      },
+      "runtime_reserve": 1.25
+    }
+  ],
+  "n_bytes": 1000000,
+  "ok": true,
+  "part_counts": {
+    "dense_6": 7,
+    "dense_8": 9,
+    "plain_1": 1,
+    "zgate_6": 7
+  },
+  "raw_sha256": "369b688978f649681136198fb96db14c1616756260c55fb4b65e9bc049552cad",
+  "sha256_e10m": "5985c81c39d927ae0e169625790ca4d9e7d1531270c8b09ad73176a375bb3d97",
+  "source_hashes": {
+    "h20_world.py": "e2101fcfa7e5580e73142648380abd257c8b8dfeeb9431f3545a55c5537f81e2",
+    "h26_cued.py": "dafc1e4574598f3cb91b48b800fcb556f14d75fe70b7fd16e3784bce4f7d2a40",
+    "h30w_ring.py": "6ab4927e244faa18cff258e0bf153fc6e56a4b80139b13a12ff4f7bb6187d1ac",
+    "h30x_trace.py": "852a9cd9826e4c75687996c33beae14001920bb5cc1d49b1b9b095d821f7c5b9",
+    "h30y_roots.py": "fa94014039e3d140265bd456d2090ef20d2a88c3d4ecea89b6b834263f87f214",
+    "h32_mixer.py": "c512cab2a41aff0512ead37dcda53d7afa5eb48ca40b52579f468ffc64aca7a1",
+    "h32b_mixer.py": "fe78c6c3fc628144e72d836b0b113b9af2c44c03d1ff5d34f1ae3ad0b07a1076",
+    "h33_bank_text.py": "c1a52b3cfe7d63b42108adcb8b054e57c4358d553aafdef0b59be6a7c67d380c",
+    "h34a2_logit_sum.py": "31d9314f3dc1c8eddaa34e245075896503ed6fc919c046e17f79d654f25b7dbe",
+    "h34a_local_depth.py": "f1470a25aecd93db1aa915a3ae1be3d917d5363dcad2651daadeaa297bcbfb00",
+    "h34b_plain_depth.py": "bbd77a82b1e8c05ed19cf32f1a503779032be6cd375944608681e2c9347563b7",
+    "h34f_zero_gate.py": "8e76e01a53e33d0d95d73ab75dfaf1b854eb6603c38cfb9b849bee07cd645008",
+    "h34g_depth.py": "74250cda53a21ec1e2852c1bd399c768a8b75a729146a3bd9beb16b96a6e74ee",
+    "h34h_dense.py": "f089126ca805b2fb2184447f7bb9006d96a80b1489fa712324c33eae40b60e04",
+    "h34i_generality.py": "218df7f203f10222254892542156fbfb7a946c817364cb7305c10a34578aaaba",
+    "h34j_long.py": "b379c97db34974d90ae674ff8d4b0b71a120d491b0bbbfa98dd03fa6523587ca"
+  },
+  "tail_start": 200000,
+  "threads": 1
+}

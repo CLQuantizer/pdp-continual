@@ -13,13 +13,13 @@ The checkpoint smoke compares the full 512-decision behavioral output exactly. W
 From `/root/pdp`, after the local smoke and staging finish:
 
 ```bash
-.venv/bin/python kaggle/w11/dispatch.py --check-only
-.venv/bin/python kaggle/w11/dispatch.py
+.venv/bin/python kaggle/w11/dispatch.py --check-only --seeds 132 133 134 135 136 137 --cortices bank_1 deep_4
+.venv/bin/python kaggle/w11/dispatch.py --seeds 132 133 134 135 136 137 --cortices bank_1 deep_4
 ```
 
-Local staging is complete: 36 lives, 312 private CPU kernel parts, 30 code files. `bank_1` uses 2 parts per seed; both deep cortices use 12. The conservative per-part bounds are 3607.344, 5008.771, and 5053.888 seconds respectively (limit 5100). The layout check and an isolated import of the code dataset passed. The numeric reports currently contain 0/36 scored lives; Grok fills them by running the dispatcher above.
+The reduced run selects seeds 132–137 with `bank_1` and `deep_4`: 12 lives, 84 private CPU kernel parts, 30 code files. The original 36-life, 312-part manifest remains staged. `bank_1` uses 2 parts per seed; both deep cortices use 12. The conservative per-part bounds are 3607.344, 5008.771, and 5053.888 seconds respectively (limit 5100). The layout check and an isolated import of the code dataset passed. The reduced numeric reports currently contain 0/12 scored lives; the orchestrator launches the dispatcher above. This amendment was staged offline; no scored run was launched.
 
-The dispatcher reads `.env` itself without printing credentials. It creates or versions the private `ezzzzzx/pdp-code-w11` dataset, runs private CPU kernels with internet disabled, fetches and validates their outputs, and invokes the summarizer. It runs in the foreground; rerun the same command to resume. W11 occupies at most three kernel slots; the account cap is five, including other experiments. Each kernel has one worker and one numerical-library thread. Each job gets at most one retry. An uncertain push is reconciled before another submission.
+The dispatcher reads `.env` itself without printing credentials. It creates or versions the private `ezzzzzx/pdp-code-w11` dataset, runs private CPU kernels with internet disabled, fetches and validates their outputs, and invokes the summarizer. It runs in the foreground; rerun the same filtered command to resume. One shared `dispatch.lock` protects all selections. `dispatch.json` retains the full manifest and existing attempts/statuses; only selected jobs are validated, fetched, retried or submitted. Unselected records remain unchanged, and remote jobs outside the selection still count toward slot limits. The same filters are forwarded to the final summarizer and by `--assemble-only`. W11 occupies at most three kernel slots; the account cap is five, including other experiments. Each kernel has one worker and one numerical-library thread. Each job gets at most one retry. An uncertain push is reconciled before another submission.
 
 The manifest contains seeds 132–143 crossed with `bank_1`, `deep_4`, and `deep_4_open`, all using `pressure_retina` and `prog_age_s`, L=4096 and birth period 128. Unsplit kernel IDs are `ezzzzzx/w11-<cortex-with-hyphens>-s<seed>`; split jobs append `-p<part>`. Part jobs attach their completed predecessor through `kernel_sources`. They restore an exact serialized decision boundary, including the world, all random generators, models, optimizer state, eligibility traces, wake state, stores, pending visit and sleep, controller, accumulated prequential bits, scoring checkpoints and mixer history. No boundary changes a glance update, birth or exam schedule. The 253-decision smoke split verifies this inside a visit.
 
@@ -32,13 +32,13 @@ The mixture supplies wake bits, replay bits, progress exams, snapshots, store re
 To assemble an incomplete numeric table, keeping missing scored lives as `NA`/null:
 
 ```bash
-.venv/bin/python kaggle/w11/summarize.py --pending
+.venv/bin/python kaggle/w11/summarize.py --pending --seeds 132 133 134 135 136 137 --cortices bank_1 deep_4
 ```
 
-To reassemble and require all 36 completed lives:
+To reassemble and require all 12 selected completed lives:
 
 ```bash
-.venv/bin/python kaggle/w11/summarize.py
+.venv/bin/python kaggle/w11/summarize.py --seeds 132 133 134 135 136 137 --cortices bank_1 deep_4
 ```
 
-Outputs are `results/w11/RESULTS.md` and `results/w11/results.json`. The two fixed bars are deep_4 minus bank_1 on T_open <= -.05 on at least 8/12 seeds, and mean deep_4 night_sleep_share >= .55. deep_4_open minus deep_4 is report-only. No scored seeds run locally. No results are inferred from the smoke.
+Outputs are `results/w11/RESULTS.md` and `results/w11/results.json`. The two fixed bars are deep_4 minus bank_1 on T_open <= -.05 on at least 5/6 seeds, and mean deep_4 night_sleep_share >= .55. `deep_4_open` is excluded from the reduced run. Filters restrict input validation, tables, counts and completeness checks; missing selected lives remain NA/null under `--pending`. Without filters the original full selection and 8/12 bar remain available. Other seed subsets receive descriptive counts without a newly invented pass bar. No scored seeds run locally. No results are inferred from the smoke.

@@ -63,7 +63,7 @@ def save(state):
     tmp.replace(STATE)
 
 
-from summarize import validate
+from summarize import validate, add_filters, selection, filter_manifest, SEEDS, CORTICES
 
 
 def load_cache():
@@ -165,8 +165,6 @@ def other_active_ids():
     if not results.is_dir():
         return found
     for path in results.glob('*/dispatch.json'):
-        if path.parent == OUT:
-            continue
         try:
             data = json.loads(path.read_text())
         except (OSError, json.JSONDecodeError):
@@ -260,8 +258,8 @@ def running_ids():
     return running
 
 
-def check_layout(manifest, hashes):
-    expected = {(s,c) for s in range(132,144) for c in ('bank_1','deep_4','deep_4_open')}
+def check_layout(manifest, hashes, seeds=SEEDS, cortices=CORTICES):
+    expected = {(s,c) for s in seeds for c in cortices}
     assert {(j['seed'],j['cortex']) for j in manifest} == expected
     smoke = json.loads((OUT / 'smoke.json').read_text())
     assert smoke['source_hashes'] == hashes
@@ -364,29 +362,35 @@ def main():
     parser.add_argument('--check-only', action='store_true')
     parser.add_argument('--assemble-only', action='store_true')
     parser.add_argument('--dataset-ready', action='store_true')
+    add_filters(parser)
     args = parser.parse_args()
+    seeds, cortices = selection(args.seeds, args.cortices)
+    summary_command = [sys.executable, str(BASE / 'summarize.py'),
+                       '--seeds', *map(str, seeds), '--cortices', *cortices]
     smoke = json.loads((OUT / 'smoke.json').read_text())
     if not smoke.get('ok'):
         raise RuntimeError('smoke did not pass')
-    manifest = json.loads((BASE / 'manifest.json').read_text())
+    all_manifest = json.loads((BASE / 'manifest.json').read_text())
+    manifest = filter_manifest(all_manifest, seeds, cortices)
     hashes = json.loads((BASE / 'code-sha256.json').read_text())
-    check_layout(manifest, hashes)
+    check_layout(manifest, hashes, seeds, cortices)
     if args.check_only:
         print(f'checked {len(manifest)} kernel folders and {len(hashes)} code hashes', flush=True)
         return
     if args.assemble_only:
-        subprocess.run([sys.executable, str(BASE / 'summarize.py')], cwd=ROOT, check=True)
+        subprocess.run(summary_command, cwd=ROOT, check=True)
         return
     load_env()
     if STATE.exists():
         state = json.loads(STATE.read_text())
     else:
-        state = dict(dataset_created=False, code_sha256=hashes, jobs=[dict(**job, status='pending', attempts=0) for job in manifest])
+        state = dict(dataset_created=False, code_sha256=hashes, jobs=[dict(**job, status='pending', attempts=0) for job in all_manifest])
     if state.get('code_sha256') != hashes:
         raise RuntimeError('dispatch state code hashes changed; refusing to mix code versions')
-    if [(job['kernel_id'], job['arms']) for job in state['jobs']] != [(job['kernel_id'], job['arms']) for job in manifest]:
+    if [(job['kernel_id'], job['arms']) for job in state['jobs']] != [(job['kernel_id'], job['arms']) for job in all_manifest]:
         raise RuntimeError('dispatch state does not match the manifest')
-    for job in state['jobs']:
+    jobs = filter_manifest(state['jobs'], seeds, cortices)
+    for job in jobs:
         if job['status'] == 'complete':
             try:
                 validate(job, OUT / job['folder'])
@@ -395,7 +399,7 @@ def main():
     save(state)
     dataset_ready(state, args.dataset_ready)
     while True:
-        for job in state['jobs']:
+        for job in jobs:
             if job['status'] not in ('active', 'submitting'):
                 continue
             code, report = cli('kernels', 'status', job['kernel_id'], check=False)
@@ -429,21 +433,21 @@ def main():
             else:
                 print(job['kernel_id'], 'active', flush=True)
             save(state)
-        if any(job['status'] == 'failed' for job in state['jobs']):
+        if any(job['status'] == 'failed' for job in jobs):
             raise RuntimeError('Kernel exhausted its single retry; state saved')
-        active_ids = {job['kernel_id'] for job in state['jobs'] if job['status'] in ('active', 'submitting')}
+        active_ids = {job['kernel_id'] for job in jobs if job['status'] in ('active', 'submitting')}
         listed = running_ids()
-        manifest_ids = {j['kernel_id'] for j in state['jobs']}
+        manifest_ids = {j['kernel_id'] for j in all_manifest}
         active_ids |= listed & manifest_ids
         occupied = len(listed | active_ids)
-        if any(job['status'] == 'pending' for job in state['jobs']) and occupied >= MAX_RUNNING:
+        if any(job['status'] == 'pending' for job in jobs) and occupied >= MAX_RUNNING:
             print('account running %s; holding pushes (cap %s)' % (occupied, MAX_RUNNING), flush=True)
-        for job in state['jobs']:
+        for job in jobs:
             if occupied >= MAX_RUNNING or len(active_ids) >= 3:
                 break
             if job['status'] != 'pending' or job['kernel_id'] in active_ids:
                 continue
-            if job['depends_on'] and not any(j['kernel_id'] == job['depends_on'] and j['status'] == 'complete' for j in state['jobs']):
+            if job['depends_on'] and not any(j['kernel_id'] == job['depends_on'] and j['status'] == 'complete' for j in jobs):
                 continue
             # Recheck immediately before each push, including external dispatchers.
             current = running_ids() | active_ids
@@ -460,10 +464,10 @@ def main():
             occupied += 1
             active_ids.add(job['kernel_id'])
             print(job['kernel_id'], f"attempt {job['attempts']}", 'running', occupied, flush=True)
-        if all(job['status'] == 'complete' for job in state['jobs']):
+        if all(job['status'] == 'complete' for job in jobs):
             break
         time.sleep(30)
-    subprocess.run([sys.executable, str(BASE / 'summarize.py')], cwd=ROOT, check=True)
+    subprocess.run(summary_command, cwd=ROOT, check=True)
 
 
 if __name__ == '__main__':

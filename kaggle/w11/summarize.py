@@ -11,6 +11,22 @@ ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'kaggle/w11'
 SEEDS = tuple(range(132,144))
 CORTICES = ('bank_1','deep_4','deep_4_open')
+REDUCED_SEEDS = tuple(range(132,138))
+REDUCED_CORTICES = ('bank_1','deep_4')
+
+
+def add_filters(parser):
+    parser.add_argument('--seeds', nargs='+', type=int, choices=SEEDS, default=SEEDS)
+    parser.add_argument('--cortices', nargs='+', choices=CORTICES, default=CORTICES)
+
+
+def selection(seeds, cortices):
+    return (tuple(s for s in SEEDS if s in seeds),
+            tuple(c for c in CORTICES if c in cortices))
+
+
+def filter_manifest(manifest, seeds, cortices):
+    return [j for j in manifest if j['seed'] in seeds and j['cortex'] in cortices]
 
 
 def w10_validator():
@@ -98,11 +114,16 @@ def table(headers, rows):
         '| '+' | '.join(str(v) for v in row)+' |' for row in rows]
 
 
-def summarize(out, pending=False):
+def summarize(out, pending=False, seeds=SEEDS, cortices=CORTICES):
+    seeds, cortices = selection(seeds, cortices)
+    reduced = seeds == REDUCED_SEEDS and cortices == REDUCED_CORTICES
+    registered = reduced or seeds == SEEDS
+    required_count = (5 if reduced else 8) if registered else None
+    expected_lives = len(seeds) * len(cortices)
     out = Path(out)
     smoke = json.loads((out / 'smoke.json').read_text())
     assert smoke['ok']
-    manifest = json.loads((BASE / 'manifest.json').read_text())
+    manifest = filter_manifest(json.loads((BASE / 'manifest.json').read_text()), seeds, cortices)
     by, kernels = {}, []
     for job in manifest:
         path = out / job['folder'] / job['output']
@@ -115,51 +136,56 @@ def summarize(out, pending=False):
             assert key not in by
             by[key] = payload['runs'][0]
     if not pending:
-        assert set(by) == {(s,c) for s in SEEDS for c in CORTICES}
+        assert set(by) == {(s,c) for s in seeds for c in cortices}
     lines, gaps = [], {}
-    for lhs,rhs in (('deep_4','bank_1'),('deep_4_open','deep_4')):
+    comparisons = [(lhs,rhs) for lhs,rhs in (('deep_4','bank_1'),('deep_4_open','deep_4'))
+                   if lhs in cortices and rhs in cortices]
+    for lhs,rhs in comparisons:
         for field in ('preq_bps','T_open'):
-            vals = [by[s,lhs][field]-by[s,rhs][field] if (s,lhs) in by and (s,rhs) in by else None for s in SEEDS]
+            vals = [by[s,lhs][field]-by[s,rhs][field] if (s,lhs) in by and (s,rhs) in by else None for s in seeds]
             have = [v for v in vals if v is not None]
             threshold = -.05 if (lhs,rhs,field)==('deep_4','bank_1','T_open') else None
-            data = dict(per_seed=dict(zip(SEEDS,vals)), n=len(have),
+            data = dict(per_seed=dict(zip(seeds,vals)), n=len(have),
                 mean=sum(have)/len(have) if have else None, lower_count=sum(v<0 for v in have),
                 threshold=threshold, count=sum(v<=threshold for v in have) if threshold is not None else None,
-                required_count=8 if threshold is not None else None)
+                required_count=required_count if threshold is not None else None)
             gaps[f'{lhs}-{rhs}/{field}'] = data
     # Compact primary and lifetime prequential gaps first, then sleep, then open-gate ablation.
     def gap_tables(lhs,rhs):
         for field in ('preq_bps','T_open'):
             d = gaps[f'{lhs}-{rhs}/{field}']
-            lines.extend(table([f'{lhs} - {rhs}: {field}', *map(str,SEEDS),'Mean','Count < 0','Threshold <=','Count <=','Required','N'],[
+            lines.extend(table([f'{lhs} - {rhs}: {field}', *map(str,seeds),'Mean','Count < 0','Threshold <=','Count <=','Required','N'],[
                 [field,*map(cell,d['per_seed'].values()),cell(d['mean']),d['lower_count'],cell(d['threshold']),
                  d['count'] if d['count'] is not None else 'NA',d['required_count'] or 'NA',d['n']]]))
             lines.append('')
-    gap_tables('deep_4','bank_1')
+    if ('deep_4','bank_1') in comparisons:
+        gap_tables('deep_4','bank_1')
     metrics = {}
     def metric_table(field):
         rows=[]
         metrics[field]={}
-        for c in CORTICES:
-            vals=[by[s,c][field] if (s,c) in by else None for s in SEEDS]
+        for c in cortices:
+            vals=[by[s,c][field] if (s,c) in by else None for s in seeds]
             have=[v for v in vals if v is not None]
-            d=dict(per_seed=dict(zip(SEEDS,vals)),mean=sum(have)/len(have) if have else None,n=len(have))
+            d=dict(per_seed=dict(zip(seeds,vals)),mean=sum(have)/len(have) if have else None,n=len(have))
             metrics[field][c]=d
             rows.append([c,*map(cell,vals),cell(d['mean']),d['n']])
-        lines.extend(table([field,*map(str,SEEDS),'Mean','N'],rows)); lines.append('')
+        lines.extend(table([field,*map(str,seeds),'Mean','N'],rows)); lines.append('')
     for field in ('sleep_share','night_sleep_share'):
         metric_table(field)
-    night = metrics['night_sleep_share']['deep_4']
-    lines.extend(table(['cortex','night_sleep_share mean','Threshold >=','N'],[['deep_4',cell(night['mean']),'.55',night['n']]])); lines.append('')
-    gap_tables('deep_4_open','deep_4')
+    if 'deep_4' in cortices:
+        night = metrics['night_sleep_share']['deep_4']
+        lines.extend(table(['cortex','night_sleep_share mean','Threshold >=','N'],[['deep_4',cell(night['mean']),'.55',night['n']]])); lines.append('')
+    if ('deep_4_open','deep_4') in comparisons:
+        gap_tables('deep_4_open','deep_4')
     for field in ('preq_bps','T_open','final','preq_bits','preq_symbols','sleep_decisions','night_sleep_decisions','wall_s'):
         metric_table(field)
     lines.extend(table(['seed','cortex',*map(str,range(512,4097,512)),'T_open'],[
         [seed,cortex,*[cell(cp['open']) for cp in by[seed,cortex]['checkpoints']],cell(by[seed,cortex]['T_open'])]
-        for seed in SEEDS for cortex in CORTICES if (seed,cortex) in by])); lines.append('')
+        for seed in seeds for cortex in cortices if (seed,cortex) in by])); lines.append('')
     mixer=[]
-    for s in SEEDS:
-        for c in CORTICES:
+    for s in seeds:
+        for c in cortices:
             if (s,c) in by:
                 for r in by[s,c]['mixer_history']:
                     mixer.append(dict(seed=s,cortex=c,**r))
@@ -169,16 +195,18 @@ def summarize(out, pending=False):
     estimate = smoke['estimate']
     lines.extend(table(['cortex','Estimated life wall s','Parts','Estimated part wall s','Limit s'],[
         [c,cell(estimate['kernel_wall_s'][c]),estimate['parts'][c],
-         cell(estimate['segment_wall_s'][c]),estimate['limit_s']] for c in CORTICES])); lines.append('')
+         cell(estimate['segment_wall_s'][c]),estimate['limit_s']] for c in cortices])); lines.append('')
     wall_label = 'Smoke measured segments s' if 'continuation_wall_s' in smoke else 'Smoke wall s'
-    lines.extend(table(['Scored lives','Expected','Smoke workers','Smoke ok',wall_label],[[len(by),36,smoke['workers'],int(smoke['ok']),cell(smoke['wall_s'])]]))
-    result = dict(seeds=SEEDS,cortices=CORTICES,L=4096,period=128,scored_lives=len(by),expected_lives=36,
-        gaps=gaps,metrics=metrics,bars=[dict(quantity='deep_4-bank_1/T_open',threshold=-.05,required_count=8,n=12),
-            dict(quantity='deep_4/night_sleep_share',threshold=.55,comparison='>=',n=12)],
+    lines.extend(table(['Scored lives','Expected','Smoke workers','Smoke ok',wall_label],[[len(by),expected_lives,smoke['workers'],int(smoke['ok']),cell(smoke['wall_s'])]]))
+    result = dict(seeds=seeds,cortices=cortices,L=4096,period=128,scored_lives=len(by),expected_lives=expected_lives,
+        gaps=gaps,metrics=metrics,bars=([dict(quantity='deep_4-bank_1/T_open',threshold=-.05,required_count=required_count,n=len(seeds))]
+              if registered and ('deep_4','bank_1') in comparisons else []) +
+             ([dict(quantity='deep_4/night_sleep_share',threshold=.55,comparison='>=',n=len(seeds))]
+              if registered and 'deep_4' in cortices else []),
         mixer_history=mixer,kernels=kernels,runs=list(by.values()),smoke=smoke)
     (out / 'RESULTS.md').write_text('\n'.join(lines)+'\n')
     (out / 'results.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
-    print(f'{len(by)}/36 scored lives',flush=True)
+    print(f'{len(by)}/{expected_lives} scored lives',flush=True)
     return result
 
 
@@ -186,5 +214,6 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--out',type=Path,default=ROOT/'results/w11')
     p.add_argument('--pending',action='store_true')
+    add_filters(p)
     args=p.parse_args()
-    summarize(args.out,args.pending)
+    summarize(args.out,args.pending,args.seeds,args.cortices)

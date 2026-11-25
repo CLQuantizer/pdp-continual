@@ -1,0 +1,18 @@
+{
+  "code_file": "kernel.py",
+  "competition_sources": [],
+  "dataset_sources": [
+    "ezzzzzx/enwik8",
+    "ezzzzzx/pdp-code-h34j"
+  ],
+  "enable_gpu": false,
+  "enable_internet": false,
+  "enable_tpu": false,
+  "id": "ezzzzzx/h34j-plain-1-s0-p1",
+  "is_private": true,
+  "kernel_sources": [],
+  "kernel_type": "script",
+  "language": "python",
+  "model_sources": [],
+  "title": "h34j-plain-1-s0-p1"
+}
