@@ -32,3 +32,7 @@ then bits per 100 KB slice per arm and seed, kernel ids, walls.
 ## Rules
 Files you may create: `h34j_long.py`, `kaggle/h34j/**`, `results/h34j/**`. Do not edit other code, `docs/`, `audit.md`, `.env`. Do not change bars. Never print secrets. Do not commit.
 Run in the foreground until every part has finished, then summarize.
+
+## Reassigned to codex (orchestrator, 25 Nov): grok is out of balance
+Codex: implement, smoke and **stage** only (you have no network). Write a resumable dispatcher `kaggle/h34j/dispatch.py` (loads `KAGGLE_API_TOKEN` from `.env` itself, never prints
+it, chains parts, ≤ 4 H34j at once, account ≤ 5, one retry per part, persists state) and `kaggle/h34j/summarize.py`. The orchestrator launches the dispatcher.
