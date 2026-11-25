@@ -1,0 +1,4058 @@
+[
+  {
+    "seed": 132,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s132-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s132-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s132-p1.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s132-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s132-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s132-p1",
+    "output": "bank_1-s132-p2.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s132-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s132-p1.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s132-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p1",
+    "output": "deep_4-s132-p2.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s132-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p2",
+    "output": "deep_4-s132-p3.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s132-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p3",
+    "output": "deep_4-s132-p4.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s132-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p4",
+    "output": "deep_4-s132-p5.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s132-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p5",
+    "output": "deep_4-s132-p6.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s132-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p6",
+    "output": "deep_4-s132-p7.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s132-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p7",
+    "output": "deep_4-s132-p8.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s132-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p8",
+    "output": "deep_4-s132-p9.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s132-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p9",
+    "output": "deep_4-s132-p10.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s132-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p10",
+    "output": "deep_4-s132-p11.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s132-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s132-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s132-p11",
+    "output": "deep_4-s132-p12.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s132-p1.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p1",
+    "output": "deep_4_open-s132-p2.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p2",
+    "output": "deep_4_open-s132-p3.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p3",
+    "output": "deep_4_open-s132-p4.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p4",
+    "output": "deep_4_open-s132-p5.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p5",
+    "output": "deep_4_open-s132-p6.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p6",
+    "output": "deep_4_open-s132-p7.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p7",
+    "output": "deep_4_open-s132-p8.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p8",
+    "output": "deep_4_open-s132-p9.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p9",
+    "output": "deep_4_open-s132-p10.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p10",
+    "output": "deep_4_open-s132-p11.json"
+  },
+  {
+    "seed": 132,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s132-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s132-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s132-p11",
+    "output": "deep_4_open-s132-p12.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s133-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s133-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s133-p1.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s133-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s133-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s133-p1",
+    "output": "bank_1-s133-p2.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s133-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s133-p1.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s133-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p1",
+    "output": "deep_4-s133-p2.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s133-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p2",
+    "output": "deep_4-s133-p3.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s133-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p3",
+    "output": "deep_4-s133-p4.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s133-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p4",
+    "output": "deep_4-s133-p5.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s133-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p5",
+    "output": "deep_4-s133-p6.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s133-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p6",
+    "output": "deep_4-s133-p7.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s133-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p7",
+    "output": "deep_4-s133-p8.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s133-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p8",
+    "output": "deep_4-s133-p9.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s133-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p9",
+    "output": "deep_4-s133-p10.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s133-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p10",
+    "output": "deep_4-s133-p11.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s133-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s133-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s133-p11",
+    "output": "deep_4-s133-p12.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s133-p1.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p1",
+    "output": "deep_4_open-s133-p2.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p2",
+    "output": "deep_4_open-s133-p3.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p3",
+    "output": "deep_4_open-s133-p4.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p4",
+    "output": "deep_4_open-s133-p5.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p5",
+    "output": "deep_4_open-s133-p6.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p6",
+    "output": "deep_4_open-s133-p7.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p7",
+    "output": "deep_4_open-s133-p8.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p8",
+    "output": "deep_4_open-s133-p9.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p9",
+    "output": "deep_4_open-s133-p10.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p10",
+    "output": "deep_4_open-s133-p11.json"
+  },
+  {
+    "seed": 133,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s133-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s133-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s133-p11",
+    "output": "deep_4_open-s133-p12.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s134-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s134-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s134-p1.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s134-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s134-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s134-p1",
+    "output": "bank_1-s134-p2.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s134-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s134-p1.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s134-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p1",
+    "output": "deep_4-s134-p2.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s134-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p2",
+    "output": "deep_4-s134-p3.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s134-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p3",
+    "output": "deep_4-s134-p4.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s134-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p4",
+    "output": "deep_4-s134-p5.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s134-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p5",
+    "output": "deep_4-s134-p6.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s134-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p6",
+    "output": "deep_4-s134-p7.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s134-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p7",
+    "output": "deep_4-s134-p8.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s134-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p8",
+    "output": "deep_4-s134-p9.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s134-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p9",
+    "output": "deep_4-s134-p10.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s134-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p10",
+    "output": "deep_4-s134-p11.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s134-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s134-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s134-p11",
+    "output": "deep_4-s134-p12.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s134-p1.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p1",
+    "output": "deep_4_open-s134-p2.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p2",
+    "output": "deep_4_open-s134-p3.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p3",
+    "output": "deep_4_open-s134-p4.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p4",
+    "output": "deep_4_open-s134-p5.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p5",
+    "output": "deep_4_open-s134-p6.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p6",
+    "output": "deep_4_open-s134-p7.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p7",
+    "output": "deep_4_open-s134-p8.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p8",
+    "output": "deep_4_open-s134-p9.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p9",
+    "output": "deep_4_open-s134-p10.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p10",
+    "output": "deep_4_open-s134-p11.json"
+  },
+  {
+    "seed": 134,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s134-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s134-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s134-p11",
+    "output": "deep_4_open-s134-p12.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s135-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s135-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s135-p1.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s135-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s135-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s135-p1",
+    "output": "bank_1-s135-p2.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s135-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s135-p1.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s135-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p1",
+    "output": "deep_4-s135-p2.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s135-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p2",
+    "output": "deep_4-s135-p3.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s135-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p3",
+    "output": "deep_4-s135-p4.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s135-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p4",
+    "output": "deep_4-s135-p5.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s135-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p5",
+    "output": "deep_4-s135-p6.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s135-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p6",
+    "output": "deep_4-s135-p7.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s135-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p7",
+    "output": "deep_4-s135-p8.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s135-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p8",
+    "output": "deep_4-s135-p9.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s135-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p9",
+    "output": "deep_4-s135-p10.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s135-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p10",
+    "output": "deep_4-s135-p11.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s135-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s135-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s135-p11",
+    "output": "deep_4-s135-p12.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s135-p1.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p1",
+    "output": "deep_4_open-s135-p2.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p2",
+    "output": "deep_4_open-s135-p3.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p3",
+    "output": "deep_4_open-s135-p4.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p4",
+    "output": "deep_4_open-s135-p5.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p5",
+    "output": "deep_4_open-s135-p6.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p6",
+    "output": "deep_4_open-s135-p7.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p7",
+    "output": "deep_4_open-s135-p8.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p8",
+    "output": "deep_4_open-s135-p9.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p9",
+    "output": "deep_4_open-s135-p10.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p10",
+    "output": "deep_4_open-s135-p11.json"
+  },
+  {
+    "seed": 135,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s135-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s135-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s135-p11",
+    "output": "deep_4_open-s135-p12.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s136-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s136-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s136-p1.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s136-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s136-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s136-p1",
+    "output": "bank_1-s136-p2.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s136-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s136-p1.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s136-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p1",
+    "output": "deep_4-s136-p2.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s136-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p2",
+    "output": "deep_4-s136-p3.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s136-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p3",
+    "output": "deep_4-s136-p4.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s136-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p4",
+    "output": "deep_4-s136-p5.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s136-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p5",
+    "output": "deep_4-s136-p6.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s136-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p6",
+    "output": "deep_4-s136-p7.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s136-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p7",
+    "output": "deep_4-s136-p8.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s136-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p8",
+    "output": "deep_4-s136-p9.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s136-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p9",
+    "output": "deep_4-s136-p10.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s136-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p10",
+    "output": "deep_4-s136-p11.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s136-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s136-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s136-p11",
+    "output": "deep_4-s136-p12.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s136-p1.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p1",
+    "output": "deep_4_open-s136-p2.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p2",
+    "output": "deep_4_open-s136-p3.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p3",
+    "output": "deep_4_open-s136-p4.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p4",
+    "output": "deep_4_open-s136-p5.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p5",
+    "output": "deep_4_open-s136-p6.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p6",
+    "output": "deep_4_open-s136-p7.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p7",
+    "output": "deep_4_open-s136-p8.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p8",
+    "output": "deep_4_open-s136-p9.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p9",
+    "output": "deep_4_open-s136-p10.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p10",
+    "output": "deep_4_open-s136-p11.json"
+  },
+  {
+    "seed": 136,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s136-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s136-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s136-p11",
+    "output": "deep_4_open-s136-p12.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s137-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s137-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s137-p1.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s137-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s137-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s137-p1",
+    "output": "bank_1-s137-p2.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s137-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s137-p1.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s137-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p1",
+    "output": "deep_4-s137-p2.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s137-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p2",
+    "output": "deep_4-s137-p3.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s137-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p3",
+    "output": "deep_4-s137-p4.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s137-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p4",
+    "output": "deep_4-s137-p5.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s137-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p5",
+    "output": "deep_4-s137-p6.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s137-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p6",
+    "output": "deep_4-s137-p7.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s137-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p7",
+    "output": "deep_4-s137-p8.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s137-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p8",
+    "output": "deep_4-s137-p9.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s137-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p9",
+    "output": "deep_4-s137-p10.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s137-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p10",
+    "output": "deep_4-s137-p11.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s137-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s137-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s137-p11",
+    "output": "deep_4-s137-p12.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s137-p1.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p1",
+    "output": "deep_4_open-s137-p2.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p2",
+    "output": "deep_4_open-s137-p3.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p3",
+    "output": "deep_4_open-s137-p4.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p4",
+    "output": "deep_4_open-s137-p5.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p5",
+    "output": "deep_4_open-s137-p6.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p6",
+    "output": "deep_4_open-s137-p7.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p7",
+    "output": "deep_4_open-s137-p8.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p8",
+    "output": "deep_4_open-s137-p9.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p9",
+    "output": "deep_4_open-s137-p10.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p10",
+    "output": "deep_4_open-s137-p11.json"
+  },
+  {
+    "seed": 137,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s137-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s137-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s137-p11",
+    "output": "deep_4_open-s137-p12.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s138-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s138-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s138-p1.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s138-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s138-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s138-p1",
+    "output": "bank_1-s138-p2.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s138-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s138-p1.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s138-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p1",
+    "output": "deep_4-s138-p2.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s138-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p2",
+    "output": "deep_4-s138-p3.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s138-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p3",
+    "output": "deep_4-s138-p4.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s138-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p4",
+    "output": "deep_4-s138-p5.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s138-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p5",
+    "output": "deep_4-s138-p6.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s138-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p6",
+    "output": "deep_4-s138-p7.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s138-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p7",
+    "output": "deep_4-s138-p8.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s138-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p8",
+    "output": "deep_4-s138-p9.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s138-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p9",
+    "output": "deep_4-s138-p10.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s138-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p10",
+    "output": "deep_4-s138-p11.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s138-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s138-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s138-p11",
+    "output": "deep_4-s138-p12.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s138-p1.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p1",
+    "output": "deep_4_open-s138-p2.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p2",
+    "output": "deep_4_open-s138-p3.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p3",
+    "output": "deep_4_open-s138-p4.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p4",
+    "output": "deep_4_open-s138-p5.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p5",
+    "output": "deep_4_open-s138-p6.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p6",
+    "output": "deep_4_open-s138-p7.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p7",
+    "output": "deep_4_open-s138-p8.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p8",
+    "output": "deep_4_open-s138-p9.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p9",
+    "output": "deep_4_open-s138-p10.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p10",
+    "output": "deep_4_open-s138-p11.json"
+  },
+  {
+    "seed": 138,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s138-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s138-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s138-p11",
+    "output": "deep_4_open-s138-p12.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s139-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s139-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s139-p1.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s139-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s139-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s139-p1",
+    "output": "bank_1-s139-p2.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s139-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s139-p1.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s139-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p1",
+    "output": "deep_4-s139-p2.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s139-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p2",
+    "output": "deep_4-s139-p3.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s139-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p3",
+    "output": "deep_4-s139-p4.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s139-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p4",
+    "output": "deep_4-s139-p5.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s139-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p5",
+    "output": "deep_4-s139-p6.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s139-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p6",
+    "output": "deep_4-s139-p7.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s139-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p7",
+    "output": "deep_4-s139-p8.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s139-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p8",
+    "output": "deep_4-s139-p9.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s139-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p9",
+    "output": "deep_4-s139-p10.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s139-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p10",
+    "output": "deep_4-s139-p11.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s139-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s139-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s139-p11",
+    "output": "deep_4-s139-p12.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s139-p1.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p1",
+    "output": "deep_4_open-s139-p2.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p2",
+    "output": "deep_4_open-s139-p3.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p3",
+    "output": "deep_4_open-s139-p4.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p4",
+    "output": "deep_4_open-s139-p5.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p5",
+    "output": "deep_4_open-s139-p6.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p6",
+    "output": "deep_4_open-s139-p7.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p7",
+    "output": "deep_4_open-s139-p8.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p8",
+    "output": "deep_4_open-s139-p9.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p9",
+    "output": "deep_4_open-s139-p10.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p10",
+    "output": "deep_4_open-s139-p11.json"
+  },
+  {
+    "seed": 139,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s139-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s139-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s139-p11",
+    "output": "deep_4_open-s139-p12.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s140-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s140-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s140-p1.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s140-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s140-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s140-p1",
+    "output": "bank_1-s140-p2.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s140-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s140-p1.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s140-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p1",
+    "output": "deep_4-s140-p2.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s140-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p2",
+    "output": "deep_4-s140-p3.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s140-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p3",
+    "output": "deep_4-s140-p4.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s140-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p4",
+    "output": "deep_4-s140-p5.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s140-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p5",
+    "output": "deep_4-s140-p6.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s140-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p6",
+    "output": "deep_4-s140-p7.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s140-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p7",
+    "output": "deep_4-s140-p8.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s140-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p8",
+    "output": "deep_4-s140-p9.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s140-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p9",
+    "output": "deep_4-s140-p10.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s140-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p10",
+    "output": "deep_4-s140-p11.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s140-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s140-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s140-p11",
+    "output": "deep_4-s140-p12.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s140-p1.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p1",
+    "output": "deep_4_open-s140-p2.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p2",
+    "output": "deep_4_open-s140-p3.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p3",
+    "output": "deep_4_open-s140-p4.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p4",
+    "output": "deep_4_open-s140-p5.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p5",
+    "output": "deep_4_open-s140-p6.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p6",
+    "output": "deep_4_open-s140-p7.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p7",
+    "output": "deep_4_open-s140-p8.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p8",
+    "output": "deep_4_open-s140-p9.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p9",
+    "output": "deep_4_open-s140-p10.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p10",
+    "output": "deep_4_open-s140-p11.json"
+  },
+  {
+    "seed": 140,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s140-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s140-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s140-p11",
+    "output": "deep_4_open-s140-p12.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s141-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s141-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s141-p1.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s141-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s141-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s141-p1",
+    "output": "bank_1-s141-p2.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s141-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s141-p1.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s141-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p1",
+    "output": "deep_4-s141-p2.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s141-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p2",
+    "output": "deep_4-s141-p3.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s141-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p3",
+    "output": "deep_4-s141-p4.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s141-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p4",
+    "output": "deep_4-s141-p5.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s141-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p5",
+    "output": "deep_4-s141-p6.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s141-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p6",
+    "output": "deep_4-s141-p7.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s141-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p7",
+    "output": "deep_4-s141-p8.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s141-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p8",
+    "output": "deep_4-s141-p9.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s141-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p9",
+    "output": "deep_4-s141-p10.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s141-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p10",
+    "output": "deep_4-s141-p11.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s141-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s141-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s141-p11",
+    "output": "deep_4-s141-p12.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s141-p1.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p1",
+    "output": "deep_4_open-s141-p2.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p2",
+    "output": "deep_4_open-s141-p3.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p3",
+    "output": "deep_4_open-s141-p4.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p4",
+    "output": "deep_4_open-s141-p5.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p5",
+    "output": "deep_4_open-s141-p6.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p6",
+    "output": "deep_4_open-s141-p7.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p7",
+    "output": "deep_4_open-s141-p8.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p8",
+    "output": "deep_4_open-s141-p9.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p9",
+    "output": "deep_4_open-s141-p10.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p10",
+    "output": "deep_4_open-s141-p11.json"
+  },
+  {
+    "seed": 141,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s141-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s141-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s141-p11",
+    "output": "deep_4_open-s141-p12.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s142-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s142-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s142-p1.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s142-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s142-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s142-p1",
+    "output": "bank_1-s142-p2.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s142-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s142-p1.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s142-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p1",
+    "output": "deep_4-s142-p2.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s142-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p2",
+    "output": "deep_4-s142-p3.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s142-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p3",
+    "output": "deep_4-s142-p4.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s142-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p4",
+    "output": "deep_4-s142-p5.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s142-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p5",
+    "output": "deep_4-s142-p6.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s142-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p6",
+    "output": "deep_4-s142-p7.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s142-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p7",
+    "output": "deep_4-s142-p8.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s142-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p8",
+    "output": "deep_4-s142-p9.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s142-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p9",
+    "output": "deep_4-s142-p10.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s142-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p10",
+    "output": "deep_4-s142-p11.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s142-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s142-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s142-p11",
+    "output": "deep_4-s142-p12.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s142-p1.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p1",
+    "output": "deep_4_open-s142-p2.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p2",
+    "output": "deep_4_open-s142-p3.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p3",
+    "output": "deep_4_open-s142-p4.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p4",
+    "output": "deep_4_open-s142-p5.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p5",
+    "output": "deep_4_open-s142-p6.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p6",
+    "output": "deep_4_open-s142-p7.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p7",
+    "output": "deep_4_open-s142-p8.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p8",
+    "output": "deep_4_open-s142-p9.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p9",
+    "output": "deep_4_open-s142-p10.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p10",
+    "output": "deep_4_open-s142-p11.json"
+  },
+  {
+    "seed": 142,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s142-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s142-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s142-p11",
+    "output": "deep_4_open-s142-p12.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "bank_1",
+    "part": 1,
+    "parts": 2,
+    "folder": "bank-1-s143-p1",
+    "kernel_id": "ezzzzzx/w11-bank-1-s143-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "bank_1-s143-p1.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "bank_1",
+    "part": 2,
+    "parts": 2,
+    "folder": "bank-1-s143-p2",
+    "kernel_id": "ezzzzzx/w11-bank-1-s143-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-bank-1-s143-p1",
+    "output": "bank_1-s143-p2.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-s143-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4-s143-p1.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-s143-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p1",
+    "output": "deep_4-s143-p2.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-s143-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p2",
+    "output": "deep_4-s143-p3.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-s143-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p3",
+    "output": "deep_4-s143-p4.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-s143-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p4",
+    "output": "deep_4-s143-p5.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-s143-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p5",
+    "output": "deep_4-s143-p6.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-s143-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p6",
+    "output": "deep_4-s143-p7.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-s143-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p7",
+    "output": "deep_4-s143-p8.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-s143-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p8",
+    "output": "deep_4-s143-p9.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-s143-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p9",
+    "output": "deep_4-s143-p10.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-s143-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p10",
+    "output": "deep_4-s143-p11.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-s143-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-s143-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-s143-p11",
+    "output": "deep_4-s143-p12.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 1,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p1",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p1",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": null,
+    "output": "deep_4_open-s143-p1.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 2,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p2",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p2",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p1",
+    "output": "deep_4_open-s143-p2.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 3,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p3",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p3",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p2",
+    "output": "deep_4_open-s143-p3.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 4,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p4",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p4",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p3",
+    "output": "deep_4_open-s143-p4.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 5,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p5",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p5",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p4",
+    "output": "deep_4_open-s143-p5.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 6,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p6",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p6",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p5",
+    "output": "deep_4_open-s143-p6.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 7,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p7",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p7",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p6",
+    "output": "deep_4_open-s143-p7.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 8,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p8",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p8",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p7",
+    "output": "deep_4_open-s143-p8.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 9,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p9",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p9",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p8",
+    "output": "deep_4_open-s143-p9.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 10,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p10",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p10",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p9",
+    "output": "deep_4_open-s143-p10.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 11,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p11",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p11",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p10",
+    "output": "deep_4_open-s143-p11.json"
+  },
+  {
+    "seed": 143,
+    "cortex": "deep_4_open",
+    "part": 12,
+    "parts": 12,
+    "folder": "deep-4-open-s143-p12",
+    "kernel_id": "ezzzzzx/w11-deep-4-open-s143-p12",
+    "arms": [
+      "pressure_retina"
+    ],
+    "depends_on": "ezzzzzx/w11-deep-4-open-s143-p11",
+    "output": "deep_4_open-s143-p12.json"
+  }
+]

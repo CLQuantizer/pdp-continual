@@ -1,0 +1,19 @@
+{
+  "id": "ezzzzzx/w11-deep-4-s142-p12",
+  "title": "w11-deep-4-s142-p12",
+  "code_file": "kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [
+    "ezzzzzx/pdp-code-w11"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "ezzzzzx/w11-deep-4-s142-p11"
+  ],
+  "model_sources": []
+}

@@ -43,3 +43,9 @@ Report only: deep_4_open − deep_4.
 ## Rules
 About 2 hours. Files you may create: `w11_deep_cortex.py` (import from the files above; do not edit them), `kaggle/w11/**`, `results/w11/**`. Do not touch `docs/`, `audit.md`,
 other code, `.env`. Do not change bars. Never print secrets. Do not commit.
+
+## Amendment (orchestrator, 25 Nov afternoon, before any scored run): reduced scope
+The staged plan is 312 parts, deep cortices about 16 h per life (12 chained parts), several days of Kaggle time. **Run only seeds 132–137 with `bank_1` and `deep_4`** (12 lives;
+`deep_4_open` dropped). Bars rescaled, decided now, before any scored life: (1) deep_4 − bank_1 ≤ −0.05 on ≥ 5 of 6; (2) deep_4 night_sleep_share ≥ 0.55 (mean). Codex: add
+`--seeds` and `--cortices` filters to `kaggle/w11/dispatch.py` and `summarize.py` (state, locks and resume must respect the filter; the summarizer scores only the filtered set
+against the rescaled bars), re-run the offline layout check, and change nothing else. Staging only; no network.
