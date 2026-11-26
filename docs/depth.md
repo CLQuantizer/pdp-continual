@@ -66,7 +66,9 @@ On the digits only Wait held (0.72 saved over the whole stream). With the gate o
 
 **Wait is general. Own and See held on every text, and not on images read as a line.**
 
-What these runs do not show: whether the tricks hold on much longer streams or at much larger depth, what a layer needs to use the second dimension of an image, and whether some honest form of credit from above, not tried here, could add to them.
+On a stream five times longer (1,000,000 bytes, measured on the last 800,000), all three still pay: six zero-gated layers beat one by 0.175, the mean of lower layers adds 0.028, and with it eight layers beat six by 0.017. See's gain is smaller on the long stream than on the short one (0.028 against 0.062); depth's is about the same.
+
+What these runs do not show: whether the tricks hold at much larger depth, what a layer needs to use the second dimension of an image, and whether some honest form of credit from above, not tried here, could add to them.
 
 ## Papers
 

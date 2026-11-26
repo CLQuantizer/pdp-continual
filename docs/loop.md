@@ -3721,3 +3721,15 @@ W10's world (open world, nights, the clockless sleep rule), and asks whether the
 ### Dispatched
 - grok: **H34j**, 1 MB of enwik8 (plain_1, zgate_6, dense_6, dense_8). Bars on the tail 200 KB–1 MB: zgate_6 − plain_1 ≤ −0.10; dense_6 − zgate_6 ≤ −0.02; dense_8 − dense_6 ≤ −0.01.
 - codex: **W11**, the deep local cortex in the living world. Bars: deep_4 − bank_1 ≤ −0.05 on 8 of 12; night sleep ≥ 55% with it.
+
+## 27 Nov 2026 (cadence every two days until 30 Nov, Ez)
+
+### Verdicts
+1. **H34j, the depth tricks on 1 MB of enwik8 (codex code; dispatcher launched by the orchestrator): all bars PASS.** Tail 200 KB–1 MB, both seeds: zgate_6 − plain_1 = −0.175
+   (bar ≤ −0.10); dense_6 − zgate_6 = −0.028 (bar ≤ −0.02); dense_8 − dense_6 = −0.017 (bar ≤ −0.01). They are not warm-up tricks: they pay on the last 800,000 bytes. See's gain
+   is smaller than on 180 KB (0.028 against 0.062); depth's is about the same (0.175 against 0.197). The essay (/depth) now says so.
+2. **W11, the deep cortex in the living machine: stopped by a dispatcher bug.** Two bank_1 parts finished cleanly (T_open 1.239 at decision 4,096, wall 333 s) but were marked failed
+   twice, and the dispatcher stopped. 3 parts complete, 1 deep_4 part was still running. Measured walls are about ten times below the staged estimates.
+
+### Dispatched
+- codex: diagnose and fix the W11 dispatcher so it accepts the finished parts and resumes.
