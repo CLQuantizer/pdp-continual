@@ -11,10 +11,12 @@ import argparse
 import fcntl
 import hashlib
 import json
+import math
 import os
 import subprocess
 import sys
 import time
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -63,7 +65,68 @@ def save(state):
     tmp.replace(STATE)
 
 
-from summarize import validate, add_filters, selection, filter_manifest, SEEDS, CORTICES
+import summarize as summary
+from summarize import add_filters, selection, filter_manifest, SEEDS, CORTICES
+_scoring_validate = summary.validate
+
+
+def validate(job, dest):
+    """Use the scoring validator, allowing only prequential summation roundoff.
+
+    Life adds chunk sums sequentially; Python 3.12's sum of the glance log
+    uses improved float summation. They can differ by a few ulps. Validate a temporary view
+    with that one total and its derived ratio normalized, preserving the fetched
+    artifact and every other scoring check. Return the original measurements.
+    """
+    dest = Path(dest)
+    if job['part'] != job['parts']:
+        return _scoring_validate(job, dest)
+    payload = json.loads((dest / job['output']).read_text())
+    row = payload['runs'][0]
+    total = sum(g['bits'] for g in row['glance_log'] if g['preq'])
+    if row['preq_bits'] == total:
+        return _scoring_validate(job, dest)
+    assert math.isclose(row['preq_bits'], total, rel_tol=1e-14, abs_tol=1e-9), 'preq_bits mismatch'
+    assert row['preq_bps'] == row['preq_bits'] / row['preq_symbols'], 'preq_bps mismatch'
+    original_bits, original_bps = row['preq_bits'], row['preq_bps']
+    row['preq_bits'] = total
+    row['preq_bps'] = total / row['preq_symbols']
+    with tempfile.TemporaryDirectory(prefix='w11-validate-') as tmp:
+        (Path(tmp) / job['output']).write_text(json.dumps(payload, allow_nan=False))
+        _scoring_validate(job, tmp)
+    row['preq_bits'], row['preq_bps'] = original_bits, original_bps
+    return payload
+
+
+VALIDATION_ERRORS = (OSError, ValueError, KeyError, AssertionError, TypeError, IndexError, ZeroDivisionError)
+
+
+def reconcile_outputs(jobs):
+    """Recover selected fetched outputs before considering any retry or push."""
+    for job in jobs:
+        dest = OUT / job['folder']
+        if job['status'] != 'complete' and not (dest / job['output']).is_file():
+            continue
+        try:
+            validate(job, dest)
+        except VALIDATION_ERRORS as exc:
+            print(job['kernel_id'], 'local validation failed:', type(exc).__name__, str(exc), flush=True)
+            if job['status'] == 'complete':
+                job['status'] = 'active'  # refetch completed remote output
+        else:
+            if job['status'] != 'complete':
+                print(job['kernel_id'], 'complete (validated fetched output)', flush=True)
+            job['status'] = 'complete'
+
+
+def assemble(seeds, cortices):
+    # Keep dispatch --assemble-only and final assembly on the same validator.
+    original = summary.validate
+    try:
+        summary.validate = validate
+        return summary.summarize(OUT, seeds=seeds, cortices=cortices)
+    finally:
+        summary.validate = original
 
 
 def load_cache():
@@ -357,6 +420,105 @@ def dataset_ready(state, dataset_ready_flag):
         time.sleep(30)
 
 
+def offline_test():
+    """Regression against fetched final parts; no credentials or network calls."""
+    import copy
+    import shutil
+    import unittest
+    from contextlib import ExitStack
+    from unittest.mock import patch
+
+    module = sys.modules[__name__]
+    fixtures = [j for j in json.loads((BASE / 'manifest.json').read_text())
+                if j['seed'] in (132, 133) and j['cortex'] == 'bank_1' and j['part'] == 2]
+
+    class Regression(unittest.TestCase):
+        def test_final_roundoff_and_corruption(self):
+            for job in fixtures:
+                dest = OUT / job['folder']
+                raw = (dest / job['output']).read_bytes()
+                with self.assertRaises(AssertionError):
+                    _scoring_validate(job, dest)  # reproduce the original failure
+                payload = validate(job, dest)
+                self.assertEqual((dest / job['output']).read_bytes(), raw)
+                self.assertEqual(payload, json.loads(raw))
+                with tempfile.TemporaryDirectory() as tmp:
+                    path = Path(tmp) / job['output']
+                    # A material total error, a wrong ratio, hash, identity or
+                    # incomplete final must still fail the full validator.
+                    for field, value in [('preq_bits', payload['runs'][0]['preq_bits'] + .001),
+                                         ('preq_bps', 0), ('complete', False), ('finite', False)]:
+                        bad = copy.deepcopy(payload)
+                        bad['runs'][0][field] = value
+                        path.write_text(json.dumps(bad))
+                        with self.assertRaises(AssertionError):
+                            validate(job, tmp)
+                    for field, value in [('code_sha256', {}), ('seed', -1), ('part', 1)]:
+                        bad = copy.deepcopy(payload)
+                        bad[field] = value
+                        path.write_text(json.dumps(bad))
+                        with self.assertRaises(AssertionError):
+                            validate(job, tmp)
+
+        def test_resume_without_repush(self):
+            source_out = OUT
+            state = json.loads(STATE.read_text())
+            for job in state['jobs']:
+                if job['kernel_id'] in {j['kernel_id'] for j in fixtures}:
+                    job.update(status='failed', attempts=2)
+            before = copy.deepcopy(state)
+            class NextPush(BaseException):
+                pass
+            pushed = []
+            def fake_cli(*args, **kwargs):
+                if args[:2] == ('kernels', 'status'):
+                    return 0, 'has status "running"'
+                if args[:2] == ('kernels', 'push'):
+                    pushed.append(Path(args[3]).name)
+                    raise NextPush
+                self.fail('unexpected CLI call: ' + repr(args[:2]))
+            with tempfile.TemporaryDirectory() as tmp, ExitStack() as stack:
+                out = Path(tmp)
+                (out / 'dispatch.json').write_text(json.dumps(state))
+                shutil.copyfile(source_out / 'smoke.json', out / 'smoke.json')
+                for job in state['jobs']:
+                    dest = source_out / job['folder']
+                    if dest.is_dir():
+                        (out / job['folder']).symlink_to(dest, target_is_directory=True)
+                for name, value in [('OUT', out), ('STATE', out / 'dispatch.json'),
+                                    ('load_env', lambda: None), ('dataset_ready', lambda *a: None),
+                                    ('running_ids', lambda: set()), ('cli', fake_cli)]:
+                    stack.enter_context(patch.object(module, name, value))
+                stack.enter_context(patch.object(sys, 'argv', [__file__, '--seeds',
+                    '132', '133', '134', '135', '136', '137', '--cortices', 'bank_1', 'deep_4']))
+                with self.assertRaises(NextPush):
+                    main()
+                resumed = json.loads((out / 'dispatch.json').read_text())
+                for old, new in zip(before['jobs'], resumed['jobs']):
+                    if old['kernel_id'] in {j['kernel_id'] for j in fixtures}:
+                        self.assertEqual(new['status'], 'complete')
+                        self.assertEqual(new['attempts'], 2)
+                    if old['seed'] not in range(132, 138) or old['cortex'] not in ('bank_1', 'deep_4'):
+                        self.assertEqual(new, old)
+                self.assertTrue(pushed)
+                self.assertNotIn(pushed[0], {j['folder'] for j in fixtures})
+                self.assertIn(pushed[0], {j['folder'] for j in before['jobs']
+                    if j['status'] == 'pending' and j['seed'] in range(132, 138)
+                    and j['cortex'] in ('bank_1', 'deep_4')})
+                # Assembly must use the same checks and preserve measured totals.
+                result = assemble((132, 133), ('bank_1',))
+                self.assertEqual(result['scored_lives'], 2)
+                for row in result['runs']:
+                    original = json.loads((source_out / f"bank-1-s{row['seed']}-p2" /
+                                           f"bank_1-s{row['seed']}-p2.json").read_text())['runs'][0]
+                    self.assertEqual(row, original)
+
+    result = unittest.TextTestRunner(verbosity=2).run(
+        unittest.defaultTestLoader.loadTestsFromTestCase(Regression))
+    if not result.wasSuccessful():
+        raise SystemExit(1)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--check-only', action='store_true')
@@ -365,8 +527,6 @@ def main():
     add_filters(parser)
     args = parser.parse_args()
     seeds, cortices = selection(args.seeds, args.cortices)
-    summary_command = [sys.executable, str(BASE / 'summarize.py'),
-                       '--seeds', *map(str, seeds), '--cortices', *cortices]
     smoke = json.loads((OUT / 'smoke.json').read_text())
     if not smoke.get('ok'):
         raise RuntimeError('smoke did not pass')
@@ -378,7 +538,7 @@ def main():
         print(f'checked {len(manifest)} kernel folders and {len(hashes)} code hashes', flush=True)
         return
     if args.assemble_only:
-        subprocess.run(summary_command, cwd=ROOT, check=True)
+        assemble(seeds, cortices)
         return
     load_env()
     if STATE.exists():
@@ -390,12 +550,7 @@ def main():
     if [(job['kernel_id'], job['arms']) for job in state['jobs']] != [(job['kernel_id'], job['arms']) for job in all_manifest]:
         raise RuntimeError('dispatch state does not match the manifest')
     jobs = filter_manifest(state['jobs'], seeds, cortices)
-    for job in jobs:
-        if job['status'] == 'complete':
-            try:
-                validate(job, OUT / job['folder'])
-            except (OSError, ValueError, KeyError, AssertionError):
-                job['status'] = 'active'  # refetch completed remote output
+    reconcile_outputs(jobs)
     save(state)
     dataset_ready(state, args.dataset_ready)
     while True:
@@ -419,7 +574,8 @@ def main():
                 try:
                     cli('kernels', 'output', job['kernel_id'], '-p', str(dest), '--force', timeout=300)
                     validate(job, dest)
-                except (RuntimeError, AssertionError, OSError, ValueError, KeyError, TypeError):
+                except (RuntimeError, *VALIDATION_ERRORS) as exc:
+                    print(job['kernel_id'], 'fetch/validation failed:', type(exc).__name__, str(exc), flush=True)
                     job['status'] = 'pending' if job['attempts'] < 2 else 'failed'
                 else:
                     job['status'] = 'complete'
@@ -467,10 +623,13 @@ def main():
         if all(job['status'] == 'complete' for job in jobs):
             break
         time.sleep(30)
-    subprocess.run(summary_command, cwd=ROOT, check=True)
+    assemble(seeds, cortices)
 
 
 if __name__ == '__main__':
+    if sys.argv[1:] == ['--offline-test']:
+        offline_test()
+        raise SystemExit(0)
     OUT.mkdir(parents=True, exist_ok=True)
     with (OUT / 'dispatch.lock').open('w') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)

@@ -21,6 +21,22 @@ The reduced run selects seeds 132–137 with `bank_1` and `deep_4`: 12 lives, 84
 
 The dispatcher reads `.env` itself without printing credentials. It creates or versions the private `ezzzzzx/pdp-code-w11` dataset, runs private CPU kernels with internet disabled, fetches and validates their outputs, and invokes the summarizer. It runs in the foreground; rerun the same filtered command to resume. One shared `dispatch.lock` protects all selections. `dispatch.json` retains the full manifest and existing attempts/statuses; only selected jobs are validated, fetched, retried or submitted. Unselected records remain unchanged, and remote jobs outside the selection still count toward slot limits. The same filters are forwarded to the final summarizer and by `--assemble-only`. W11 occupies at most three kernel slots; the account cap is five, including other experiments. Each kernel has one worker and one numerical-library thread. Each job gets at most one retry. An uncertain push is reconciled before another submission.
 
+Resume fix (27 Nov): both fetched bank_1 final parts failed the exact `preq_bits == sum(glance bits)` check, by 2.62e-10 and 1.75e-10 bits.
+The stored sequential totals match an explicit addition loop; Python 3.12's improved `sum` gives slightly different totals. Names, hashes and final-part handling were correct.
+Startup now validates fetched outputs for selected jobs regardless of state, recovering these two as complete without another push or resetting attempts.
+The dispatcher permits only summation roundoff (`rel_tol=1e-14`, `abs_tol=1e-9`), checks the original ratio exactly, and runs every scoring check on a temporary normalized view; fetched files and reported values remain unchanged.
+Final assembly and `dispatch.py --assemble-only` use this same adapter; standalone `summarize.py` retains its original exact-equality check. No manual state repair is needed.
+
+Offline regression (uses the fetched seed 132/133 fixtures, temporary state and mocked remote calls; does not load credentials):
+
+```bash
+.venv/bin/python kaggle/w11/dispatch.py --offline-test
+```
+
+It reproduces both original failures, verifies recovery without resubmission and continuation within the filters, rejects corrupted outputs, and checks assembly preserves the original measurements.
+The fetched bank_1 final parts measured 332.987 s and 305.225 s versus the staged 3607.344 s per-part bound: about 10.8x and 11.8x below it (9.2% and 8.5%).
+The estimates include worst-case work and a 2x margin on local CPU timings; these Kaggle measurements do not change the split plan or bars.
+
 The manifest contains seeds 132–143 crossed with `bank_1`, `deep_4`, and `deep_4_open`, all using `pressure_retina` and `prog_age_s`, L=4096 and birth period 128. Unsplit kernel IDs are `ezzzzzx/w11-<cortex-with-hyphens>-s<seed>`; split jobs append `-p<part>`. Part jobs attach their completed predecessor through `kernel_sources`. They restore an exact serialized decision boundary, including the world, all random generators, models, optimizer state, eligibility traces, wake state, stores, pending visit and sleep, controller, accumulated prequential bits, scoring checkpoints and mixer history. No boundary changes a glance update, birth or exam schedule. The 253-decision smoke split verifies this inside a visit.
 
 The wall estimate measures learning, room scoring at 32 glances, full replay scoring at 576 glances, and an 18-room 2048-symbol exam. It bounds every decision by the larger of wake and sleep work, adds checkpoint exams, and applies a 2x margin plus 30 seconds. Parts are chosen so this bound is at most 5100 seconds per part. These are conservative local CPU estimates, not Kaggle measurements. Actual walls are retained per kernel and per life.
@@ -38,7 +54,7 @@ To assemble an incomplete numeric table, keeping missing scored lives as `NA`/nu
 To reassemble and require all 12 selected completed lives:
 
 ```bash
-.venv/bin/python kaggle/w11/summarize.py --seeds 132 133 134 135 136 137 --cortices bank_1 deep_4
+.venv/bin/python kaggle/w11/dispatch.py --assemble-only --seeds 132 133 134 135 136 137 --cortices bank_1 deep_4
 ```
 
 Outputs are `results/w11/RESULTS.md` and `results/w11/results.json`. The two fixed bars are deep_4 minus bank_1 on T_open <= -.05 on at least 5/6 seeds, and mean deep_4 night_sleep_share >= .55. `deep_4_open` is excluded from the reduced run. Filters restrict input validation, tables, counts and completeness checks; missing selected lives remain NA/null under `--pending`. Without filters the original full selection and 8/12 bar remain available. Other seed subsets receive descriptive counts without a newly invented pass bar. No scored seeds run locally. No results are inferred from the smoke.
